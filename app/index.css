@@ -1,0 +1,17 @@
+label {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.MuiTabs-root .MuiButtonBase-root.MuiTab-root.MuiTab-textColorInherit.Mui-selected {
+    border-bottom: solid 2px #00b286;
+    z-index: 1;
+}
+
+.green-button {
+    color: #0fb78d;
+}
+
+.pointable:hover {
+    cursor: pointer;
+}

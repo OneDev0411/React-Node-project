@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "checkJs": true,
+    "strictNullChecks": true,
+    "isolatedModules": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "pretty": true,
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "outDir": "../dist-server",
+    "lib": [
+      "es6"
+    ],
+    "types": [
+      "node"
+    ],
+    "typeRoots": [
+      "types",
+      "node_modules/@types"
+    ],
+    "paths": {}
+  },
+  "include": [
+    "app/**/*",
+    "types/**/*",
+    "main.ts"
+  ],
+  "exclude": [
+    "app/**/*.test.ts"
+  ]
+}
