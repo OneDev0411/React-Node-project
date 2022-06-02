@@ -1,6 +1,16 @@
 import React from 'react'
 import * as Ui from '@material-ui/core'
 
+export interface RoleContextApi {
+    roles: IDealRole[],
+    // remove: (id: string) => void,
+    add?: (role: IDealRole) => void,
+    test?: () => void,
+    // update: (role: IDealRole) => void,
+}
+
+export type DetailStatus = 'Loading' | 'Editing' | 'Showing'
+
 export interface IStepProps {
     React: typeof React
     Ui: typeof Ui

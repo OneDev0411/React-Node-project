@@ -1,5 +1,5 @@
 import UserInfoCard from './UserInfoCard'
-import { CardData, DefaultFormData, IStepProps } from '../models/type'
+import { CardData, DefaultFormData, DetailStatus, IStepProps } from '../models/type'
 import useRole from '../hooks/useRole'
 
 const Step2: React.FC<IStepProps> = ({ 
@@ -12,21 +12,20 @@ const Step2: React.FC<IStepProps> = ({
     models,
 }) => {
     // const BaseProps = { React, Ui, Components };
-    const { useEffect, useContext } = React;
+    const { useEffect, useState } = React;
+
     const { Grid, CircularProgress, Button } = Ui;
     const { RoleForm } = Components;
     const { deal } = models;
     const { QuestionWizard, QuestionSection, QuestionTitle } = Components.Wizard;
+
+    const [status, setStatus] = useState<DetailStatus>('Loading');
 
     useEffect(() => {
         setTimeout(() => {
             updateStep({ subStep: 1 });  
         }, 1000);  // TEST_CODE
     }, []);
-
-    // const value = useContext<any>(RoleContext);
-    // const value = useRole();
-    // console.log('value:', value);
 
     const cardData: CardData = {
         userName: "Mark Bloom",
