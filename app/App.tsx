@@ -1,5 +1,4 @@
 import React from '@libs/react'
-import Ui from '@libs/material-ui'
 import Step1 from './components/Step1'
 import Step4 from './components/Step4'
 import Step5 from './components/Step5'
@@ -28,11 +27,11 @@ const App: React.FC<EntryProps> = ({
   useEffect(() => {
     setTimeout(() => {
       setStep(1);
-    }, 100); // TEST_CODE
+    }, 1000); // TEST_CODE
 
     setTimeout(() => {
       setStep(2);
-    }, 200);  // TEST_CODE
+    }, 2000);  // TEST_CODE
   }, []);
 
   const updateStep = (param: StepData) => {
