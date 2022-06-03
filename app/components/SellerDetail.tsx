@@ -1,103 +1,47 @@
+import React from '@libs/react'
+import Ui from '@libs/material-ui'
 import UserInfoCard from './UserInfoCard'
-import { CardData, DefaultFormData, DetailStatus, IStepProps } from '../models/type'
-import useRole from '../hooks/useRole'
+import { DefaultFormData, DetailStatus, IStepProps } from '../models/type'
+// import useRole from '../hooks/useRole'
 
-const Step2: React.FC<IStepProps> = ({ 
-    subStep, 
+const SellerDetail: React.FC<IStepProps> = ({
     step,
     updateStep,
-    Ui,
     Components,
-    React,
     models,
 }) => {
-    // const BaseProps = { React, Ui, Components };
     const { useEffect, useState } = React;
 
     const { Grid, CircularProgress, Button } = Ui;
     const { RoleForm } = Components;
-    const { deal } = models;
+    const { deal, roles } = models;
     const { QuestionWizard, QuestionSection, QuestionTitle } = Components.Wizard;
 
     const [status, setStatus] = useState<DetailStatus>('Loading');
+    const [currentRole, setCurrentRole] = useState<IDealRole | null>(null);
 
+    const sellerRoles = roles.filter((role: IDealRole) => role.role === "Seller"); 
+    // console.log('sellerRoles:', sellerRoles);
+
+    // mockup loading
     useEffect(() => {
         setTimeout(() => {
-            updateStep({ subStep: 1 });  
-        }, 1000);  // TEST_CODE
+            if (sellerRoles.length) {
+                setStatus('Showing');
+            } 
+            // if there isn't any roles, show role form
+            else {
+                setStatus('Editing');
+            }
+        }, 100);  // TEST_CODE
     }, []);
 
-    const cardData: CardData = {
-        userName: "Mark Bloom",
-        role: "Seller",
-        phone: "(123)456 - 7890",
-        email: "mbloom@gmail.com"
-    }
-
-    const user: IUser = {
-        last_seen_at: null,
-        cover_image_thumbnail_url: null,
-        brand: null,
-        id: null,
-        email_confirmed: true,
-        phone_confirmed: true,
-        timezone: "",
-        active_brand: null,
-        agents: null,
-        personal_room: null,
-        user_type: 'Agent',
-        first_name: null,
-        last_name: null,
-        display_name: '',
-        email: '',
-        phone_number: null,
-        is_shadow: false,
-        profile_image_url: null,
-        cover_image_url: null,
-        email_signature: null,
-        access_token: '',
-        refresh_token: '',
-        facebook: undefined,
-        twitter: undefined,
-        linkedin: undefined,
-        youtube: undefined,
-        instagram: undefined,
-        type: 'user',
-        created_at: 0,
-        updated_at: 0
-    }
-
-    const defaultRole: IDealRole = {
-        agent: null,
-        agent_brokerwolf_id: null,
-        brokerwolf_contact_type: null,
-        brokerwolf_id: null,
-        brokerwolf_row_version: null,
-        checklist: [],
-        commission_dollar: null,
-        commission_percentage: null,
-        company_title: "",
-        created_at: Number((new Date()).getTime()),
-        created_by: null,
-        deal: "",
-        deleted_at: null,
-        current_address: null,
-        email: "",
-        id: null,
-        legal_first_name: "Remon",
-        legal_full_name: "Aiman",
-        legal_last_name: "",
-        legal_middle_name: null,
-        legal_prefix: "",
-        mlsid: null,
-        phone_number: "",
-        role: "Seller",
-        role_type: 'Person',
-        type: "",
-        updated_at: Number((new Date()).getTime()),
-        user: user,
-        brand: null,
-    }
+    // const cardData: CardData = {
+    //     userName: "Mark Bloom",
+    //     role: "Seller",
+    //     phone: "(123)456 - 7890",
+    //     email: "mbloom@gmail.com"
+    // }
 
     // const defaultFormData: DefaultFormData = {
     //     role: 0,
@@ -121,6 +65,16 @@ const Step2: React.FC<IStepProps> = ({
 
     // }
 
+    const handleCloseRoleForm = () => {
+        setStatus('Showing');
+        setCurrentRole(null);
+    }
+
+    const updateRole = (currentRole: IDealRole) => {
+        setStatus('Editing');
+        setCurrentRole(currentRole);
+    }
+
     return (
         <Grid container spacing={2} style={{ paddingBottom: 30 }}>
             <Grid item xs={12}>
@@ -133,29 +87,41 @@ const Step2: React.FC<IStepProps> = ({
                 </QuestionWizard>
             </Grid>
             <Grid item xs={12}>
-                {(step == 2 && subStep == 0) && <CircularProgress />}
-                {(step == 2 && subStep == 1) && (
-                    <RoleForm isOpen deal={deal} defaultRole={defaultRole} onClose={() => updateStep({ subStep: 2 })} title=" " form={{ legal_first_name: 'Rana',
-                    legal_last_name: 'Soltani', role: "Buyer" }} /> 
-                    // <RoleForm isOpen deal={deal} onClose={handleOnClose}  onUpsertRole={handleOnUpsertRole} /> 
+                {status === "Loading" && <CircularProgress />}
+                {status === "Editing" && (
+                    <RoleForm
+                        isOpen
+                        deal={deal}
+                        onClose={() => handleCloseRoleForm()}
+                        // onUpsertRole={() => updateStep({ subStep: 2 })} 
+                        title=" "
+                        form={currentRole !== null ? (
+                            { ...currentRole, role: "Seller" }
+                        ) : (
+                            { role: "Seller" }
+                        )}
+                    />
                 )}
-                {(step > 2 || (step == 2 && subStep == 2)) && (
+                {status === "Showing" && (
                     <>
-                        <UserInfoCard 
-                            Ui={Ui}
-                            cardData={cardData}
-                            step={2}
-                        />
+                        {/* Map function */}
+                        {sellerRoles.map((role: IDealRole, index: number) =>
+                            <UserInfoCard
+                                roleData={role}
+                                step={2}
+                                updateRole={updateRole}
+                            />
+                        )}
                         <Grid container className="UserInfo-Card">
                             <Grid item xs={12} style={{ textAlign: 'right' }} >
-                            <Button style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5, marginRight: 10 }}>
-                                Add Another Seller
-                            </Button>
-                            {step <= 2 && (
-                                <Button variant="contained" onClick={() => updateStep({ step: 3, subStep: 0 })} style={{ backgroundColor: '#0fb78d', color: 'white' }}>
-                                    Looks Good, Next
+                                <Button onClick={() => setStatus('Editing')} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5, marginRight: 10 }}>
+                                    Add Another Seller
                                 </Button>
-                            )}
+                                {step <= 2 && (
+                                    <Button variant="contained" onClick={() => updateStep({ step: 3, subStep: 0 })} style={{ backgroundColor: '#0fb78d', color: 'white' }}>
+                                        Looks Good, Next
+                                    </Button>
+                                )}
                             </Grid>
                         </Grid>
                     </>
@@ -165,4 +131,4 @@ const Step2: React.FC<IStepProps> = ({
     )
 }
 
-export default Step2;
+export default SellerDetail;

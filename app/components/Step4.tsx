@@ -1,17 +1,15 @@
-import UserInfoForm from './UserInfoForm';
+import React from '@libs/react'
+import Ui from '@libs/material-ui'
 import UserInfoCard from './UserInfoCard';
-import { IStepProps, CardData } from '../models/type';
+import { IStepProps, CardData } from '../models/type'
 
 const Step4: React.FC<IStepProps> = ({ 
     subStep, 
     step,
     updateStep, 
-    Ui,
     Components,
-    React,
     models,
 }) => {
-    const BaseProps = { React, Ui, Components };
     const { useEffect, useState } = React;
     const { Grid, CircularProgress, FormControl, InputLabel, Select, MenuItem, Button, Input, TextField } = Ui;
     const { QuestionWizard, QuestionSection, QuestionTitle } = Components.Wizard;
@@ -111,7 +109,6 @@ const Step4: React.FC<IStepProps> = ({
                                     {cardDataList.filter((cardData: CardData) => cardData.userName.indexOf(filterText) >= 0).map((cardData: CardData, index: number) => 
                                         <MenuItem value={index} style={{ padding: 0 }}>
                                             <UserInfoCard
-                                                {...BaseProps} 
                                                 cardData={cardData}
                                                 step={4}
                                             />
@@ -149,7 +146,6 @@ const Step4: React.FC<IStepProps> = ({
                 {(step >= 5) && (
                     <>
                         <UserInfoCard 
-                            {...BaseProps} 
                             cardData={cardData}
                             step={4}
                         />

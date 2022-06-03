@@ -1,10 +1,12 @@
-import { IStep1Props } from "../models/type";
+import React from '@libs/react'
+import Ui from '@libs/material-ui'
+import { IStep1Props } from "../models/type"
 
 const Step1: React.FC<IStep1Props> = ({
-    Ui: { Grid, CircularProgress },
     Components,
     step
 }) => {
+    const { Grid, CircularProgress  } = Ui;
     const { QuestionWizard, QuestionSection, QuestionTitle } = Components.Wizard;
 
     return (

@@ -1,12 +1,12 @@
-import { IStepProps } from "../models/type";
+import React from '@libs/react'
+import Ui from '@libs/material-ui'
+import { IStepProps } from "../models/type"
 
 const Step9: React.FC<IStepProps> = ({
     subStep,
     step,
     updateStep,
-    Ui,
     Components,
-    React
 }) => {
     const { useEffect, useState } = React;
     const { Grid, CircularProgress, RadioGroup, FormControlLabel, Radio } = Ui;

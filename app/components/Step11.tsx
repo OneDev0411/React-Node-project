@@ -1,13 +1,13 @@
-import { IStepProps, ItemData } from "../models/type";
-import GCIInfoItem from "./GCIInfoItem";
+import React from '@libs/react'
+import Ui from '@libs/material-ui'
+import { IStepProps, ItemData } from "../models/type"
+import GCIInfoItem from "./GCIInfoItem"
 
 const Step11: React.FC<IStepProps> = ({
     subStep,
     step,
     updateStep,
-    Ui,
     Components,
-    React
 }) => {
     const { useEffect } = React;
     const { Grid, CircularProgress, Button, Box } = Ui;

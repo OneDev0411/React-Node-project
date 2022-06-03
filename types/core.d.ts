@@ -12,12 +12,15 @@ declare interface CoreComponents {
   }
 }
 
+declare interface IEntryModel {
+  deal: IDeal
+  user: IUser
+  roles: IDealRole[]
+  attributeDefs: IAttributeDefs
+}
+
 declare interface EntryProps {
-  models: {
-    deal: IDeal
-    user: IUser
-    attributeDefs: IAttributeDefs
-  }
+  models: IEntryModel
   utils: {
     notify: (data: NotificationData) => void
   }

@@ -1,12 +1,12 @@
-import { IStepProps } from "../models/type";
+import React from '@libs/react'
+import Ui from '@libs/material-ui'
+import { IStepProps } from "../models/type"
 
 const Step7: React.FC<IStepProps> = ({
     subStep,
     step,
     updateStep,
-    Ui,
     Components,
-    React
 }) => {
     const { useEffect } = React;
     const { Grid, CircularProgress, TextField, Button } = Ui;

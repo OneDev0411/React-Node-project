@@ -12,13 +12,7 @@ export interface RoleContextApi {
 export type DetailStatus = 'Loading' | 'Editing' | 'Showing'
 
 export interface IStepProps {
-    React: typeof React
-    Ui: typeof Ui
-    models: {
-        deal: IDeal
-        user: IUser
-        attributeDefs: IAttributeDefs
-    }
+    models: IEntryModel
     Components: CoreComponents
     notify: (data: NotificationData) => void
     subStep: number
@@ -27,15 +21,16 @@ export interface IStepProps {
 }
 
 export interface IStep1Props {
-    Ui: typeof Ui
     Components: CoreComponents
     step: number
 }
 
 export interface IUserInfoCardProps {
-    Ui: typeof Ui
-    cardData: CardData
+    // cardData: CardData
+    // roleData: Partial<IDealRole>
+    roleData: IDealRole
     step: 2 | 3 | 4
+    updateRole: (currentRole: IDealRole) => void
 }
 
 export interface IGCIInfoItemProps {
@@ -62,12 +57,12 @@ export interface StepData {
     subStep?: number
 }
 
-export interface CardData {
-    userName: string
-    role: string
-    phone: string
-    email: string
-}
+// export interface CardData {
+//     userName: string
+//     role: string
+//     phone: string
+//     email: string
+// }
 
 export interface DefaultFormData {
     role: number
