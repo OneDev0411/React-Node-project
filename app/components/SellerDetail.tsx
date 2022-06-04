@@ -80,7 +80,7 @@ const SellerDetail: React.FC<IStepProps> = ({
                         deal={deal}
                         onClose={() => handleCloseRoleForm()}
                         title=" "
-                        form={upsertingIndex >= 0 ? { ...roles[upsertingIndex], role: "Seller" } : { role: "Seller" }}
+                        form={upsertingIndex >= 0 ? { ...sellerRoles[upsertingIndex], role: "Seller" } : { role: "Seller" }}
                     />
                 )}
                 {status === "Listing" && (

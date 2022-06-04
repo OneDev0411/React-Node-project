@@ -20,6 +20,7 @@ const BuyerDetail: React.FC<IStepProps> = ({
     const [upsertingIndex, setUpsertingIndex] = useState<number>(0);
 
     const buyerRoles = roles.filter((role: IDealRole) => role.role === "Buyer");
+    console.log('buyerRoles:', buyerRoles);
 
     // mockup loading
     useEffect(() => {
@@ -58,7 +59,7 @@ const BuyerDetail: React.FC<IStepProps> = ({
     }
 
     const handleClickNextButton = () => {
-        updateStep({ step: 3, subStep: 0 });
+        updateStep({ step: 4, subStep: 0 });
     }
 
     return (
@@ -80,7 +81,7 @@ const BuyerDetail: React.FC<IStepProps> = ({
                         deal={deal}
                         onClose={() => handleCloseRoleForm()}
                         title=" "
-                        form={upsertingIndex >= 0 ? { ...roles[upsertingIndex], role: "Buyer" } : { role: "Buyer" }}
+                        form={upsertingIndex >= 0 ? { ...buyerRoles[upsertingIndex], role: "Buyer" } : { role: "Buyer" }}
                     />
                 )}
                 {status === "Listing" && (
@@ -98,7 +99,7 @@ const BuyerDetail: React.FC<IStepProps> = ({
                                 <Button onClick={handleClickAddAnotherButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5, marginRight: 10 }}>
                                     Add Another Buyer
                                 </Button>
-                                {step <= 2 && (
+                                {step <= 3 && (
                                     <Button variant="contained" onClick={handleClickNextButton} style={{ backgroundColor: '#0fb78d', color: 'white' }}>
                                         Looks Good, Next
                                     </Button>

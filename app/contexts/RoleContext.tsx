@@ -4,10 +4,8 @@ const { createContext, useCallback, useState } = React;
 
 export interface RoleContextApi {
     roles: IDealRole[],
-    // remove: (id: string) => void,
     add?: (role: IDealRole) => void,
     test?: () => void,
-    // update: (role: IDealRole) => void,
 }
 
 const user: IUser = {
@@ -80,41 +78,11 @@ const defaultValue = {
     roles: [defaultRole]
 };
 
-// // NEED_TO_UPDATE_THIS_CODE
-// export const RoleContext = createContext<RoleContextApi>(defaultValue)
-// // export const RoleContext = createContext<RoleContextApi>(undefined)
-
-// export const RoleProvider: React.FC<any> = ({ children }) => {
-//     const [roles, setRoles] = useState<RoleContextApi['roles']>([])
-
-//     //   const clear = () => setRoles([])
-//     //   const remove = (id: string) => {
-//     // setRoles((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id))
-//     //   }
-//     const add = (role: IDealRole) => {
-//         setRoles([...roles, role]);
-//     }
-
-//     const test = () => {
-//         console.log('test func');
-//     }
-
-//     return (
-//         <RoleContext.Provider value={{ roles, add, test }}>
-//             {children}
-//         </RoleContext.Provider>
-//     )
-// }
-
 export const RoleContext = React.createContext<Partial<RoleContextApi>>({})
 
 export const RoleProvider: React.FC<any> = ({ children }) => {
   const [roles, setRoles] = React.useState<RoleContextApi['roles']>([])
 
-  //   const clear = () => setRoles([])
-  //   const remove = (id: string) => {
-  // setRoles((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id))
-  //   }
   const add = (role: IDealRole) => {
     setRoles([...roles, role]);
   }
@@ -129,27 +97,3 @@ export const RoleProvider: React.FC<any> = ({ children }) => {
     </RoleContext.Provider>
   )
 }
-
-// export const RoleContext = React.createContext<RoleContextApi>(defaultValue)
-
-// export const RoleProvider: React.FC<any> = ({ children }) => {
-//   const [roles, setRoles] = React.useState<RoleContextApi['roles']>([])
-
-//   //   const clear = () => setRoles([])
-//   //   const remove = (id: string) => {
-//   // setRoles((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id))
-//   //   }
-//   const add = (role: IDealRole) => {
-//       setRoles([...roles, role]);
-//   }
-
-//   const test = () => {
-//       console.log('test func');
-//   }
-
-//   return (
-//       <RoleContext.Provider value={{ roles, add, test }}>
-//           {children}
-//       </RoleContext.Provider>
-//   )
-// }
