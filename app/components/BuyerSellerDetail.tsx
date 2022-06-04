@@ -34,7 +34,7 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
         }, 100);  // TEST_CODE
     }, []);
 
-    const handleUpsertValidatingRole = async (upsertingRole: IDealRole) => {
+    const handleUpsertValidatingRole = (upsertingRole: IDealRole) => {
         if(upsertingRole.id === matchRoles[upsertingIndex].id) {  // clicking save button of last displayed role form
             if (upsertingIndex < matchRoles.length - 1) {   // if it's not the role form of last seller/buyer 
                 setUpsertingIndex(upsertingIndex + 1);

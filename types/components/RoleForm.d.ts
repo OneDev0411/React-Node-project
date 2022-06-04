@@ -12,8 +12,8 @@ declare interface RoleFormProps {
   compact?: boolean
   showSaveContactButton?: boolean
   dealSide?: 'Buying' | 'Selling'
-  onBeforeUpsert?: () => Promise<void>
-  onUpsertRole?: () => Promise<void>
-  onDeleteRole?: () => Promise<void>
+  onBeforeUpsert?: (roleData: IDealRole) => void
+  onUpsertRole?: (roleData: IDealRole) => void
+  onDeleteRole?: (roleData: IDealRole) => void
   onClose?: () => void
 }
