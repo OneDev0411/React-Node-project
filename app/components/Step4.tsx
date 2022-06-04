@@ -108,10 +108,10 @@ const Step4: React.FC<IStepProps> = ({
                                     />
                                     {cardDataList.filter((cardData: CardData) => cardData.userName.indexOf(filterText) >= 0).map((cardData: CardData, index: number) => 
                                         <MenuItem value={index} style={{ padding: 0 }}>
-                                            <UserInfoCard
+                                            {/* <UserInfoCard
                                                 cardData={cardData}
                                                 step={4}
-                                            />
+                                            /> */}
                                         </MenuItem>
                                     )}
                                     <label className="pointable" style={{ float: 'left', color: '#0fb78d', fontWeight: 300, paddingLeft: 15, paddingTop: 5, paddingBottom: 5 }} onClick={handleClickCreateNewButton}>
@@ -145,10 +145,10 @@ const Step4: React.FC<IStepProps> = ({
                 )}
                 {(step >= 5) && (
                     <>
-                        <UserInfoCard 
+                        {/* <UserInfoCard 
                             cardData={cardData}
                             step={4}
-                        />
+                        /> */}
                         <Grid container className="UserInfo-Card">
                             <Grid item xs={12} style={{ textAlign: 'right' }} >
                             {(step == 4) && (

@@ -10,7 +10,6 @@ const BuyerDetail: React.FC<IStepProps> = ({
     models,
 }) => {
     const { useEffect, useState } = React;
-
     const { Grid, CircularProgress, Button } = Ui;
     const { RoleForm } = Components;
     const { deal, roles } = models;
@@ -20,7 +19,6 @@ const BuyerDetail: React.FC<IStepProps> = ({
     const [upsertingIndex, setUpsertingIndex] = useState<number>(0);
 
     const buyerRoles = roles.filter((role: IDealRole) => role.role === "Buyer");
-    console.log('buyerRoles:', buyerRoles);
 
     // mockup loading
     useEffect(() => {
@@ -48,7 +46,6 @@ const BuyerDetail: React.FC<IStepProps> = ({
     }
 
     const handleClickEditButton = (index: number) => {
-        console.log('datea');
         setStatus('Upserting');
         setUpsertingIndex(index);
     }

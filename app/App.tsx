@@ -8,9 +8,11 @@ import Step8 from './components/Step8'
 import Step9 from './components/Step9'
 import Step10 from './components/Step10'
 import Step11 from './components/Step11'
-import SellerDetail from './components/SellerDetail'
-import { StepData } from './models/type'
 import BuyerDetail from './components/BuyerDetail'
+import SellerDetail from './components/SellerDetail'
+import BuyerAttorneyDetail from './components/BuyerAttorneyDetail'
+import SellerAttorneyDetail from './components/SellerAttorneyDetail'
+import { StepData } from './models/type'
 
 const App: React.FC<EntryProps> = ({
   models,
@@ -30,7 +32,7 @@ const App: React.FC<EntryProps> = ({
     }, 100); // TEST_CODE
 
     setTimeout(() => {
-      setStep(2);
+      setStep(2); // TEST_CODE
     }, 200);  // TEST_CODE
   }, []);
 
@@ -48,8 +50,10 @@ const App: React.FC<EntryProps> = ({
       {step > 0 && <Step1 {...BaseProps} step={step} />}
       {step > 1 && <SellerDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 2 && <BuyerDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
-      {step > 3 && <Step4 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
-      {step > 4 && <Step5 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
+      {step > 3 && <BuyerAttorneyDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
+      {step > 4 && <SellerAttorneyDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
+      {/* {step > 3 && <Step4 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />} */}
+      {/* {step > 4 && <Step5 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />} */}
       {step > 5 && <Step6 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 6 && <Step7 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 7 && <Step8 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}

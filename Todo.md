@@ -1,5 +1,5 @@
 # Todo Urgent
-1. 
+1. change updateStep to gotoNext, remove Stepdata type
 
 # Todo
 1. remove role context, provider, hook, type
@@ -11,3 +11,12 @@
 
 # Flag
 NEED_TO_UPDATE_THIS_CODE
+
+# About Attorney detail
+1. no attorney before enter?
+2. what about multiple?
+3. 
+
+# Emil Said
+1. Change hardcoded avatar in role card 
+2. 

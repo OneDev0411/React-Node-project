@@ -11,6 +11,8 @@ export interface RoleContextApi {
 
 export type DetailStatus = 'Loading' | 'Validating' | 'Listing' | 'Upserting'
 
+export type AttorneyDetailStatus = 'Loading' | 'Selecting' | 'Updating' | 'Inserting' | 'Done' | 'Skipped'
+
 export interface IStepProps {
     models: IEntryModel
     Components: CoreComponents
@@ -38,10 +40,17 @@ export interface IGCIInfoItemProps {
 }
 
 export interface ItemData {
-    name: string;
-    role: string;
-    share: string;
-    share2: string;
+    name: string
+    role: string
+    share: string
+    share2: string
+}
+
+export interface CardData {
+    userName: string
+    role: string
+    phone: string
+    email: string
 }
 
 export interface IUserInfoFormProps {
