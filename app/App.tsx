@@ -52,8 +52,6 @@ const App: React.FC<EntryProps> = ({
       {step > 2 && <BuyerDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 3 && <BuyerAttorneyDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 4 && <SellerAttorneyDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
-      {/* {step > 3 && <Step4 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />} */}
-      {/* {step > 4 && <Step5 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />} */}
       {step > 5 && <Step6 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 6 && <Step7 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 7 && <Step8 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}

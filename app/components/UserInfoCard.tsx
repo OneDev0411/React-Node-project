@@ -16,6 +16,7 @@ const UserInfoCard: React.FC<IUserInfoCardProps> = ({
   index,
   roleData,
   handleClickEditButton,
+  showEditButton = true,
 }) => {
   const { Grid, Avatar, Box, Icon, Button, SvgIcon } = Ui;
 
@@ -52,10 +53,11 @@ const UserInfoCard: React.FC<IUserInfoCardProps> = ({
           </Grid>
         </Grid>
         <Grid item xs={2} style={{ textAlign: 'right' }}>
-        {/* <Grid item xs={12} style={{ textAlign: 'right' }}> */}
-          <Button className='edit' onClick={() => handleClickEditButton(index)}>
-            Edit
-          </Button>
+          {showEditButton && ( 
+            <Button className='edit' onClick={() => handleClickEditButton(index)}>
+              Edit
+            </Button>
+          )}
         </Grid>
       </Grid>
     </Box>

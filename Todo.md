@@ -8,6 +8,7 @@
 
 # Risk
 1. move provider to provider file and get correct data value
+2. SellerDetail/role form/onUpsertRole promise error
 
 # Flag
 NEED_TO_UPDATE_THIS_CODE
@@ -19,4 +20,5 @@ NEED_TO_UPDATE_THIS_CODE
 
 # Emil Said
 1. Change hardcoded avatar in role card 
-2. Show dialogs 
+2. Discuss about scroll with ramin
+3. 

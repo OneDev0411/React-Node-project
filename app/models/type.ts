@@ -32,6 +32,7 @@ export interface IUserInfoCardProps {
     index: number
     step: 2 | 3 | 4
     handleClickEditButton: (index: number) => void
+    showEditButton?: boolean
 }
 
 export interface IGCIInfoItemProps {

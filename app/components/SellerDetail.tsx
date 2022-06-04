@@ -17,9 +17,10 @@ const SellerDetail: React.FC<IStepProps> = ({
     const { QuestionWizard, QuestionSection, QuestionTitle } = Components.Wizard;
 
     const [status, setStatus] = useState<DetailStatus>('Loading');
-    const [upsertingIndex, setUpsertingIndex] = useState<number>(0);
+    const [upsertingIndex, setUpsertingIndex] = useState<number>(0); // last upserting role index
 
     const sellerRoles = roles.filter((role: IDealRole) => role.role === "Seller");
+    console.log('sellerRoles:', sellerRoles);
 
     // mockup loading
     useEffect(() => {
@@ -33,9 +34,11 @@ const SellerDetail: React.FC<IStepProps> = ({
         }, 100);  // TEST_CODE
     }, []);
 
-    const handleCloseRoleForm = () => {
-        if (status === "Validating") {
-            if (upsertingIndex < sellerRoles.length - 1) {
+    const handleUpsertValidatingRole = async (upsertingRole: IDealRole) => {
+        console.log('upsertingRole:', upsertingRole);
+
+        if(upsertingRole.id === sellerRoles[upsertingIndex].id) {  // clicking save button of last displayed role form
+            if (upsertingIndex < sellerRoles.length - 1) {   // if it's not the role form of last seller/buyer 
                 setUpsertingIndex(upsertingIndex + 1);
                 window.scrollTo({
                     top: 0,
@@ -45,6 +48,9 @@ const SellerDetail: React.FC<IStepProps> = ({
                 setStatus('Listing');
             }
         }
+    }
+
+    const handleCloseRoleForm = () => {
         if (status === "Upserting") {
             setStatus("Listing");
         }
@@ -82,7 +88,8 @@ const SellerDetail: React.FC<IStepProps> = ({
                 <RoleForm
                     isOpen
                     deal={deal}
-                    onClose={() => handleCloseRoleForm()}
+                    onUpsertRole={handleUpsertValidatingRole}
+                    onClose={handleCloseRoleForm}
                     title=" "
                     form={{ ...sellerRole, role: "Seller" }}
                 />
@@ -91,7 +98,7 @@ const SellerDetail: React.FC<IStepProps> = ({
                     <RoleForm
                         isOpen
                         deal={deal}
-                        onClose={() => handleCloseRoleForm()}
+                        onClose={handleCloseRoleForm}
                         title=" "
                         form={upsertingIndex >= 0 ? { ...sellerRoles[upsertingIndex], role: "Seller" } : { role: "Seller" }}
                     />
@@ -104,15 +111,16 @@ const SellerDetail: React.FC<IStepProps> = ({
                                 index={index}
                                 step={2}
                                 handleClickEditButton={handleClickEditButton}
+                                key={index}
                             />
                         )}
                         <Grid container className="UserInfo-Card">
                             <Grid item xs={12} style={{ textAlign: 'right' }} >
-                                <Button onClick={handleClickAddAnotherButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5, marginRight: 10 }}>
+                                <Button onClick={handleClickAddAnotherButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5 }}>
                                     Add Another Seller
                                 </Button>
                                 {step <= 2 && (
-                                    <Button variant="contained" onClick={handleClickNextButton} style={{ backgroundColor: '#0fb78d', color: 'white' }}>
+                                    <Button variant="contained" onClick={handleClickNextButton} style={{ backgroundColor: '#0fb78d', color: 'white', marginLeft: 10 }}>
                                         Looks Good, Next
                                     </Button>
                                 )}
