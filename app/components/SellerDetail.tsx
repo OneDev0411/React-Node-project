@@ -37,6 +37,10 @@ const SellerDetail: React.FC<IStepProps> = ({
         if (status === "Validating") {
             if (upsertingIndex < sellerRoles.length - 1) {
                 setUpsertingIndex(upsertingIndex + 1);
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             } else {
                 setStatus('Listing');
             }
@@ -74,7 +78,16 @@ const SellerDetail: React.FC<IStepProps> = ({
             </Grid>
             <Grid item xs={12}>
                 {status === "Loading" && <CircularProgress />}
-                {(status === "Validating" || status === "Upserting") && (
+                {status === "Validating" && (sellerRoles.slice(0, upsertingIndex + 1).map((sellerRole: IDealRole, index: number) => 
+                <RoleForm
+                    isOpen
+                    deal={deal}
+                    onClose={() => handleCloseRoleForm()}
+                    title=" "
+                    form={{ ...sellerRole, role: "Seller" }}
+                />
+                ))}
+                {status === "Upserting" && (
                     <RoleForm
                         isOpen
                         deal={deal}

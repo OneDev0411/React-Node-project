@@ -10,6 +10,7 @@ const BuyerDetail: React.FC<IStepProps> = ({
     models,
 }) => {
     const { useEffect, useState } = React;
+
     const { Grid, CircularProgress, Button } = Ui;
     const { RoleForm } = Components;
     const { deal, roles } = models;
@@ -46,6 +47,7 @@ const BuyerDetail: React.FC<IStepProps> = ({
     }
 
     const handleClickEditButton = (index: number) => {
+        console.log('datea');
         setStatus('Upserting');
         setUpsertingIndex(index);
     }
@@ -72,7 +74,16 @@ const BuyerDetail: React.FC<IStepProps> = ({
             </Grid>
             <Grid item xs={12}>
                 {status === "Loading" && <CircularProgress />}
-                {(status === "Validating" || status === "Upserting") && (
+                {status === "Validating" && (buyerRoles.slice(0, upsertingIndex + 1).map((buyerRole: IDealRole, index: number) => 
+                <RoleForm
+                    isOpen
+                    deal={deal}
+                    onClose={() => handleCloseRoleForm()}
+                    title=" "
+                    form={{ ...buyerRole, role: "Buyer" }}
+                />
+                ))}
+                {status === "Upserting" && (
                     <RoleForm
                         isOpen
                         deal={deal}
@@ -87,7 +98,7 @@ const BuyerDetail: React.FC<IStepProps> = ({
                             <UserInfoCard
                                 roleData={role}
                                 index={index}
-                                step={2}
+                                step={3}
                                 handleClickEditButton={handleClickEditButton}
                             />
                         )}

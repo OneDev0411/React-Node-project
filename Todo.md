@@ -19,4 +19,4 @@ NEED_TO_UPDATE_THIS_CODE
 
 # Emil Said
 1. Change hardcoded avatar in role card 
-2. 
+2. Show dialogs 
