@@ -20,6 +20,7 @@ export interface IStepProps {
     subStep: number
     step: number
     updateStep: (updateData: StepData) => void
+    roleType?: "Buyer" | "Seller"
 }
 
 export interface IStep1Props {

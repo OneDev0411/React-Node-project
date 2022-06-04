@@ -1,15 +1,12 @@
 import React from '@libs/react'
 import Step1 from './components/Step1'
-import Step4 from './components/Step4'
-import Step5 from './components/Step5'
 import Step6 from './components/Step6'
 import Step7 from './components/Step7'
 import Step8 from './components/Step8'
 import Step9 from './components/Step9'
 import Step10 from './components/Step10'
 import Step11 from './components/Step11'
-import BuyerDetail from './components/BuyerDetail'
-import SellerDetail from './components/SellerDetail'
+import BuyerSellerDetail from './components/BuyerSellerDetail'
 import BuyerAttorneyDetail from './components/BuyerAttorneyDetail'
 import SellerAttorneyDetail from './components/SellerAttorneyDetail'
 import { StepData } from './models/type'
@@ -48,8 +45,8 @@ const App: React.FC<EntryProps> = ({
   return (
     <div style={{ padding: 10 }}>
       {step > 0 && <Step1 {...BaseProps} step={step} />}
-      {step > 1 && <SellerDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
-      {step > 2 && <BuyerDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
+      {step > 1 && <BuyerSellerDetail {...BaseProps} roleType="Seller" step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
+      {step > 2 && <BuyerSellerDetail {...BaseProps} roleType="Buyer" step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 3 && <BuyerAttorneyDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 4 && <SellerAttorneyDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 5 && <Step6 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}

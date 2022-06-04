@@ -1,14 +1,13 @@
 # Todo Urgent
-1. change updateStep to gotoNext, remove Stepdata type
+1. SellerDetail/role form/onUpsertRole promise error
 
 # Todo
+1. change updateStep to gotoNext, remove Stepdata type
 1. remove role context, provider, hook, type
 2. send step threshould to component with props
-3. compose buyerDetail/sellerDetail component
 
 # Risk
 1. move provider to provider file and get correct data value
-2. SellerDetail/role form/onUpsertRole promise error
 
 # Flag
 NEED_TO_UPDATE_THIS_CODE

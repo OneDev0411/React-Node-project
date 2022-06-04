@@ -3,11 +3,12 @@ import Ui from '@libs/material-ui'
 import UserInfoCard from './UserInfoCard'
 import { DetailStatus, IStepProps } from '../models/type'
 
-const SellerDetail: React.FC<IStepProps> = ({
+const BuyerSellerDetail: React.FC<IStepProps> = ({
     step,
     updateStep,
     Components,
     models,
+    roleType,  // buyer | seller
 }) => {
     const { useEffect, useState } = React;
 
@@ -19,13 +20,12 @@ const SellerDetail: React.FC<IStepProps> = ({
     const [status, setStatus] = useState<DetailStatus>('Loading');
     const [upsertingIndex, setUpsertingIndex] = useState<number>(0); // last upserting role index
 
-    const sellerRoles = roles.filter((role: IDealRole) => role.role === "Seller");
-    console.log('sellerRoles:', sellerRoles);
+    const matchRoles = roles.filter((role: IDealRole) => role.role === roleType);
 
     // mockup loading
     useEffect(() => {
         setTimeout(() => {
-            if (sellerRoles.length) {
+            if (matchRoles.length) {
                 setStatus('Validating');
             } else {
                 setStatus("Upserting");
@@ -35,10 +35,8 @@ const SellerDetail: React.FC<IStepProps> = ({
     }, []);
 
     const handleUpsertValidatingRole = async (upsertingRole: IDealRole) => {
-        console.log('upsertingRole:', upsertingRole);
-
-        if(upsertingRole.id === sellerRoles[upsertingIndex].id) {  // clicking save button of last displayed role form
-            if (upsertingIndex < sellerRoles.length - 1) {   // if it's not the role form of last seller/buyer 
+        if(upsertingRole.id === matchRoles[upsertingIndex].id) {  // clicking save button of last displayed role form
+            if (upsertingIndex < matchRoles.length - 1) {   // if it's not the role form of last seller/buyer 
                 setUpsertingIndex(upsertingIndex + 1);
                 window.scrollTo({
                     top: 0,
@@ -57,7 +55,6 @@ const SellerDetail: React.FC<IStepProps> = ({
     }
 
     const handleClickEditButton = (index: number) => {
-        console.log('datea');
         setStatus('Upserting');
         setUpsertingIndex(index);
     }
@@ -68,7 +65,7 @@ const SellerDetail: React.FC<IStepProps> = ({
     }
 
     const handleClickNextButton = () => {
-        updateStep({ step: 3, subStep: 0 });
+        updateStep({ step: roleType === "Seller" ? 3 : 4, subStep: 0 });
     }
 
     return (
@@ -77,21 +74,21 @@ const SellerDetail: React.FC<IStepProps> = ({
                 <QuestionWizard styles={{ marginBottom: -20 }}>
                     <QuestionSection>
                         <QuestionTitle>
-                            Please confirm seller's details.
+                            Please confirm {(roleType || "").toLocaleLowerCase()}'s details.
                         </QuestionTitle>
                     </QuestionSection>
                 </QuestionWizard>
             </Grid>
             <Grid item xs={12}>
                 {status === "Loading" && <CircularProgress />}
-                {status === "Validating" && (sellerRoles.slice(0, upsertingIndex + 1).map((sellerRole: IDealRole, index: number) => 
+                {status === "Validating" && (matchRoles.slice(0, upsertingIndex + 1).map((roleData: IDealRole, index: number) => 
                 <RoleForm
                     isOpen
                     deal={deal}
                     onUpsertRole={handleUpsertValidatingRole}
-                    onClose={handleCloseRoleForm}
+                    // onClose={handleCloseRoleForm}
                     title=" "
-                    form={{ ...sellerRole, role: "Seller" }}
+                    form={{ ...roleData, role: roleType }}
                 />
                 ))}
                 {status === "Upserting" && (
@@ -100,16 +97,16 @@ const SellerDetail: React.FC<IStepProps> = ({
                         deal={deal}
                         onClose={handleCloseRoleForm}
                         title=" "
-                        form={upsertingIndex >= 0 ? { ...sellerRoles[upsertingIndex], role: "Seller" } : { role: "Seller" }}
+                        form={upsertingIndex >= 0 ? { ...matchRoles[upsertingIndex], role: roleType } : { role: roleType }}
                     />
                 )}
                 {status === "Listing" && (
                     <>
-                        {sellerRoles.map((role: IDealRole, index: number) =>
+                        {matchRoles.map((role: IDealRole, index: number) =>
                             <UserInfoCard
                                 roleData={role}
                                 index={index}
-                                step={2}
+                                step={roleType === "Seller" ? 2 : 3}
                                 handleClickEditButton={handleClickEditButton}
                                 key={index}
                             />
@@ -117,9 +114,9 @@ const SellerDetail: React.FC<IStepProps> = ({
                         <Grid container className="UserInfo-Card">
                             <Grid item xs={12} style={{ textAlign: 'right' }} >
                                 <Button onClick={handleClickAddAnotherButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5 }}>
-                                    Add Another Seller
+                                    Add Another {roleType}
                                 </Button>
-                                {step <= 2 && (
+                                {step <= (roleType === "Seller" ? 2 : 3) && (
                                     <Button variant="contained" onClick={handleClickNextButton} style={{ backgroundColor: '#0fb78d', color: 'white', marginLeft: 10 }}>
                                         Looks Good, Next
                                     </Button>
@@ -133,4 +130,4 @@ const SellerDetail: React.FC<IStepProps> = ({
     )
 }
 
-export default SellerDetail;
+export default BuyerSellerDetail;
