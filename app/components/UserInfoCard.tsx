@@ -13,8 +13,9 @@ const AvatarURL = {
 
 const UserInfoCard: React.FC<IUserInfoCardProps> = ({ 
   step,
+  index,
   roleData,
-  updateRole,
+  handleClickEditButton,
 }) => {
   const { Grid, Avatar, Box, Icon, Button, SvgIcon } = Ui;
 
@@ -24,7 +25,7 @@ const UserInfoCard: React.FC<IUserInfoCardProps> = ({
         <Grid item xs={2} style={{ maxWidth: 77 }}>
           <Avatar alt="Remy Sharp" src={AvatarURL[`step${step}`]} style={{ paddingTop: '0px !important', width: '70%', height: '88%', marginLeft: 12, marginTop: 4 }} />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={8}>
           <Grid container>
             <label>
               <strong>
@@ -50,13 +51,10 @@ const UserInfoCard: React.FC<IUserInfoCardProps> = ({
             </SvgIcon> */}
           </Grid>
         </Grid>
-        <Grid item xs={4} style={{ textAlign: 'right' }}>
+        <Grid item xs={2} style={{ textAlign: 'right' }}>
         {/* <Grid item xs={12} style={{ textAlign: 'right' }}> */}
-          <Button className='edit' onClick={() => updateRole(roleData)}>
+          <Button className='edit' onClick={() => handleClickEditButton(index)}>
             Edit
-          </Button>
-          <Button className='remove' >
-            Remove
           </Button>
         </Grid>
       </Grid>

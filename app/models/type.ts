@@ -9,7 +9,7 @@ export interface RoleContextApi {
     // update: (role: IDealRole) => void,
 }
 
-export type DetailStatus = 'Loading' | 'Editing' | 'Showing'
+export type DetailStatus = 'Loading' | 'Validating' | 'Listing' | 'Upserting'
 
 export interface IStepProps {
     models: IEntryModel
@@ -26,11 +26,10 @@ export interface IStep1Props {
 }
 
 export interface IUserInfoCardProps {
-    // cardData: CardData
-    // roleData: Partial<IDealRole>
     roleData: IDealRole
+    index: number
     step: 2 | 3 | 4
-    updateRole: (currentRole: IDealRole) => void
+    handleClickEditButton: (index: number) => void
 }
 
 export interface IGCIInfoItemProps {

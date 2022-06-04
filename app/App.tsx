@@ -27,11 +27,11 @@ const App: React.FC<EntryProps> = ({
   useEffect(() => {
     setTimeout(() => {
       setStep(1);
-    }, 1000); // TEST_CODE
+    }, 100); // TEST_CODE
 
     setTimeout(() => {
       setStep(2);
-    }, 2000);  // TEST_CODE
+    }, 200);  // TEST_CODE
   }, []);
 
   const updateStep = (param: StepData) => {
