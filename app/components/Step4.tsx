@@ -1,7 +1,7 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import UserInfoCard from './UserInfoCard';
-import { IStepProps, CardData } from '../models/type'
+import { IStepProps, MockupContactData } from '../models/type'
 
 const Step4: React.FC<IStepProps> = ({ 
     subStep, 
@@ -25,14 +25,14 @@ const Step4: React.FC<IStepProps> = ({
         }, 1000);
     }, []);
 
-    const cardData: CardData = {
+    const cardData: MockupContactData = {
         userName: "Alisa Edmond",
         role: "Buyer's Attorney",
         phone: "(123)456 - 7890",
         email: "aedmond@gmail.com"
     };
 
-    const cardDataList: CardData[] = [
+    const cardDataList: MockupContactData[] = [
         {
             userName: "Eli Eric",
             role: "Buyer's Attorney",
@@ -106,7 +106,7 @@ const Step4: React.FC<IStepProps> = ({
                                         onChange={handleChangeInput} 
                                         placeholder="Alisa Edmond"
                                     />
-                                    {cardDataList.filter((cardData: CardData) => cardData.userName.indexOf(filterText) >= 0).map((cardData: CardData, index: number) => 
+                                    {cardDataList.filter((cardData: MockupContactData) => cardData.userName.indexOf(filterText) >= 0).map((cardData: MockupContactData, index: number) => 
                                         <MenuItem value={index} style={{ padding: 0 }}>
                                             {/* <UserInfoCard
                                                 cardData={cardData}

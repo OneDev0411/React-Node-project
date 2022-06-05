@@ -1,6 +1,7 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import UserInfoCard from './UserInfoCard'
+import DropdownSelect from './DropdownSelect'
 import { DetailStatus, IStepProps } from '../models/type'
 
 const BuyerSellerDetail: React.FC<IStepProps> = ({
@@ -19,6 +20,7 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
 
     const [status, setStatus] = useState<DetailStatus>('Loading');
     const [upsertingIndex, setUpsertingIndex] = useState<number>(0); // last upserting role index
+    const [fromSelectObject, setFromSelectObject] = useState<any>(null); // data from dropdown select, can be IDealRole object or nameObject
 
     const matchRoles = roles.filter((role: IDealRole) => role.role === roleType);
 
@@ -35,7 +37,7 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
     }, []);
 
     const handleUpsertValidatingRole = (upsertingRole: IDealRole) => {
-        if(upsertingRole.id === matchRoles[upsertingIndex].id) {  // clicking save button of last displayed role form
+        if (upsertingRole.id === matchRoles[upsertingIndex].id) {  // clicking save button of last displayed role form
             if (upsertingIndex < matchRoles.length - 1) {   // if it's not the role form of last seller/buyer 
                 setUpsertingIndex(upsertingIndex + 1);
                 window.scrollTo({
@@ -49,9 +51,8 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
     }
 
     const handleCloseRoleForm = () => {
-        if (status === "Upserting") {
-            setStatus("Listing");
-        }
+        setStatus("Listing");
+        setFromSelectObject(null);
     }
 
     const handleClickEditButton = (index: number) => {
@@ -60,13 +61,41 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
     }
 
     const handleClickAddAnotherButton = () => {
-        setStatus('Upserting');
+        setStatus('Selecting');
         setUpsertingIndex(-1);
     }
 
     const handleClickNextButton = () => {
         updateStep({ step: roleType === "Seller" ? 3 : 4, subStep: 0 });
     }
+
+    const handleInsertFromSelect = (inputStr: string) => {
+        if (inputStr === "") {
+            setFromSelectObject ({});
+        } else if (inputStr.split(" ").length === 1) {
+            setFromSelectObject ({ legal_first_name: inputStr });
+        } else {
+            setFromSelectObject ({ legal_first_name: inputStr.split(' ')[0], legal_last_name: inputStr.split(' ')[1] });
+        }
+        setStatus("Upserting");
+    }
+
+    const handleSelectContact = (contact: IDealRole) => {
+        console.log('#############');
+        console.log('contact:', contact);
+        setFromSelectObject(contact);
+        setStatus("Upserting");
+    }
+
+    const matchRoleElements = matchRoles.map((role: IDealRole, index: number) =>
+        <UserInfoCard
+            roleData={role}
+            index={index}
+            step={roleType === "Seller" ? 2 : 3}
+            handleClickEditButton={handleClickEditButton}
+            key={index}
+        />
+    );
 
     return (
         <Grid container spacing={2} style={{ paddingBottom: 30 }}>
@@ -81,15 +110,14 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
             </Grid>
             <Grid item xs={12}>
                 {status === "Loading" && <CircularProgress />}
-                {status === "Validating" && (matchRoles.slice(0, upsertingIndex + 1).map((roleData: IDealRole, index: number) => 
-                <RoleForm
-                    isOpen
-                    deal={deal}
-                    onUpsertRole={handleUpsertValidatingRole}
-                    // onClose={handleCloseRoleForm}
-                    title=" "
-                    form={{ ...roleData, role: roleType }}
-                />
+                {status === "Validating" && (matchRoles.slice(0, upsertingIndex + 1).map((roleData: IDealRole, index: number) =>
+                    <RoleForm
+                        isOpen
+                        deal={deal}
+                        onUpsertRole={handleUpsertValidatingRole}
+                        title=" "
+                        form={{ ...roleData, role: roleType }}
+                    />
                 ))}
                 {status === "Upserting" && (
                     <RoleForm
@@ -97,20 +125,13 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
                         deal={deal}
                         onClose={handleCloseRoleForm}
                         title=" "
-                        form={upsertingIndex >= 0 ? { ...matchRoles[upsertingIndex], role: roleType } : { role: roleType }}
+                        form={fromSelectObject === null ? (upsertingIndex >= 0 ? { ...matchRoles[upsertingIndex], role: roleType } : { role: roleType }) 
+                            : { ...fromSelectObject, role: roleType }}
                     />
                 )}
                 {status === "Listing" && (
                     <>
-                        {matchRoles.map((role: IDealRole, index: number) =>
-                            <UserInfoCard
-                                roleData={role}
-                                index={index}
-                                step={roleType === "Seller" ? 2 : 3}
-                                handleClickEditButton={handleClickEditButton}
-                                key={index}
-                            />
-                        )}
+                        {matchRoleElements}
                         <Grid container className="UserInfo-Card">
                             <Grid item xs={12} style={{ textAlign: 'right' }} >
                                 <Button onClick={handleClickAddAnotherButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5 }}>
@@ -123,6 +144,12 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
                                 )}
                             </Grid>
                         </Grid>
+                    </>
+                )}
+                {(status === "Selecting" && roleType !== undefined) && (
+                    <>
+                        {matchRoleElements}
+                        <DropdownSelect roleType={roleType} onInsert={handleInsertFromSelect} onSelect={handleSelectContact} />
                     </>
                 )}
             </Grid>
