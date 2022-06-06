@@ -79,3 +79,11 @@ declare interface IDealRole {
   user: IUser
   brand: UUID | null
 }
+
+declare type IDealFormRole = IDealRole & {
+  id: number | string
+  brand?: UUID | null
+  agents: Nullable<IAgent[]>
+  contact?: IContact
+  current_address: Address | string | null
+}

@@ -22,6 +22,6 @@ NEED_TO_UPDATE_THIS_CODE
 3. 
 
 # Things to ask ramin
-1. inject role card, contact select card
-2. get contact API
-3. (optional) inject styled component node module
+1. (optional) inject styled component node module
+2. how can I get select number of updating role?
+3. possible press cancel button in validation role data?
