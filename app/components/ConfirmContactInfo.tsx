@@ -53,7 +53,8 @@ const ConfirmContactInfo: React.FC<IStepProps> = ({
 
     const handleCloseRoleForm = () => {
         if (roleType.indexOf("Attorney") > 0 && matchRoles.length === 0) {
-            setStatus("Skipped");            
+            setStatus("Skipped");   
+            updateStep({ step: roleStep[roleType] + 1, subStep: 0 });
         } else {
             setStatus("Listing");
             setFromSelectObject(null);

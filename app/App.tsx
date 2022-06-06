@@ -29,7 +29,7 @@ const App: React.FC<EntryProps> = ({
     }, 100); // TEST_CODE
 
     setTimeout(() => {
-      setStep(4); // TEST_CODE
+      setStep(2); // TEST_CODE
     }, 200);  // TEST_CODE
   }, []);
 
