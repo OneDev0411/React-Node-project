@@ -3,6 +3,7 @@
 2. remove role context, provider, hook, type
 3. change updateStep to gotoNext, remove Stepdata type
 4. move type to right folder
+5. remove edit button
 
 # Risk
 1. move provider to provider file and get correct data value

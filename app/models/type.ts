@@ -9,7 +9,7 @@ import * as Ui from '@material-ui/core'
 //     // update: (role: IDealRole) => void,
 // }
 
-export type DetailStatus = 'Loading' | 'Validating' | 'Listing' | 'Upserting' | 'Selecting'
+export type ConfirmContactStatus = 'Loading' | 'Validating' | 'Listing' | 'Upserting' | 'Selecting' | 'Skipped'
 
 export type AttorneyDetailStatus = 'Loading' | 'Selecting' | 'Updating' | 'Inserting' | 'Done' | 'Skipped'
 
@@ -20,7 +20,7 @@ export interface IStepProps {
     subStep: number
     step: number
     updateStep: (updateData: StepData) => void
-    roleType?: "Buyer" | "Seller"
+    roleType?: "Buyer" | "Seller" | "BuyerPowerOfAttorney" | "SellerPowerOfAttorney"
 }
 
 export interface IStep1Props {
@@ -31,7 +31,7 @@ export interface IStep1Props {
 export interface IUserInfoCardProps {
     roleData: IDealRole
     index: number
-    step: 2 | 3 | 4
+    step: 2 | 3 | 4 | 5
     handleClickEditButton: (index: number) => void
     showEditButton?: boolean
 }
@@ -76,7 +76,7 @@ export interface StepData {
 export interface IDropdownSelectProps {
     onSelect: (contactData: IDealRole) => void
     onInsert: (inputStr: string) => void
-    roleType: "Buyer" | "Seller"
+    roleType: "Buyer" | "Seller" | "BuyerPowerOfAttorney" | "SellerPowerOfAttorney"
 }
 
 // export interface CardData {

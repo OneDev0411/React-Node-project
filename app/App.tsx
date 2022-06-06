@@ -6,9 +6,9 @@ import Step8 from './components/Step8'
 import Step9 from './components/Step9'
 import Step10 from './components/Step10'
 import Step11 from './components/Step11'
-import BuyerSellerDetail from './components/BuyerSellerDetail'
-import BuyerAttorneyDetail from './components/BuyerAttorneyDetail'
-import SellerAttorneyDetail from './components/SellerAttorneyDetail'
+import ConfirmContactInfo from './components/ConfirmContactInfo'
+// import BuyerAttorneyDetail from './components/BuyerAttorneyDetail'
+// import SellerAttorneyDetail from './components/SellerAttorneyDetail'
 import { StepData } from './models/type'
 
 const App: React.FC<EntryProps> = ({
@@ -29,7 +29,7 @@ const App: React.FC<EntryProps> = ({
     }, 100); // TEST_CODE
 
     setTimeout(() => {
-      setStep(2); // TEST_CODE
+      setStep(4); // TEST_CODE
     }, 200);  // TEST_CODE
   }, []);
 
@@ -45,10 +45,12 @@ const App: React.FC<EntryProps> = ({
   return (
     <div style={{ padding: 10 }}>
       {step > 0 && <Step1 {...BaseProps} step={step} />}
-      {step > 1 && <BuyerSellerDetail {...BaseProps} roleType="Seller" step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
-      {step > 2 && <BuyerSellerDetail {...BaseProps} roleType="Buyer" step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
-      {step > 3 && <BuyerAttorneyDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
-      {step > 4 && <SellerAttorneyDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
+      {step > 1 && <ConfirmContactInfo {...BaseProps} roleType="Seller" step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
+      {step > 2 && <ConfirmContactInfo {...BaseProps} roleType="Buyer" step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
+      {step > 3 && <ConfirmContactInfo {...BaseProps} roleType="BuyerPowerOfAttorney" step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
+      {step > 4 && <ConfirmContactInfo {...BaseProps} roleType="SellerPowerOfAttorney" step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
+      {/* {step > 3 && <BuyerAttorneyDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />} */}
+      {/* {step > 4 && <SellerAttorneyDetail {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />} */}
       {step > 5 && <Step6 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 6 && <Step7 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
       {step > 7 && <Step8 {...BaseProps} step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}

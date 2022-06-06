@@ -62,3 +62,17 @@ export const defaultRole: IDealRole = {
     user: defaultUser,
     brand: null,
 }
+
+export const roleStep: { [key: string]: 2 | 3| 4 | 5 } = {
+    Seller: 2, 
+    Buyer: 3,
+    BuyerPowerOfAttorney: 4,
+    SellerPowerOfAttorney: 5,
+}
+
+export const roleText: { [key: string]: string } = {
+    Seller: "seller", 
+    Buyer: "buyer",
+    BuyerPowerOfAttorney: "buyer's attorney",
+    SellerPowerOfAttorney: "seller's attorney",
+}

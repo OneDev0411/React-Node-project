@@ -2,23 +2,24 @@ import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import UserInfoCard from './UserInfoCard'
 import DropdownSelect from './DropdownSelect'
-import { DetailStatus, IStepProps } from '../models/type'
+import { ConfirmContactStatus, IStepProps } from '../models/type'
+import { roleStep, roleText } from '../util'
 
-const BuyerSellerDetail: React.FC<IStepProps> = ({
+const ConfirmContactInfo: React.FC<IStepProps> = ({
     step,
     updateStep,
     Components,
     models,
-    roleType,  // buyer | seller
+    roleType = "Seller",  // buyer | seller | buyer's attorney | seller's attorney
 }) => {
     const { useEffect, useState } = React;
 
-    const { Grid, CircularProgress, Button } = Ui;
+    const { Grid, CircularProgress, Button, Divider, Box } = Ui;
     const { RoleForm } = Components;
     const { deal, roles } = models;
     const { QuestionWizard, QuestionSection, QuestionTitle } = Components.Wizard;
 
-    const [status, setStatus] = useState<DetailStatus>('Loading');
+    const [status, setStatus] = useState<ConfirmContactStatus>('Loading');
     const [upsertingIndex, setUpsertingIndex] = useState<number>(0); // last upserting role index
     const [fromSelectObject, setFromSelectObject] = useState<any>(null); // data from dropdown select, can be IDealRole object or nameObject
 
@@ -51,8 +52,12 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
     }
 
     const handleCloseRoleForm = () => {
-        setStatus("Listing");
-        setFromSelectObject(null);
+        if (roleType.indexOf("Attorney") > 0 && matchRoles.length === 0) {
+            setStatus("Skipped");            
+        } else {
+            setStatus("Listing");
+            setFromSelectObject(null);
+        }
     }
 
     const handleClickEditButton = (index: number) => {
@@ -66,23 +71,26 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
     }
 
     const handleClickNextButton = () => {
-        updateStep({ step: roleType === "Seller" ? 3 : 4, subStep: 0 });
+        updateStep({ step: roleStep[roleType] + 1, subStep: 0 });
+    }
+
+    const handleClickSkipButton = () => {
+        setStatus('Skipped');
+        updateStep({ step: roleStep[roleType] + 1, subStep: 0 });
     }
 
     const handleInsertFromSelect = (inputStr: string) => {
         if (inputStr === "") {
-            setFromSelectObject ({});
+            setFromSelectObject({});
         } else if (inputStr.split(" ").length === 1) {
-            setFromSelectObject ({ legal_first_name: inputStr });
+            setFromSelectObject({ legal_first_name: inputStr });
         } else {
-            setFromSelectObject ({ legal_first_name: inputStr.split(' ')[0], legal_last_name: inputStr.split(' ')[1] });
+            setFromSelectObject({ legal_first_name: inputStr.split(' ')[0], legal_last_name: inputStr.split(' ')[1] });
         }
         setStatus("Upserting");
     }
 
     const handleSelectContact = (contact: IDealRole) => {
-        console.log('#############');
-        console.log('contact:', contact);
         setFromSelectObject(contact);
         setStatus("Upserting");
     }
@@ -91,7 +99,7 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
         <UserInfoCard
             roleData={role}
             index={index}
-            step={roleType === "Seller" ? 2 : 3}
+            step={roleStep[roleType]}
             handleClickEditButton={handleClickEditButton}
             key={index}
         />
@@ -103,33 +111,44 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
                 <QuestionWizard styles={{ marginBottom: -20 }}>
                     <QuestionSection>
                         <QuestionTitle>
-                            Please confirm {(roleType || "").toLocaleLowerCase()}'s details.
+                            Please confirm {roleText[roleType]}'s details.
                         </QuestionTitle>
                     </QuestionSection>
                 </QuestionWizard>
             </Grid>
             <Grid item xs={12}>
                 {status === "Loading" && <CircularProgress />}
-                {status === "Validating" && (matchRoles.slice(0, upsertingIndex + 1).map((roleData: IDealRole, index: number) =>
-                    <RoleForm
-                        isOpen
-                        deal={deal}
-                        onUpsertRole={handleUpsertValidatingRole}
-                        title=" "
-                        form={{ ...roleData, role: roleType }}
-                    />
-                ))}
+                {status === "Validating" && (
+                    <>
+                        {matchRoles.slice(0, upsertingIndex + 1).map((roleData: IDealRole, index: number) =>
+                            <RoleForm
+                                isOpen
+                                deal={deal}
+                                onUpsertRole={handleUpsertValidatingRole}
+                                title=" "
+                                form={{ ...roleData, role: roleType }}
+                            />
+                        )}
+                        {!(roleType === "Buyer" || roleType === "Seller") && (
+                            <Grid item xs={12} style={{ textAlign: 'right' }}>
+                                <Button variant="outlined" style={{ color: 'black !important', borderColor: '#dbdbdb !important', marginRight: 135, marginTop: -60 }} onClick={handleClickSkipButton}>
+                                    Skip
+                                </Button>
+                            </Grid>
+                        )}
+                    </>
+                )}
                 {status === "Upserting" && (
                     <RoleForm
                         isOpen
                         deal={deal}
                         onClose={handleCloseRoleForm}
                         title=" "
-                        form={fromSelectObject === null ? (upsertingIndex >= 0 ? { ...matchRoles[upsertingIndex], role: roleType } : { role: roleType }) 
+                        form={fromSelectObject === null ? (upsertingIndex >= 0 ? { ...matchRoles[upsertingIndex], role: roleType } : { role: roleType })
                             : { ...fromSelectObject, role: roleType }}
                     />
                 )}
-                {status === "Listing" && (
+                {status === "Listing" && roleType !== undefined && (
                     <>
                         {matchRoleElements}
                         <Grid container className="UserInfo-Card">
@@ -137,7 +156,7 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
                                 <Button onClick={handleClickAddAnotherButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5 }}>
                                     Add Another {roleType}
                                 </Button>
-                                {step <= (roleType === "Seller" ? 2 : 3) && (
+                                {step <= roleStep[roleType] && (
                                     <Button variant="contained" onClick={handleClickNextButton} style={{ backgroundColor: '#0fb78d', color: 'white', marginLeft: 10 }}>
                                         Looks Good, Next
                                     </Button>
@@ -146,15 +165,28 @@ const BuyerSellerDetail: React.FC<IStepProps> = ({
                         </Grid>
                     </>
                 )}
-                {(status === "Selecting" && roleType !== undefined) && (
+                {status === "Selecting" && (
                     <>
                         {matchRoleElements}
                         <DropdownSelect roleType={roleType} onInsert={handleInsertFromSelect} onSelect={handleSelectContact} />
                     </>
+                )}
+                {status === "Skipped" && (
+                    <Grid item xs={12}>
+                        <Box style={{ display: "flex", flexDirection: "row-reverse", textAlign: 'right', alignItems: "revert" }}>
+                            <Button variant="text" className="green-button" style={{ marginRight: 10, marginLeft: 10 }} onClick={handleClickAddAnotherButton}>
+                                Add Info
+                            </Button>
+                            <Divider orientation="vertical" flexItem />
+                            <Button variant="text" style={{ marginRight: 10, color: 'black !important' }}>
+                                Skipped
+                            </Button>
+                        </Box>
+                    </Grid>
                 )}
             </Grid>
         </Grid>
     )
 }
 
-export default BuyerSellerDetail;
+export default ConfirmContactInfo;

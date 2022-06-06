@@ -8,7 +8,8 @@ import { IUserInfoCardProps } from "../models/type";
 const AvatarURL = {
   step2: "https://d2dzyv4cb7po1i.cloudfront.net/8cb4a358-8973-11e7-9089-0242ac110003/avatars/b0940a30-5927-11ea-87b6-f3895293e651.jpg",
   step3: "https://d2dzyv4cb7po1i.cloudfront.net/8cb4a358-8973-11e7-9089-0242ac110003/avatars/7459ed70-47c6-11ec-8a58-79e1f90851e2.jpg",
-  step4: "",
+  step4: "https://d2dzyv4cb7po1i.cloudfront.net/8cb4a358-8973-11e7-9089-0242ac110003/avatars/b0940a30-5927-11ea-87b6-f3895293e651.jpg",
+  step5: "https://d2dzyv4cb7po1i.cloudfront.net/8cb4a358-8973-11e7-9089-0242ac110003/avatars/7459ed70-47c6-11ec-8a58-79e1f90851e2.jpg",
 }
 
 const UserInfoCard: React.FC<IUserInfoCardProps> = ({ 
