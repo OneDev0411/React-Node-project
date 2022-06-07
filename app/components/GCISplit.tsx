@@ -12,7 +12,7 @@ const GCISplit: React.FC<IStepProps> = ({
     const { useEffect } = React;
     const { Grid, CircularProgress, Button, Box } = Ui;
     const { QuestionWizard, QuestionSection, QuestionTitle } = Components.Wizard;
-
+    
     const dataList: ItemData[] = [
         {
             name: 'John Smith',
@@ -64,31 +64,30 @@ const GCISplit: React.FC<IStepProps> = ({
             )}
             {((step == 11 && subStep == 1) || step > 11) && (
                 <>
-                    <Grid item xs={12}>
-                        {dataList.map((item: ItemData, id: number) => 
-                            <GCIInfoItem Ui={Ui} key={id} itemData={item} />
-                        )}
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button style={{ color: 'black !important', borderColor: '#dbdbdb !important', marginRight: 10 }}>
-                            + Add More Agents
-                        </Button>
-                    </Grid>
-                    <Box style={{ width: 600, paddingLeft: 20 }}>
-                        <Grid container spacing={2} style={{ paddingBottom: 30 }}>
-                            <Grid item xs={7} />
-                            <Grid item xs={2}>
-                                <label style={{ fontWeight: 300 }}>
-                                    Total: <strong>20%</strong>
-                                </label>
+                    <Grid item xs={4} />
+                    <Grid item xs={8}>
+                            {dataList.map((item: ItemData, id: number) => 
+                                <GCIInfoItem Ui={Ui} key={id} itemData={item} />
+                            )}
+                            <Button variant="outlined" style={{ color: 'black !important', borderColor: '#dbdbdb !important', marginRight: 10, paddingBottom: 2, paddingTop: 2 }}>
+                                + Add More Agents
+                            </Button>
+                        <Box style={{ width: 600, paddingLeft: 20 }}>
+                            <Grid container spacing={2} style={{ paddingBottom: 30 }}>
+                                <Grid item xs={7} />
+                                <Grid item xs={2}>
+                                    <label style={{ fontWeight: 300 }}>
+                                        Total: <strong>20%</strong>
+                                    </label>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <label style={{ fontWeight: 300 }}>
+                                        Total: <strong>$40,000</strong>
+                                    </label>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={3}>
-                                <label style={{ fontWeight: 300 }}>
-                                    Total: <strong>$40,000</strong>
-                                </label>
-                            </Grid>
-                        </Grid>
-                    </Box>
+                        </Box>
+                    </Grid>
                     <Grid item xs={12}>
                         <QuestionWizard styles={{ marginBottom: -20 }}>
                             <QuestionSection>
@@ -97,11 +96,11 @@ const GCISplit: React.FC<IStepProps> = ({
                                 </QuestionTitle>
                             </QuestionSection>
                         </QuestionWizard>
-                    </Grid>
-                    <Grid item xs={12} style={{ textAlign: 'right' }}>
-                        <Button variant="contained" style={{ backgroundColor: '#0fb78d', color: 'white' }}>
-                            Submit for Review
-                        </Button>
+                        <Box style={{ textAlign: "right" }}>
+                            <Button variant="contained" style={{ backgroundColor: '#0fb78d', color: 'white' }}>
+                                Submit for Review
+                            </Button>
+                        </Box>
                     </Grid>
                 </>
             )}

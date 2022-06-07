@@ -1,7 +1,5 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
-import UserInfoCard from './UserInfoCard'
-import DropdownSelect from './DropdownSelect'
 import { ConfirmContactStatus, IStepProps } from '../models/type'
 import { roleStep, roleText } from '../util'
 
@@ -38,24 +36,37 @@ const ConfirmContactInfo: React.FC<IStepProps> = ({
     }, []);
 
     const handleUpsertValidatingRole = (upsertingRole: IDealRole) => {
-        if (upsertingRole.id === matchRoles[upsertingIndex].id) {  // clicking save button of last displayed role form
-            if (upsertingIndex < matchRoles.length - 1) {   // if it's not the role form of last seller/buyer 
+        // in case of showing match role for validating
+        if (upsertingRole.id === matchRoles[upsertingIndex].id) {  
+            // in case of save button of role form which is shown not last is clicked
+            if (upsertingIndex < matchRoles.length - 1) {  
                 setUpsertingIndex(upsertingIndex + 1);
-                window.scrollTo({
+                window.scrollTo({  // NEED_TO_UPDATE_THIS_CODE
                     top: 0,
                     behavior: 'smooth'
                 });
-            } else {
+            }
+            // in case of last shown role form's save button is clicked
+            else {
                 setStatus('Listing');
             }
         }
+        // in case of showing match role for inserting or updating
+        // ...
     }
 
     const handleCloseRoleForm = () => {
+        // in case of no match role, ignore cancel action
+        if (matchRoles.length === 0) {
+            return;
+        }
+        // in case of buyer/seller attorney, click cancel button when no match roles, skip
         if (roleType.indexOf("Attorney") > 0 && matchRoles.length === 0) {
             setStatus("Skipped");   
             updateStep({ step: roleStep[roleType] + 1, subStep: 0 });
-        } else {
+        } 
+        // regular cancel action
+        else {
             setStatus("Listing");
             setFromSelectObject(null);
         }
@@ -65,10 +76,6 @@ const ConfirmContactInfo: React.FC<IStepProps> = ({
         setFromSelectObject(role);
         setStatus('Upserting');
     }
-
-    // const handleClickEraseButton = (data: any) => {
-    //     console.log('data:', data);
-    // }
 
     const handleClickAddAnotherButton = () => {
         setStatus('Selecting');
@@ -84,17 +91,6 @@ const ConfirmContactInfo: React.FC<IStepProps> = ({
         updateStep({ step: roleStep[roleType] + 1, subStep: 0 });
     }
 
-    // const handleInsertFromSelect = (inputStr: string) => {
-    //     if (inputStr === "") {
-    //         setFromSelectObject({});
-    //     } else if (inputStr.split(" ").length === 1) {
-    //         setFromSelectObject({ legal_first_name: inputStr });
-    //     } else {
-    //         setFromSelectObject({ legal_first_name: inputStr.split(' ')[0], legal_last_name: inputStr.split(' ')[1] });
-    //     }
-    //     setStatus("Upserting");
-    // }
-
     const handleSelectContact = (contact: Partial<IDealFormRole>) => {
         setFromSelectObject(contact);
         setStatus("Upserting");
@@ -103,8 +99,6 @@ const ConfirmContactInfo: React.FC<IStepProps> = ({
     const handleClickCancelAddButton = () => {
         setStatus("Listing");
     }
-
-
 
     const matchRoleElements = matchRoles.map((role: IDealRole, index: number) =>
         <Grid container className="UserInfo-Card">

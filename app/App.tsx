@@ -49,24 +49,7 @@ const App: React.FC<EntryProps> = ({
     }
   }
 
-  // const updateContext = async () => {
-  //   try {
-  //     console.log('Saving')
-  //     // await updateDealContext('full_address', "Testtesttest")
-  //     await updateDealContext('pdoc', new Date().getTime())
-  //     console.log('Saved')
-  //   } catch (e) {
-  //     console.log(e)
-  //   }
-  // }
-  // console.log('###########', getDealContext('full_address')?.text);
-
   return (
-      // {/* <p>PDoc value: {getDealContext('full_address')?.text}</p> */}
-      // {/* <p>PDoc value: {getDealContext('pdoc')?.text}</p>
-      // <Ui.Button variant="contained" color="primary" onClick={updateContext}>
-      //   Update Deal Context
-      // </Ui.Button> */}
     <div style={{ padding: 10 }}>
       {step > 0 && <StartNotification {...BaseProps} step={step} />}
       {step > 1 && <ConfirmContactInfo {...BaseProps} roleType="Seller" step={step} subStep={subStep} updateStep={(param: StepData) => updateStep(param)} />}
