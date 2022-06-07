@@ -52,7 +52,7 @@ const GCISplit: React.FC<IStepProps> = ({
                 <QuestionWizard>
                     <QuestionSection>
                         <QuestionTitle>
-                            Great, here are your GCI share befoer splits:
+                            Great, here are your GCI share before splits:
                         </QuestionTitle>
                     </QuestionSection>
                 </QuestionWizard>
