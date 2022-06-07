@@ -1,3 +1,5 @@
+import { SelectData } from "./models/type"
+
 export const defaultUser: IUser = {
     last_seen_at: null,
     cover_image_thumbnail_url: null,
@@ -75,4 +77,41 @@ export const roleText: { [key: string]: string } = {
     Buyer: "buyer",
     BuyerPowerOfAttorney: "buyer's attorney",
     SellerPowerOfAttorney: "seller's attorney",
+}
+
+export const financeSelectData: SelectData[] = [
+    {
+        label: "Cash Deal",
+        value: "Cash Deal",
+    },
+    {
+        label: "Mortgage",
+        value: "Mortgage",
+    },
+]
+
+export const byCommissionSelectData: SelectData[] = [
+    {
+        label: "By %",
+        value: "%",
+    },
+    {
+        label: "By $",
+        value: "$",
+    },
+]
+
+export const stylizeNumber = (data: number): string => {
+    let dataStr: string = data + "";
+    let resultStr: string = "";
+    let count: number = 0;
+    for(let i = dataStr.length - 1; i >= 0; i--) {
+        resultStr = dataStr[i] + resultStr; 
+        count++;
+        if(count === 3) {
+            count = 0;
+            resultStr = "," + resultStr;
+        }
+    }
+    return resultStr;
 }

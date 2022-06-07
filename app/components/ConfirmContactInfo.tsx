@@ -15,7 +15,7 @@ const ConfirmContactInfo: React.FC<IStepProps> = ({
     const { useEffect, useState } = React;
 
     const { Grid, CircularProgress, Button, Divider, Box } = Ui;
-    const { RoleForm } = Components;
+    const { RoleForm, RoleCard, ContactRoles } = Components;
     const { deal, roles } = models;
     const { QuestionWizard, QuestionSection, QuestionTitle } = Components.Wizard;
 
@@ -61,10 +61,14 @@ const ConfirmContactInfo: React.FC<IStepProps> = ({
         }
     }
 
-    const handleClickEditButton = (index: number) => {
+    const handleClickEditButton = (role: IDealRole) => {
+        setFromSelectObject(role);
         setStatus('Upserting');
-        setUpsertingIndex(index);
     }
+
+    // const handleClickEraseButton = (data: any) => {
+    //     console.log('data:', data);
+    // }
 
     const handleClickAddAnotherButton = () => {
         setStatus('Selecting');
@@ -80,30 +84,41 @@ const ConfirmContactInfo: React.FC<IStepProps> = ({
         updateStep({ step: roleStep[roleType] + 1, subStep: 0 });
     }
 
-    const handleInsertFromSelect = (inputStr: string) => {
-        if (inputStr === "") {
-            setFromSelectObject({});
-        } else if (inputStr.split(" ").length === 1) {
-            setFromSelectObject({ legal_first_name: inputStr });
-        } else {
-            setFromSelectObject({ legal_first_name: inputStr.split(' ')[0], legal_last_name: inputStr.split(' ')[1] });
-        }
-        setStatus("Upserting");
-    }
+    // const handleInsertFromSelect = (inputStr: string) => {
+    //     if (inputStr === "") {
+    //         setFromSelectObject({});
+    //     } else if (inputStr.split(" ").length === 1) {
+    //         setFromSelectObject({ legal_first_name: inputStr });
+    //     } else {
+    //         setFromSelectObject({ legal_first_name: inputStr.split(' ')[0], legal_last_name: inputStr.split(' ')[1] });
+    //     }
+    //     setStatus("Upserting");
+    // }
 
-    const handleSelectContact = (contact: IDealRole) => {
+    const handleSelectContact = (contact: Partial<IDealFormRole>) => {
         setFromSelectObject(contact);
         setStatus("Upserting");
     }
 
+    const handleClickCancelAddButton = () => {
+        setStatus("Listing");
+    }
+
+
+
     const matchRoleElements = matchRoles.map((role: IDealRole, index: number) =>
-        <UserInfoCard
-            roleData={role}
-            index={index}
-            step={roleStep[roleType]}
-            handleClickEditButton={handleClickEditButton}
-            key={index}
-        />
+        <Grid container className="UserInfo-Card">
+            <Grid item xs={7} />
+            <Grid item xs={5}>
+                <RoleCard 
+                    role={role}
+                    key={index}
+                    readonly
+                    onClickEdit={() => handleClickEditButton(role)}
+                    // onClickRemove={handleClickEraseButton}
+                />
+            </Grid>
+        </Grid>
     );
 
     return (
@@ -122,13 +137,19 @@ const ConfirmContactInfo: React.FC<IStepProps> = ({
                 {status === "Validating" && (
                     <>
                         {matchRoles.slice(0, upsertingIndex + 1).map((roleData: IDealRole, index: number) =>
-                            <RoleForm
-                                isOpen
-                                deal={deal}
-                                onUpsertRole={handleUpsertValidatingRole}
-                                title=" "
-                                form={{ ...roleData, role: roleType }}
-                            />
+                            <Grid container className="UserInfo-Card">
+                                <Grid item xs={4} />
+                                <Grid item xs={8}>
+                                    <RoleForm
+                                        isOpen
+                                        deal={deal}
+                                        onUpsertRole={handleUpsertValidatingRole}
+                                        title=" "
+                                        form={{ ...roleData, role: roleType }}
+                                        key={index}
+                                    />
+                                </Grid>
+                            </Grid>
                         )}
                         {!(roleType === "Buyer" || roleType === "Seller") && (
                             <Grid item xs={12} style={{ textAlign: 'right' }}>
@@ -140,14 +161,19 @@ const ConfirmContactInfo: React.FC<IStepProps> = ({
                     </>
                 )}
                 {status === "Upserting" && (
-                    <RoleForm
-                        isOpen
-                        deal={deal}
-                        onClose={handleCloseRoleForm}
-                        title=" "
-                        form={fromSelectObject === null ? (upsertingIndex >= 0 ? { ...matchRoles[upsertingIndex], role: roleType } : { role: roleType })
-                            : { ...fromSelectObject, role: roleType }}
-                    />
+                    <Grid container className="UserInfo-Card">
+                        <Grid item xs={4} />
+                        <Grid item xs={8}>
+                            <RoleForm
+                                isOpen
+                                deal={deal}
+                                onClose={handleCloseRoleForm}
+                                title=" "
+                                form={fromSelectObject === null ? (upsertingIndex >= 0 ? { ...matchRoles[upsertingIndex], role: roleType } : { role: roleType })
+                                    : { ...fromSelectObject, role: roleType }}
+                            />
+                        </Grid>
+                    </Grid>
                 )}
                 {status === "Listing" && roleType !== undefined && (
                     <>
@@ -169,7 +195,20 @@ const ConfirmContactInfo: React.FC<IStepProps> = ({
                 {status === "Selecting" && (
                     <>
                         {matchRoleElements}
-                        <DropdownSelect roleType={roleType} onInsert={handleInsertFromSelect} onSelect={handleSelectContact} />
+                        <Grid container className="UserInfo-Card">
+                            <Grid item xs={7} />
+                            <Grid item xs={5} style={{ textAlign: 'right' }}>
+                                <ContactRoles
+                                    placeholder={`Enter ${roleText[roleType]}'s names`}
+                                    onSelectRole={handleSelectContact}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} style={{ textAlign: 'right' }}>
+                            <Button onClick={handleClickCancelAddButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5 }}>
+                                Cancel
+                            </Button>
+                        </Grid>
                     </>
                 )}
                 {status === "Skipped" && (

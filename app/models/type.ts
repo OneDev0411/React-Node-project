@@ -13,6 +13,11 @@ export type ConfirmContactStatus = 'Loading' | 'Validating' | 'Listing' | 'Upser
 
 export type AttorneyDetailStatus = 'Loading' | 'Selecting' | 'Updating' | 'Inserting' | 'Done' | 'Skipped'
 
+export interface SelectData {
+    label: string,
+    value: string,
+}
+
 export interface IStepProps {
     models: IEntryModel
     Components: CoreComponents
@@ -21,6 +26,29 @@ export interface IStepProps {
     step: number
     updateStep: (updateData: StepData) => void
     roleType?: "Buyer" | "Seller" | "BuyerPowerOfAttorney" | "SellerPowerOfAttorney"
+    api: {
+        getDealContext: (filed: string) => IDealContext
+        updateDealContext: (field: string, value: unknown) => Promise<void>
+    }
+    GCIUnit?: string
+    setGCIUnit?: (value: string) => void
+}
+
+export interface ISelectFromTwo {
+    models: IEntryModel
+    Components: CoreComponents
+    notify: (data: NotificationData) => void
+    subStep: number
+    step: number
+    // title: string
+    api: {
+        getDealContext: (filed: string) => IDealContext
+        updateDealContext: (field: string, value: unknown) => Promise<void>
+    }
+    // selectData: SelectData[]
+    updateStep: (updateData: StepData) => void
+    // roleType?: "Buyer" | "Seller" | "BuyerPowerOfAttorney" | "SellerPowerOfAttorney"
+    // contextName: string
 }
 
 export interface IStep1Props {

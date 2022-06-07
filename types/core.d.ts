@@ -4,6 +4,8 @@ declare interface Window {
 declare interface CoreComponents {
   Logo: React.FC<LogoProps>
   RoleForm: React.FC<RoleFormProps>
+  RoleCard: React.FC<RoleCardProps>
+  ContactRoles: React.FC<ContactRolesProps>
   Wizard: {
     QuestionWizard: React.FC<QuestionWizardProps>
     QuestionSection: React.FC<QuestionSectionProps>
