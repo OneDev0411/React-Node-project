@@ -4,12 +4,13 @@ import { IQuestionProps } from "../../../../models/type"
 
 const ListingInfoQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-    hooks: { useWizardContext },
+    hooks: { useWizardContext, useSectionContext },
     api: { updateDealContext },
 }) => {
     const { useState } = React;
     const { Box, TextField, Button, InputAdornment } = Ui;
     const wizard = useWizardContext();
+    const { step } = useSectionContext();
 
     // state
     const [listPrice, setListPrice] = useState<number>(0);

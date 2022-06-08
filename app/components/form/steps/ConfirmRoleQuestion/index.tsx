@@ -81,10 +81,6 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
             // in case of save button of role form which is shown not last is clicked
             if (upsertingIndex < matchRoles.length - 1) {  
                 setUpsertingIndex(upsertingIndex + 1);
-                window.scrollTo({  // NEED_TO_UPDATE_THIS_CODE
-                    top: 0,
-                    behavior: 'smooth'
-                });
             }
             // in case of last shown role form's save button is clicked
             else {

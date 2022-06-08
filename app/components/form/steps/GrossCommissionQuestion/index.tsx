@@ -5,13 +5,14 @@ import { commissionSelectDataList } from '../../../../util'
 
 const GrossCommissionQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-    hooks: { useWizardContext },
+    hooks: { useWizardContext, useSectionContext },
     GCIUnit,
     setGCIUnit,
 }) => {
     // const { useEffect } = React;
     const { RadioGroup, FormControlLabel, Radio } = Ui;
     const wizard = useWizardContext();
+    const { step } = useSectionContext();
 
     // state
     // useEffect(() => {
@@ -25,7 +26,9 @@ const GrossCommissionQuestion: React.FC<IQuestionProps> = ({
         if (setGCIUnit !== undefined) {
             setGCIUnit(event.target.value);
         }
-        wizard.next();
+        if (wizard.currentStep < step + 1) {
+            wizard.next();
+        }
     }
 
     return (

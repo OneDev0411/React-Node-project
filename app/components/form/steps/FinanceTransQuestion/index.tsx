@@ -5,12 +5,13 @@ import { financeSelectDataList } from '../../../../util'
 
 const FinanceTransQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-    hooks: { useWizardContext },
+    hooks: { useWizardContext, useSectionContext },
     api: { updateDealContext },
 }) => {
     const { useState } = React;
     const { RadioGroup, FormControlLabel, Radio } = Ui;
     const wizard = useWizardContext();
+    const { step } = useSectionContext();
 
     // state
     const [curSelect, setCurSelect] = useState<number>(-1);
@@ -18,7 +19,9 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
     const handleClickRadioButton = (event: any) => {
         setCurSelect(event.target.value);
         updateDealContext("financing", event.target.value);
-        wizard.next();
+        if (wizard.currentStep < step + 1) {
+            wizard.next();
+        }
     }
 
     return (
@@ -42,6 +45,20 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
                             key={index}
                         />
                     )}
+                    {/* <FormControlLabel 
+                        style={{ border: '1px solid #bfbfbf', borderRadius: 5 }} 
+                        onClick={handleClickRadioButton} 
+                        value={"Cash Deal"} 
+                        control={<Radio />} 
+                        label={"Cash Deal"} 
+                    />
+                    <FormControlLabel 
+                        style={{ border: '1px solid #bfbfbf', borderRadius: 5 }} 
+                        onClick={handleClickRadioButton} 
+                        value={"Mortgage"} 
+                        control={<Radio />} 
+                        label={"Mortgage"} 
+                    /> */}
                 </RadioGroup>
             </QuestionForm>
         </QuestionSection>

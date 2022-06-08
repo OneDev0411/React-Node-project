@@ -11,7 +11,7 @@ const StartNotification: React.FC<IQuestionProps> = ({
 
     // mockup loading, need to remove after the backend is impplemented
     useEffect(() => {
-        // wizard.goto(1);
+        // wizard.goto(6);
         wizard.setLoading(true);
         setTimeout(() => {
             wizard.setLoading(false);

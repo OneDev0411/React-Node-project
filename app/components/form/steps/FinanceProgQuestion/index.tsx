@@ -37,7 +37,7 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
                     onChange={handleOnTextFieldChange}
                     value={text}
                 />
-                {wizard.currentStep < step && (
+                {wizard.currentStep <= step && (
                     <Box style={{ textAlign: 'right', marginTop: 20 }}>
                         <Button variant="contained" disabled={!text.length} onClick={handleClickButton} style={text.length ? { backgroundColor: '#0fb78d', color: 'white' } : {}}>
                             Looks good, Next
