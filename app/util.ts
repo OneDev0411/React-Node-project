@@ -65,12 +65,12 @@ export const defaultRole: IDealRole = {
     brand: null,
 }
 
-export const roleStep: { [key: string]: 2 | 3| 4 | 5 } = {
-    Seller: 2, 
-    Buyer: 3,
-    BuyerPowerOfAttorney: 4,
-    SellerPowerOfAttorney: 5,
-}
+// export const roleStep: { [key: string]: 2 | 3| 4 | 5 } = {
+//     Seller: 2, 
+//     Buyer: 3,
+//     BuyerPowerOfAttorney: 4,
+//     SellerPowerOfAttorney: 5,
+// }
 
 export const roleText: { [key: string]: string } = {
     Seller: "seller", 
@@ -79,7 +79,7 @@ export const roleText: { [key: string]: string } = {
     SellerPowerOfAttorney: "seller's attorney",
 }
 
-export const financeSelectData: SelectData[] = [
+export const financeSelectDataList: SelectData[] = [
     {
         label: "Cash Deal",
         value: "Cash Deal",
@@ -90,7 +90,7 @@ export const financeSelectData: SelectData[] = [
     },
 ]
 
-export const byCommissionSelectData: SelectData[] = [
+export const commissionSelectDataList: SelectData[] = [
     {
         label: "By %",
         value: "%",
@@ -115,3 +115,30 @@ export const stylizeNumber = (data: number): string => {
     }
     return resultStr;
 }
+
+export const GCI2DEDataList: any[] = [
+    {
+        name: 'John Smith',
+        role: 'Seller - DE',
+        share: '5%',
+        share2: '$10,000'
+    },
+    {
+        name: 'Jim Doe',
+        role: 'Buyer - Rechat',
+        share: '5%',
+        share2: '$10,000'
+    },
+    {
+        name: 'Peter Parker',
+        role: "Seller's Attorney",
+        share: '5%',
+        share2: '$10,000'
+    },
+    {
+        name: 'John Smith',
+        role: "Steve Palmer",
+        share: '5%',
+        share2: '$10,000'
+    },
+]

@@ -29,3 +29,23 @@ declare interface QuestionFormProps {
   width?: string
   containerProps?: BoxProps
 }
+
+declare interface IWizardState {
+  currentStep: number
+  lastVisitedStep: number
+  totalSteps: number
+  isLoading: boolean
+  goto: (step: number) => void
+  next: (delay?: number) => void
+  setStep: (step: number) => void
+  setCurrentStep: (step: number) => void
+  setLastVisitedStep: (step: number) => void
+  setLoading: (status: boolean) => void
+  previous: () => void
+  first: () => void
+  last: () => void
+}
+
+declare interface IWizardSectionState {
+  step: number
+}

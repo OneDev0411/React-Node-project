@@ -1,17 +1,11 @@
 import React from 'react'
 import * as Ui from '@material-ui/core'
 
-// export interface RoleContextApi {
-//     roles: IDealRole[],
-//     // remove: (id: string) => void,
-//     add?: (role: IDealRole) => void,
-//     test?: () => void,
-//     // update: (role: IDealRole) => void,
-// }
-
-export type ConfirmContactStatus = 'Loading' | 'Validating' | 'Listing' | 'Upserting' | 'Selecting' | 'Skipped'
+export type ConfirmContactStatus = 'Validating' | 'Listing' | 'Upserting' | 'Selecting' | 'Skipped'
 
 export type AttorneyDetailStatus = 'Loading' | 'Selecting' | 'Updating' | 'Inserting' | 'Done' | 'Skipped'
+
+export type RoleType = "Buyer" | "Seller" | "BuyerPowerOfAttorney" | "SellerPowerOfAttorney"
 
 export interface SelectData {
     label: string,
@@ -19,13 +13,19 @@ export interface SelectData {
 }
 
 export interface IStepProps {
-    models: IEntryModel
+    // models: IEntryModel
+    models: {
+        deal: IDeal
+        user: IUser
+        roles: IDealRole[]
+        attributeDefs: IAttributeDefs
+    }
     Components: CoreComponents
     notify: (data: NotificationData) => void
     subStep: number
     step: number
     updateStep: (updateData: StepData) => void
-    roleType?: "Buyer" | "Seller" | "BuyerPowerOfAttorney" | "SellerPowerOfAttorney"
+    roleType?: RoleType
     api: {
         getDealContext: (filed: string) => IDealContext
         updateDealContext: (field: string, value: unknown) => Promise<void>
@@ -35,20 +35,22 @@ export interface IStepProps {
 }
 
 export interface ISelectFromTwo {
-    models: IEntryModel
+    // models: IEntryModel
+    models: {
+        deal: IDeal
+        user: IUser
+        roles: IDealRole[]
+        attributeDefs: IAttributeDefs
+    }
     Components: CoreComponents
     notify: (data: NotificationData) => void
     subStep: number
     step: number
-    // title: string
     api: {
         getDealContext: (filed: string) => IDealContext
         updateDealContext: (field: string, value: unknown) => Promise<void>
     }
-    // selectData: SelectData[]
     updateStep: (updateData: StepData) => void
-    // roleType?: "Buyer" | "Seller" | "BuyerPowerOfAttorney" | "SellerPowerOfAttorney"
-    // contextName: string
 }
 
 export interface IStep1Props {
@@ -82,13 +84,6 @@ export interface ItemData {
     share2: string
 }
 
-// export interface MockupContactData {
-//     userName: string
-//     role: string
-//     phone: string
-//     email: string
-// }
-
 export interface IUserInfoFormProps {
     Ui: typeof Ui
     React: typeof React
@@ -104,15 +99,8 @@ export interface StepData {
 export interface IDropdownSelectProps {
     onSelect: (contactData: IDealRole) => void
     onInsert: (inputStr: string) => void
-    roleType: "Buyer" | "Seller" | "BuyerPowerOfAttorney" | "SellerPowerOfAttorney"
+    roleType: RoleType
 }
-
-// export interface CardData {
-//     userName: string
-//     role: string
-//     phone: string
-//     email: string
-// }
 
 export interface DefaultFormData {
     role: number
@@ -122,6 +110,17 @@ export interface DefaultFormData {
     phone: string
     companyTrust: string
     currentAddress: string
+}
+
+export interface IQuestionProps {
+    hooks: EntryProps['hooks']['wizard']
+    models: EntryProps['models']
+    api: EntryProps['api']
+    Components: EntryProps['Components']
+    Wizard: CoreComponents['Wizard']
+    roleType?: RoleType
+    GCIUnit?: string
+    setGCIUnit?: (value: string) => void
 }
 
 

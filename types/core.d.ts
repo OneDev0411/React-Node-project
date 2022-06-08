@@ -1,3 +1,4 @@
+declare type Optional<T> = T | undefined
 declare interface Window {
   libs: Record<'React' | 'MaterialUi', any>
 }
@@ -14,21 +15,26 @@ declare interface CoreComponents {
   }
 }
 
-declare interface IEntryModel {
-  deal: IDeal
-  user: IUser
-  roles: IDealRole[]
-  attributeDefs: IAttributeDefs
-}
-
 declare interface EntryProps {
-  models: IEntryModel
+  models: {
+    deal: IDeal
+    user: IUser
+    roles: IDealRole[]
+    attributeDefs: IAttributeDefs
+  }
   utils: {
     notify: (data: NotificationData) => void
   }
   api: {
     getDealContext: (filed: string) => IDealContext
     updateDealContext: (field: string, value: unknown) => Promise<void>
+  }
+  hooks: {
+    wizard: {
+      useSectionContext: () => IWizardSectionState
+      useWizardContext: () => IWizardState
+      useSectionErrorContext: () => Optional<string>
+    }
   }
   Components: CoreComponents
 }

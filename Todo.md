@@ -1,4 +1,9 @@
 # Todo
+1. setLoading logic, mockup loading
+2. check GCI2DE 66line
+3. utils/119 line
+
+# Todo2
 1. send step threshould to component with props
 2. remove role context, provider, hook, type
 3. change updateStep to gotoNext, remove Stepdata type
@@ -7,7 +12,7 @@
 6. replace datepicker with input in lisingInfo
 
 # Risk
-1. move provider to provider file and get correct data value
+1. nested interface
 
 # Flag
 NEED_TO_UPDATE_THIS_CODE
@@ -18,32 +23,9 @@ NEED_TO_UPDATE_THIS_CODE
 3. 
 
 # Emil Said
-1. Change hardcoded avatar in role card 
-2. Discuss about scroll with ramin
 3. 
 
 # Things to ask ramin
-1. (optional) inject styled component node module
-2. at last, we will need input mask
-
-# Ask after done
-1. possible press cancel button in validation role data?
-2. 
-
-# Refactoring Code
-<QuestionWizard>
-  <QuestionSection>
-     <QuestionTitle>--</QuestionTitle>
-     <QuestionForm>++</QuestionForm>
-   </QuestionSection>
-
-   <QuestionSection>
-     <QuestionTitle>--</QuestionTitle>
-     <QuestionForm>++</QuestionForm>
-   </QuestionSection>
-
-   <QuestionSection>
-     <QuestionTitle>--</QuestionTitle>
-     <QuestionForm>++</QuestionForm>
-   </QuestionSection>
-</QuestionWizard>
+1. at last, we will need input mask
+2. Discuss about scroll with ramin
+3. (optional) inject styled component node module
