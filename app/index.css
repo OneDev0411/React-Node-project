@@ -15,3 +15,7 @@ label {
 .pointable:hover {
     cursor: pointer;
 }
+
+.date-picker .MuiFormControl-root {
+    width: 100%
+}

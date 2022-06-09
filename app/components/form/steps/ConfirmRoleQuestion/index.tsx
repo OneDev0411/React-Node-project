@@ -47,6 +47,13 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
         // }, 7000);
     }, []);
 
+    const handleNext = () => {
+        // console.log('step:', step);
+        wizard.next();
+        // wizard.goto(step + 1);
+        wizard.goto(wizard.currentStep);
+    }
+
     const handleClickEditButton = (role: IDealRole) => {
         setCurrentObject(role);
         setStatus('Upserting');
@@ -55,15 +62,16 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const handleClickAddAnotherButton = () => {
         setStatus('Selecting');
         setUpsertingIndex(-1);
+        // wizard.goto(3);
     }
 
     const handleClickNextButton = () => {
-        wizard.next();
+        handleNext();
     }
 
     const handleClickSkipButton = () => {
         setStatus('Skipped');
-        wizard.next();
+        handleNext();
     }
 
     const handleSelectContact = (contact: Partial<IDealFormRole>) => {
@@ -99,7 +107,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
         // in case of buyer/seller attorney, click cancel button when no match roles, skip
         if (roleType.indexOf("Attorney") > 0 && matchRoles.length === 0) {
             setStatus("Skipped");  
-            wizard.next(); 
+            handleNext();
         } 
         // regular cancel action
         else {
@@ -115,7 +123,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
             </QuestionTitle>
             <QuestionForm>
                 {status === "Validating" && (
-                    <Box>
+                    <>
                         {matchRoles.slice(0, upsertingIndex + 1).map((roleData: IDealRole, index: number) =>
                             <RoleForm
                                 isOpen
@@ -132,7 +140,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                                 Skip
                             </Button>
                         )}
-                    </Box>
+                    </>
                 )}
                 {status === "Upserting" && (
                     <RoleForm
@@ -151,7 +159,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                             <Button onClick={handleClickAddAnotherButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5 }}>
                                 Add Another {roleType}
                             </Button>
-                            {wizard.currentStep <= step && (
+                            {wizard.lastVisitedStep <= step && (
                                 <Button variant="contained" onClick={handleClickNextButton} style={{ backgroundColor: '#0fb78d', color: 'white', marginLeft: 10 }}>
                                     Looks Good, Next
                                 </Button>
@@ -184,6 +192,9 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                         </Button>
                     </Box>
                 )}
+                {/* <Button variant="contained" onClick={() => { wizard.goto(2) }} style={{ backgroundColor: '#0fb78d', color: 'white', marginLeft: 10 }}>
+                    Test
+                </Button> */}
             </QuestionForm>
         </QuestionSection>
     )

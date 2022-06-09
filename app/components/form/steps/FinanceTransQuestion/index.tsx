@@ -45,20 +45,6 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
                             key={index}
                         />
                     )}
-                    {/* <FormControlLabel 
-                        style={{ border: '1px solid #bfbfbf', borderRadius: 5 }} 
-                        onClick={handleClickRadioButton} 
-                        value={"Cash Deal"} 
-                        control={<Radio />} 
-                        label={"Cash Deal"} 
-                    />
-                    <FormControlLabel 
-                        style={{ border: '1px solid #bfbfbf', borderRadius: 5 }} 
-                        onClick={handleClickRadioButton} 
-                        value={"Mortgage"} 
-                        control={<Radio />} 
-                        label={"Mortgage"} 
-                    /> */}
                 </RadioGroup>
             </QuestionForm>
         </QuestionSection>

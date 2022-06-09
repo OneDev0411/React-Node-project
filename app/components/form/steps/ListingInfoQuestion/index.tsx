@@ -16,8 +16,8 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
 
     // state
     const [listPrice, setListPrice] = useState<number>(0);
-    const [listDate, setListDate] = useState<string>("Apr 22, 2022");  // NEED_TO_UPDATE_THIS_CODE
-    const [closingDate, setClosingDate] = useState<string>("Apr 22, 2022");  // NEED_TO_UPDATE_THIS_CODE
+    const [listDate, setListDate] = useState<Date>(new Date());  // NEED_TO_UPDATE_THIS_CODE
+    const [closingDate, setClosingDate] = useState<Date>(new Date());  // NEED_TO_UPDATE_THIS_CODE
 
     const handleClickButton = async () => {
         await updateDealContext("list_price", Number(listPrice));
@@ -61,22 +61,19 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
                         )
                     }}
                 />
-                <DatePicker Picker={DayPicker} />
-                {/* <TextField
-                    size='small'
-                    label="Original Listing Date"
-                    onChange={(event: any) => handleChangeInput("listDate", event)}
+                <DatePicker
+                    Picker={DayPicker} 
                     value={listDate}
-                    style={{ width: '100%', marginBottom: 20 }}
-                /> */}
-                <TextField
-                    size='small'
-                    label="Projected Closing Date"
-                    onChange={(event: any) => handleChangeInput("closingDate", event)}
-                    value={closingDate}
-                    style={{ width: '100%', marginBottom: 20 }}
+                    setValue={setListDate}
+                    label="Original Listing Date"
                 />
-                {wizard.currentStep < 9 && (
+                <DatePicker
+                    Picker={DayPicker} 
+                    value={closingDate}
+                    setValue={setClosingDate}
+                    label="Projected Closing Date"
+                />
+                {wizard.lastVisitedStep <= step && (
                     <Box style={{ textAlign: 'right' }}>
                         <Button variant="contained" onClick={handleClickButton} style={{ backgroundColor: '#0fb78d', color: 'white' }}>
                             Looks good, Next

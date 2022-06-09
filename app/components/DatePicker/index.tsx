@@ -1,26 +1,36 @@
 import Ui from '@libs/material-ui'
 import React from '@libs/react'
+import { IDatePickerProps } from '../../models/type'
 
-interface Props {
-  Picker: CoreComponents['DatePicker']
-}
+export const DatePicker: React.FC<IDatePickerProps> = ({ 
+  Picker, 
+  value, 
+  setValue,
+  label,
+}) => {
+  const { TextField, Popover, Button, Icon } = Ui;
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-export function DatePicker({ Picker }: Props) {
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const handlePickDate = (date: Date) => {
+    // setAnchorEl(null);
+    setValue(date);
+  }
 
   return (
-    <div style={{ width: '100%' }}>
-      <Ui.TextField
+    <div style={{ width: '100%', marginBottom: 20 }} className="date-picker">
+      <TextField
+        value={value.toDateString().substring(4)}
+        label={label}
         InputProps={{
           endAdornment: (
-            <Ui.Button size="small" onClick={(e: any) => setAnchorEl(e.currentTarget)}>
+            <Button size="small" onClick={(e: any) => setAnchorEl(e.currentTarget)}>
               Date
-            </Ui.Button>
+            </Button>
           )
         }}
       />
 
-      <Ui.Popover
+      <Popover
         id={anchorEl ? 'date-picker-popover' : undefined}
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
@@ -30,8 +40,8 @@ export function DatePicker({ Picker }: Props) {
           horizontal: 'left'
         }}
       >
-        <Picker onChange={date => console.log(date)} />
-      </Ui.Popover>
+        <Picker onChange={handlePickDate} />
+      </Popover>
     </div>
   )
 }

@@ -31,3 +31,12 @@ export interface IQuestionProps {
     GCIUnit?: string
     setGCIUnit?: (value: string) => void
 }
+
+export interface IDatePickerProps {
+    Picker: CoreComponents['DatePicker']
+    value: Date
+    setValue: (date: Date) => void
+    label: string
+}
+
+
