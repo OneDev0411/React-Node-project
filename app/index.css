@@ -19,3 +19,8 @@ label {
 .date-picker .MuiFormControl-root {
     width: 100%
 }
+
+.date-icon:hover {
+    cursor: pointer;
+}
+

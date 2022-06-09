@@ -1,6 +1,7 @@
 import Ui from '@libs/material-ui'
 import React from '@libs/react'
 import { IDatePickerProps } from '../../models/type'
+import DateImage from '../../static/icons/date.png'
 
 export const DatePicker: React.FC<IDatePickerProps> = ({ 
   Picker, 
@@ -23,9 +24,13 @@ export const DatePicker: React.FC<IDatePickerProps> = ({
         label={label}
         InputProps={{
           endAdornment: (
-            <Button size="small" onClick={(e: any) => setAnchorEl(e.currentTarget)}>
-              Date
-            </Button>
+            <img 
+              src={DateImage}  
+              onClick={(e: any) => setAnchorEl(e.currentTarget)} 
+              width="4%"
+              style={{ marginRight: 10 }}
+              className="date-icon"
+            />
           )
         }}
       />
