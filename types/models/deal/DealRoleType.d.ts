@@ -22,3 +22,4 @@ declare type IDealRoleType =
   | 'Landlord'
   | 'TenantPowerOfAttorney'
   | 'Other'
+

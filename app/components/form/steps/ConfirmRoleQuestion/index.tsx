@@ -23,35 +23,40 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     // component variables
     const matchRoles = roles.filter((role: IDealRole) => role.role === roleType);
 
-    console.log('matchRoles:', matchRoles);
-    const matchRoleElements = matchRoles.map((role: IDealRole, index: number) =>
-        <RoleCard 
-            role={role}
-            key={index}
-            readonly
-            onClickEdit={() => handleClickEditButton(role)}
-            // onClickRemove={handleClickEraseButton}
-        />
-    );
+    const matchRoleElements = matchRoles.map((role: IDealRole, index: number) => {
+        return (
+            <RoleCard
+                role={role}
+                key={index}
+                readonly
+                onClickEdit={() => handleClickEditButton(role)}
+                // onClickRemove={handleClickEraseButton}
+            />
+        )
+    });
 
     // mockup loading
     useEffect(() => {
         // wizard.setLoading(true);
         // setTimeout(() => {
             // wizard.setLoading(false);
-            if (matchRoles.length) {
-                setStatus('Validating');
-            } else {
-                setStatus("Upserting");
-                setUpsertingIndex(-1);
-            }
+        if (matchRoles.length) {
+            setStatus('Validating');
+        } else {
+            setStatus("Upserting");
+            setUpsertingIndex(-1);
+        }
         // }, 7000);
     }, []);
 
     const handleNext = () => {
+        console.log('called:');
         // console.log('step:', step);
-        // wizard.next();
-        wizard.goto(step + 1);
+        wizard.next();
+        // wizard.goto(step + 1);
+        // setTimeout(() => {
+        //     wizard.goto(8);
+        // }, 10);
         // wizard.goto(wizard.currentStep);
     }
 
@@ -67,6 +72,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     }
 
     const handleClickNextButton = () => {
+        console.log('next#########################:');
         handleNext();
     }
 
