@@ -1,11 +1,13 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
+import { DatePicker } from '../../../DatePicker'
 import { IQuestionProps } from "../../../../models/type"
 
 const ListingInfoQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
     hooks: { useWizardContext, useSectionContext },
     api: { updateDealContext },
+    Components: { DatePicker: DayPicker }
 }) => {
     const { useState } = React;
     const { Box, TextField, Button, InputAdornment } = Ui;
@@ -59,13 +61,14 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
                         )
                     }}
                 />
-                <TextField
+                <DatePicker Picker={DayPicker} />
+                {/* <TextField
                     size='small'
                     label="Original Listing Date"
                     onChange={(event: any) => handleChangeInput("listDate", event)}
                     value={listDate}
                     style={{ width: '100%', marginBottom: 20 }}
-                />
+                /> */}
                 <TextField
                     size='small'
                     label="Projected Closing Date"

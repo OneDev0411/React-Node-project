@@ -4,6 +4,7 @@ export function createComponents(Components: CoreComponents): CoreComponents {
   return {
     Logo: memo((props: LogoProps) => Components.Logo(props)),
     RoleForm: Components.RoleForm,
+    DatePicker: Components.DatePicker,
     RoleCard: memo((props: RoleCardProps) => Components.RoleCard(props)),
     ContactRoles: memo((props: ContactRolesProps) =>
       Components.ContactRoles(props)

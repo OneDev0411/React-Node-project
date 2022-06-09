@@ -7,6 +7,7 @@ declare interface CoreComponents {
   RoleForm: React.FC<RoleFormProps>
   RoleCard: React.FC<RoleCardProps>
   ContactRoles: React.FC<ContactRolesProps>
+  DatePicker: React.FC<DatePickerProps>
   Wizard: {
     QuestionWizard: React.FC<QuestionWizardProps>
     QuestionSection: React.FC<QuestionSectionProps>

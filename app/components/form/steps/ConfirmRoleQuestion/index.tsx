@@ -1,6 +1,6 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
-import { ConfirmContactStatus, IQuestionProps } from '../../../../models/type'
+import { ConfirmRoleStatus, IQuestionProps } from '../../../../models/type'
 import { roleText } from '../../../../util'
 
 const ConfirmContactInfo: React.FC<IQuestionProps> = ({
@@ -16,7 +16,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const { step } = useSectionContext()
 
     // state
-    const [status, setStatus] = useState<ConfirmContactStatus>('Validating');
+    const [status, setStatus] = useState<ConfirmRoleStatus>('Validating');
     const [upsertingIndex, setUpsertingIndex] = useState<number>(0); // last upserting role index
     const [currentRole, setCurrentObject] = useState<Partial<IDealFormRole> | IDealRole | null>(null); // data from dropdown select, can be IDealRole object or nameObject
 
@@ -115,7 +115,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
             </QuestionTitle>
             <QuestionForm>
                 {status === "Validating" && (
-                    <>
+                    <Box>
                         {matchRoles.slice(0, upsertingIndex + 1).map((roleData: IDealRole, index: number) =>
                             <RoleForm
                                 isOpen
@@ -132,7 +132,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                                 Skip
                             </Button>
                         )}
-                    </>
+                    </Box>
                 )}
                 {status === "Upserting" && (
                     <RoleForm
