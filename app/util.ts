@@ -66,10 +66,10 @@ export const defaultRole: IDealRole = {
 }
 
 export const roleText: { [key: string]: string } = {
-    Seller: "seller", 
-    Buyer: "buyer",
-    BuyerPowerOfAttorney: "buyer's attorney",
-    SellerPowerOfAttorney: "seller's attorney",
+    Seller: "Seller",
+    Buyer: "Buyer",
+    BuyerLawyer: "Buyer's attorney",
+    SellerLawyer: "Seller's attorney",
 }
 
 export const financeSelectDataList: SelectData[] = [
@@ -98,13 +98,16 @@ export const stylizeNumber = (data: number): string => {
     let dataStr: string = data + "";
     let resultStr: string = "";
     let count: number = 0;
-    for(let i = dataStr.length - 1; i >= 0; i--) {
-        resultStr = dataStr[i] + resultStr; 
+    for (let i = dataStr.length - 1; i >= 0; i--) {
+        resultStr = dataStr[i] + resultStr;
         count++;
-        if(count === 3) {
+        if (count === 3) {
             count = 0;
             resultStr = "," + resultStr;
         }
+    }
+    if (resultStr[0] === ",") {
+        resultStr = resultStr.substring(1);
     }
     return resultStr;
 }

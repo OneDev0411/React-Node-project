@@ -2,7 +2,7 @@ import * as Ui from '@material-ui/core'
 
 export type ConfirmRoleStatus = 'Validating' | 'Listing' | 'Upserting' | 'Selecting' | 'Skipped'
 
-export type RoleType = "Buyer" | "Seller" | "BuyerPowerOfAttorney" | "SellerPowerOfAttorney"
+export type RoleType = "Buyer" | "Seller" | "BuyerLawyer" | "SellerLawyer"
 
 export interface SelectData {
     label: string,

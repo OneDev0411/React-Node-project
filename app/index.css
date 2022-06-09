@@ -24,3 +24,9 @@ label {
     cursor: pointer;
 }
 
+.listing-price-input .MuiTypography-root {
+    margin-bottom: 5px;
+    margin-right: -7px;
+}
+
+

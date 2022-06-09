@@ -2,11 +2,12 @@ import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { DatePicker } from '../../../DatePicker'
 import { IQuestionProps } from "../../../../models/type"
+import { stylizeNumber } from "../../../../util"
 
 const ListingInfoQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
     hooks: { useWizardContext, useSectionContext },
-    api: { updateDealContext },
+    api: { updateDealContext, getDealContext },
     Components: { DatePicker: DayPicker }
 }) => {
     const { useState } = React;
@@ -14,13 +15,18 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
     const wizard = useWizardContext();
     const { step } = useSectionContext();
 
+    const listPriceContextValue = getDealContext('list_price')?.text;
+    const listDateContextValue = getDealContext('list_date')?.text;
+    const closingDateContextValue = getDealContext('closing_date')?.text;
+    console.log('listPriceContextValue:', listPriceContextValue);
+
     // state
-    const [listPrice, setListPrice] = useState<number>(0);
-    const [listDate, setListDate] = useState<Date>(new Date());  // NEED_TO_UPDATE_THIS_CODE
-    const [closingDate, setClosingDate] = useState<Date>(new Date());  // NEED_TO_UPDATE_THIS_CODE
+    const [listPrice, setListPrice] = useState<string>(Number(listPriceContextValue) + "");
+    const [listDate, setListDate] = useState<Date>(listDateContextValue === null ? new Date() : new Date(listDateContextValue));  // NEED_TO_UPDATE_THIS_CODE
+    const [closingDate, setClosingDate] = useState<Date>(closingDateContextValue === null ? new Date() : new Date(closingDateContextValue));  // NEED_TO_UPDATE_THIS_CODE
 
     const handleClickButton = async () => {
-        await updateDealContext("list_price", Number(listPrice));
+        await updateDealContext("list_price", Number(listPrice.replaceAll(',', '')));
         await updateDealContext("list_date", listDate);
         await updateDealContext("closing_date", closingDate);
         wizard.next();
@@ -29,7 +35,17 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
     const handleChangeInput = (key: string, event: any) => {
         switch(key) {
             case "listPrice":
-                setListPrice(event.target.value);
+                let value: string = event.target.value;
+                value = value.replaceAll(',', '');
+
+                // don't accept too big number
+                if (value.length >= 15) 
+                    return;
+
+                // don't accept invalid input
+                if (Number(value) + "" === "NaN") 
+                    return;
+                setListPrice(stylizeNumber(Number(value)));
                 break;
             case "listDate":
                 setListDate(event.target.value);
@@ -52,7 +68,7 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
                     value={listPrice}
                     onChange={(event: any) => handleChangeInput("listPrice", event)}
                     style={{ width: '100%', marginBottom: 20 }}
-                    type={"number"}
+                    className="listing-price-input"
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">

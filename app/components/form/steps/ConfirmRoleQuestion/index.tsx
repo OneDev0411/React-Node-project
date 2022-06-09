@@ -23,6 +23,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     // component variables
     const matchRoles = roles.filter((role: IDealRole) => role.role === roleType);
 
+    console.log('matchRoles:', matchRoles);
     const matchRoleElements = matchRoles.map((role: IDealRole, index: number) =>
         <RoleCard 
             role={role}
@@ -49,9 +50,9 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
 
     const handleNext = () => {
         // console.log('step:', step);
-        wizard.next();
-        // wizard.goto(step + 1);
-        wizard.goto(wizard.currentStep);
+        // wizard.next();
+        wizard.goto(step + 1);
+        // wizard.goto(wizard.currentStep);
     }
 
     const handleClickEditButton = (role: IDealRole) => {
@@ -157,7 +158,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                         {matchRoleElements}
                         <Box style={{ textAlign: 'right' }}>
                             <Button onClick={handleClickAddAnotherButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5 }}>
-                                Add Another {roleType}
+                                Add Another {roleText[roleType]}
                             </Button>
                             {wizard.lastVisitedStep <= step && (
                                 <Button variant="contained" onClick={handleClickNextButton} style={{ backgroundColor: '#0fb78d', color: 'white', marginLeft: 10 }}>

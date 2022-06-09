@@ -30,8 +30,8 @@ export const FormWizard:React.FC<IQuestionProps> = (props) => {
       <StartQuestion {...props} />
       <ComformRoleQuestion {...props} roleType="Seller" />
       <ComformRoleQuestion {...props} roleType="Buyer" />
-      <ComformRoleQuestion {...props} roleType="BuyerPowerOfAttorney" />
-      <ComformRoleQuestion {...props} roleType="SellerPowerOfAttorney" />
+      <ComformRoleQuestion {...props} roleType="BuyerLawyer" />
+      <ComformRoleQuestion {...props} roleType="SellerLawyer" />
       <FinanceTransQuestion {...props} />
       <FinanceProgQuestion {...props} />
       <ListingInfoQuestion {...props} />

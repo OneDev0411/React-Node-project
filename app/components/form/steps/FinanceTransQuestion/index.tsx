@@ -6,15 +6,17 @@ import { financeSelectDataList } from '../../../../util'
 const FinanceTransQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
     hooks: { useWizardContext, useSectionContext },
-    api: { updateDealContext },
+    api: { updateDealContext, getDealContext },
 }) => {
     const { useState } = React;
     const { RadioGroup, FormControlLabel, Radio } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
 
+    const financingContextValue = getDealContext('financing')?.text;
+
     // state
-    const [curSelect, setCurSelect] = useState<number>(-1);
+    const [curSelect, setCurSelect] = useState<string>(financingContextValue);
 
     const handleClickRadioButton = (event: any) => {
         setCurSelect(event.target.value);

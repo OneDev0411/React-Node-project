@@ -1,8 +1,8 @@
 # Todo
-1. replace datepicker with input in lisingInfo
-2. update context
-3. validating cancel button go to list
-4. scroll
+1. update context
+2. validating cancel button go to list
+3. scroll
+4. 
 
 # TodoSlow
 1. financeProg 40 line

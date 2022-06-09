@@ -5,15 +5,17 @@ import { IQuestionProps } from "../../../../models/type"
 const FinanceProgQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
     hooks: { useWizardContext, useSectionContext },
-    api: { updateDealContext },
+    api: { updateDealContext, getDealContext },
 }) => {
     const { useState } = React;
     const { TextField, Button, Box } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
 
+    const financingProgramContextValue = getDealContext('financing_program')?.text;
+
     // state
-    const [text, setText] = useState<string>("");
+    const [text, setText] = useState<string>(financingProgramContextValue);
 
     const handleClickButton = () => {
         updateDealContext("financing_program", text);
