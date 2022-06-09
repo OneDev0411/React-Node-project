@@ -1,4 +1,4 @@
-import { SelectData } from "./models/type"
+import { ItemData, SelectData } from "./models/type"
 
 export const defaultUser: IUser = {
     last_seen_at: null,
@@ -65,13 +65,6 @@ export const defaultRole: IDealRole = {
     brand: null,
 }
 
-// export const roleStep: { [key: string]: 2 | 3| 4 | 5 } = {
-//     Seller: 2, 
-//     Buyer: 3,
-//     BuyerPowerOfAttorney: 4,
-//     SellerPowerOfAttorney: 5,
-// }
-
 export const roleText: { [key: string]: string } = {
     Seller: "seller", 
     Buyer: "buyer",
@@ -116,7 +109,7 @@ export const stylizeNumber = (data: number): string => {
     return resultStr;
 }
 
-export const GCI2DEDataList: any[] = [
+export const GCI2DEDataList: ItemData[] = [
     {
         name: 'John Smith',
         role: 'Seller - DE',

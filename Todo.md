@@ -1,15 +1,14 @@
 # Todo
-1. setLoading logic, mockup loading
-2. check GCI2DE 66line
-3. utils/119 line
-4. financeTransQuestion, GrossCommission double
-
-# Todo2
 1. replace datepicker with input in lisingInfo
-2. financeProg 40 line
-3. nested interface
-4. update context
-5. validating cancel button go to list
+2. update context
+3. validating cancel button go to list
+4. scroll
+
+# TodoSlow
+1. financeProg 40 line
+2. financeTransQuestion, GrossCommission radio select double
+3. check GCI2DE 66line
+4. setLoading logic, mockup loading
 
 # Flag
 NEED_TO_UPDATE_THIS_CODE
