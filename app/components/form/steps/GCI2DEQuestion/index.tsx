@@ -1,6 +1,7 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { IQuestionProps } from "../../../../models/type"
+import { stylizeNumber } from '../../../../util';
 
 const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -56,7 +57,8 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
                         {/* <strong>{`$${stylizeNumber(Number(listPrice))}`}</strong>  // NEED_TO_UPDATE_THIS_CODE */}
                         {`(Listing Price) * ${inputValue}% (GCI) = `}
                         {/* <strong>{`$${stylizeNumber(Number(listPrice) / 100 * Number(inputValue))}`}</strong> // NEED_TO_UPDATE_THIS_CODE */}  
-                        <strong>$50,000</strong>
+                        {/* <strong>$50,000</strong> */}
+                        <strong>${stylizeNumber(1000000 * Number(inputValue) / 100)}</strong>
                     </Box>
                 )}
                 {(showButton && inputValue !== "") && (
