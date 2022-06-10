@@ -8,7 +8,6 @@ import GrossCommissionQuestion from '../steps/GrossCommissionQuestion'
 import GCI2DEQuestion from '../steps/GCI2DEQuestion'
 import GCISplitQuestion from '../steps/GCISplitQuestion'
 import { IQuestionProps } from '../../../models/type'
-import { NameQuestion } from '../steps/NameQuestion'
 
 export const FormWizard:React.FC<IQuestionProps> = (props) => {
   const { useState } = React;
@@ -19,14 +18,6 @@ export const FormWizard:React.FC<IQuestionProps> = (props) => {
 
   return (
     <Wizard.QuestionWizard onFinish={() => console.log('done')}>
-      {/* <NameQuestion {...props} />
-      <NameQuestion {...props} />
-      <NameQuestion {...props} />
-      <NameQuestion {...props} />
-      <NameQuestion {...props} />
-      <NameQuestion {...props} />
-      <NameQuestion {...props} />
-      <NameQuestion {...props} /> */}
       <StartQuestion {...props} />
       <ComformRoleQuestion {...props} roleType="Seller" />
       <ComformRoleQuestion {...props} roleType="Buyer" />

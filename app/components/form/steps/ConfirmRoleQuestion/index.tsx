@@ -13,12 +13,12 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const { useEffect, useState } = React;
     const { Button, Divider, Box } = Ui;
     const wizard = useWizardContext();
-    const { step } = useSectionContext()
 
     // state
     const [status, setStatus] = useState<ConfirmRoleStatus>('Validating');
     const [upsertingIndex, setUpsertingIndex] = useState<number>(0); // last upserting role index
     const [currentRole, setCurrentObject] = useState<Partial<IDealFormRole> | IDealRole | null>(null); // data from dropdown select, can be IDealRole object or nameObject
+    const [showButton, setShowButton] = useState<boolean>(true);
 
     // component variables
     const matchRoles = roles.filter((role: IDealRole) => role.role === roleType);
@@ -37,27 +37,18 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
 
     // mockup loading
     useEffect(() => {
-        // wizard.setLoading(true);
-        // setTimeout(() => {
-            // wizard.setLoading(false);
         if (matchRoles.length) {
             setStatus('Validating');
         } else {
             setStatus("Upserting");
             setUpsertingIndex(-1);
         }
-        // }, 7000);
     }, []);
 
     const handleNext = () => {
-        console.log('called:');
-        // console.log('step:', step);
-        wizard.next();
-        // wizard.goto(step + 1);
-        // setTimeout(() => {
-        //     wizard.goto(8);
-        // }, 10);
-        // wizard.goto(wizard.currentStep);
+        setTimeout(() => {
+            wizard.next();
+        }, 80);
     }
 
     const handleClickEditButton = (role: IDealRole) => {
@@ -68,12 +59,11 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const handleClickAddAnotherButton = () => {
         setStatus('Selecting');
         setUpsertingIndex(-1);
-        // wizard.goto(3);
     }
 
     const handleClickNextButton = () => {
-        console.log('next#########################:');
         handleNext();
+        setShowButton(false);
     }
 
     const handleClickSkipButton = () => {
@@ -90,6 +80,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
         setStatus("Listing");
     }
 
+    // this logic is updating 
     const handleUpsertValidatingRole = (upsertingRole: IDealRole) => {
         // in case of showing match role for validating
         if (upsertingRole.id === matchRoles[upsertingIndex].id) {  
@@ -106,6 +97,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
         // ...
     }
 
+    // this logic is updating 
     const handleCloseRoleForm = () => {
         // in case of no match role, ignore cancel action
         if (matchRoles.length === 0) {
@@ -147,6 +139,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                                 Skip
                             </Button>
                         )}
+                        <Box style={{ height: 20 }} />
                     </>
                 )}
                 {status === "Upserting" && (
@@ -166,7 +159,8 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                             <Button onClick={handleClickAddAnotherButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5 }}>
                                 Add Another {roleText[roleType]}
                             </Button>
-                            {wizard.lastVisitedStep <= step && (
+                            {/* // {wizard.lastVisitedStep <= step + 1 && ( */}
+                            {showButton && (
                                 <Button variant="contained" onClick={handleClickNextButton} style={{ backgroundColor: '#0fb78d', color: 'white', marginLeft: 10 }}>
                                     Looks Good, Next
                                 </Button>
@@ -199,9 +193,6 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                         </Button>
                     </Box>
                 )}
-                {/* <Button variant="contained" onClick={() => { wizard.goto(2) }} style={{ backgroundColor: '#0fb78d', color: 'white', marginLeft: 10 }}>
-                    Test
-                </Button> */}
             </QuestionForm>
         </QuestionSection>
     )

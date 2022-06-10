@@ -10,26 +10,31 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
     api: { updateDealContext, getDealContext },
     Components: { DatePicker: DayPicker }
 }) => {
-    const { useState } = React;
+    const { useState, useEffect } = React;
     const { Box, TextField, Button, InputAdornment } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
-
+    
+    // context value
     const listPriceContextValue = getDealContext('list_price')?.text;
     const listDateContextValue = getDealContext('list_date')?.text;
     const closingDateContextValue = getDealContext('closing_date')?.text;
-    console.log('listPriceContextValue:', listPriceContextValue);
 
     // state
     const [listPrice, setListPrice] = useState<string>(Number(listPriceContextValue) + "");
     const [listDate, setListDate] = useState<Date>(listDateContextValue === null ? new Date() : new Date(listDateContextValue));  // NEED_TO_UPDATE_THIS_CODE
     const [closingDate, setClosingDate] = useState<Date>(closingDateContextValue === null ? new Date() : new Date(closingDateContextValue));  // NEED_TO_UPDATE_THIS_CODE
+    const [showButton, setShowButton] = useState<boolean>(true);
 
     const handleClickButton = async () => {
         await updateDealContext("list_price", Number(listPrice.replaceAll(',', '')));
         await updateDealContext("list_date", listDate);
         await updateDealContext("closing_date", closingDate);
-        wizard.next();
+        
+        setShowButton(false);
+        setTimeout(() => {
+            wizard.next();
+        }, 80);
     };
 
     const handleChangeInput = (key: string, event: any) => {
@@ -89,9 +94,9 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
                     setValue={setClosingDate}
                     label="Projected Closing Date"
                 />
-                {wizard.lastVisitedStep <= step && (
+                {showButton && (
                     <Box style={{ textAlign: 'right' }}>
-                        <Button variant="contained" onClick={handleClickButton} style={{ backgroundColor: '#0fb78d', color: 'white' }}>
+                        <Button variant="contained" onClick={handleClickButton} style={{ marginBottom: 20, zIndex: wizard.lastVisitedStep <= 8 && step === 8 && wizard.currentStep <= 8 ? 3 : -3, backgroundColor: '#0fb78d', color: 'white' }}>
                             Looks good, Next
                         </Button>
                     </Box>

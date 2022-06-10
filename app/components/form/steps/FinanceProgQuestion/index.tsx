@@ -16,10 +16,14 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
 
     // state
     const [text, setText] = useState<string>(financingProgramContextValue);
+    const [showButton, setShowButton] = useState<boolean>(true);
 
     const handleClickButton = () => {
+        setShowButton(false);
         updateDealContext("financing_program", text);
-        wizard.next();
+        setTimeout(() => {
+            wizard.next();
+        }, 80);
     };
 
     const handleOnTextFieldChange = (event: any) => {
@@ -39,8 +43,8 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
                     onChange={handleOnTextFieldChange}
                     value={text}
                 />
-                {wizard.currentStep <= step && (
-                    <Box style={{ textAlign: 'right', marginTop: 20 }}>
+                {showButton && (
+                    <Box style={{ textAlign: 'right', marginTop: 20, paddingBottom: 20 }}>
                         <Button variant="contained" disabled={!text.length} onClick={handleClickButton} style={text.length ? { backgroundColor: '#0fb78d', color: 'white' } : {}}>
                             Looks good, Next
                         </Button>

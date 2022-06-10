@@ -8,22 +8,20 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     // api: { getDealContext },
     GCIUnit,
 }) => {
-    const { useEffect, useState } = React;
-    const { Grid, Box, TextField, Button, InputAdornment } = Ui;
+    const { useState } = React;
+    const { Box, TextField, Button, InputAdornment } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext()
 
     // state
     const [inputValue, setInputValue] = useState<string | number>("");
-
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         updateStep({ subStep: 1 });  
-    //     }, 1000);
-    // }, []);
+    const [showButton, setShowButton] = useState<boolean>(true);
 
     const handleClickButton = () => {
-        wizard.next();
+        setShowButton(false);
+        setTimeout(() => {
+            wizard.next();
+        }, 80);
     };
 
     const handleChangeTextField = (event: any) => {
@@ -61,12 +59,15 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
                         <strong>$50,000</strong>
                     </Box>
                 )}
-                {(wizard.currentStep <= step && inputValue !== "") && (
+                {(showButton && inputValue !== "") && (
                     <Box style={{ textAlign: 'right', marginTop: 20 }}>
                         <Button variant="contained" onClick={handleClickButton} style={{ backgroundColor: '#0fb78d', color: 'white' }}>
                             Looks good, Next
                         </Button>
                     </Box>
+                )}
+                {showButton && (
+                    <Box style={{ height: 120 }} />
                 )}
             </QuestionForm>
         </QuestionSection>

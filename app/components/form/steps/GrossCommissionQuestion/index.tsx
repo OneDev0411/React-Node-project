@@ -9,25 +9,22 @@ const GrossCommissionQuestion: React.FC<IQuestionProps> = ({
     GCIUnit,
     setGCIUnit,
 }) => {
-    // const { useEffect } = React;
-    const { RadioGroup, FormControlLabel, Radio } = Ui;
+    const { useState } = React;
+    const { RadioGroup, FormControlLabel, Radio, Box } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
 
-    // state
-    // useEffect(() => {
-    //     console.log("contextData:", getDealContext("list_price")?.text);
-    //     setTimeout(() => {
-    //         updateStep({ subStep: 1 });
-    //     }, 1000);
-    // }, []);
+    const [showBox, setShowBox] = useState<boolean>(true);
 
     const handleClickRadioButton = (event: any) => {
+        setShowBox(false);
         if (setGCIUnit !== undefined) {
             setGCIUnit(event.target.value);
         }
         if (wizard.currentStep < step + 1) {
-            wizard.next();
+            setTimeout(() => {
+                wizard.next();
+            }, 10);
         }
     }
 
@@ -53,6 +50,9 @@ const GrossCommissionQuestion: React.FC<IQuestionProps> = ({
                         />
                     )}
                 </RadioGroup>
+                {showBox && (
+                    <Box style={{ height: 40 }} />
+                )}
             </QuestionForm>
         </QuestionSection>
     )

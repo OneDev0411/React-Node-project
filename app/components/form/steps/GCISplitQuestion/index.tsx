@@ -40,7 +40,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
             </QuestionTitle>
             <QuestionForm>
                 <Box style={{ textAlign: "right" }}>
-                    <Button variant="contained" style={{ backgroundColor: '#0fb78d', color: 'white' }}>
+                    <Button variant="contained" style={{ marginBottom: 20, backgroundColor: '#0fb78d', color: 'white' }}>
                         Submit for Review
                     </Button>
                 </Box>

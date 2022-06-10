@@ -1,7 +1,7 @@
 import React from '@libs/react'
 import { IQuestionProps } from '../../../../models/type';
 
-const StartNotification: React.FC<IQuestionProps> = ({
+const StartQuestion: React.FC<IQuestionProps> = ({
     Wizard,
     hooks: { useWizardContext }
 }) => {
@@ -12,12 +12,17 @@ const StartNotification: React.FC<IQuestionProps> = ({
     // mockup loading, need to remove after the backend is impplemented
     useEffect(() => {
         // wizard.next();
-        // wizard.goto(4);
+        // wizard.goto(8);
+        
         wizard.setLoading(true);
         setTimeout(() => {
             wizard.setLoading(false);
             wizard.next();
         }, 100);
+            
+        // setTimeout(() => {
+        //     wizard.goto(8);
+        // }, 2000);
     }, []);
 
     return (
@@ -29,4 +34,4 @@ const StartNotification: React.FC<IQuestionProps> = ({
     )
 }
 
-export default StartNotification;
+export default StartQuestion;

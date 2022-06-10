@@ -9,7 +9,7 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
     api: { updateDealContext, getDealContext },
 }) => {
     const { useState } = React;
-    const { RadioGroup, FormControlLabel, Radio } = Ui;
+    const { RadioGroup, FormControlLabel, Radio, Box } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
 
@@ -17,12 +17,16 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
 
     // state
     const [curSelect, setCurSelect] = useState<string>(financingContextValue);
+    const [showBox, setShowBox] = useState<boolean>(true);
 
-    const handleClickRadioButton = (event: any) => {
-        setCurSelect(event.target.value);
+    const handleClickRadioButton = async (event: any) => {
+        setShowBox(false);
         updateDealContext("financing", event.target.value);
+        setCurSelect(event.target.value);
         if (wizard.currentStep < step + 1) {
-            wizard.next();
+            setTimeout(() => {
+                wizard.next();
+            }, 10);
         }
     }
 
@@ -48,6 +52,9 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
                         />
                     )}
                 </RadioGroup>
+                {showBox && (
+                    <Box style={{ height: 40 }} />
+                )}
             </QuestionForm>
         </QuestionSection>
     )

@@ -11,6 +11,12 @@ const App: React.FC<EntryProps> = ({
   hooks
 }) => {
   const { Wizard } = Components;
+
+  // const { updateDealContext, getDealContext } = api;
+  // const wizard = useWizardContext();
+
+
+
   // console.log('context:', models.deal.context);
 
   // console.log('deal:', models.deal);
