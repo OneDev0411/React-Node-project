@@ -143,14 +143,16 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                     </>
                 )}
                 {status === "Upserting" && (
-                    <RoleForm
-                        isOpen
-                        deal={deal}
-                        onClose={handleCloseRoleForm}
-                        title=" "
-                        form={currentRole === null ? (upsertingIndex >= 0 ? { ...matchRoles[upsertingIndex], role: roleType } : { role: roleType })
+                    <Box className='adding-role-form-box'>
+                        <RoleForm
+                            isOpen
+                            deal={deal}
+                            onClose={handleCloseRoleForm}
+                            title=" "
+                            form={currentRole === null ? (upsertingIndex >= 0 ? { ...matchRoles[upsertingIndex], role: roleType } : { role: roleType })
                             : { ...currentRole, role: roleType }}
-                    />
+                        />
+                    </Box>
                 )}
                 {status === "Listing" && roleType !== undefined && (
                     <>
