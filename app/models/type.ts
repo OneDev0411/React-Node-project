@@ -30,6 +30,9 @@ export interface IQuestionProps {
     roleType?: RoleType
     GCIUnit?: string
     setGCIUnit?: (value: string) => void
+    utils: {
+        notify: (data: NotificationData) => void
+    }
 }
 
 export interface IDatePickerProps {

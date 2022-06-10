@@ -6,8 +6,21 @@ import { GCI2DEDataList } from '../../../../util'
 
 const GCISplitQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
+    hooks: { useWizardContext, useSectionContext },
 }) => {
-    const { Grid, Button, Box } = Ui;
+    const { useEffect } = React;
+    const { Grid, Button } = Ui;
+    const wizard = useWizardContext();
+    const { step } = useSectionContext();
+    
+    useEffect(() => {
+        // when the component is shown
+        if (wizard.currentStep === step) {
+            setTimeout(() => {
+                wizard.next();
+            }, 1000);
+        }
+    }, [wizard.currentStep]);
     
     return (
         <QuestionSection>
@@ -34,16 +47,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                         </label>
                     </Grid>
                 </Grid>
-            </QuestionForm>
-            <QuestionTitle>
-                Awesome! Let's submit this for the review, and get you paid!
-            </QuestionTitle>
-            <QuestionForm>
-                <Box style={{ textAlign: "right" }}>
-                    <Button variant="contained" style={{ marginBottom: 20, backgroundColor: '#0fb78d', color: 'white' }}>
-                        Submit for Review
-                    </Button>
-                </Box>
             </QuestionForm>
         </QuestionSection>
     )

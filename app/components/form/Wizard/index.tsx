@@ -7,6 +7,7 @@ import ListingInfoQuestion from '../steps/ListingInfoQuestion'
 import GrossCommissionQuestion from '../steps/GrossCommissionQuestion'
 import GCI2DEQuestion from '../steps/GCI2DEQuestion'
 import GCISplitQuestion from '../steps/GCISplitQuestion'
+import LastQuestion from '../steps/LastQuestion'
 import { IQuestionProps } from '../../../models/type'
 
 export const FormWizard:React.FC<IQuestionProps> = (props) => {
@@ -29,6 +30,7 @@ export const FormWizard:React.FC<IQuestionProps> = (props) => {
       <GrossCommissionQuestion {...props} GCIUnit={GCIUnit} setGCIUnit={setGCIUnit} />
       <GCI2DEQuestion {...props} GCIUnit={GCIUnit} />
       <GCISplitQuestion {...props} />
+      <LastQuestion {...props} />
     </Wizard.QuestionWizard>
   )
 }
