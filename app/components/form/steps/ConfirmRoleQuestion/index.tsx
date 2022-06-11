@@ -69,6 +69,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     }
 
     const handleClickSkipButton = () => {
+        setShowButton(false);
         setStatus('Skipped');
         handleNext();
     }
