@@ -1,8 +1,6 @@
 # Todo
-1. update context
+1. update context with MLS source
 2. validating cancel button go to list
-3. scroll
-4. 
 
 # TodoSlow
 1. financeProg 40 line
@@ -14,8 +12,5 @@
 NEED_TO_UPDATE_THIS_CODE
 
 # Things to ask ramin
-1. need input mask
-2. update context
-3. check reload
-4. check scroll
-5. (optional) inject styled component node module
+1. update context
+2. check reload

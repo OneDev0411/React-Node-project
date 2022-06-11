@@ -19,6 +19,8 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const [upsertingIndex, setUpsertingIndex] = useState<number>(0); // last upserting role index
     const [currentRole, setCurrentObject] = useState<Partial<IDealFormRole> | IDealRole | null>(null); // data from dropdown select, can be IDealRole object or nameObject
     const [showButton, setShowButton] = useState<boolean>(true);
+    const [cancelButtonClicked, setCancelButtonClicked] = useState<boolean>(false);
+    const [isUpserting, setIsUpserting] = useState<boolean>(false);
 
     // component variables
     const matchRoles = roles.filter((role: IDealRole) => role.role === roleType);
@@ -82,6 +84,8 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
 
     // this logic is updating 
     const handleUpsertValidatingRole = (upsertingRole: IDealRole) => {
+        setIsUpserting(true);
+
         // in case of showing match role for validating
         if (upsertingRole.id === matchRoles[upsertingIndex].id) {  
             // in case of save button of role form which is shown not last is clicked
@@ -100,19 +104,27 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
 
     // this logic is updating 
     const handleCloseRoleForm = () => {
+        // in case of buyer/seller lawyer, click cancel button when no match roles, skip
+        if (roleType.indexOf("Lawyer") > 0 && matchRoles.length === 0) {
+            setStatus("Skipped");  
+            handleNext();
+        }
         // in case of no match role, ignore cancel action
         if (matchRoles.length === 0) {
             return;
         }
-        // in case of buyer/seller attorney, click cancel button when no match roles, skip
-        if (roleType.indexOf("Attorney") > 0 && matchRoles.length === 0) {
-            setStatus("Skipped");  
-            handleNext();
-        } 
         // regular cancel action
         else {
             setStatus("Listing");
             setCurrentObject(null);
+        }
+    }
+
+    const handleCloseValidatingRoleForm = () => {
+        if (!isUpserting) {
+            setStatus("Listing");
+        } else {
+            setIsUpserting(false);
         }
     }
 
@@ -129,7 +141,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                                 isOpen
                                 deal={deal}
                                 onUpsertRole={handleUpsertValidatingRole}
-                                // onClose={handleCloseValidatingRoleForm}
+                                onClose={handleCloseValidatingRoleForm}
                                 title=" "
                                 form={{ ...roleData, role: roleType }}
                                 key={index}
@@ -162,7 +174,6 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                             <Button onClick={handleClickAddAnotherButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5 }}>
                                 Add Another {roleText[roleType]}
                             </Button>
-                            {/* // {wizard.lastVisitedStep <= step + 1 && ( */}
                             {showButton && (
                                 <Button variant="contained" onClick={handleClickNextButton} style={{ backgroundColor: '#0fb78d', color: 'white', marginLeft: 10 }}>
                                     Looks Good, Next
