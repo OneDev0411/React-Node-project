@@ -5,7 +5,7 @@ import { roleText } from '../../../../util'
 
 const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-    hooks: { useWizardContext, useSectionContext },
+    hooks: { useWizardContext },
     models: { deal, roles },
     Components: { RoleForm, RoleCard, ContactRoles },
     roleType = "Seller",
@@ -19,7 +19,6 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const [upsertingIndex, setUpsertingIndex] = useState<number>(0); // last upserting role index
     const [currentRole, setCurrentObject] = useState<Partial<IDealFormRole> | IDealRole | null>(null); // data from dropdown select, can be IDealRole object or nameObject
     const [showButton, setShowButton] = useState<boolean>(true);
-    const [cancelButtonClicked, setCancelButtonClicked] = useState<boolean>(false);
     const [isUpserting, setIsUpserting] = useState<boolean>(false);
 
     // component variables
@@ -203,9 +202,9 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                             Add Info
                         </Button>
                         <Divider orientation="vertical" flexItem />
-                        <Button variant="text" style={{ marginRight: 10, color: 'black !important' }}>
+                        <label style={{ marginRight: 15, color: 'black !important', fontSize: 14, paddingTop: 5 }}>
                             Skipped
-                        </Button>
+                        </label>
                     </Box>
                 )}
             </QuestionForm>
