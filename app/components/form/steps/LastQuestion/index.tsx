@@ -10,7 +10,7 @@ const LastQuestion: React.FC<IQuestionProps> = ({
     const { Button, Box } = Ui;
 
     const handleSubmit = () => {
-        notifyOffice("Please check this deal.");
+        notifyOffice("Please review the Commission Slip");
     }
 
     return (
