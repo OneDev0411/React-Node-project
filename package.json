@@ -14,7 +14,7 @@
     "build:web": "NODE_ENV=production node -r ts-node/register ./.configuration/build/index.ts",
     "build:server": "rimraf dist-server && cross-env NODE_ENV=production tsc -p server/tsconfig.production.json",
     "start": "NODE_ENV=production node dist-server/server/main.js",
-    "deploy": "gcloud run deploy"
+    "deploy": "gcloud run deploy --source . --project=rechat-bagot apps-de-commission-slip --region us-central1"
   },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
