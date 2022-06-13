@@ -32,6 +32,7 @@ export interface IQuestionProps {
     setGCIUnit?: (value: string) => void
     utils: {
         notify: (data: NotificationData) => void
+        notifyOffice: (comment: string) => Promise<void>
     }
 }
 

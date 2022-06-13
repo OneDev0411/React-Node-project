@@ -4,13 +4,13 @@ import { IQuestionProps } from '../../../../models/type';
 
 const LastQuestion: React.FC<IQuestionProps> = ({
     Wizard,
-    utils: { notify },
+    utils: { notifyOffice },
 }) => {
     const { QuestionSection, QuestionTitle, QuestionForm } = Wizard;
     const { Button, Box } = Ui;
 
     const handleSubmit = () => {
-        
+        notifyOffice("Please check this deal.");
     }
 
     return (

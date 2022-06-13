@@ -25,6 +25,7 @@ declare interface EntryProps {
   }
   utils: {
     notify: (data: NotificationData) => void
+    notifyOffice: (comment: string) => Promise<void>
   }
   api: {
     getDealContext: (filed: string) => IDealContext

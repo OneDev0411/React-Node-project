@@ -12,7 +12,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     const { useState } = React;
     const { Box, TextField, Button, InputAdornment } = Ui;
     const wizard = useWizardContext();
-    const { step } = useSectionContext()
+    const { step } = useSectionContext();
 
     // state
     const [inputValue, setInputValue] = useState<string | number>("");
