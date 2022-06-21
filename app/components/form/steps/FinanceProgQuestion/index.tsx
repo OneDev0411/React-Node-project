@@ -45,7 +45,7 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
                 />
                 {showButton && (
                     <Box style={{ textAlign: 'right', marginTop: 20, paddingBottom: 20 }}>
-                        <Button variant="contained" disabled={!text.length} onClick={handleClickButton} style={text.length ? { backgroundColor: '#0fb78d', color: 'white' } : {}}>
+                        <Button variant="contained" disabled={!text?.length} onClick={handleClickButton} style={text?.length ? { backgroundColor: '#0fb78d', color: 'white' } : {}}>
                             Looks good, Next
                         </Button>
                     </Box>

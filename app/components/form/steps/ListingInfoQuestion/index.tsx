@@ -10,7 +10,7 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
     api: { updateDealContext, getDealContext },
     Components: { DatePicker: DayPicker }
 }) => {
-    const { useState, useEffect } = React;
+    const { useState } = React;
     const { Box, TextField, Button, InputAdornment } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
@@ -22,8 +22,8 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
 
     // state
     const [listPrice, setListPrice] = useState<string>(Number(listPriceContextValue) + "");
-    const [listDate, setListDate] = useState<Date>(listDateContextValue === null ? new Date() : new Date(listDateContextValue));  // NEED_TO_UPDATE_THIS_CODE
-    const [closingDate, setClosingDate] = useState<Date>(closingDateContextValue === null ? new Date() : new Date(closingDateContextValue));  // NEED_TO_UPDATE_THIS_CODE
+    const [listDate, setListDate] = useState<Date>(!listDateContextValue ? new Date() : new Date(listDateContextValue));  // NEED_TO_UPDATE_THIS_CODE
+    const [closingDate, setClosingDate] = useState<Date>(!closingDateContextValue ? new Date() : new Date(closingDateContextValue));  // NEED_TO_UPDATE_THIS_CODE
     const [showButton, setShowButton] = useState<boolean>(true);
 
     const handleClickButton = async () => {
