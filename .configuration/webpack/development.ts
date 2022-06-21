@@ -7,6 +7,7 @@ import base from './base'
 
 const config: Configuration = {
   mode: 'development',
+  devtool: 'source-map',
   output: {
     filename: 'bundle.js'
   },
