@@ -26,7 +26,7 @@ export const FormWizard:React.FC<IQuestionProps> = (props) => {
       <ComformRoleQuestion {...props} roleType="SellerLawyer" />
       <FinanceTransQuestion {...props} />
       <FinanceProgQuestion {...props} />
-      <ListingInfoQuestion {...props} />
+      {/* <ListingInfoQuestion {...props} /> */}
       <GrossCommissionQuestion {...props} GCIUnit={GCIUnit} setGCIUnit={setGCIUnit} />
       <GCI2DEQuestion {...props} GCIUnit={GCIUnit} />
       <GCISplitQuestion {...props} />

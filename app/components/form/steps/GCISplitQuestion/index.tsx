@@ -25,7 +25,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     return (
         <QuestionSection>
             <QuestionTitle>
-                Great, here are your GCI share before splits:
+                Great, here is your GCI share before splits:
             </QuestionTitle>
             <QuestionForm>
                 {GCI2DEDataList.map((item: ItemData, id: number) => 
