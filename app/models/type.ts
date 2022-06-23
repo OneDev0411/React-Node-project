@@ -2,6 +2,8 @@ import * as Ui from '@material-ui/core'
 
 export type ConfirmRoleStatus = 'Validating' | 'Listing' | 'Upserting' | 'Selecting' | 'Skipped'
 
+export type GCISplitStatus = 'Listing' | 'Inserting' | 'Selecting'
+
 export type RoleType = "Buyer" | "Seller" | "BuyerLawyer" | "SellerLawyer"
 
 export type GCIUnit = "$" | "%" | ""

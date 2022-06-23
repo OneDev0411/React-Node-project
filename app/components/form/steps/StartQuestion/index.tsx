@@ -12,12 +12,12 @@ const StartQuestion: React.FC<IQuestionProps> = ({
     // mockup loading, need to remove after the backend is impplemented
     useEffect(() => {
         // wizard.next();
-        wizard.goto(7);
+        wizard.goto(8);
         
         // wizard.setLoading(true);
         // setTimeout(() => {
-        //     wizard.setLoading(false);
-        //     wizard.next();
+            // wizard.setLoading(false);
+            // wizard.next();
         // }, 100);
     }, []);
 

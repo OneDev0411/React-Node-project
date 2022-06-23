@@ -186,7 +186,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                     <>
                         {matchRoleElements}
                         <ContactRoles
-                            placeholder={`Enter ${roleText[roleType]}'s names`}
+                            placeholder={`Enter ${roleText[roleType]}'s name`}
                             onSelectRole={handleSelectContact}
                         />
                         <Box style={{ textAlign: 'right' }}>
