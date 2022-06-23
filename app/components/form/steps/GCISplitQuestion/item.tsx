@@ -1,19 +1,27 @@
 import React from '@libs/react'
-import { IGCIInfoItemProps } from "../../../../models/type";
-
-
+import useApp from '../../../../hooks/useApp';
+import { AgentData, IGCIInfoItemProps } from "../../../../models/type";
 
 const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   Ui: { Grid, Box, TextField },
   role,
   GCIValue,
+  index,
 }) => {
   const { useState } = React;
+  const { agentDataList, setAgentDataList } = useApp();
+  const agentData: AgentData = agentDataList[index];
 
-  const [sharePercent, setSharePercent] = useState<number>(5); // default 5% NEED_TO_UPDATE_THIS_CODE
+  const handleChangeSharePercent = (value: Number) => {
+    if(value > 100)
+      return;
+    let _agentDataList = agentDataList.slice();
+    _agentDataList[index].sharePercent = value;
+    if(setAgentDataList !== undefined) {
+      setAgentDataList(_agentDataList);
+    }
+  }
 
-  console.log('GCIValue:', GCIValue);
-  console.log('GCIValue###########:', Number(GCIValue) / 20);
   return (
     <Grid container spacing={2} style={{ paddingBottom: 10 }}>
       <Grid item xs={6}>
@@ -34,8 +42,8 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           size='small'
           label="Share(%)"
           defaultValue={5}
-          value={sharePercent}
-          onChange={(e: any) => setSharePercent(e.target.value)}
+          value={agentData.sharePercent}
+          onChange={(e: any) => handleChangeSharePercent(Number(e.target.value))}
           style={{ width: '100%' }}
         />
       </Grid>
@@ -44,9 +52,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           required
           size='small'
           label="Share($)"
-          // defaultValue={22500}
-          // defaultValue={(Number(GCIValue) / 20) + ""}
-          value={Number(GCIValue) / 100 * sharePercent}
+          value={Number(GCIValue) / 100 * Number(agentData.sharePercent)}
           style={{ width: '100%' }}
         />
       </Grid>

@@ -16,17 +16,17 @@ export const FormWizard:React.FC<IQuestionProps> = (props) => {
   const { roles } = models;
 
   // should be removed after context logic is implemented
-  let agentRole = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
-  let initialAgentShareInfoList = agentRole.map((agent: IDealRole) => {
-    return {
-      sharePercent: 5,
-      roleID: agent.id
-    }
-  });
+  // let agentRole = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
+  // let initialAgentShareInfoList = agentRole.map((agent: IDealRole) => {
+    // return {
+      // sharePercent: 5,
+      // roleID: agent.id
+    // }
+  // });
 
   // const [GCIUnit, setGCIUnit] = useState<"%" | "$" | "">("");
-  const [GCIValue, setGCIValue] = useState<Number>(0);
-  const [agentShareInfoList, setAgentShareInfoList] = useState<Array<any>>(initialAgentShareInfoList);
+  // const [GCIValue, setGCIValue] = useState<Number>(0);
+  // const [agentShareInfoList, setAgentShareInfoList] = useState<Array<any>>(initialAgentShareInfoList);
 
   return (
     <Wizard.QuestionWizard onFinish={() => console.log('done')}>
@@ -39,8 +39,8 @@ export const FormWizard:React.FC<IQuestionProps> = (props) => {
       <FinanceProgQuestion {...props} />
       {/* <ListingInfoQuestion {...props} /> */}
       <GrossCommissionQuestion {...props} />
-      <GCI2DEQuestion {...props} setGCIValue={setGCIValue} />
-      <GCISplitQuestion {...props} GCIValue={GCIValue} agentShareInfoList={agentShareInfoList} setAgentShareInfoList={setAgentShareInfoList} />
+      <GCI2DEQuestion {...props} />
+      <GCISplitQuestion {...props} />
       <LastQuestion {...props} />
     </Wizard.QuestionWizard>
   )

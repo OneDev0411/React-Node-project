@@ -11,17 +11,38 @@ const App: React.FC<EntryProps> = ({
   hooks
 }) => {
   const { Wizard } = Components;
+  const { deal, roles } = models;
+  const { setAgentDataList } = useApp();
+
   // const { notifyOffice } = utils;
-  // const { add, testData, test } = useApp();
+  // const { testData, setTestData } = useApp();
   // React.useEffect(() => {
-  //   async function doSomething() {
-  //     if (add !== undefined) {
-  //       await add();
-  //     }
-  //     console.log('testData:', testData);
+  //   if (setTestData !== undefined) {
+  //     setTestData("puhahaha");
   //   }
-  //   doSomething();
   // }, []);
+
+  React.useEffect(() => {
+    // set initial context agentData
+    let agentRoles: IDealRole[] = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
+    if (setAgentDataList !== undefined) {
+      setAgentDataList(agentRoles.map((agentRole: IDealRole) => {
+        let { id, legal_full_name, role } = agentRole;
+        return {
+          id, legal_full_name, role, sharePercent: 5, note: ""
+        }
+      }));
+    }
+    // console.log('agentRoles:', agentRoles);
+    // console.log('context:', deal.context);
+    // async function doSomething() {
+    //   if (add !== undefined) {
+    //     await add();
+    //   }
+    //   console.log('testData:', testData);
+    // }
+    // doSomething();
+  }, []);
 
   return (
     // <Ui.Button
@@ -32,16 +53,16 @@ const App: React.FC<EntryProps> = ({
     //   Notify Admin
     // </Ui.Button>
     // <div>
-    // {/* Test */}
-    // {/* </div> */}
+    //   Test
+    // </div>
     // <>
-    //   <Ui.Button
-    //     variant="contained"
-    //     color="primary"
-    //     onClick={() => console.log("$$$$$testData:", testData)}
-    //   >
-    //     GetData
-    //   </Ui.Button>
+      // <Ui.Button
+      //   variant="contained"
+      //   color="primary"
+      //   onClick={() => console.log("$$$$$testData:", testData)}
+      // >
+      //   GetData
+      // </Ui.Button>
     <FormWizard Wizard={Wizard} hooks={hooks.wizard} utils={utils} models={models} api={api} Components={Components} />
     // </>
   )

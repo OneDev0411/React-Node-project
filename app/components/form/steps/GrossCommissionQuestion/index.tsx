@@ -2,22 +2,23 @@ import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { IQuestionProps, SelectData } from "../../../../models/type"
 import { commissionSelectDataList } from '../../../../util'
+import useApp from '../../../../hooks/useApp'
 
 const GrossCommissionQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
     hooks: { useWizardContext, useSectionContext },
-    GCIUnit,
-    setGCIUnit,
 }) => {
     const { useState } = React;
     const { RadioGroup, FormControlLabel, Radio, Box } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
+    const { GCIUnit, setGCIUnit } = useApp();
 
     const [showBox, setShowBox] = useState<boolean>(true);
 
     const handleClickRadioButton = (event: any) => {
         setShowBox(false);
+
         if (setGCIUnit !== undefined) {
             setGCIUnit(event.target.value);
         }
@@ -31,7 +32,7 @@ const GrossCommissionQuestion: React.FC<IQuestionProps> = ({
     return (
         <QuestionSection>
             <QuestionTitle>
-                How is this transaction being financed?
+                How would you like Gross Commission to be calculated?
             </QuestionTitle>
             <QuestionForm>
                 <RadioGroup

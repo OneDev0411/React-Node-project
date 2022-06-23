@@ -8,12 +8,18 @@ const { createContext, useState } = React;
 
 const defaultValue: AppContextApi = {
   GCIUnit: "",
+  GCIValue: 0,
+  agentDataList: [],
+  testData: "hahaha",
 };
 
 export const AppContext = createContext<AppContextApi>(defaultValue);
 
 export const AppProvider: React.FC<any> = ({ children }) => {
-  const [GCIUnit, setGCIUnit] = useState<AppContextApi['GCIUnit']>("")
+  const [testData, setTestData] = useState<AppContextApi['testData']>("hahaha");
+  const [GCIUnit, setGCIUnit] = useState<AppContextApi['GCIUnit']>("");
+  const [GCIValue, setGCIValue] = useState<AppContextApi['GCIValue']>(0);
+  const [agentDataList, setAgentDataList] = useState<AppContextApi['agentDataList']>([]);
 
   // const setGCIUnit = (_GCIUnit: GCIUnit) => {
   //   _setGCIUnit(_GCIUnit);
@@ -31,7 +37,7 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   // }
 
   return (
-    <AppContext.Provider value={{ GCIUnit, setGCIUnit }}>
+    <AppContext.Provider value={{ testData, setTestData, GCIUnit, setGCIUnit, GCIValue, setGCIValue, agentDataList, setAgentDataList }}>
       {children}
     </AppContext.Provider>
   )

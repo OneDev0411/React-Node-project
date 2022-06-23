@@ -16,17 +16,26 @@ export interface IGCIInfoItemProps {
     // itemData: ItemData
     role: IDealRole
     GCIValue: Number
+    index: number
+}
+
+export interface AgentData {
+    id: IDealRole['id']
+    legal_full_name: IDealRole['legal_full_name']
+    role: IDealRole['role']
+    sharePercent: Number,
+    note: string,
 }
 
 export interface AppContextApi {
     GCIUnit: GCIUnit
     setGCIUnit?: (GCIUnit: GCIUnit) => void
-    // roles: IDealRole[],
-    // remove: (id: string) => void,
-    // add?: () => void | Promise<void>,
-    // test?: () => void,
-    // testData: string,
-    // update: (role: IDealRole) => void,
+    GCIValue: Number
+    setGCIValue?: (GCIValue: Number) => void
+    agentDataList: AgentData[]
+    setAgentDataList?: (data: AgentData[]) => void
+    testData: string,
+    setTestData?: (data: string) => void,
 }
 
 export interface IQuestionProps {
@@ -36,12 +45,10 @@ export interface IQuestionProps {
     Components: EntryProps['Components']
     Wizard: CoreComponents['Wizard']
     roleType?: RoleType
-    agentShareInfoList?: Array<any>
-    setAgentShareInfoList?: (value: Array<any>) => void
-    GCIUnit?: "%" | "$" | ""
-    setGCIUnit?: (value: "%" | "$" | "") => void
-    GCIValue?: Number,
-    setGCIValue?: (value: Number) => void
+    // agentShareInfoList?: Array<any>
+    // setAgentShareInfoList?: (value: Array<any>) => void
+    // GCIUnit?: "%" | "$" | ""
+    // setGCIUnit?: (value: "%" | "$" | "") => void
     utils: {
         notify: (data: NotificationData) => void
         notifyOffice: (comment: string) => Promise<void>

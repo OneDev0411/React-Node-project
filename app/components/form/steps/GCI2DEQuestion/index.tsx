@@ -2,18 +2,17 @@ import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { IQuestionProps } from "../../../../models/type"
 import { stylizeNumber } from '../../../../util';
+import useApp from '../../../../hooks/useApp';
 
 const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
     hooks: { useWizardContext, useSectionContext },
     api: { getDealContext, updateDealContext },
-    GCIUnit,
-    setGCIValue,
 }) => {
     const { useState } = React;
     const { Box, TextField, Button, InputAdornment } = Ui;
     const wizard = useWizardContext();
-    const { step } = useSectionContext();
+    const { GCIUnit, setGCIValue } = useApp();
 
     // state
     const [inputValue, setInputValue] = useState<string | number>("");
