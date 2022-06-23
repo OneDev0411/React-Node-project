@@ -1,6 +1,7 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { FormWizard } from './components/form/Wizard'
+import useApp from './hooks/useApp';
 
 const App: React.FC<EntryProps> = ({
   models,
@@ -11,6 +12,16 @@ const App: React.FC<EntryProps> = ({
 }) => {
   const { Wizard } = Components;
   // const { notifyOffice } = utils;
+  // const { add, testData, test } = useApp();
+  // React.useEffect(() => {
+  //   async function doSomething() {
+  //     if (add !== undefined) {
+  //       await add();
+  //     }
+  //     console.log('testData:', testData);
+  //   }
+  //   doSomething();
+  // }, []);
 
   return (
     // <Ui.Button
@@ -21,9 +32,18 @@ const App: React.FC<EntryProps> = ({
     //   Notify Admin
     // </Ui.Button>
     // <div>
-    //   Test
-    // </div>
+    // {/* Test */}
+    // {/* </div> */}
+    // <>
+    //   <Ui.Button
+    //     variant="contained"
+    //     color="primary"
+    //     onClick={() => console.log("$$$$$testData:", testData)}
+    //   >
+    //     GetData
+    //   </Ui.Button>
     <FormWizard Wizard={Wizard} hooks={hooks.wizard} utils={utils} models={models} api={api} Components={Components} />
+    // </>
   )
 }
 

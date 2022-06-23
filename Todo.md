@@ -1,4 +1,8 @@
 # Todo
+1. Make note are
+2. Update state to context
+
+# Todo
 1. update context with MLS source
 2. laywer skip button logic
 3. 
@@ -12,6 +16,11 @@
 # Flag
 NEED_TO_UPDATE_THIS_CODE
 
+# Things to ask emil
+1. type of agent role
+2. 
+
 # Things to ask ramin
-1. update context
-2. check reload
+1. api to update agent share percent
+2. api to add more agents 
+

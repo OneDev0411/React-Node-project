@@ -6,8 +6,9 @@ import { stylizeNumber } from '../../../../util';
 const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
     hooks: { useWizardContext, useSectionContext },
-    // api: { getDealContext },
+    api: { getDealContext, updateDealContext },
     GCIUnit,
+    setGCIValue,
 }) => {
     const { useState } = React;
     const { Box, TextField, Button, InputAdornment } = Ui;
@@ -19,11 +20,17 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     const [showButton, setShowButton] = useState<boolean>(true);
 
     const handleClickButton = () => {
+        let GCIValue = GCIUnit === "%" ? 1000000 * Number(inputValue) / 100 : Number(inputValue); // NEED_TO_UPDATE_THIS_CODE
+        if(setGCIValue !== undefined) {
+            setGCIValue(GCIValue);
+        }
         setShowButton(false);
         setTimeout(() => {
             wizard.next();
         }, 80);
     };
+
+    // console.log('getDealContext:', getDealContext());
 
     const handleChangeTextField = (event: any) => {
         setInputValue(event.target.value);

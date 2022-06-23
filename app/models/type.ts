@@ -4,6 +4,8 @@ export type ConfirmRoleStatus = 'Validating' | 'Listing' | 'Upserting' | 'Select
 
 export type RoleType = "Buyer" | "Seller" | "BuyerLawyer" | "SellerLawyer"
 
+export type GCIUnit = "$" | "%" | ""
+
 export interface SelectData {
     label: string,
     value: string,
@@ -11,14 +13,20 @@ export interface SelectData {
 
 export interface IGCIInfoItemProps {
     Ui: typeof Ui
-    itemData: ItemData
+    // itemData: ItemData
+    role: IDealRole
+    GCIValue: Number
 }
 
-export interface ItemData {
-    name: string
-    role: string
-    share: string
-    share2: string
+export interface AppContextApi {
+    GCIUnit: GCIUnit
+    setGCIUnit?: (GCIUnit: GCIUnit) => void
+    // roles: IDealRole[],
+    // remove: (id: string) => void,
+    // add?: () => void | Promise<void>,
+    // test?: () => void,
+    // testData: string,
+    // update: (role: IDealRole) => void,
 }
 
 export interface IQuestionProps {
@@ -28,8 +36,12 @@ export interface IQuestionProps {
     Components: EntryProps['Components']
     Wizard: CoreComponents['Wizard']
     roleType?: RoleType
-    GCIUnit?: string
-    setGCIUnit?: (value: string) => void
+    agentShareInfoList?: Array<any>
+    setAgentShareInfoList?: (value: Array<any>) => void
+    GCIUnit?: "%" | "$" | ""
+    setGCIUnit?: (value: "%" | "$" | "") => void
+    GCIValue?: Number,
+    setGCIValue?: (value: Number) => void
     utils: {
         notify: (data: NotificationData) => void
         notifyOffice: (comment: string) => Promise<void>

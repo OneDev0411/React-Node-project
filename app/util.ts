@@ -1,4 +1,4 @@
-import { ItemData, SelectData } from "./models/type"
+import { SelectData } from "./models/type"
 
 export const defaultUser: IUser = {
     last_seen_at: null,
@@ -112,29 +112,29 @@ export const stylizeNumber = (data: number): string => {
     return resultStr;
 }
 
-export const GCI2DEDataList: ItemData[] = [
-    {
-        name: 'John Smith',
-        role: 'Seller - DE',
-        share: '5%',
-        share2: '$10,000'
-    },
-    {
-        name: 'Jim Doe',
-        role: 'Buyer - Rechat',
-        share: '5%',
-        share2: '$10,000'
-    },
-    {
-        name: 'Peter Parker',
-        role: "Seller's Attorney",
-        share: '5%',
-        share2: '$10,000'
-    },
-    {
-        name: 'John Smith',
-        role: "Steve Palmer",
-        share: '5%',
-        share2: '$10,000'
-    },
-]
+// export const GCI2DEDataList: ItemData[] = [
+//     {
+//         name: 'John Smith',
+//         role: 'Seller - DE',
+//         share: '5%',
+//         share2: '$10,000'
+//     },
+//     {
+//         name: 'Jim Doe',
+//         role: 'Buyer - Rechat',
+//         share: '5%',
+//         share2: '$10,000'
+//     },
+//     {
+//         name: 'Peter Parker',
+//         role: "Seller's Attorney",
+//         share: '5%',
+//         share2: '$10,000'
+//     },
+//     {
+//         name: 'John Smith',
+//         role: "Steve Palmer",
+//         share: '5%',
+//         share2: '$10,000'
+//     },
+// ]
