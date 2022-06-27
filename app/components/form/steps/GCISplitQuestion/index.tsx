@@ -53,7 +53,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     }
 
     // variables
-    console.log('roles:', roles);
+    // console.log('roles:', roles);
     const agentRole = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
 
     const totalPercent = agentDataList.reduce((totalPercent: any, agentData: any) => {

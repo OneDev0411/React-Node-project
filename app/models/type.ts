@@ -38,6 +38,10 @@ export interface AppContextApi {
     setAgentDataList?: (data: AgentData[]) => void
     testData: string,
     setTestData?: (data: string) => void,
+    reasonValue: Number,
+    setReasonValue?: (data: Number) => void,
+    reasonNote: string,
+    setReasonNote?: (data: string) => void,
 }
 
 export interface IQuestionProps {
@@ -61,7 +65,7 @@ export interface IDatePickerProps {
     Picker: CoreComponents['DatePicker']
     value: Date
     setValue: (date: Date) => void
-    label: string
+    label?: string
 }
 
 

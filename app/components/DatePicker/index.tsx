@@ -18,7 +18,7 @@ export const DatePicker: React.FC<IDatePickerProps> = ({
   }
 
   return (
-    <div style={{ width: '100%', marginBottom: 20 }} className="date-picker">
+    <div style={{ width: '100%' }} className="date-picker">
       <TextField
         value={value.toDateString().substring(4)}
         label={label}

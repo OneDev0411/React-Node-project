@@ -1,6 +1,6 @@
 # Todo
-1. Make note are
-2. Update state to context
+1. stylize agentpay/amount component
+2. 
 
 # Todo
 1. update context with MLS source
@@ -17,8 +17,7 @@
 NEED_TO_UPDATE_THIS_CODE
 
 # Things to ask emil
-1. type of agent role
-2. 
+1. 
 
 # Things to ask ramin
 1. api to update agent share percent
