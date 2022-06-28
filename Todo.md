@@ -1,6 +1,7 @@
 # Todo
 1. stylize agentpay/amount component
-2. 
+2. show the staging amount data input component
+3. 
 
 # Todo
 1. update context with MLS source
@@ -16,8 +17,10 @@
 # Flag
 NEED_TO_UPDATE_THIS_CODE
 
-# Things to ask emil
-1. 
+# Things to discuss with emil
+1. change app to show data at first
+2. collect staging amount data before start of app
+3. 
 
 # Things to ask ramin
 1. api to update agent share percent

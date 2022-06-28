@@ -27,7 +27,7 @@ export const DatePicker: React.FC<IDatePickerProps> = ({
             <img 
               src={DateImage}  
               onClick={(e: any) => setAnchorEl(e.currentTarget)} 
-              width="4%"
+              width={15}
               style={{ marginRight: 10, marginBottom: 4 }}
               className="date-icon"
             />

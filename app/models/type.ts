@@ -51,10 +51,6 @@ export interface IQuestionProps {
     Components: EntryProps['Components']
     Wizard: CoreComponents['Wizard']
     roleType?: RoleType
-    // agentShareInfoList?: Array<any>
-    // setAgentShareInfoList?: (value: Array<any>) => void
-    // GCIUnit?: "%" | "$" | ""
-    // setGCIUnit?: (value: "%" | "$" | "") => void
     utils: {
         notify: (data: NotificationData) => void
         notifyOffice: (comment: string) => Promise<void>
@@ -68,4 +64,10 @@ export interface IDatePickerProps {
     label?: string
 }
 
+export interface CheckData {
+    number: number,
+    date: Date,
+    receiveDate: Date,
+    amount: number,
+}
 
