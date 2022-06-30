@@ -6,6 +6,8 @@ export type GCISplitStatus = 'Listing' | 'Inserting' | 'Selecting'
 
 export type RoleType = "Buyer" | "Seller" | "BuyerLawyer" | "SellerLawyer"
 
+export type RemittanceStatus = 'ShowBuy' | 'ShowSell'
+
 export type GCIUnit = "$" | "%" | ""
 
 export interface SelectData {

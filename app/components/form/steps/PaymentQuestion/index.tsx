@@ -1,7 +1,7 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { DatePicker } from "../../../DatePicker"
-import { CheckData, IQuestionProps } from "../../../../models/type"
+import { CheckData, IQuestionProps, RemittanceStatus } from "../../../../models/type"
 import useApp from '../../../../hooks/useApp'
 import { stylizeNumber } from '../../../../util'
 
@@ -12,7 +12,7 @@ const defaultCheckData: CheckData = {
     amount: 0,
 }
 
-const AgentPaymentInfo: React.FC<IQuestionProps> = ({
+const PaymentQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
     hooks: { useWizardContext, useSectionContext },
     models: { deal, roles },
@@ -24,11 +24,18 @@ const AgentPaymentInfo: React.FC<IQuestionProps> = ({
     const { step } = useSectionContext();
     const { GCIValue, agentDataList } = useApp();
 
+    const showBoth = true;
+    // const shouwBoth = deal.context.ender_type.text === "AgentDoubleEnder" || deal.context.ender_type.text === "OfficeDoubleEnder";
+    const showBuy = showBoth || deal.deal_type === "Buying";
+
     // state
+    const [status, setStatus] = useState<RemittanceStatus>(showBuy ? 'ShowBuy' : 'ShowSell');
     const [selectValue, setSelectValue] = useState<number>(-1);
     const [checkDataList, setCheckDataList] = useState<Array<CheckData>>([{ ...defaultCheckData }]);
-    
     const [amount, setAmount] = useState<number>(0);
+    const [showButton, setShowButton] = useState<boolean>(true);
+    // const [showBuy, setShowBuy] = useState<boolean>(showBoth || deal.deal_type === "Buying");
+    // const [showSell, setShowSell] = useState<boolean>(deal.deal_type === "Selling");
 
     const handleSelectChange = (event: any) => {
         setSelectValue(event.target.value);    
@@ -61,36 +68,60 @@ const AgentPaymentInfo: React.FC<IQuestionProps> = ({
         setCheckDataList(_checkDataList);
     }
 
+    const handleClickNextButton = () => {
+        if (status === "ShowBuy") { 
+            if (showBoth) { // shows sell part
+                setStatus("ShowSell");
+            } else {
+                gotoNext();
+            }
+        } else {
+            gotoNext();
+        }
+    }
+    
+    const gotoNext = () => {
+        setShowButton(false);
+        setTimeout(() => {
+            wizard.next();
+        }, 80);
+    }
+
+    // variables
+    // const showBuy =  showBoth || deal.deal_type === "Buying";
+    // const showSell =  deal.deal_type === "Selling"; // if showBoth is ture, enables true when cliking button
+
     return (
         <QuestionSection>
             <QuestionTitle>
                 Please input agent's payment info.
             </QuestionTitle>
             <QuestionForm>
-            <Grid container spacing={2} style={{ marginBottom: 10 }}>
-                <Grid item xs={6}>
-                    <label>
-                        Form of Remittance
-                    </label>
-                </Grid>
-                <Grid item xs={6}>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={selectValue}
-                        label="Seller"
-                        MenuProps={{ autoFocus: false }}
-                        onChange={handleSelectChange}
-                        style={{ width: '100%' }}
-                    >
-                        <MenuItem value={-1}>Select...</MenuItem>
-                        <MenuItem value={0}>Check(s)</MenuItem>
-                        <MenuItem value={1}>Bank Wire</MenuItem>
-                    </Select> 
-                </Grid>
-            </Grid>
-            {selectValue === 0 && (
+            {(status === "ShowBuy" || showBoth) && (
                 <>
+                    <Grid container spacing={2} style={{ marginBottom: 10 }}>
+                        <Grid item xs={6}>
+                            <label>
+                                Form of Remittance
+                            </label>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={0}
+                                // value={selectValue}
+                                label="Seller"
+                                MenuProps={{ autoFocus: false }}
+                                // onChange={handleSelectChange}
+                                style={{ width: '100%' }}
+                            >
+                                <MenuItem value={-1}>Select...</MenuItem>
+                                <MenuItem value={0}>Check(s)</MenuItem>
+                                <MenuItem value={1}>Bank Wire</MenuItem>
+                            </Select> 
+                        </Grid>
+                    </Grid>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <label>
@@ -163,7 +194,10 @@ const AgentPaymentInfo: React.FC<IQuestionProps> = ({
                         </Box>
                     )}
                     <Box style={{ marginTop: 20 }}>
-                        <Button variant="contained" onClick={handleClickAddAnotherCheckButton} style={{ backgroundColor: '#0fb78d', color: 'white', paddingBottom: 2, paddingTop: 2 }}>
+                        {/* <Button variant="contained" onClick={handleClickAddAnotherCheckButton} style={{ backgroundColor: '#0fb78d', color: 'white', paddingBottom: 2, paddingTop: 2 }}> */}
+                            {/* + Add another check */}
+                        {/* </Button> */}
+                        <Button variant="outlined" onClick={handleClickAddAnotherCheckButton} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: 10 }}>
                             + Add another check
                         </Button>
                         {checkDataList.length > 1 && (
@@ -174,8 +208,31 @@ const AgentPaymentInfo: React.FC<IQuestionProps> = ({
                     </Box>
                 </>
             )}
-            {selectValue === 1 && (
-                <>
+            {status === "ShowSell" && (
+                <Box style={{ marginTop: 40 }}>
+                    <Grid container spacing={2} style={{ marginBottom: 10 }}>
+                        <Grid item xs={6}>
+                            <label>
+                                Form of Remittance
+                            </label>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={1}
+                                // value={selectValue}
+                                label="Seller"
+                                MenuProps={{ autoFocus: false }}
+                                // onChange={handleSelectChange}
+                                style={{ width: '100%' }}
+                            >
+                                <MenuItem value={-1}>Select...</MenuItem>
+                                <MenuItem value={0}>Check(s)</MenuItem>
+                                <MenuItem value={1}>Bank Wire</MenuItem>
+                            </Select> 
+                        </Grid>
+                    </Grid>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <label>
@@ -213,11 +270,18 @@ const AgentPaymentInfo: React.FC<IQuestionProps> = ({
                             label="Amount"
                         />
                     </Box>
-                </>
+                </Box>
+            )}
+            {showButton && (
+                <Box style={{ textAlign: 'right' }}>
+                    <Button variant="contained" onClick={handleClickNextButton} style={{ marginBottom: 20, backgroundColor: '#0fb78d', color: 'white' }}>
+                        Looks good, Next
+                    </Button>
+                </Box>
             )}
             </QuestionForm>
         </QuestionSection>
     )
 }
 
-export default AgentPaymentInfo;
+export default PaymentQuestion;
