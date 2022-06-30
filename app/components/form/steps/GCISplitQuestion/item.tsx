@@ -8,9 +8,23 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   GCIValue,
   index,
 }) => {
-  const { useState } = React;
+  const { useState, useEffect } = React;
   const { agentDataList, setAgentDataList } = useApp();
   const agentData: AgentData = agentDataList[index];
+
+  const [note, setNote] = useState<string>("");
+
+  useEffect(() => {
+    // save note data when the text field loses focus
+    let noteTextField = document.getElementById(`GCI-item-textfield-${index}`);
+    noteTextField?.addEventListener('focusout', function handler(e) {
+      let _agentDataList = agentDataList.slice();
+      _agentDataList[index].note = note;
+      if(setAgentDataList !== undefined) {
+        setAgentDataList(_agentDataList);
+      }
+    });
+  }, []);
 
   const handleChangeSharePercent = (value: Number) => {
     if(value > 100)
@@ -20,6 +34,10 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     if(setAgentDataList !== undefined) {
       setAgentDataList(_agentDataList);
     }
+  }
+
+  const handleChangeNote = (event: any) => {
+    setNote(event.target.value);
   }
 
   return (
@@ -54,6 +72,16 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           label="Share($)"
           value={Number(GCIValue) / 100 * Number(agentData.sharePercent)}
           style={{ width: '100%' }}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          id={`GCI-item-textfield-${index}`}
+          size='small'
+          label="Note"
+          value={note}
+          onChange={handleChangeNote}
+          style={{ width: '100%', marginTop: -15, marginBottom: 20 }}
         />
       </Grid>
     </Grid>

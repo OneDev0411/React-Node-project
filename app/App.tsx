@@ -22,7 +22,10 @@ const App: React.FC<EntryProps> = ({
   //   }
   // }, []);
 
+
   React.useEffect(() => {
+    console.log('deal:', deal);
+    console.log('roles:', roles);
     // set initial context agentData
     let agentRoles: IDealRole[] = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
     if (setAgentDataList !== undefined) {

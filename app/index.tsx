@@ -2,7 +2,7 @@ import React from '@libs/react'
 import App from './App'
 import { createComponents } from './core/utils/create-components'
 import './index.css'
-import { AppContextApi, GCIUnit } from './models/type';
+import { AppContextApi } from './models/type';
 
 const { createContext, useState } = React;
 
@@ -11,6 +11,8 @@ const defaultValue: AppContextApi = {
   GCIValue: 0,
   agentDataList: [],
   testData: "hahaha",
+  reasonValue: -1,
+  reasonNote: "",
 };
 
 export const AppContext = createContext<AppContextApi>(defaultValue);
@@ -20,6 +22,8 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   const [GCIUnit, setGCIUnit] = useState<AppContextApi['GCIUnit']>("");
   const [GCIValue, setGCIValue] = useState<AppContextApi['GCIValue']>(0);
   const [agentDataList, setAgentDataList] = useState<AppContextApi['agentDataList']>([]);
+  const [reasonValue, setReasonValue] = useState<AppContextApi['reasonValue']>(-1);
+  const [reasonNote, setReasonNote] = useState<AppContextApi['reasonNote']>("");
 
   // const setGCIUnit = (_GCIUnit: GCIUnit) => {
   //   _setGCIUnit(_GCIUnit);
@@ -37,7 +41,8 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   // }
 
   return (
-    <AppContext.Provider value={{ testData, setTestData, GCIUnit, setGCIUnit, GCIValue, setGCIValue, agentDataList, setAgentDataList }}>
+    <AppContext.Provider value={{ testData, setTestData, GCIUnit, setGCIUnit, GCIValue, setGCIValue, 
+      agentDataList, setAgentDataList, reasonValue, setReasonValue, reasonNote, setReasonNote }}>
       {children}
     </AppContext.Provider>
   )

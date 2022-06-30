@@ -18,7 +18,7 @@ export const DatePicker: React.FC<IDatePickerProps> = ({
   }
 
   return (
-    <div style={{ width: '100%', marginBottom: 20 }} className="date-picker">
+    <div style={{ width: '100%' }} className="date-picker">
       <TextField
         value={value.toDateString().substring(4)}
         label={label}
@@ -27,7 +27,7 @@ export const DatePicker: React.FC<IDatePickerProps> = ({
             <img 
               src={DateImage}  
               onClick={(e: any) => setAnchorEl(e.currentTarget)} 
-              width="4%"
+              width={15}
               style={{ marginRight: 10, marginBottom: 4 }}
               className="date-icon"
             />

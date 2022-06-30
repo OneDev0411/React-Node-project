@@ -6,6 +6,8 @@ export type GCISplitStatus = 'Listing' | 'Inserting' | 'Selecting'
 
 export type RoleType = "Buyer" | "Seller" | "BuyerLawyer" | "SellerLawyer"
 
+export type RemittanceStatus = 'ShowBuy' | 'ShowSell'
+
 export type GCIUnit = "$" | "%" | ""
 
 export interface SelectData {
@@ -38,6 +40,10 @@ export interface AppContextApi {
     setAgentDataList?: (data: AgentData[]) => void
     testData: string,
     setTestData?: (data: string) => void,
+    reasonValue: Number,
+    setReasonValue?: (data: Number) => void,
+    reasonNote: string,
+    setReasonNote?: (data: string) => void,
 }
 
 export interface IQuestionProps {
@@ -47,10 +53,6 @@ export interface IQuestionProps {
     Components: EntryProps['Components']
     Wizard: CoreComponents['Wizard']
     roleType?: RoleType
-    // agentShareInfoList?: Array<any>
-    // setAgentShareInfoList?: (value: Array<any>) => void
-    // GCIUnit?: "%" | "$" | ""
-    // setGCIUnit?: (value: "%" | "$" | "") => void
     utils: {
         notify: (data: NotificationData) => void
         notifyOffice: (comment: string) => Promise<void>
@@ -61,7 +63,13 @@ export interface IDatePickerProps {
     Picker: CoreComponents['DatePicker']
     value: Date
     setValue: (date: Date) => void
-    label: string
+    label?: string
 }
 
+export interface CheckData {
+    number: number,
+    date: Date,
+    receiveDate: Date,
+    amount: number,
+}
 
