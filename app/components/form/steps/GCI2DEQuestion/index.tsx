@@ -123,12 +123,11 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
                             <MenuItem value={2}>Other</MenuItem>
                         </Select>
                         {_reasonValue === 2 && (
-
                             <TextField
                                 size='small'
                                 label="Reason"
                                 value={_reasonNote}
-                                style={{ width: '100%' }}
+                                style={{ width: '100%', marginTop: 10 }}
                                 onChange={handleChangeReasonTextField}
                                 placeholder="Please type your reason."
                             />

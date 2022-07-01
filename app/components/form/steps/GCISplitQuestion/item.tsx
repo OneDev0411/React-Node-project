@@ -42,7 +42,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
 
   return (
     <Grid container spacing={2} style={{ paddingBottom: 10 }}>
-      <Grid item xs={6}>
+      <Grid item xs={4}>
         <Box>
           <label style={{ fontSize: 13, marginTop: 11 }}>
             {role.legal_full_name}
@@ -54,7 +54,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           </label>
         </Box>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={4}>
         <TextField
           required
           size='small'
@@ -65,7 +65,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           style={{ width: '100%' }}
         />
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={4}>
         <TextField
           required
           size='small'
@@ -74,7 +74,8 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           style={{ width: '100%' }}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={4} style={{ marginTop: -10 }} />
+      <Grid item xs={8} style={{ marginTop: -10 }}>
         <TextField
           id={`GCI-item-textfield-${index}`}
           size='small'

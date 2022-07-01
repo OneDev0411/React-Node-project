@@ -1,7 +1,10 @@
 # Todo
-1. stylize agentpay/amount component
-2. show the staging amount data input component
-3. 
+1. GCI2DE: show listing price, show default data
+2. save the data to backend at last 
+3. get data from backend at first
+4. show cancel button in GCI split
+5. *show the staging amount data input component
+6. 
 
 # Need to be perfect
 1. update context with MLS source
@@ -18,11 +21,12 @@
 NEED_TO_UPDATE_THIS_CODE
 
 # Things to discuss with emil
-1. collect staging amount data before start of app
-2. context ender_type no
-3. *change app to show data at first
-4. Check-buy, wire-list bundle?
-5. payments and fees: how to identify DE team of  not? can add agents manually here?
+1. where can I find default GCI to DE?
+2. collect staging amount data before start of app
+3. context ender_type no
+4. *change app to show data at first
+5. Check-buy, wire-list bundle?
+6. payments and fees: how to identify DE team of  not? can add agents manually here?
 
 # Things to ask ramin
 1. *api to update agent share percent

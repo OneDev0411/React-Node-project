@@ -20,6 +20,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     // state
     const [status, setStatus] = useState<GCISplitStatus>('Listing');
     const [currentRole, setCurrentObject] = useState<Partial<IDealFormRole> | IDealRole | null>(null); // data from dropdown select, can be IDealRole object or nameObject
+    const [showButton, setShowButton] = useState<boolean>(true);
 
     useEffect(() => {
         // when the component is shown
@@ -51,6 +52,13 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     const handleClickAddAnotherButton = () => {
         setStatus('Selecting');
     }
+
+    const handleClickNextButton = async () => {
+        setShowButton(false);
+        setTimeout(() => {
+            wizard.next();
+        }, 80);
+    };
 
     // variables
     // console.log('roles:', roles);
@@ -123,6 +131,13 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                             </Grid>
                         </Grid>
                     </>
+                )}
+                {showButton && (
+                    <Box style={{ textAlign: 'right' }}>
+                        <Button variant="contained" onClick={handleClickNextButton} style={{ marginBottom: 20, backgroundColor: '#0fb78d', color: 'white' }}>
+                            Looks good, Next
+                        </Button>
+                    </Box>
                 )}
             </QuestionForm>
         </QuestionSection>
