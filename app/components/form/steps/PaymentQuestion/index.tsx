@@ -18,7 +18,7 @@ const PaymentQuestion: React.FC<IQuestionProps> = ({
     models: { deal, roles },
     Components: { DatePicker: DayPicker },
 }) => {
-    const { useEffect, useState } = React;
+    const { useState } = React;
     const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
@@ -41,15 +41,6 @@ const PaymentQuestion: React.FC<IQuestionProps> = ({
     const handleSelectChange = (event: any) => {
         setSelectValue(event.target.value);    
     }
-
-    useEffect(() => {
-        // when the component is shown
-        if (wizard.currentStep === step) {
-            setTimeout(() => {
-                wizard.next();
-            }, 1000);
-        }
-    }, [wizard.currentStep]);
 
     const handleClickAddAnotherCheckButton = (event: any) => {
         let _checkDataList = checkDataList.slice();

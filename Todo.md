@@ -1,6 +1,6 @@
 # Todo
 1. GCI2DE: show listing price, show default data
-2. save the data to backend at last 
+2. save the data to backend at last
 3. get data from backend at first
 4. show cancel button in GCI split
 5. *show the staging amount data input component
@@ -34,6 +34,6 @@ NEED_TO_UPDATE_THIS_CODE
 # Things to ask James
 1. Show list of checks per buyer's agent? and show list of bank wires per seller's agent?
 2. remittance/ listing side : amount several?
-4. brief logic about the payment section
+3. brief logic about the payment section
 
 

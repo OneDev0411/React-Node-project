@@ -11,7 +11,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     models: { deal, roles },
     Components: { RoleForm, ContactRoles },
 }) => {
-    const { useEffect, useState } = React;
+    const { useState } = React;
     const { Grid, Button, Box } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
@@ -21,15 +21,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     const [status, setStatus] = useState<GCISplitStatus>('Listing');
     const [currentRole, setCurrentObject] = useState<Partial<IDealFormRole> | IDealRole | null>(null); // data from dropdown select, can be IDealRole object or nameObject
     const [showButton, setShowButton] = useState<boolean>(true);
-
-    useEffect(() => {
-        // when the component is shown
-        if (wizard.currentStep === step) {
-            setTimeout(() => {
-                wizard.next();
-            }, 1000);
-        }
-    }, [wizard.currentStep]);
 
     // this logic is updating 
     const handleCloseRoleForm = () => {
@@ -79,17 +70,17 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                         {agentDataList.map((_: AgentData, id: number) =>
                             <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={GCIValue} />
                         )}
-                        <Button variant="outlined" onClick={handleClickAddAnotherButton} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: -10, marginTop: 10 }}>
+                        <Button variant="outlined" onClick={handleClickAddAnotherButton} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: -10, marginTop: 0, marginBottom: 10 }}>
                             + Add More Agents
                         </Button>
                         <Grid container spacing={2} style={{ paddingBottom: 30 }}>
-                            <Grid item xs={6} />
-                            <Grid item xs={3}>
+                            <Grid item xs={4} />
+                            <Grid item xs={4}>
                                 <label style={{ fontWeight: 300 }}>
                                     Total: <strong>{totalPercent}%</strong>
                                 </label>
                             </Grid>
-                            <Grid item xs={3} style={{ paddingLeft: 0 }}>
+                            <Grid item xs={4} style={{ paddingLeft: 0 }}>
                                 <label style={{ fontWeight: 300 }}>
                                     Total: <strong>${stylizeNumber(Number(GCIValue) / 100 * totalPercent)}</strong>
                                 </label>
@@ -118,13 +109,13 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                             onSelectRole={handleSelectContact}
                         />
                         <Grid container spacing={2} style={{ paddingBottom: 30 }}>
-                            <Grid item xs={6} />
-                            <Grid item xs={3}>
+                            <Grid item xs={4} />
+                            <Grid item xs={4}>
                                 <label style={{ fontWeight: 300 }}>
                                     Total: <strong>{totalPercent}%</strong>
                                 </label>
                             </Grid>
-                            <Grid item xs={3} style={{ paddingLeft: 0 }}>
+                            <Grid item xs={4} style={{ paddingLeft: 0 }}>
                                 <label style={{ fontWeight: 300 }}>
                                     Total: <strong>${stylizeNumber(Number(GCIValue) / 100 * totalPercent)}</strong>
                                 </label>
@@ -132,8 +123,8 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                         </Grid>
                     </>
                 )}
-                {showButton && (
-                    <Box style={{ textAlign: 'right' }}>
+                {showButton && status === "Listing" && (
+                    <Box style={{ textAlign: 'right', marginTop: 10 }}>
                         <Button variant="contained" onClick={handleClickNextButton} style={{ marginBottom: 20, backgroundColor: '#0fb78d', color: 'white' }}>
                             Looks good, Next
                         </Button>

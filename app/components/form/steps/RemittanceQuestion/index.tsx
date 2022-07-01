@@ -18,7 +18,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     models: { deal, roles },
     Components: { DatePicker: DayPicker },
 }) => {
-    const { useEffect, useState } = React;
+    const { useState } = React;
     const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
@@ -38,17 +38,8 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     // const [showSell, setShowSell] = useState<boolean>(deal.deal_type === "Selling");
 
     const handleSelectChange = (event: any) => {
-        setSelectValue(event.target.value);    
+        setSelectValue(event.target.value);
     }
-
-    useEffect(() => {
-        // when the component is shown
-        if (wizard.currentStep === step) {
-            setTimeout(() => {
-                wizard.next();
-            }, 1000);
-        }
-    }, [wizard.currentStep]);
 
     const handleClickAddAnotherCheckButton = (event: any) => {
         let _checkDataList = checkDataList.slice();
@@ -125,7 +116,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                     <Grid container spacing={2}>
                         <Grid item xs={4}>
                             <label>
-                                Deal side(s)
+                                Deal side
                                 {/* Deal side(s) for this check */}
                             </label>
                         </Grid>
@@ -219,12 +210,12 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
             {status === "ShowSell" && (
                 <Box style={{ marginTop: 40 }}>
                     <Grid container spacing={2} style={{ marginBottom: 10 }}>
-                        <Grid item xs={6}>
+                        <Grid item xs={4}>
                             <label>
                                 Form of Remittance
                             </label>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={8}>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
@@ -242,12 +233,12 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                         </Grid>
                     </Grid>
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid item xs={4}>
                             <label>
                                 Deal side
                             </label>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={8}>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"

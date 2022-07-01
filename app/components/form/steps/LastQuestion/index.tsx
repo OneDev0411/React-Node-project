@@ -7,8 +7,7 @@ const LastQuestion: React.FC<IQuestionProps> = ({
     utils: { notifyOffice },
 }) => {
     const { QuestionSection, QuestionTitle, QuestionForm } = Wizard;
-    const { useEffect, useState } = React;
-    const { Grid, Select, MenuItem, ListSubheader,  TextField, InputAdornment, Box, Button } = Ui;
+    const { Box, Button } = Ui;
     
     const handleSubmit = () => {
         notifyOffice("Please review the Commission Slip");
