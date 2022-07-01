@@ -1,9 +1,11 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { DatePicker } from "../../../DatePicker"
-import { CheckData, IQuestionProps, RemittanceStatus } from "../../../../models/type"
+import { CheckData, IQuestionProps, RemittanceStatus, PaymentType } from "../../../../models/type"
 import useApp from '../../../../hooks/useApp'
-import { stylizeNumber } from '../../../../util'
+import { stylizeNumber, paymentTypeData } from '../../../../util'
+import PaidByCard from './PaidByCard';
+
 
 const defaultCheckData: CheckData = {
     number: 0,
@@ -19,7 +21,7 @@ const PaymentQuestion: React.FC<IQuestionProps> = ({
     Components: { DatePicker: DayPicker },
 }) => {
     const { useState } = React;
-    const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
+    const { Grid, Select, MenuItem, ListSubheader,  TextField, InputAdornment, Box, Button, FormControlLabel, Checkbox, Divider } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
     const { GCIValue, agentDataList } = useApp();
@@ -32,8 +34,7 @@ const PaymentQuestion: React.FC<IQuestionProps> = ({
     const [status, setStatus] = useState<RemittanceStatus>(showBuy ? 'ShowBuy' : 'ShowSell');
     const [selectValue, setSelectValue] = useState<number>(-1);
     const [checkDataList, setCheckDataList] = useState<Array<CheckData>>([{ ...defaultCheckData }]);
-    const [brokerageAmount, setBrokerageAmount] = useState<number>(0);
-    const [stagingAmount, setStagingAmount] = useState<number>(300);
+    
     const [showButton, setShowButton] = useState<boolean>(true);
     // const [showBuy, setShowBuy] = useState<boolean>(showBoth || deal.deal_type === "Buying");
     // const [showSell, setShowSell] = useState<boolean>(deal.deal_type === "Selling");
@@ -58,6 +59,20 @@ const PaymentQuestion: React.FC<IQuestionProps> = ({
         let _checkDataList: CheckData[] = checkDataList.slice();
         _checkDataList[index][key] = value;
         setCheckDataList(_checkDataList);
+    }
+
+    const displayData = paymentTypeData.reduce((result: any, data: PaymentType) => {
+        result.push(<ListSubheader>{data.groupName}</ListSubheader>);
+        data.member.map((value: string, index: number) => {
+            result.push(<MenuItem value={value}>{value}</MenuItem>);
+        });
+        return result;
+    }, []);
+
+    const [paymentTypeValue, setPaymentTypeValue] = useState<string>("Team Member");
+
+    const handleSelected = (event: any) => {
+        setPaymentTypeValue(event.target.value);
     }
 
     const handleClickNextButton = () => {
@@ -89,217 +104,80 @@ const PaymentQuestion: React.FC<IQuestionProps> = ({
                 Please input agent's payment info.
             </QuestionTitle>
             <QuestionForm>
-            {(status === "ShowBuy" || showBoth) && (
-                <>
-                    <Grid container spacing={2} style={{ marginBottom: 10 }}>
-                        <Grid item xs={6}>
-                            <label>
-                                Form of Remittance
-                            </label>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={0}
-                                // value={selectValue}
-                                label="Seller"
-                                MenuProps={{ autoFocus: false }}
-                                // onChange={handleSelectChange}
-                                style={{ width: '100%' }}
-                            >
-                                <MenuItem value={-1}>Select...</MenuItem>
-                                <MenuItem value={0}>Check(s)</MenuItem>
-                                <MenuItem value={1}>Bank Wire</MenuItem>
-                            </Select> 
-                        </Grid>
+            <Grid container spacing={2} style={{marginBottom: 10}}>
+                    <Grid item xs={3}>
+                        <label>Payment Type</label>
+
                     </Grid>
-                    <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                            <label>
-                                Deal side(s) for this check
-                            </label>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={-1}
-                                label="Seller"
-                                MenuProps={{ autoFocus: false }}
-                                style={{ width: '100%' }}
-                            >
-                                <MenuItem value={-1}>Buy Side</MenuItem>
-                                <MenuItem value={0}>Listing Side</MenuItem>
-                            </Select>
-                        </Grid>
+                    <Grid item xs={9}>
+                        <Select 
+                            defaultValue="" 
+                            id="grouped-select" 
+                            label="Grouping"
+                            style={{width: "100%"}}
+                            value={paymentTypeValue}
+                            onChange={handleSelected} 
+                        >
+                            {displayData}
+                            
+                        </Select>
                     </Grid>
-                    {checkDataList.map((checkData: CheckData, index: number) => 
-                        <Box style={{ marginTop: 20 }}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        size='small'
-                                        value={checkData.number}
-                                        style={{ width: '100%' }}
-                                        onChange={(e: any) => updateCheckDataList(index, "number", e.target.value)}
-                                        type="number"
-                                        label="Check #"
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        size='small'
-                                        value={checkData.amount}
-                                        style={{ width: '100%' }}
-                                        onChange={(e: any) => updateCheckDataList(index, "amount", e.target.value)}
-                                        type="number"
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    $
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                        label="Amount"
-                                    />
-                                    
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <DatePicker
-                                        Picker={DayPicker} 
-                                        value={checkData.date}
-                                        setValue={(value: Date) => updateCheckDataList(index, "date", value)}
-                                        label="Date on check"
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <DatePicker
-                                        Picker={DayPicker} 
-                                        value={checkData.receiveDate}
-                                        setValue={(value: Date) => updateCheckDataList(index, "receiveDate", value)}
-                                        label="Date check received"
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Box>
-                    )}
-                    <Box style={{ marginTop: 20 }}>
-                        {/* <Button variant="contained" onClick={handleClickAddAnotherCheckButton} style={{ backgroundColor: '#0fb78d', color: 'white', paddingBottom: 2, paddingTop: 2 }}> */}
-                            {/* + Add another check */}
-                        {/* </Button> */}
-                        <Button variant="outlined" onClick={handleClickAddAnotherCheckButton} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: 10 }}>
-                            + Add another check
-                        </Button>
-                        {checkDataList.length > 1 && (
-                            <Button variant="outlined" onClick={handleClickRemoveButton} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: 10 }}>
-                                Remove one
-                            </Button>
-                        )}
-                    </Box>
-                </>
-            )}
-            {status === "ShowSell" && (
-                <Box style={{ marginTop: 40 }}>
-                    <Grid container spacing={2} style={{ marginBottom: 10 }}>
-                        <Grid item xs={6}>
-                            <label>
-                                Form of Remittance
-                            </label>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={1}
-                                // value={selectValue}
-                                label="Seller"
-                                MenuProps={{ autoFocus: false }}
-                                // onChange={handleSelectChange}
-                                style={{ width: '100%' }}
-                            >
-                                <MenuItem value={-1}>Select...</MenuItem>
-                                <MenuItem value={0}>Check(s)</MenuItem>
-                                <MenuItem value={1}>Bank Wire</MenuItem>
-                            </Select> 
-                        </Grid>
+                </Grid>
+                <Grid container spacing={2} style={{marginBottom: 10}}>
+                    <Grid item xs={3}>
+                        <label>Paid To</label>
+
                     </Grid>
-                    <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                            <label>
-                                Deal side
-                            </label>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={0}
-                                label="Seller"
-                                MenuProps={{ autoFocus: false }}
-                                style={{ width: '100%' }}
-                            >
-                                <MenuItem value={-1}>Buy Side</MenuItem>
-                                <MenuItem value={0}>Listing Side</MenuItem>
-                            </Select> 
-                        </Grid>
+                    <Grid item xs={9}>
+                        <Select 
+                            defaultValue="" 
+                            id="grouped-select" 
+                            label="Grouping"
+                            style={{width: "100%"}}
+                            value={paymentTypeValue}
+                            onChange={handleSelected} 
+                        >
+                            {displayData}
+                            
+                        </Select>
                     </Grid>
-                    <Box style={{ marginBottom: 10 }}>
-                        <TextField
-                            size='small'
-                            value={brokerageAmount}
-                            style={{ width: '100%' }}
-                            onChange={(e: any) => setBrokerageAmount(Number(e.target.value))}
-                            type="number"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        $
-                                    </InputAdornment>
-                                )
-                            }}
-                            label="Brokerage Commmission"
-                        />
-                    </Box>
-                    <Box style={{ marginBottom: 10 }}>
-                        <TextField
-                            size='small'
-                            value={stagingAmount}
-                            style={{ width: '100%' }}
-                            type="number"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        $
-                                    </InputAdornment>
-                                )
-                            }}
-                            label="Staging Costs Due to DE"
-                        />
-                    </Box>
-                    <Box style={{ marginBottom: 10 }}>
-                        <TextField
-                            size='small'
-                            value={brokerageAmount + stagingAmount}
-                            style={{ width: '100%' }}
-                            type="number"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        $
-                                    </InputAdornment>
-                                )
-                            }}
-                            label="Total Due at Closing"
-                        />
-                        
-                    </Box>
-                </Box>
-            )}
+                </Grid>
+                <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                        <label>Paid By: </label>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <PaidByCard name='Jeff Adler' cost={2000}/>
+                        <Divider/>
+                        <PaidByCard name='Marie Espinal' cost={2000}/>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={1}> 
+                    <Grid item xs={12}>
+                       <TextField id="standard-basic" label="Company" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                       <TextField id="standard-basic" label="Company Address" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={4}>
+                       <TextField id="standard-basic" label="Office #" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={4}>
+                       <TextField id="standard-basic" label="Cell #" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={4}>
+                       <TextField id="standard-basic" label="Fax#" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={6}>
+                       <TextField id="standard-basic" label="Tax ID" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={6}>
+                       <TextField id="standard-basic" label="Email" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    
+                </Grid>
             {showButton && (
-                <Box style={{ textAlign: 'right' }}>
+                <Box style={{ textAlign: 'right', marginTop:"20px", paddingBottom:"20px" }}>
                     <Button variant="contained" onClick={handleClickNextButton} style={{ marginBottom: 20, backgroundColor: '#0fb78d', color: 'white' }}>
                         Looks good, Next
                     </Button>

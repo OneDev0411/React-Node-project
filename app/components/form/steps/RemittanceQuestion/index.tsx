@@ -32,7 +32,8 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     const [status, setStatus] = useState<RemittanceStatus>(showBuy ? 'ShowBuy' : 'ShowSell');
     const [selectValue, setSelectValue] = useState<number>(-1);
     const [checkDataList, setCheckDataList] = useState<Array<CheckData>>([{ ...defaultCheckData }]);
-    const [amount, setAmount] = useState<number>(0);
+    const [brokerageAmount, setBrokerageAmount] = useState<number>(0);
+    const [stagingAmount, setStagingAmount] = useState<number>(300);
     const [showButton, setShowButton] = useState<boolean>(true);
     // const [showBuy, setShowBuy] = useState<boolean>(showBoth || deal.deal_type === "Buying");
     // const [showSell, setShowSell] = useState<boolean>(deal.deal_type === "Selling");
@@ -255,9 +256,9 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                     <Box style={{ marginBottom: 10 }}>
                         <TextField
                             size='small'
-                            value={amount}
+                            value={brokerageAmount}
                             style={{ width: '100%' }}
-                            onChange={(e: any) => setAmount(e.target.value)}
+                            onChange={(e: any) => setBrokerageAmount(Number(e.target.value))}
                             type="number"
                             InputProps={{
                                 startAdornment: (
@@ -266,8 +267,41 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                                     </InputAdornment>
                                 )
                             }}
-                            label="Amount"
+                            label="Brokerage Commmission"
                         />
+                    </Box>
+                    <Box style={{ marginBottom: 10 }}>
+                        <TextField
+                            size='small'
+                            value={stagingAmount}
+                            style={{ width: '100%' }}
+                            type="number"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        $
+                                    </InputAdornment>
+                                )
+                            }}
+                            label="Staging Costs Due to DE"
+                        />
+                    </Box>
+                    <Box style={{ marginBottom: 10 }}>
+                        <TextField
+                            size='small'
+                            value={brokerageAmount + stagingAmount}
+                            style={{ width: '100%' }}
+                            type="number"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        $
+                                    </InputAdornment>
+                                )
+                            }}
+                            label="Total Due at Closing"
+                        />
+                        
                     </Box>
                 </Box>
             )}

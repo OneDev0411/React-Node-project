@@ -10,7 +10,6 @@ import GCISplitQuestion from '../steps/GCISplitQuestion'
 import RemittanceQuestion from '../steps/RemittanceQuestion'
 import PaymentQuestion from '../steps/PaymentQuestion'
 import LastQuestion from '../steps/LastQuestion'
-import CollectPaymentAndFee from '../steps/CollectPaymentAndFee'
 import { IQuestionProps } from '../../../models/type'
 
 export const FormWizard:React.FC<IQuestionProps> = (props) => {
@@ -46,7 +45,6 @@ export const FormWizard:React.FC<IQuestionProps> = (props) => {
       <GCISplitQuestion {...props} />
       <RemittanceQuestion {...props} />
       <PaymentQuestion {...props} />
-      {/* <CollectPaymentAndFee {...props}/> */}
       <LastQuestion {...props} />
     </Wizard.QuestionWizard>
   )
