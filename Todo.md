@@ -1,11 +1,12 @@
 # Todo
-2. save the data to backend at last
-3. get data from backend at first
-4. show cancel button in GCI split
-5. *get the staging amount data input component
-6. check stylizenum function when 3 digits
-7. implement logic of showing buy/sell list
-6. check GCI value long digit 
+1. save the data to backend at last
+2. get data from backend at first
+3. *get the staging amount data input component
+4. check stylizenum function when 3 digits
+5. implement logic of showing buy/sell list
+6. implement logic of whoing DE inside and outside list
+7. check GCI value long digit
+8. add deleting functionality to agents list in GCI split
 
 # Need to be perfect
 1. update context with MLS source
