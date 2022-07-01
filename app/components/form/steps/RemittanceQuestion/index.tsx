@@ -22,7 +22,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
-    const { GCIValue, agentDataList } = useApp();
+    const { GCIValue, agentDataList, stagingAmount } = useApp();
 
     const showBoth = true;
     // const shouwBoth = deal.context.ender_type.text === "AgentDoubleEnder" || deal.context.ender_type.text === "OfficeDoubleEnder";
@@ -33,7 +33,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     const [selectValue, setSelectValue] = useState<number>(-1);
     const [checkDataList, setCheckDataList] = useState<Array<CheckData>>([{ ...defaultCheckData }]);
     const [brokerageAmount, setBrokerageAmount] = useState<number>(0);
-    const [stagingAmount, setStagingAmount] = useState<number>(300);
+    // const [stagingAmount, setStagingAmount] = useState<number>(300);
     const [showButton, setShowButton] = useState<boolean>(true);
     // const [showBuy, setShowBuy] = useState<boolean>(showBoth || deal.deal_type === "Buying");
     // const [showSell, setShowSell] = useState<boolean>(deal.deal_type === "Selling");
@@ -253,7 +253,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                             </Select> 
                         </Grid>
                     </Grid>
-                    <Box style={{ marginBottom: 10 }}>
+                    <Box style={{ marginBottom: 10, marginTop: 20 }}>
                         <TextField
                             size='small'
                             value={brokerageAmount}

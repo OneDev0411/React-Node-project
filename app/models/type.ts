@@ -32,6 +32,8 @@ export interface AgentData {
 }
 
 export interface AppContextApi {
+    stagingAmount: number 
+    setStagingAmount?: (data: number) => void 
     GCIUnit: GCIUnit
     setGCIUnit?: (GCIUnit: GCIUnit) => void
     GCIValue: Number
@@ -39,11 +41,11 @@ export interface AppContextApi {
     agentDataList: AgentData[]
     setAgentDataList?: (data: AgentData[]) => void
     testData: string,
-    setTestData?: (data: string) => void,
-    reasonValue: Number,
-    setReasonValue?: (data: Number) => void,
-    reasonNote: string,
-    setReasonNote?: (data: string) => void,
+    setTestData?: (data: string) => void
+    reasonValue: Number
+    setReasonValue?: (data: Number) => void
+    reasonNote: string
+    setReasonNote?: (data: string) => void
 }
 
 export interface IQuestionProps {

@@ -1,10 +1,11 @@
 # Todo
-1. GCI2DE: show listing price, show default data
 2. save the data to backend at last
 3. get data from backend at first
 4. show cancel button in GCI split
-5. *show the staging amount data input component
-6. 
+5. *get the staging amount data input component
+6. check stylizenum function when 3 digits
+7. implement logic of showing buy/sell list
+6. check GCI value long digit 
 
 # Need to be perfect
 1. update context with MLS source
