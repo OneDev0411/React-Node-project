@@ -20,10 +20,10 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     const [showButton, setShowButton] = useState<boolean>(true);
     const [_reasonValue, _setReasonValue] = useState<number>(-1);
     const [_reasonNote, _setReasonNote] = useState<string>("");
-
+    const ListPrice = deal.context.list_price.number;
     const handleClickButton = () => {
         // save GCI value
-        let GCIValue = GCIUnit === "%" ? deal.context.list_price.number * Number(inputValue) / 100 : Number(inputValue); // NEED_TO_UPDATE_THIS_CODE
+        let GCIValue = GCIUnit === "%" ? ListPrice * Number(inputValue) / 100 : Number(inputValue); // NEED_TO_UPDATE_THIS_CODE
         if (setGCIValue !== undefined) {
             setGCIValue(GCIValue);
         }
@@ -94,7 +94,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
                 />
                 {(inputValue !== "" && GCIUnit === "%") && (
                     <Box style={{ textAlign: 'right', marginTop: 10 }}>
-                        <strong>$1,000,000</strong>
+                        <strong>{ListPrice}</strong>
                         {/* <strong>{`$${stylizeNumber(Number(listPrice))}`}</strong>  // NEED_TO_UPDATE_THIS_CODE */}
                         {`(Listing Price) * ${inputValue}% (GCI) = `}
                         {/* <strong>{`$${stylizeNumber(Number(listPrice) / 100 * Number(inputValue))}`}</strong> // NEED_TO_UPDATE_THIS_CODE */}
