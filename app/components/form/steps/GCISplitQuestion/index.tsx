@@ -51,6 +51,10 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         }, 80);
     };
 
+    const handleClickCancelAddButton = () => {
+        setStatus("Listing");
+    }
+
     // variables
     // console.log('roles:', roles);
     const agentRole = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
@@ -108,6 +112,11 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                             placeholder={`Enter agent's name`}
                             onSelectRole={handleSelectContact}
                         />
+                        <Box style={{ textAlign: 'right'}}>
+                            <Button onClick={handleClickCancelAddButton} style={{ color: 'black !important', border: 'solid #dbdbdb 1px', borderRadius: 5 }}>
+                                Cancel
+                            </Button>
+                        </Box>
                         <Grid container spacing={2} style={{ paddingBottom: 30 }}>
                             <Grid item xs={4} />
                             <Grid item xs={4}>
