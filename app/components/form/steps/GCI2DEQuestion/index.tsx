@@ -99,7 +99,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
                         {`(Listing Price) * ${inputValue}% (GCI) = `}
                         {/* <strong>{`$${stylizeNumber(Number(listPrice) / 100 * Number(inputValue))}`}</strong> // NEED_TO_UPDATE_THIS_CODE */}
                         {/* <strong>$50,000</strong> */}
-                        <strong>${stylizeNumber(1000000 * Number(inputValue) / 100)}</strong>
+                        <strong>${stylizeNumber(ListPrice * Number(inputValue) / 100)}</strong>
                     </Box>
                 )}
                 {showReason && (
