@@ -46,7 +46,7 @@ export const FormWizard:React.FC<IQuestionProps> = (props) => {
       <GCISplitQuestion {...props} />
       <RemittanceQuestion {...props} />
       <PaymentQuestion {...props} />
-      <CollectPaymentAndFee {...props}/>
+      {/* <CollectPaymentAndFee {...props}/> */}
       <LastQuestion {...props} />
     </Wizard.QuestionWizard>
   )

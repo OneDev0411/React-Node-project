@@ -112,7 +112,32 @@ const CollectPaymentAndFee: React.FC<IQuestionProps> = ({
                         <PaidByCard name='Marie Espinal' cost={2000}/>
                     </Grid>
                 </Grid>
-                <Box style={{ textAlign: "right" }}>
+                <Grid container spacing={1}> 
+                    <Grid item xs={12}>
+                       <TextField id="standard-basic" label="Company" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                       <TextField id="standard-basic" label="Company Address" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={4}>
+                       <TextField id="standard-basic" label="Office #" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={4}>
+                       <TextField id="standard-basic" label="Cell #" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={4}>
+                       <TextField id="standard-basic" label="Fax#" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={6}>
+                       <TextField id="standard-basic" label="Tax ID" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    <Grid item xs={6}>
+                       <TextField id="standard-basic" label="Email" variant="standard" style={{width: "100%"}}/>
+                    </Grid>
+                    
+                </Grid>
+                 
+                <Box style={{ textAlign: "right", marginTop:"20px" }}>
 
                     {showButton && (
                         <Box style={{ textAlign: 'right' }}>
