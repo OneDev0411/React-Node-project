@@ -8,6 +8,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
     hooks: { useWizardContext, useSectionContext },
     api: { getDealContext, updateDealContext },
+    models: {deal}
 }) => {
     const { useState } = React;
     const { Box, TextField, Button, InputAdornment, Select, MenuItem, Grid } = Ui;
@@ -22,7 +23,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
 
     const handleClickButton = () => {
         // save GCI value
-        let GCIValue = GCIUnit === "%" ? 1000000 * Number(inputValue) / 100 : Number(inputValue); // NEED_TO_UPDATE_THIS_CODE
+        let GCIValue = GCIUnit === "%" ? deal.context.list_price.number * Number(inputValue) / 100 : Number(inputValue); // NEED_TO_UPDATE_THIS_CODE
         if (setGCIValue !== undefined) {
             setGCIValue(GCIValue);
         }
