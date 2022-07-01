@@ -1,4 +1,4 @@
-import { SelectData } from "./models/type"
+import { SelectData, PaymentType } from "./models/type"
 
 export const defaultUser: IUser = {
     last_seen_at: null,
@@ -111,3 +111,37 @@ export const stylizeNumber = (data: number): string => {
     }
     return resultStr;
 }
+
+export const paymentTypeData:PaymentType[] = [
+        {
+            groupName : "DE Referral Fee",
+            member: [
+
+                "Team Member", 
+                "DE Agent", 
+                "DE Relocation",
+                "Corporate Referral",
+                "Referral Director",
+                "Other Fees(inside DE)"
+            ] 
+        },
+        {
+            groupName: "Outside DE Referral Fee",
+            member: [
+                "DE Property Management",
+                "DE eTeam",
+                "Attorney",
+                "City Realty",
+                "Relocation Company",
+                "Outside Referral Broker",
+                "Zillow/StreetEasy",
+                "Other Fees(Outside DE)"
+            ]
+        },
+        {
+            groupName: "Co-Broke",
+            member: [
+                "Outside Co-Broke"
+            ]
+        }
+    ]

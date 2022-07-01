@@ -66,10 +66,20 @@ export interface IDatePickerProps {
     label?: string
 }
 
+export interface IPaidByCardProps {
+    name: string
+    cost: number
+}
+
 export interface CheckData {
-    number: number,
-    date: Date,
-    receiveDate: Date,
-    amount: number,
+    number: number
+    date: Date
+    receiveDate: Date
+    amount: number
+}
+
+export interface PaymentType {
+    groupName: string
+    member: string[] 
 }
 
