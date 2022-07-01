@@ -18,7 +18,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     models: { deal, roles },
     Components: { DatePicker: DayPicker },
 }) => {
-    const { useEffect, useState } = React;
+    const { useState } = React;
     const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
@@ -38,17 +38,8 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     // const [showSell, setShowSell] = useState<boolean>(deal.deal_type === "Selling");
 
     const handleSelectChange = (event: any) => {
-        setSelectValue(event.target.value);    
+        setSelectValue(event.target.value);
     }
-
-    useEffect(() => {
-        // when the component is shown
-        if (wizard.currentStep === step) {
-            setTimeout(() => {
-                wizard.next();
-            }, 1000);
-        }
-    }, [wizard.currentStep]);
 
     const handleClickAddAnotherCheckButton = (event: any) => {
         let _checkDataList = checkDataList.slice();
@@ -94,18 +85,18 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     return (
         <QuestionSection>
             <QuestionTitle>
-                Please input agent's payment info.
+                Please input remittance info.
             </QuestionTitle>
             <QuestionForm>
             {(status === "ShowBuy" || showBoth) && (
                 <>
                     <Grid container spacing={2} style={{ marginBottom: 10 }}>
-                        <Grid item xs={6}>
+                        <Grid item xs={4}>
                             <label>
                                 Form of Remittance
                             </label>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={8}>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
@@ -123,12 +114,13 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                         </Grid>
                     </Grid>
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid item xs={4}>
                             <label>
-                                Deal side(s) for this check
+                                Deal side
+                                {/* Deal side(s) for this check */}
                             </label>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={8}>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
@@ -145,50 +137,57 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                     {checkDataList.map((checkData: CheckData, index: number) => 
                         <Box style={{ marginTop: 20 }}>
                             <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        size='small'
-                                        value={checkData.number}
-                                        style={{ width: '100%' }}
-                                        onChange={(e: any) => updateCheckDataList(index, "number", e.target.value)}
-                                        type="number"
-                                        label="Check #"
-                                    />
+                                <Grid item xs={4}>
+                                    <label>{`Check - ${index + 1}`}</label>
                                 </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        size='small'
-                                        value={checkData.amount}
-                                        style={{ width: '100%' }}
-                                        onChange={(e: any) => updateCheckDataList(index, "amount", e.target.value)}
-                                        type="number"
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    $
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                        label="Amount"
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <DatePicker
-                                        Picker={DayPicker} 
-                                        value={checkData.date}
-                                        setValue={(value: Date) => updateCheckDataList(index, "date", value)}
-                                        label="Date on check"
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <DatePicker
-                                        Picker={DayPicker} 
-                                        value={checkData.receiveDate}
-                                        setValue={(value: Date) => updateCheckDataList(index, "receiveDate", value)}
-                                        label="Date check received"
-                                    />
+                                <Grid item xs={8}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={6}>
+                                            <TextField
+                                                size='small'
+                                                value={checkData.number}
+                                                style={{ width: '100%' }}
+                                                onChange={(e: any) => updateCheckDataList(index, "number", e.target.value)}
+                                                type="number"
+                                                label="Check #"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <TextField
+                                                size='small'
+                                                value={checkData.amount}
+                                                style={{ width: '100%' }}
+                                                onChange={(e: any) => updateCheckDataList(index, "amount", e.target.value)}
+                                                type="number"
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            $
+                                                        </InputAdornment>
+                                                    )
+                                                }}
+                                                label="Amount"
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={6}>
+                                            <DatePicker
+                                                Picker={DayPicker} 
+                                                value={checkData.date}
+                                                setValue={(value: Date) => updateCheckDataList(index, "date", value)}
+                                                label="Date on check"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <DatePicker
+                                                Picker={DayPicker} 
+                                                value={checkData.receiveDate}
+                                                setValue={(value: Date) => updateCheckDataList(index, "receiveDate", value)}
+                                                label="Date check received"
+                                            />
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Box>
@@ -211,12 +210,12 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
             {status === "ShowSell" && (
                 <Box style={{ marginTop: 40 }}>
                     <Grid container spacing={2} style={{ marginBottom: 10 }}>
-                        <Grid item xs={6}>
+                        <Grid item xs={4}>
                             <label>
                                 Form of Remittance
                             </label>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={8}>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
@@ -234,12 +233,12 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                         </Grid>
                     </Grid>
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid item xs={4}>
                             <label>
                                 Deal side
                             </label>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={8}>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"

@@ -11,7 +11,7 @@ const CollectPaymentAndFee: React.FC<IQuestionProps> = ({
     hooks: { useWizardContext, useSectionContext },
     utils: { notifyOffice },
 }) => {
-    const { useEffect, useState } = React;
+    const { useState } = React;
     const { Grid, Select, MenuItem, ListSubheader,  TextField, InputAdornment, Box, Button, FormControlLabel, Checkbox, Divider } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
@@ -48,15 +48,6 @@ const CollectPaymentAndFee: React.FC<IQuestionProps> = ({
     const handleCheckBoxChange = (event: any) => {
         setChecked(event.target.checked);
     };
-
-    useEffect(() => {
-        // when the component is shown
-        if (wizard.currentStep === step) {
-            setTimeout(() => {
-                wizard.next();
-            }, 1000);
-        }
-    }, [wizard.currentStep]);
 
     return (
         <QuestionSection>
