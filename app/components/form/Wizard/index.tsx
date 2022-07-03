@@ -13,22 +13,7 @@ import LastQuestion from '../steps/LastQuestion'
 import { IQuestionProps } from '../../../models/type'
 
 export const FormWizard:React.FC<IQuestionProps> = (props) => {
-  const { useState } = React;
-  const { Wizard, models } = props;
-  const { roles } = models;
-
-  // should be removed after context logic is implemented
-  // let agentRole = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
-  // let initialAgentShareInfoList = agentRole.map((agent: IDealRole) => {
-    // return {
-      // sharePercent: 5,
-      // roleID: agent.id
-    // }
-  // });
-
-  // const [GCIUnit, setGCIUnit] = useState<"%" | "$" | "">("");
-  // const [GCIValue, setGCIValue] = useState<Number>(0);
-  // const [agentShareInfoList, setAgentShareInfoList] = useState<Array<any>>(initialAgentShareInfoList);
+  const { Wizard } = props;
 
   return (
     <Wizard.QuestionWizard onFinish={() => console.log('done')}>
