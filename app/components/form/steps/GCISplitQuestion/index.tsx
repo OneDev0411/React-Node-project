@@ -55,6 +55,10 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         setStatus("Listing");
     }
 
+    const handleClickRemoveButton = (id: any) => {
+        console.log('remove', id);
+    }
+
     // variables
     // console.log('roles:', roles);
     const agentRole = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
@@ -72,11 +76,17 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 {status === "Listing" && (
                     <>
                         {agentDataList.map((_: AgentData, id: number) =>
-                            <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={GCIValue} />
+                            <>
+                                <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={GCIValue} />
+                                <Button key={id} variant="outlined" onClick={() => handleClickRemoveButton(agentRole[id])} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: 10, marginBottom:20, marginTop:-20, float: "right" }}>
+                                    Remove one
+                                </Button>
+                            </>
                         )}
-                        <Button variant="outlined" onClick={handleClickAddAnotherButton} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: -10, marginTop: 0, marginBottom: 10 }}>
+                        <Button variant="outlined" onClick={handleClickAddAnotherButton} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: -10, marginTop: 20, marginBottom: 10 }}>
                             + Add More Agents
                         </Button>
+                                             
                         <Grid container spacing={2} style={{ paddingBottom: 30 }}>
                             <Grid item xs={4} />
                             <Grid item xs={4}>

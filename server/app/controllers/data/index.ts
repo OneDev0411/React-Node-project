@@ -1,9 +1,11 @@
 import { Request, Response } from 'express'
-import { Test } from '../../config/db.config'
 
-const getData = (req, res) => {
+import db from "../../config/db.config"
+const { GCI2DE } = db;
+
+const getData = (req:Request, res: Response) => {
   // find all Customer information from 
-  Test.findAll()
+  GCI2DE.findAll()
     .then(dataList => {
       console.log('dataList:', dataList);
         res.status(200).json({

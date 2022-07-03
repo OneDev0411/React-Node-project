@@ -1,11 +1,10 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { DatePicker } from "../../../DatePicker"
-import { CheckData, IQuestionProps, RemittanceStatus, PaymentType } from "../../../../models/type"
+import { CheckData, IQuestionProps, RemittanceStatus } from "../../../../models/type"
 import useApp from '../../../../hooks/useApp'
-import { stylizeNumber, paymentTypeData } from '../../../../util'
-import PaidByCard from './PaidByCard';
 
+import PaymentQuestionComponent from './paymentQuestionComponent'
 
 const defaultCheckData: CheckData = {
     number: 0,
@@ -61,19 +60,7 @@ const PaymentQuestion: React.FC<IQuestionProps> = ({
         setCheckDataList(_checkDataList);
     }
 
-    const displayData = paymentTypeData.reduce((result: any, data: PaymentType) => {
-        result.push(<ListSubheader>{data.groupName}</ListSubheader>);
-        data.member.map((value: string, index: number) => {
-            result.push(<MenuItem value={value}>{value}</MenuItem>);
-        });
-        return result;
-    }, []);
-
-    const [paymentTypeValue, setPaymentTypeValue] = useState<string>("Team Member");
-
-    const handleSelected = (event: any) => {
-        setPaymentTypeValue(event.target.value);
-    }
+    
 
     const handleClickNextButton = () => {
         if (status === "ShowBuy") { 
@@ -104,67 +91,8 @@ const PaymentQuestion: React.FC<IQuestionProps> = ({
                 Please input agent's payment info.
             </QuestionTitle>
             <QuestionForm>
-            <Grid container spacing={2} style={{marginBottom: 10}}>
-                    <Grid item xs={3}>
-                        <label>Payment Type</label>
-                    </Grid>
-                    <Grid item xs={9}>
-                        <Select 
-                            defaultValue="" 
-                            id="grouped-select" 
-                            label="Grouping"
-                            style={{width: "100%"}}
-                            value={paymentTypeValue}
-                            onChange={handleSelected} 
-                        >
-                            {displayData}
-                        </Select>
-                    </Grid>
-                </Grid>
-                <Grid container spacing={2} style={{marginBottom: 10}}>
-                    <Grid item xs={3}>
-                        <label>Paid To</label>
-                    </Grid>
-                    <Grid item xs={9}>
-                       <TextField 
-                            variant="standard" 
-                            style={{width: "100%"}} 
-                            defaultValue="Preston Maguire (575 Madison Ave)"
-                        />
-                    </Grid>
-                </Grid>
-                <Grid container spacing={1}>
-                    <Grid item xs={3}>
-                        <label style={{ marginTop: 5 }}>Paid By</label>
-                    </Grid>
-                    <Grid item xs={9}>
-                        <PaidByCard name='Jeff Adler' cost={2000} />
-                        <PaidByCard name='Marie Espinal' cost={2000} />
-                    </Grid>
-                </Grid>
-                <Grid container spacing={1}> 
-                    <Grid item xs={12}>
-                       <TextField id="standard-basic" label="Company" variant="standard" style={{width: "100%"}} />
-                    </Grid>
-                    <Grid item xs={12}>
-                       <TextField id="standard-basic" label="Company Address" variant="standard" style={{width: "100%"}} />
-                    </Grid>
-                    <Grid item xs={4}>
-                       <TextField id="standard-basic" label="Office #" variant="standard" style={{width: "100%"}} />
-                    </Grid>
-                    <Grid item xs={4}>
-                       <TextField id="standard-basic" label="Cell #" variant="standard" style={{width: "100%"}} />
-                    </Grid>
-                    <Grid item xs={4}>
-                       <TextField id="standard-basic" label="Fax#" variant="standard" style={{width: "100%"}} />
-                    </Grid>
-                    <Grid item xs={6}>
-                       <TextField id="standard-basic" label="Tax ID" variant="standard" style={{width: "100%"}} />
-                    </Grid>
-                    <Grid item xs={6}>
-                       <TextField id="standard-basic" label="Email" variant="standard" style={{width: "100%"}} />
-                    </Grid>
-                </Grid>
+            <PaymentQuestionComponent role="buyer"/>
+            <PaymentQuestionComponent role="seller"/>
             {showButton && (
                 <Box style={{ textAlign: 'right', marginTop:"20px", paddingBottom:"20px" }}>
                     <Button variant="contained" onClick={handleClickNextButton} style={{ marginBottom: 20, backgroundColor: '#0fb78d', color: 'white' }}>

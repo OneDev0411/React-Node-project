@@ -85,3 +85,7 @@ export interface PaymentType {
     member: string[] 
 }
 
+export interface IPaymentQuestionDataType {
+    role: string,
+    
+}

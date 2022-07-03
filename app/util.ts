@@ -95,21 +95,7 @@ export const commissionSelectDataList: SelectData[] = [
 ]
 
 export const stylizeNumber = (data: number): string => {
-    let dataStr: string = data + "";
-    let resultStr: string = "";
-    let count: number = 0;
-    for (let i = dataStr.length - 1; i >= 0; i--) {
-        resultStr = dataStr[i] + resultStr;
-        count++;
-        if (count === 3) {
-            count = 0;
-            resultStr = "," + resultStr;
-        }
-    }
-    if (resultStr[0] === ",") {
-        resultStr = resultStr.substring(1);
-    }
-    return resultStr;
+    return data.toLocaleString("en-US");
 }
 
 export const paymentTypeData:PaymentType[] = [

@@ -2,11 +2,13 @@
  * Copyright by https://loizenai.com
  * youtube loizenai
  */
+import { Options } from "sequelize/types";
+// import {envType} from "../../types";
 
-const env = {
-  database: 'New',
+export const env: Options = {
+  database: 'rechat',
   username: 'postgres',
-  password: 'developer/123',
+  password: '1912ab0519',
   host: 'localhost',
   dialect: 'postgres',
   pool: {
@@ -17,4 +19,3 @@ const env = {
   }
 };
 
-module.exports = env;

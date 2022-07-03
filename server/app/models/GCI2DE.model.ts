@@ -3,19 +3,23 @@
  * youtube loizenai
  */
 
-module.exports = (sequelize, Sequelize) => {
-	const Test = sequelize.define('test', {
-		column1: {
+export default (sequelize, Sequelize) => {
+	const GCI2DE = sequelize.define('GCI2DEs', {
+		dealID: {
 			type: Sequelize.INTEGER,
 			primaryKey: true,
 		},
-		column2: {
+		roleId: {
 			type: Sequelize.STRING,
 		},
-		column3: {
+		share: {
 			type: Sequelize.INTEGER,
 		},
+		note: {
+			type: Sequelize.STRING
+		}		
+
 	});
 
-	return Test;
+	return GCI2DE;
 }
