@@ -70,7 +70,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           required
           size='small'
           label="Share($)"
-          value={Number(GCIValue) / 100 * Number(agentData.sharePercent)}
+          value={parseFloat((Number(GCIValue) / 100 * Number(agentData.sharePercent)).toFixed(3))}
           style={{ width: '100%' }}
         />
       </Grid>

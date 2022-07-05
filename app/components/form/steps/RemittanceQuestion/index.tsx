@@ -22,7 +22,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
-    const { GCIValue, agentDataList, stagingAmount } = useApp();
+    const { GCIValue, agentDataList, stagingAmount, checkDataList, setCheckDataList } = useApp();
 
     const showBoth = true;
     // const shouwBoth = deal.context.ender_type.text === "AgentDoubleEnder" || deal.context.ender_type.text === "OfficeDoubleEnder";
@@ -31,7 +31,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     // state
     const [status, setStatus] = useState<RemittanceStatus>(showBuy ? 'ShowBuy' : 'ShowSell');
     const [selectValue, setSelectValue] = useState<number>(-1);
-    const [checkDataList, setCheckDataList] = useState<Array<CheckData>>([{ ...defaultCheckData }]);
+    
     const [brokerageAmount, setBrokerageAmount] = useState<number>(0);
     // const [stagingAmount, setStagingAmount] = useState<number>(300);
     const [showButton, setShowButton] = useState<boolean>(true);
@@ -45,19 +45,19 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     const handleClickAddAnotherCheckButton = (event: any) => {
         let _checkDataList = checkDataList.slice();
         _checkDataList.push({ ...defaultCheckData });
-        setCheckDataList(_checkDataList);
+        if(setCheckDataList !== undefined) setCheckDataList(_checkDataList);
     }
 
     const handleClickRemoveButton = (event: any) => {
         let _checkDataList = checkDataList.slice();
         _checkDataList.pop();
-        setCheckDataList(_checkDataList);
+        if(setCheckDataList !== undefined) setCheckDataList(_checkDataList);
     }
 
     const updateCheckDataList = (index: number, key: keyof CheckData, value: any) => {
         let _checkDataList: CheckData[] = checkDataList.slice();
         _checkDataList[index][key] = value;
-        setCheckDataList(_checkDataList);
+        if(setCheckDataList !== undefined) setCheckDataList(_checkDataList);
     }
 
     const handleClickNextButton = () => {

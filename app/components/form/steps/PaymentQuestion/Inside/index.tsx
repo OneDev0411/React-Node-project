@@ -1,10 +1,10 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
-import { DatePicker } from "../../../DatePicker"
-import { CheckData, IQuestionProps, RemittanceStatus } from "../../../../models/type"
-import useApp from '../../../../hooks/useApp'
+import { DatePicker } from "../../../../DatePicker"
+import { CheckData, IQuestionProps, RemittanceStatus } from "../../../../../models/type"
+import useApp from '../../../../../hooks/useApp'
 
-import PaymentQuestionComponent from './paymentQuestionComponent'
+import PaymentQuestionComponent from '../paymentQuestionComponent'
 
 const defaultCheckData: CheckData = {
     number: 0,
@@ -13,7 +13,7 @@ const defaultCheckData: CheckData = {
     amount: 0,
 }
 
-const PaymentQuestion: React.FC<IQuestionProps> = ({
+const PaymentQuestionInside: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
     hooks: { useWizardContext, useSectionContext },
     models: { deal, roles },
@@ -23,7 +23,7 @@ const PaymentQuestion: React.FC<IQuestionProps> = ({
     const { Grid, Select, MenuItem, ListSubheader,  TextField, InputAdornment, Box, Button, FormControlLabel, Checkbox, Divider } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
-    const { GCIValue, agentDataList } = useApp();
+    const { GCIValue, agentDataList} = useApp();
 
     const showBoth = true;
     // const shouwBoth = deal.context.ender_type.text === "AgentDoubleEnder" || deal.context.ender_type.text === "OfficeDoubleEnder";
@@ -88,11 +88,10 @@ const PaymentQuestion: React.FC<IQuestionProps> = ({
     return (
         <QuestionSection>
             <QuestionTitle>
-                Please input agent's payment info.
+                Please input Buyer's payment info.
             </QuestionTitle>
             <QuestionForm>
-            <PaymentQuestionComponent role="buyer"/>
-            <PaymentQuestionComponent role="seller"/>
+            <PaymentQuestionComponent role="inside"/>
             {showButton && (
                 <Box style={{ textAlign: 'right', marginTop:"20px", paddingBottom:"20px" }}>
                     <Button variant="contained" onClick={handleClickNextButton} style={{ marginBottom: 20, backgroundColor: '#0fb78d', color: 'white' }}>
@@ -105,4 +104,4 @@ const PaymentQuestion: React.FC<IQuestionProps> = ({
     )
 }
 
-export default PaymentQuestion;
+export default PaymentQuestionInside;

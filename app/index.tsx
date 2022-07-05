@@ -3,7 +3,7 @@ import App from './App'
 import { createComponents } from './core/utils/create-components'
 import './index.css'
 import { AppContextApi } from './models/type';
-
+import { defaultPaymentsData } from './util';
 const { createContext, useState } = React;
 
 const defaultValue: AppContextApi = {
@@ -14,6 +14,11 @@ const defaultValue: AppContextApi = {
   testData: "hahaha",
   reasonValue: -1,
   reasonNote: "",
+  checkDataList: [],
+  paymentsDataInside: defaultPaymentsData,
+  paymentsDataOutside: defaultPaymentsData,
+  rolePaymentsDataInside: [],
+  rolePaymentsDataOutside: []
 };
 
 export const AppContext = createContext<AppContextApi>(defaultValue);
@@ -26,6 +31,12 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   const [reasonValue, setReasonValue] = useState<AppContextApi['reasonValue']>(-1);
   const [reasonNote, setReasonNote] = useState<AppContextApi['reasonNote']>("");
   const [stagingAmount, setStagingAmount] = useState<AppContextApi['stagingAmount']>(2000);
+  const [checkDataList, setCheckDataList] = useState<AppContextApi['checkDataList']>([]);
+  const [paymentsDataInside, setPaymentsDataInside] = useState<AppContextApi['paymentsDataInside']>(defaultPaymentsData);
+  const [rolePaymentsDataInside, setRolePaymentsDataInside] = useState<AppContextApi['rolePaymentsDataInside']>([]);
+  const [paymentsDataOutside, setPaymentsDataOutside] = useState<AppContextApi['paymentsDataOutside']>(defaultPaymentsData);
+  const [rolePaymentsDataOutside, setRolePaymentsDataOutside] = useState<AppContextApi['rolePaymentsDataOutside']>([]);
+  
 
   // const setGCIUnit = (_GCIUnit: GCIUnit) => {
   //   _setGCIUnit(_GCIUnit);
@@ -44,7 +55,7 @@ export const AppProvider: React.FC<any> = ({ children }) => {
 
   return (
     <AppContext.Provider value={{ testData, setTestData, GCIUnit, setGCIUnit, GCIValue, setGCIValue, stagingAmount, setStagingAmount, 
-      agentDataList, setAgentDataList, reasonValue, setReasonValue, reasonNote, setReasonNote }}>
+      agentDataList, setAgentDataList, reasonValue, setReasonValue, reasonNote, setReasonNote, checkDataList, setCheckDataList, paymentsDataInside, setPaymentsDataInside, rolePaymentsDataInside, setRolePaymentsDataInside, paymentsDataOutside, setPaymentsDataOutside, rolePaymentsDataOutside, setRolePaymentsDataOutside }}>
       {children}
     </AppContext.Provider>
   )

@@ -1,12 +1,11 @@
 import React from '@libs/react'
-import Ui from '@libs/material-ui'
 import { IPaidByCardProps } from '../../../../models/type';
-
-const PaidByCard : React.FC<IPaidByCardProps> = ({ name, cost }) => {
-    const { Grid, TextField, InputAdornment, Box, FormControlLabel, Checkbox, RadioGroup, Radio } = Ui;
-
+import useApp from '../../../../hooks/useApp';
+const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, cost }) => {
+    const { Grid, TextField, InputAdornment, Box, FormControlLabel, Checkbox, RadioGroup, Radio } = ui;
+    const {rolePaymentsDataInside, setRolePaymentsDataInside, rolePaymentsDataOutside, setRolePaymentsDataOutside} = useApp()
     const [selectedValue, setSelectedValue] = React.useState('a');
-
+    
     const handleChange = (event: any) => {
         setSelectedValue(event.target.value);
     };

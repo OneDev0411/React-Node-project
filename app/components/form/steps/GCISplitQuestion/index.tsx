@@ -16,7 +16,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     const wizard = useWizardContext();
     const { step } = useSectionContext();
     const { GCIValue, agentDataList } = useApp();
-
+    
     // state
     const [status, setStatus] = useState<GCISplitStatus>('Listing');
     const [currentRole, setCurrentObject] = useState<Partial<IDealFormRole> | IDealRole | null>(null); // data from dropdown select, can be IDealRole object or nameObject

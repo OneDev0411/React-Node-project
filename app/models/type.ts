@@ -31,6 +31,30 @@ export interface AgentData {
     note: string,
 }
 
+export interface PaymentsType {
+    payment_type: string
+    paid_to: string
+    company?: string
+    company_address?: string
+    office?: string
+    cell?: string
+    fax?: string
+    tax_id?: string
+    mail?: string
+}
+
+export interface RolePaymentsType {
+    payment_id: number
+    role_id: string
+    unit_type: number
+    calculated_from: number
+}
+
+
+export interface RemittanceBankWiresType {
+    amount: number
+}
+
 export interface AppContextApi {
     stagingAmount: number 
     setStagingAmount?: (data: number) => void 
@@ -40,12 +64,22 @@ export interface AppContextApi {
     setGCIValue?: (GCIValue: Number) => void
     agentDataList: AgentData[]
     setAgentDataList?: (data: AgentData[]) => void
-    testData: string,
+    testData: string
     setTestData?: (data: string) => void
     reasonValue: Number
     setReasonValue?: (data: Number) => void
     reasonNote: string
     setReasonNote?: (data: string) => void
+    checkDataList: CheckData[]
+    setCheckDataList?: (data: CheckData[]) => void
+    paymentsDataInside: PaymentsType
+    setPaymentsDataInside?: (data: PaymentsType) => void
+    paymentsDataOutside: PaymentsType
+    setPaymentsDataOutside?: (data: PaymentsType) => void
+    rolePaymentsDataInside: RolePaymentsType[]
+    setRolePaymentsDataInside?: (data: RolePaymentsType[]) => void
+    rolePaymentsDataOutside: RolePaymentsType[]
+    setRolePaymentsDataOutside?: (data: RolePaymentsType[]) => void
 }
 
 export interface IQuestionProps {
@@ -69,7 +103,9 @@ export interface IDatePickerProps {
 }
 
 export interface IPaidByCardProps {
+    ui: typeof Ui
     name: string
+    range: string
     cost: number
 }
 
@@ -86,6 +122,5 @@ export interface PaymentType {
 }
 
 export interface IPaymentQuestionDataType {
-    role: string,
-    
+    role: string
 }
