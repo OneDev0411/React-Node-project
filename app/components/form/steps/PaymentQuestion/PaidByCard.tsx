@@ -20,24 +20,28 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, cost, index 
     const [calcSelectedValue, setCalcSelectedValue] = React.useState(0);
   
     const handleSelectedChange = (e: any, key: string) => {
-        console.log('calculate', e.target.value);
-        let value = e.target.value;
+        let value = Number(e.target.value);
         let updateValue = JSON.parse(JSON.stringify(rolePayments));
-        updateValue[key] = Number(value);
+        updateValue[key] = value;
         setRolePayments(updateValue);
         console.log('updateValue', updateValue);
         if(range == "inside") {
-            
             let temp = JSON.parse(JSON.stringify(rolePaymentsDataInside));
-            temp[index][key] = value;
+            let roleIndex = rolePaymentsDataInside.findIndex((item : RolePaymentsType) => {
+                return item.role_id == updateValue.role_id;
+            });
+            if(roleIndex != -1)  temp[roleIndex][key] = value;
             if(setRolePaymentsDataInside !== undefined) setRolePaymentsDataInside(temp);
         }
         else {
             let temp = JSON.parse(JSON.stringify(rolePaymentsDataOutside));
-            temp[index][key] = value;
+            let roleIndex = rolePaymentsDataOutside.findIndex((item : RolePaymentsType) => {
+                return item.role_id == updateValue.role_id;
+            });
+            if(roleIndex != -1)  temp[roleIndex][key] = value;
             if(setRolePaymentsDataOutside !== undefined) setRolePaymentsDataOutside(temp);
         }
-        
+        console.log('rolePayment', rolePaymentsDataInside, rolePaymentsDataOutside);
     }
 
     const handleCheckedValue = (e: any) => {
