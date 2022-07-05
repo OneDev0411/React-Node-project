@@ -44,7 +44,6 @@ export interface PaymentsType {
 }
 
 export interface RolePaymentsType {
-    payment_id: number
     role_id: string
     unit_type: number
     calculated_from: number
@@ -106,6 +105,7 @@ export interface IPaidByCardProps {
     ui: typeof Ui
     name: string
     range: string
+    index: number
     cost: number
 }
 

@@ -78,7 +78,7 @@ const paymentQuestionComponent : React.FC<IPaymentQuestionDataType> = ({ role })
                 <Grid item xs={9}>
                     {
                         agentDataList.map((agent: AgentData, id: number) => 
-                            <PaidByCard key={id} ui={Ui} name={agent.legal_full_name} range={role} cost={2000} />
+                            <PaidByCard key={id} index={id} ui={Ui} name={agent.legal_full_name} range={role} cost={2000} />
                         )
                     }
                     
