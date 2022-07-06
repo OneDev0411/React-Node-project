@@ -1,6 +1,7 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
-import { IQuestionProps } from '../../../../models/type';
+import { AppContextApi, IQuestionProps } from '../../../../models/type';
+import useApp from '../../../../hooks/useApp';
 
 const LastQuestion: React.FC<IQuestionProps> = ({
     Wizard,
@@ -8,9 +9,10 @@ const LastQuestion: React.FC<IQuestionProps> = ({
 }) => {
     const { QuestionSection, QuestionTitle, QuestionForm } = Wizard;
     const { Box, Button } = Ui;
-    
+    const total_data: AppContextApi = useApp();
     const handleSubmit = () => {
         notifyOffice("Please review the Commission Slip");
+        console.log('total_api', total_data);
     }
 
     return (
