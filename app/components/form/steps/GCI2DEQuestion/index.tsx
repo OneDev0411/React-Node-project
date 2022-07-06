@@ -71,7 +71,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     }
 
     // variables
-    let showReason = inputValue !== "" && Number(inputValue) < 2;
+    let showReason = bothType == undefined ? (inputValue !== "" && Number(inputValue) < 2) : (inputValue !== "" && Number(inputValue) < 4);
     let notFinishCase1 = inputValue === ""; // not completed GCI value
     let notFinishCase2 = showReason && _reasonValue === -1; // not selected reason
     let notFinishCase3 = showReason && _reasonValue === 2 && _reasonNote === ""; // not completed reason note

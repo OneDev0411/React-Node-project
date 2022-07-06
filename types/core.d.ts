@@ -1,3 +1,5 @@
+
+
 declare type Optional<T> = T | undefined
 declare interface Window {
   libs: Record<'React' | 'MaterialUi', any>
@@ -28,8 +30,9 @@ declare interface EntryProps {
     notifyOffice: (comment: string) => Promise<void>
   }
   api: {
-    getDealContext: (filed: string) => IDealContext
+    getDealContext: (field: string) => IDealContext
     updateDealContext: (field: string, value: unknown) => Promise<void>
+    deleteRole: (id: IDealRole['id']) => Promise<void>
   }
   hooks: {
     wizard: {

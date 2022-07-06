@@ -10,6 +10,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     hooks: { useWizardContext, useSectionContext },
     models: { deal, roles },
     Components: { RoleForm, ContactRoles },
+    api: { deleteRole }
 }) => {
     const { useState, useRef } = React;
     const { Grid, Button, Box } = Ui;
@@ -59,8 +60,9 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         setStatus("Listing");
     }
 
-    const handleClickRemoveButton = (id: any) => {
+    const handleClickRemoveButton = (id: IDealRole['id']) => {
         console.log('remove', id);
+        // deleteRole(id);
     }
 
     const getData = (data: AgentData) => {
@@ -91,16 +93,16 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 Great, here is your GCI share before splits:
             </QuestionTitle>
             <QuestionForm>
+                {agentDataList.map((_: AgentData, id: number) =>
+                    <>
+                        <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={GCIValue} next={next} getData={getData} updateFlag={updateFlag}/>
+                        <Button key={id} variant="outlined" onClick={() => handleClickRemoveButton(agentRole[id].id)} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: 10, marginBottom:20, marginTop:-20, float: "right" }}>
+                            Remove one
+                        </Button>
+                    </>
+                )}
                 {status === "Listing" && (
                     <>
-                        {agentDataList.map((_: AgentData, id: number) =>
-                            <>
-                                <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={GCIValue} next={next} getData={getData} updateFlag={updateFlag}/>
-                                <Button key={id} variant="outlined" onClick={() => handleClickRemoveButton(agentRole[id])} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: 10, marginBottom:20, marginTop:-20, float: "right" }}>
-                                    Remove one
-                                </Button>
-                            </>
-                        )}
                         <Button variant="outlined" onClick={handleClickAddAnotherButton} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: -10, marginTop: 20, marginBottom: 10 }}>
                             + Add More Agents
                         </Button>
@@ -133,9 +135,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 )}
                 {status === "Selecting" && (
                     <>
-                        {agentDataList.map((_: AgentData, id: number) =>
-                            <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={GCIValue} next={next} getData={getData} updateFlag={updateFlag}/>
-                        )}
                         <ContactRoles
                             placeholder={`Enter agent's name`}
                             onSelectRole={handleSelectContact}

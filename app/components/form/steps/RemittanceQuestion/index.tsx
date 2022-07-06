@@ -23,7 +23,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     const wizard = useWizardContext();
     const { step } = useSectionContext();
     const { GCIValue, agentDataList, stagingAmount, setStagingAmount, checkDataList, setCheckDataList, remittanceBankWireAmount, setRemittanceBankWireAmount } = useApp();
-    const showBoth = true; //deal.context.ender_type !== undefined;
+    const showBoth = deal.context.ender_type !== undefined;
     // const shouwBoth = deal.context.ender_type.text === "AgentDoubleEnder" || deal.context.ender_type.text === "OfficeDoubleEnder";
     const showBuy = showBoth || deal.deal_type === "Buying";
 
