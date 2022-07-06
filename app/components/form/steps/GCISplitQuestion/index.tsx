@@ -11,16 +11,18 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     models: { deal, roles },
     Components: { RoleForm, ContactRoles },
 }) => {
-    const { useState } = React;
+    const { useState, useRef } = React;
     const { Grid, Button, Box } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
-    const { GCIValue, agentDataList } = useApp();
+    const { GCIValue, agentDataList, setAgentDataList } = useApp();
     
     // state
     const [status, setStatus] = useState<GCISplitStatus>('Listing');
     const [currentRole, setCurrentObject] = useState<Partial<IDealFormRole> | IDealRole | null>(null); // data from dropdown select, can be IDealRole object or nameObject
     const [showButton, setShowButton] = useState<boolean>(true);
+    const [next, setNext] = useState(false);
+    const buffer = useRef<AgentData[]>([]);
 
     // this logic is updating 
     const handleCloseRoleForm = () => {
@@ -46,8 +48,10 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
 
     const handleClickNextButton = async () => {
         setShowButton(false);
+        setNext(true);
         setTimeout(() => {
             wizard.next();
+            setNext(false);
         }, 80);
     };
 
@@ -58,6 +62,20 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     const handleClickRemoveButton = (id: any) => {
         console.log('remove', id);
     }
+
+    const getData = (data: AgentData) => {
+        let dataIndex = buffer.current.findIndex((item) => {
+            return item.id == data.id;
+        });
+        if(dataIndex != -1) buffer.current.splice(dataIndex, 1);
+        buffer.current.push(data);
+        if(setAgentDataList !== undefined) setAgentDataList(buffer.current);
+        console.log('data', data, buffer.current);
+    }
+    const updateFlag = (flag: boolean) => {
+        console.log('flag', flag);
+        if(!showButton)setShowButton(flag);
+    } 
 
     // variables
     // console.log('roles:', roles);
@@ -77,7 +95,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                     <>
                         {agentDataList.map((_: AgentData, id: number) =>
                             <>
-                                <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={GCIValue} />
+                                <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={GCIValue} next={next} getData={getData} updateFlag={updateFlag}/>
                                 <Button key={id} variant="outlined" onClick={() => handleClickRemoveButton(agentRole[id])} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: 10, marginBottom:20, marginTop:-20, float: "right" }}>
                                     Remove one
                                 </Button>
@@ -116,7 +134,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 {status === "Selecting" && (
                     <>
                         {agentDataList.map((_: AgentData, id: number) =>
-                            <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={GCIValue} />
+                            <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={GCIValue} next={next} getData={getData} updateFlag={updateFlag}/>
                         )}
                         <ContactRoles
                             placeholder={`Enter agent's name`}

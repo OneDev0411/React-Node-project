@@ -24,14 +24,11 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
     const wizard = useWizardContext();
     const { step } = useSectionContext();
     const { GCIValue, agentDataList} = useApp();
-
-    const showBoth = true;
-    // const shouwBoth = deal.context.ender_type.text === "AgentDoubleEnder" || deal.context.ender_type.text === "OfficeDoubleEnder";
-    const showBuy = showBoth || deal.deal_type === "Buying";
+    const deal_type = deal.deal_type;
 
     // state
-    const [status, setStatus] = useState<RemittanceStatus>(showBuy ? 'ShowBuy' : 'ShowSell');
     const [selectValue, setSelectValue] = useState<number>(-1);
+    const [next, setNext] = useState(false);
     const [checkDataList, setCheckDataList] = useState<Array<CheckData>>([{ ...defaultCheckData }]);
     
     const [showButton, setShowButton] = useState<boolean>(true);
@@ -63,24 +60,25 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
     
 
     const handleClickNextButton = () => {
-        if (status === "ShowBuy") { 
-            if (showBoth) { // shows sell part
-                setStatus("ShowSell");
-            } else {
-                gotoNext();
-            }
-        } else {
+            setNext(true);
             gotoNext();
-        }
+
     }
     
     const gotoNext = () => {
         setShowButton(false);
         setTimeout(() => {
             wizard.next();
+            setNext(false);
         }, 80);
     }
 
+    const updateFlag = (flag: boolean) => {
+        console.log('updateFlag', flag);
+        if(!showButton)setShowButton(flag);
+    }
+
+   
     // variables
     // const showBuy =  showBoth || deal.deal_type === "Buying";
     // const showSell =  deal.deal_type === "Selling"; // if showBoth is ture, enables true when cliking button
@@ -88,10 +86,10 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
     return (
         <QuestionSection>
             <QuestionTitle>
-                Please input Buyer's payment info.
+                 Please input Inside Douglas Elliman Payments info.
             </QuestionTitle>
             <QuestionForm>
-            <PaymentQuestionComponent role="inside"/>
+            <PaymentQuestionComponent range="inside" next={next} deal_type={deal_type} updateFlag={updateFlag}/>
             {showButton && (
                 <Box style={{ textAlign: 'right', marginTop:"20px", paddingBottom:"20px" }}>
                     <Button variant="contained" onClick={handleClickNextButton} style={{ marginBottom: 20, backgroundColor: '#0fb78d', color: 'white' }}>

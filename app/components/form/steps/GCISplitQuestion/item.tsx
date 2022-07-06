@@ -7,38 +7,36 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   role,
   GCIValue,
   index,
+  next,
+  updateFlag,
+  getData
 }) => {
   const { useState, useEffect } = React;
   const { agentDataList, setAgentDataList } = useApp();
-  const agentData: AgentData = agentDataList[index];
-
-  const [note, setNote] = useState<string>("");
+  const [_agentData, _setAgentData] = useState<AgentData>(agentDataList[index]);
+  
 
   useEffect(() => {
-    // save note data when the text field loses focus
-    let noteTextField = document.getElementById(`GCI-item-textfield-${index}`);
-    noteTextField?.addEventListener('focusout', function handler(e) {
-      let _agentDataList = agentDataList.slice();
-      _agentDataList[index].note = note;
-      if(setAgentDataList !== undefined) {
-        setAgentDataList(_agentDataList);
-      }
-    });
-  }, []);
-
-  const handleChangeSharePercent = (value: Number) => {
-    if(value > 100)
-      return;
-    let _agentDataList = agentDataList.slice();
-    _agentDataList[index].sharePercent = value;
-    if(setAgentDataList !== undefined) {
-      setAgentDataList(_agentDataList);
+    if(next) {
+      if(_agentData.sharePercent !== 0 && _agentData.sharePercent !== undefined && _agentData.sharePercent !== NaN)getData(_agentData);
+      console.log('next', next);
     }
+  }, [next]);
+
+  const handleChangeValue = (e: any, key: string) => {
+      console.log('event target', e.target.value, key);
+      updateFlag(true);
+      let value = e.target.value;
+      if(key == "sharePercent" && value !== "") {
+        value = parseFloat(e.target.value);
+        if(value > 100) return;
+      }
+
+      let updateValue = JSON.parse(JSON.stringify(_agentData));
+      updateValue[key] = value;
+      _setAgentData(updateValue);
   }
 
-  const handleChangeNote = (event: any) => {
-    setNote(event.target.value);
-  }
 
   return (
     <Grid container spacing={2} style={{ paddingBottom: 10 }}>
@@ -60,8 +58,8 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           size='small'
           label="Share(%)"
           defaultValue={5}
-          value={agentData.sharePercent}
-          onChange={(e: any) => handleChangeSharePercent(Number(e.target.value))}
+          value={_agentData.sharePercent}
+          onChange={(e: any) => handleChangeValue(e, "sharePercent")}
           style={{ width: '100%' }}
         />
       </Grid>
@@ -70,7 +68,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           required
           size='small'
           label="Share($)"
-          value={parseFloat((Number(GCIValue) / 100 * Number(agentData.sharePercent)).toFixed(3))}
+          value={parseFloat((Number(GCIValue) / 100 * Number(_agentData.sharePercent)).toFixed(3))}
           style={{ width: '100%' }}
         />
       </Grid>
@@ -80,8 +78,8 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           id={`GCI-item-textfield-${index}`}
           size='small'
           label="Note"
-          value={note}
-          onChange={handleChangeNote}
+          value={_agentData.note}
+          onChange={(e: any) => handleChangeValue(e, "note")}
           style={{ width: '100%', marginTop: -15, marginBottom: 20 }}
         />
       </Grid>

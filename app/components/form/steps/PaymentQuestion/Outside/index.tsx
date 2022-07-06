@@ -24,13 +24,10 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
     const wizard = useWizardContext();
     const { step } = useSectionContext();
     const { GCIValue, agentDataList} = useApp();
-
-    const showBoth = true;
-    // const shouwBoth = deal.context.ender_type.text === "AgentDoubleEnder" || deal.context.ender_type.text === "OfficeDoubleEnder";
-    const showBuy = showBoth || deal.deal_type === "Buying";
-
+    const deal_type = deal.context.ender_type !== undefined ? "Both" : deal.deal_type ;
+    
     // state
-    const [status, setStatus] = useState<RemittanceStatus>(showBuy ? 'ShowBuy' : 'ShowSell');
+    const [next, setNext] = useState(false);
     const [selectValue, setSelectValue] = useState<number>(-1);
     const [checkDataList, setCheckDataList] = useState<Array<CheckData>>([{ ...defaultCheckData }]);
     
@@ -63,22 +60,22 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
     
 
     const handleClickNextButton = () => {
-        if (status === "ShowBuy") { 
-            if (showBoth) { // shows sell part
-                setStatus("ShowSell");
-            } else {
-                gotoNext();
-            }
-        } else {
-            gotoNext();
-        }
+        
+        setNext(true);
+        gotoNext();
     }
     
     const gotoNext = () => {
         setShowButton(false);
         setTimeout(() => {
             wizard.next();
+            setNext(false);
         }, 80);
+    }
+
+    const updateFlag = (flag: boolean) => {
+        console.log('updateFlag', flag);
+        if(!showButton)setShowButton(flag);
     }
 
     // variables
@@ -88,10 +85,10 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
     return (
         <QuestionSection>
             <QuestionTitle>
-                Please input Seller's payment info.
+                Please input Outside Douglas Elliman Payments info
             </QuestionTitle>
             <QuestionForm>
-            <PaymentQuestionComponent role="outside"/>
+            <PaymentQuestionComponent range="outside" next={next} deal_type={deal_type} updateFlag={updateFlag}/>
             {showButton && (
                 <Box style={{ textAlign: 'right', marginTop:"20px", paddingBottom:"20px" }}>
                     <Button variant="contained" onClick={handleClickNextButton} style={{ marginBottom: 20, backgroundColor: '#0fb78d', color: 'white' }}>

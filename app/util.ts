@@ -1,4 +1,4 @@
-import { SelectData, PaymentType, PaymentsType } from "./models/type"
+import { SelectData, PaymentType, PaymentsType, CheckData } from "./models/type"
 
 export const defaultUser: IUser = {
     last_seen_at: null,
@@ -132,8 +132,22 @@ export const paymentTypeData:PaymentType[] = [
         }
     ]
 
-export const defaultPaymentsData: PaymentsType = {
+export const defaultPaymentsDataInside: PaymentsType = {
     payment_type: "Team Member",
     paid_to: ""
     
 }
+export const defaultPaymentsDataOutside: PaymentsType = {
+    payment_type: "Outside Referral Broker",
+    paid_to: ""
+    
+}
+
+export const defaultCheckData: CheckData[] =[
+    {
+        number: 0,
+        date: new Date(),
+        receiveDate: new Date(),
+        amount: 0,
+    }
+]

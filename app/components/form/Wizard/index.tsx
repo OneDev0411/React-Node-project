@@ -14,8 +14,8 @@ import LastQuestion from '../steps/LastQuestion'
 import { IQuestionProps } from '../../../models/type'
 
 export const FormWizard:React.FC<IQuestionProps> = (props) => {
-  const { Wizard } = props;
-
+  const { Wizard, models } = props;
+  const ender_type = models.deal.context.ender_type;
   return (
     <Wizard.QuestionWizard onFinish={() => console.log('done')}>
       <StartQuestion {...props} />
@@ -30,7 +30,7 @@ export const FormWizard:React.FC<IQuestionProps> = (props) => {
       <GCI2DEQuestion {...props} />
       <GCISplitQuestion {...props} />
       <RemittanceQuestion {...props} />
-      <PaymentQuestionInside {...props} />
+      { ender_type == undefined &&  <PaymentQuestionInside {...props} />}
       <PaymentQuestionOutside {...props} />
       <LastQuestion {...props} />
     </Wizard.QuestionWizard>

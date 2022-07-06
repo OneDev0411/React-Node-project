@@ -3,20 +3,21 @@ import App from './App'
 import { createComponents } from './core/utils/create-components'
 import './index.css'
 import { AppContextApi } from './models/type';
-import { defaultPaymentsData } from './util';
+import { defaultCheckData, defaultPaymentsDataInside, defaultPaymentsDataOutside } from './util';
 const { createContext, useState } = React;
 
 const defaultValue: AppContextApi = {
   stagingAmount: 0,
+  remittanceBankWireAmount: 0,
   GCIUnit: "",
   GCIValue: 0,
   agentDataList: [],
   testData: "hahaha",
   reasonValue: -1,
   reasonNote: "",
-  checkDataList: [],
-  paymentsDataInside: defaultPaymentsData,
-  paymentsDataOutside: defaultPaymentsData,
+  checkDataList: defaultCheckData,
+  paymentsDataInside: defaultPaymentsDataInside,
+  paymentsDataOutside: defaultPaymentsDataOutside,
   rolePaymentsDataInside: [],
   rolePaymentsDataOutside: []
 };
@@ -31,10 +32,11 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   const [reasonValue, setReasonValue] = useState<AppContextApi['reasonValue']>(-1);
   const [reasonNote, setReasonNote] = useState<AppContextApi['reasonNote']>("");
   const [stagingAmount, setStagingAmount] = useState<AppContextApi['stagingAmount']>(2000);
-  const [checkDataList, setCheckDataList] = useState<AppContextApi['checkDataList']>([]);
-  const [paymentsDataInside, setPaymentsDataInside] = useState<AppContextApi['paymentsDataInside']>(defaultPaymentsData);
+  const [remittanceBankWireAmount, setRemittanceBankWireAmount] = useState<AppContextApi['remittanceBankWireAmount']>(0);
+  const [checkDataList, setCheckDataList] = useState<AppContextApi['checkDataList']>(defaultCheckData);
+  const [paymentsDataInside, setPaymentsDataInside] = useState<AppContextApi['paymentsDataInside']>(defaultPaymentsDataInside);
   const [rolePaymentsDataInside, setRolePaymentsDataInside] = useState<AppContextApi['rolePaymentsDataInside']>([]);
-  const [paymentsDataOutside, setPaymentsDataOutside] = useState<AppContextApi['paymentsDataOutside']>(defaultPaymentsData);
+  const [paymentsDataOutside, setPaymentsDataOutside] = useState<AppContextApi['paymentsDataOutside']>(defaultPaymentsDataOutside);
   const [rolePaymentsDataOutside, setRolePaymentsDataOutside] = useState<AppContextApi['rolePaymentsDataOutside']>([]);
   
 
@@ -54,7 +56,7 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   // }
 
   return (
-    <AppContext.Provider value={{ testData, setTestData, GCIUnit, setGCIUnit, GCIValue, setGCIValue, stagingAmount, setStagingAmount, 
+    <AppContext.Provider value={{ testData, setTestData, GCIUnit, setGCIUnit, GCIValue, setGCIValue, stagingAmount, setStagingAmount, remittanceBankWireAmount, setRemittanceBankWireAmount,
       agentDataList, setAgentDataList, reasonValue, setReasonValue, reasonNote, setReasonNote, checkDataList, setCheckDataList, paymentsDataInside, setPaymentsDataInside, rolePaymentsDataInside, setRolePaymentsDataInside, paymentsDataOutside, setPaymentsDataOutside, rolePaymentsDataOutside, setRolePaymentsDataOutside }}>
       {children}
     </AppContext.Provider>

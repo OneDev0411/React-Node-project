@@ -10,6 +10,8 @@ export type RemittanceStatus = 'ShowBuy' | 'ShowSell'
 
 export type GCIUnit = "$" | "%" | ""
 
+export type DealType = "Buying" | "Selling" | "Both"
+
 export interface SelectData {
     label: string,
     value: string,
@@ -21,6 +23,9 @@ export interface IGCIInfoItemProps {
     role: IDealRole
     GCIValue: Number
     index: number
+    next: boolean
+    getData: (data: AgentData) => void
+    updateFlag: (flag: boolean) => void
 }
 
 export interface AgentData {
@@ -47,6 +52,8 @@ export interface RolePaymentsType {
     role_id: string
     unit_type: number
     calculated_from: number
+    valuePercent: number
+    value: number
 }
 
 
@@ -57,6 +64,8 @@ export interface RemittanceBankWiresType {
 export interface AppContextApi {
     stagingAmount: number 
     setStagingAmount?: (data: number) => void 
+    remittanceBankWireAmount: number
+    setRemittanceBankWireAmount?: (data: number) => void
     GCIUnit: GCIUnit
     setGCIUnit?: (GCIUnit: GCIUnit) => void
     GCIValue: Number
@@ -106,7 +115,10 @@ export interface IPaidByCardProps {
     name: string
     range: string
     index: number
-    cost: number
+    note: string
+    next: boolean
+    getData: (data: RolePaymentsType) => void
+    updateFlag: (flag: boolean) => void
 }
 
 export interface CheckData {
@@ -122,5 +134,8 @@ export interface PaymentType {
 }
 
 export interface IPaymentQuestionDataType {
-    role: string
+    range: string
+    next: boolean
+    deal_type: string
+    updateFlag: (flag: boolean) => void
 }

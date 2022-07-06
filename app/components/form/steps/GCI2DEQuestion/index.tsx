@@ -21,7 +21,8 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     const [_reasonValue, _setReasonValue] = useState<number>(-1);
     const [_reasonNote, _setReasonNote] = useState<string>("");
     const ListPrice = deal.context.list_price.number;
-    const DealType = deal.deal_type;
+    const dealType = deal.deal_type;
+    const bothType = deal.context.ender_type
     const handleClickButton = () => {
         // save GCI value
         let GCIValue = GCIUnit === "%" ? ListPrice * Number(inputValue) / 100 : Number(inputValue); // NEED_TO_UPDATE_THIS_CODE
@@ -48,7 +49,10 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
         if ((Number(event.target.value) + "") === "NaN") {
             return;
         }
-        if (GCIUnit === "%" && (DealType == "Buying" || DealType == "Selling") && Number(event.target.value) > 2 ) {
+        if (GCIUnit === "%" && (dealType == "Buying" || dealType == "Selling") && Number(event.target.value) > 100 ) {
+            return;
+        }
+        if (GCIUnit === "%" && bothType !== undefined && Number(event.target.value) > 100) {
             return;
         }
         

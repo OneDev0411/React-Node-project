@@ -22,42 +22,45 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
-    const { GCIValue, agentDataList, stagingAmount, checkDataList, setCheckDataList } = useApp();
-
-    const showBoth = true;
+    const { GCIValue, agentDataList, stagingAmount, setStagingAmount, checkDataList, setCheckDataList, remittanceBankWireAmount, setRemittanceBankWireAmount } = useApp();
+    const showBoth = true; //deal.context.ender_type !== undefined;
     // const shouwBoth = deal.context.ender_type.text === "AgentDoubleEnder" || deal.context.ender_type.text === "OfficeDoubleEnder";
     const showBuy = showBoth || deal.deal_type === "Buying";
 
     // state
+    const [_checkDataList, _setCheckDataList] = useState<CheckData[]>(checkDataList);
     const [status, setStatus] = useState<RemittanceStatus>(showBuy ? 'ShowBuy' : 'ShowSell');
     const [selectValue, setSelectValue] = useState<number>(-1);
-    
-    const [brokerageAmount, setBrokerageAmount] = useState<number>(0);
-    // const [stagingAmount, setStagingAmount] = useState<number>(300);
+    const [bankWireAmount, setBankWireAmount] = useState<number>(0);
+    const [_stagingAmount, _setStagingAmount] = useState<number>(stagingAmount);
     const [showButton, setShowButton] = useState<boolean>(true);
     // const [showBuy, setShowBuy] = useState<boolean>(showBoth || deal.deal_type === "Buying");
     // const [showSell, setShowSell] = useState<boolean>(deal.deal_type === "Selling");
 
     const handleSelectChange = (event: any) => {
+        if(!showButton) setShowButton(true);
         setSelectValue(event.target.value);
     }
 
     const handleClickAddAnotherCheckButton = (event: any) => {
-        let _checkDataList = checkDataList.slice();
-        _checkDataList.push({ ...defaultCheckData });
-        if(setCheckDataList !== undefined) setCheckDataList(_checkDataList);
+        if(!showButton) setShowButton(true);
+        let temp = _checkDataList.slice();
+        temp.push({ ...defaultCheckData });
+        _setCheckDataList(temp);
     }
 
     const handleClickRemoveButton = (event: any) => {
-        let _checkDataList = checkDataList.slice();
-        _checkDataList.pop();
-        if(setCheckDataList !== undefined) setCheckDataList(_checkDataList);
+        if(!showButton) setShowButton(true);
+        let temp = _checkDataList.slice();
+        temp.pop();
+        _setCheckDataList(temp);
     }
 
     const updateCheckDataList = (index: number, key: keyof CheckData, value: any) => {
-        let _checkDataList: CheckData[] = checkDataList.slice();
-        _checkDataList[index][key] = value;
-        if(setCheckDataList !== undefined) setCheckDataList(_checkDataList);
+        if(!showButton) setShowButton(true);
+        let temp = _checkDataList.slice();
+        temp[index][key] = value;
+        _setCheckDataList(temp);
     }
 
     const handleClickNextButton = () => {
@@ -73,10 +76,30 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     }
     
     const gotoNext = () => {
+        saveData();
         setShowButton(false);
+        
         setTimeout(() => {
             wizard.next();
-        }, 80);
+        }, 1000);
+    }
+
+    const saveData = () => {
+        if(setCheckDataList !== undefined) setCheckDataList(_checkDataList);
+        if(setRemittanceBankWireAmount !== undefined)setRemittanceBankWireAmount(bankWireAmount);
+        if(setStagingAmount !== undefined) setStagingAmount(_stagingAmount);
+    }
+
+    const handleValueChange = (value: any, key: string) => {
+        if(!showButton) setShowButton(true);
+        if ((Number(value) + "") === "NaN" || (value + "").length > 16 ) {
+            return;
+        }
+        
+        value = Number(value);
+        if(key == "bankWireAmount") setBankWireAmount(value);
+        else if(key == "stagingAmount") _setStagingAmount(value);
+
     }
 
     // variables
@@ -135,7 +158,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                             </Select>
                         </Grid>
                     </Grid>
-                    {checkDataList.map((checkData: CheckData, index: number) => 
+                    {_checkDataList.map((checkData: CheckData, index: number) => 
                         <Box style={{ marginTop: 20 }}>
                             <Grid container spacing={2}>
                                 <Grid item xs={4}>
@@ -200,7 +223,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                         <Button variant="outlined" onClick={handleClickAddAnotherCheckButton} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: 10 }}>
                             + Add another check
                         </Button>
-                        {checkDataList.length > 1 && (
+                        {_checkDataList.length > 1 && (
                             <Button variant="outlined" onClick={handleClickRemoveButton} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: 10 }}>
                                 Remove one
                             </Button>
@@ -256,10 +279,10 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                     <Box style={{ marginBottom: 10, marginTop: 20 }}>
                         <TextField
                             size='small'
-                            value={brokerageAmount}
+                            value={bankWireAmount}
                             style={{ width: '100%' }}
-                            onChange={(e: any) => setBrokerageAmount(Number(e.target.value))}
-                            type="number"
+                            onChange={(e: any) => handleValueChange(e.target.value, "bankWireAmount")}
+                            type="text"
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -274,6 +297,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                         <TextField
                             size='small'
                             value={stagingAmount}
+                            onChange={(e: any) => handleValueChange(Number(e.target.value), "stagingAmount")}
                             style={{ width: '100%' }}
                             type="number"
                             InputProps={{
@@ -289,7 +313,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                     <Box style={{ marginBottom: 10 }}>
                         <TextField
                             size='small'
-                            value={brokerageAmount + stagingAmount}
+                            value={bankWireAmount + stagingAmount}
                             style={{ width: '100%' }}
                             type="number"
                             InputProps={{
