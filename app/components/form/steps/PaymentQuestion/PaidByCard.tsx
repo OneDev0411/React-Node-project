@@ -14,7 +14,6 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
   
     const handleSelectedChange = (e: any, key: string) => {
         updateFlag(true);
-        console.log('payment select', _roleData);
         let value = parseFloat(e.target.value);
         let updateValue = JSON.parse(JSON.stringify(_roleData));
         updateValue[key] = value;
@@ -26,7 +25,6 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
 
     const handleCheckedValue = (e: any) => {
         updateFlag(true);
-        console.log('handleCheckedValue', e.target.checked);
         let value = e.target.checked;
         setCheckedAgent(value);
         _setRoleData({..._roleData, payment_unit_type: 0, payment_value: 0, payment_calculated_from: 0});

@@ -15,7 +15,6 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   const { roleData, setRoleData } = useApp();
   const [_roleData, _setRoleData] = useState<IRoleData>(roleData[index]);
   
-  console.log('share percent', roleData);
   useEffect(() => {
     if(next) {
       getData(_roleData);
@@ -28,7 +27,6 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   },[roleData, GCIValue]);
 
   const handleChangeValue = (e: any, key: string) => {
-      console.log('event target', e.target.value, key);
       updateFlag(true);
       let value = e.target.value;
       if(key == "share_percent" && value !== "") {

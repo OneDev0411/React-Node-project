@@ -30,9 +30,9 @@ const getDealData = (req:Request, res: Response) => {
   // res.json({ result: "result" });
 }
 
-const insertData = (req, res) => {
-  console.log('request', req.body);
-  DealDataModel.create({deal_id: "req.body.deal_id"})
+const insertData = (req:Request, res:Response) => {
+  console.log('request', req.body, req.params);
+  DealDataModel.create(req.body)
   .then(dataList => {
     console.log('dataList:', dataList);
       res.status(200).json({

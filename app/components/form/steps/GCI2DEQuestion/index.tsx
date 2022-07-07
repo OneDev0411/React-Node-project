@@ -30,7 +30,6 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
         if (setDealData !== undefined) {
             dealData.gci_de_value = GCIValue;
             let temp = JSON.parse(JSON.stringify(dealData));            
-            console.log("temp", temp);
             setDealData(temp);
         }
         // save reason

@@ -73,11 +73,9 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         roleData[dataIndex] = data;
         let temp = JSON.parse(JSON.stringify(roleData));
         if(setRoleData !== undefined) setRoleData(temp);
-        console.log("GCI temp", temp);
        
     }
     const updateFlag = (flag: boolean) => {
-        console.log('flag', flag);
         if(!showButton) setShowButton(flag);
     } 
 
