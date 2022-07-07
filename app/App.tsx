@@ -29,9 +29,9 @@ const App: React.FC<EntryProps> = ({
     let agentRoles: IDealRole[] = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
     if (setRoleData !== undefined) {
       setRoleData(agentRoles.map((agentRole: IDealRole) => {
-        let { id, legal_full_name, role } = agentRole;
+        let { id, legal_full_name, role, commission_percentage, commission_dollar } = agentRole;
         return {
-          deal_id: deal.id, role_id: id, legal_full_name: legal_full_name, role: role, share_percent: 0, share_value: 0, note: "", payment_unit_type: 0, payment_value: 0, payment_calculated_from: 0
+          deal_id: deal.id, role_id: id, legal_full_name: legal_full_name, role: role, share_percent: commission_percentage, share_value: commission_dollar, note: "", payment_unit_type: 0, payment_value: 0, payment_calculated_from: 0
         }
       }));
     }

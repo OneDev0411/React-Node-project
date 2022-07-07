@@ -82,8 +82,8 @@ export interface IRoleData {
     role_id: IDealRole['id']
     legal_full_name: IDealRole['legal_full_name']
     role: IDealRole['role']
-    share_percent: number
-    share_value: number
+    share_percent: IDealRole['commission_percentage']
+    share_value: IDealRole['commission_dollar']
     note: string
     payment_unit_type?: number
     payment_value?: number

@@ -37,13 +37,13 @@ const paymentQuestionComponent : React.FC<IPaymentQuestionDataType> = ({ range, 
     }
 
     const getData = (data: IRoleData) => {
-        let dataIndex = buffer.current.findIndex((item) => {
+        let dataIndex = roleData.findIndex((item) => {
             return item.role_id == data.role_id;
         });
-        if(dataIndex != -1) buffer.current.splice(dataIndex, 1);
-        buffer.current.push(data);
-        console.log('data', range, data, buffer.current);
-        if(setRoleData !== undefined) setRoleData(buffer.current);
+        roleData[dataIndex] = data;
+        let temp = JSON.parse(JSON.stringify(roleData));
+        if(setRoleData !== undefined) setRoleData(temp);
+        console.log('payment temp', temp);
     }
 
     React.useEffect(() => {

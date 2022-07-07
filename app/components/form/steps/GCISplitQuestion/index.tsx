@@ -65,14 +65,16 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         // deleteRole(id);
     }
 
+ 
     const getData = (data: IRoleData) => {
-        let dataIndex = buffer.current.findIndex((item) => {
+        let dataIndex = roleData.findIndex((item) => {
             return item.role_id == data.role_id;
         });
-        if(dataIndex != -1) buffer.current.splice(dataIndex, 1);
-        buffer.current.push(data);
-        if(setRoleData !== undefined) setRoleData(buffer.current);
-        console.log('GCI', data, buffer.current);
+        roleData[dataIndex] = data;
+        let temp = JSON.parse(JSON.stringify(roleData));
+        if(setRoleData !== undefined) setRoleData(temp);
+        console.log("GCI temp", temp);
+       
     }
     const updateFlag = (flag: boolean) => {
         console.log('flag', flag);

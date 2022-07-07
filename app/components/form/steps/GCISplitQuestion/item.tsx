@@ -15,13 +15,17 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   const { roleData, setRoleData } = useApp();
   const [_roleData, _setRoleData] = useState<IRoleData>(roleData[index]);
   
-
+  console.log('share percent', roleData);
   useEffect(() => {
     if(next) {
       getData(_roleData);
       console.log('next', next);
     }
   }, [next]);
+
+  useEffect(() => {
+    _setRoleData({ ...roleData[index], share_value: parseFloat((Number(GCIValue) / 100 * Number(roleData[index].share_percent)).toFixed(3))})
+  },[roleData, GCIValue]);
 
   const handleChangeValue = (e: any, key: string) => {
       console.log('event target', e.target.value, key);
@@ -31,12 +35,14 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
         value = parseFloat(e.target.value);
         if(value > 100) return;
       }
-
       let updateValue = JSON.parse(JSON.stringify(_roleData));
       updateValue[key] = value;
       if(key == "share_percent") updateValue['share_value'] = parseFloat((Number(GCIValue) / 100 * Number(value)).toFixed(3))
+      if(key == "share_value") updateValue['share_percent'] = parseFloat((Number(value) / Number(GCIValue) * 100).toFixed(3))
       _setRoleData(updateValue);
   }
+
+
 
 
   return (
@@ -70,6 +76,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           size='small'
           label="Share($)"
           value={_roleData.share_value}
+          onChange={(e: any) => handleChangeValue(e, "share_value")}
           style={{ width: '100%' }}
         />
       </Grid>

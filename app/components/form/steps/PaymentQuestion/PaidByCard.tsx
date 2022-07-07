@@ -1,7 +1,6 @@
 import React from '@libs/react'
 import { IPaidByCardProps, IRoleData } from '../../../../models/type';
 import useApp from '../../../../hooks/useApp';
-import { useEffect } from 'react';
 
 const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note, next, getData, updateFlag }) => {
     const { Grid, TextField, InputAdornment, Box, FormControlLabel, Checkbox, RadioGroup, Radio } = ui;
