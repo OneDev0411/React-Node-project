@@ -1,22 +1,13 @@
 import React from '@libs/react'
-import { IPaidByCardProps, RolePaymentsType } from '../../../../models/type';
+import { IPaidByCardProps, IRoleData } from '../../../../models/type';
 import useApp from '../../../../hooks/useApp';
 import { useEffect } from 'react';
 
-
-const defaultValue : RolePaymentsType = {
-    role_id: "",
-    unit_type: 0,
-    calculated_from: 0,
-    valuePercent: 0,
-    value: 0
-}
-
 const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note, next, getData, updateFlag }) => {
     const { Grid, TextField, InputAdornment, Box, FormControlLabel, Checkbox, RadioGroup, Radio } = ui;
-    const {rolePaymentsDataInside, setRolePaymentsDataInside, rolePaymentsDataOutside, setRolePaymentsDataOutside, agentDataList} = useApp()
+    const {roleData, setRoleData} = useApp()
 
-    const [rolePayments, setRolePayments] = React.useState<RolePaymentsType>(defaultValue);
+    const [_roleData, _setRoleData] = React.useState<IRoleData>(roleData[index]);
     const [checkedAgent, setCheckedAgent] = React.useState(false);
     const [unitType, setUnitType] = React.useState(0);    
 
@@ -24,10 +15,14 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
   
     const handleSelectedChange = (e: any, key: string) => {
         updateFlag(true);
+        console.log('payment select', _roleData);
         let value = parseFloat(e.target.value);
-        let updateValue = JSON.parse(JSON.stringify(rolePayments));
+        let updateValue = JSON.parse(JSON.stringify(_roleData));
         updateValue[key] = value;
-        setRolePayments(updateValue);
+        if(key == "payment_value" && value > 100 && updateValue.payment_unit_type == 0) return;
+    
+        if(key == "payment_unit_type") updateValue["payment_value"] = "";
+        _setRoleData(updateValue);
     }
 
     const handleCheckedValue = (e: any) => {
@@ -35,41 +30,17 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
         console.log('handleCheckedValue', e.target.checked);
         let value = e.target.checked;
         setCheckedAgent(value);
-        if(value) {
-            setRolePayments({...rolePayments, role_id: agentDataList[index].id});
-        }
-        else {
-            setRolePayments(defaultValue);
-        }
+        _setRoleData({..._roleData, payment_unit_type: 0, payment_value: 0, payment_calculated_from: 0});
+        
     }
 
     React.useEffect(() => {
-        if(range == "inside") {
-            let temp = rolePaymentsDataInside.find((item : RolePaymentsType) => {
-                return item.role_id == agentDataList[index].id;
-            });
-            if(temp !== undefined) {
-                setRolePayments(temp);
-                setCheckedAgent(true);
-            }
-            console.log('rolePayment', range, temp);
-        }
-        else {
-            let temp = rolePaymentsDataOutside.find((item : RolePaymentsType) => {
-                return item.role_id == agentDataList[index].id;
-            });
-            if(temp !== undefined) {
-                setRolePayments(temp);
-                setCheckedAgent(true);
-            }
-            console.log('rolePayment', range, temp);
-        }
-
-    }, [])
+        _setRoleData(roleData[index]);
+    },[roleData]);
 
     React.useEffect(() => {
         if(next) {
-            if(rolePayments.role_id !== "")  getData(rolePayments);
+            getData(_roleData);
         }
     }, [next]);
 
@@ -82,8 +53,8 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
             <Grid container spacing={1} style={{ padding: 0 }}>
                 <Grid item xs={5} style={{ display: 'inherit', marginRight: 10 }}>
                     <Radio
-                        checked={rolePayments.unit_type == 0}
-                        onChange={(e) => handleSelectedChange(e, "unit_type")}
+                        checked={_roleData.payment_unit_type == 0}
+                        onChange={(e) => handleSelectedChange(e, "payment_unit_type")}
                         value={0}
                         name="radio-buttons"
                         inputProps={{ 'aria-label': 'A' }}
@@ -92,8 +63,8 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
                     />
                     <TextField
                         size='small'
-                        value={rolePayments.unit_type == 0? rolePayments.valuePercent : ""}
-                        onChange={(e) => handleSelectedChange(e, "valuePercent")}
+                        value={_roleData.payment_unit_type == 0? _roleData.payment_value : ""}
+                        onChange={(e) => handleSelectedChange(e, "payment_value")}
                         type="number"
                         style={{ paddingTop: 3 }}
                         InputProps={{
@@ -103,7 +74,7 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
                                 </InputAdornment>
                             )
                         }}
-                        disabled={checkedAgent && rolePayments.unit_type == 0? false: true}
+                        disabled={checkedAgent && _roleData.payment_unit_type == 0? false: true}
                     />
                 </Grid>
                 <Grid item xs={1} style={{ alignSelf: "center" }}>
@@ -111,8 +82,8 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
                 </Grid>
                 <Grid item xs={5} style={{ display: 'inherit' }}>
                     <Radio
-                        checked={rolePayments.unit_type == 1}
-                        onChange={(e) => handleSelectedChange(e, "unit_type")}
+                        checked={_roleData.payment_unit_type == 1}
+                        onChange={(e) => handleSelectedChange(e, "payment_unit_type")}
                         value={1}
                         name="radio-buttons"
                         inputProps={{ 'aria-label': 'B' }}
@@ -121,8 +92,8 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
                     />
                     <TextField
                         size='small'
-                        value={rolePayments.unit_type == 1? rolePayments.value : ""}
-                        onChange={(e) => handleSelectedChange(e, "value")}
+                        value={_roleData.payment_unit_type == 1? _roleData.payment_value : ""}
+                        onChange={(e) => handleSelectedChange(e, "payment_value")}
                         type="number"
                         style={{ paddingTop: 3 }}
                         InputProps={{
@@ -132,7 +103,7 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
                                 </InputAdornment>
                             )
                         }}
-                        disabled={ checkedAgent && rolePayments.unit_type == 1? false: true}
+                        disabled={ checkedAgent && _roleData.payment_unit_type == 1? false: true}
                     />
                 </Grid>
             </Grid>
@@ -145,11 +116,11 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
                         row
                         aria-labelledby="demo-row-radio-buttons-group-label"
                         name="row-radio-buttons-group"
-                        value={rolePayments.calculated_from}
-                        onChange={(e) => handleSelectedChange(e, "calculated_from")}
+                        value={_roleData.payment_calculated_from}
+                        onChange={(e) => handleSelectedChange(e, "payment_calculated_from")}
                     >
-                        <FormControlLabel value={0} style={{ marginRight: 20 }} control={<Radio size='small' style={{ marginBottom: 3 }} disabled={!checkedAgent || rolePayments.unit_type == 1}/>} label="My GCI" />
-                        <FormControlLabel value={1} style={{ marginRight: 0 }} control={<Radio size='small' style={{ marginBottom: 3 }} disabled={!checkedAgent || rolePayments.unit_type == 1}/>} label="My NET" />
+                        <FormControlLabel value={0} style={{ marginRight: 20 }} control={<Radio size='small' style={{ marginBottom: 3 }} disabled={!checkedAgent || _roleData.payment_unit_type == 1}/>} label="My GCI" />
+                        <FormControlLabel value={1} style={{ marginRight: 0 }} control={<Radio size='small' style={{ marginBottom: 3 }} disabled={!checkedAgent || _roleData.payment_unit_type == 1}/>} label="My NET" />
                     </RadioGroup>
                 </Grid>
             </Grid>

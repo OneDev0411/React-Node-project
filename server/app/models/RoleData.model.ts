@@ -2,28 +2,26 @@
  * Copyright by https://loizenai.com
  * youtube loizenai
  */
-import { DataTypes } from "sequelize/types";
 export default (sequelize, Sequelize) => {
 	const RoleData = sequelize.define('role_data', {
 		deal_id: {
-            type: DataTypes.TEXT
+            type: Sequelize.TEXT
         },
         role_id: {
-            type: DataTypes.TEXT
+            type: Sequelize.TEXT
         },
         share_percent: {
-            type: DataTypes.NUMBER
+            type: Sequelize.NUMBER
         },
         note: {
-            type: DataTypes.TEXT
+            type: Sequelize.TEXT
         },
         payment_unit_type: {
-            type: DataTypes.INTEGER
+            type: Sequelize.INTEGER
         },
         payment_value: {
-            type: DataTypes.INTEGER
-        },
-        
+            type: Sequelize.INTEGER
+        }
 	});
 
 	return RoleData;

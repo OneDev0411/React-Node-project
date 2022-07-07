@@ -13,7 +13,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     const { useState } = React;
     const { Box, TextField, Button, InputAdornment, Select, MenuItem, Grid } = Ui;
     const wizard = useWizardContext();
-    const { GCIUnit, setGCIValue, reasonValue, setReasonValue, reasonNote, setReasonNote } = useApp();
+    const { dealData, setDealData } = useApp();
 
     // state
     const [inputValue, setInputValue] = useState<string | number>("");
@@ -25,16 +25,25 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     const bothType = deal.context.ender_type
     const handleClickButton = () => {
         // save GCI value
-        let GCIValue = GCIUnit === "%" ? ListPrice * Number(inputValue) / 100 : Number(inputValue); // NEED_TO_UPDATE_THIS_CODE
-        if (setGCIValue !== undefined) {
-            setGCIValue(GCIValue);
+        let GCIValue = dealData.gci_calculate_type == 0 ? ListPrice * Number(inputValue) / 100 : Number(inputValue); // NEED_TO_UPDATE_THIS_CODE
+        
+        if (setDealData !== undefined) {
+            dealData.gci_de_value = GCIValue;
+            let temp = JSON.parse(JSON.stringify(dealData));            
+            console.log("temp", temp);
+            setDealData(temp);
         }
         // save reason
-        if (Number(inputValue) < 2 && setReasonValue !== undefined && setReasonNote !== undefined) {
-            setReasonValue(_reasonValue);
+        if (Number(inputValue) < 2 && setDealData !== undefined && setDealData !== undefined) {
+            dealData.gci_reason_select = _reasonValue;
+            let temp = JSON.parse(JSON.stringify(dealData));
+            setDealData(temp);
             if (_reasonValue === 2) {
-                setReasonNote(_reasonNote);
+                dealData.gci_reason = _reasonNote;
+                let temp = JSON.parse(JSON.stringify(dealData));
+                setDealData(temp);
             }
+            
         }
 
         setShowButton(false);
@@ -49,10 +58,10 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
         if ((Number(event.target.value) + "") === "NaN") {
             return;
         }
-        if (GCIUnit === "%" && (dealType == "Buying" || dealType == "Selling") && Number(event.target.value) > 100 ) {
+        if (dealData.gci_calculate_type === 0 && (dealType == "Buying" || dealType == "Selling") && Number(event.target.value) > 100 ) {
             return;
         }
-        if (GCIUnit === "%" && bothType !== undefined && Number(event.target.value) > 100) {
+        if (dealData.gci_calculate_type === 0 && bothType !== undefined && Number(event.target.value) > 100) {
             return;
         }
         
@@ -93,12 +102,12 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
-                                {GCIUnit}
+                                {dealData.gci_calculate_type == 0 ? "%" : "$"}
                             </InputAdornment>
                         )
                     }}
                 />
-                {(inputValue !== "" && GCIUnit === "%") && (
+                {(inputValue !== "" && dealData.gci_calculate_type == 0) && (
                     <Box style={{ textAlign: 'right', marginTop: 10 }}>
                         <strong>{"$"+stylizeNumber(ListPrice)}</strong>
                         {/* <strong>{`$${stylizeNumber(Number(listPrice))}`}</strong>  // NEED_TO_UPDATE_THIS_CODE */}

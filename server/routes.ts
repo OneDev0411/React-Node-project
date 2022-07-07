@@ -8,8 +8,8 @@ const router = express.Router()
 
 router.get('/', homeRoute)
 
-router.get('/data', dataRoute.getData);
-
+router.get('/data', dataRoute.getDealData);
+router.post('/deal-data/insert', dataRoute.insertData);
 /**
  * Please don't remove this route
  */

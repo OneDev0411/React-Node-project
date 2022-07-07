@@ -19,11 +19,11 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
     models: { deal, roles },
     Components: { DatePicker: DayPicker },
 }) => {
+     const { dealData, roleData, remittanceChecks} = useApp();
     const { useState } = React;
     const { Grid, Select, MenuItem, ListSubheader,  TextField, InputAdornment, Box, Button, FormControlLabel, Checkbox, Divider } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
-    const { GCIValue, agentDataList} = useApp();
     const deal_type = deal.context.ender_type !== undefined ? "Both" : deal.deal_type ;
     
     // state
@@ -35,34 +35,12 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
     // const [showBuy, setShowBuy] = useState<boolean>(showBoth || deal.deal_type === "Buying");
     // const [showSell, setShowSell] = useState<boolean>(deal.deal_type === "Selling");
 
-    const handleSelectChange = (event: any) => {
-        setSelectValue(event.target.value);    
-    }
-
-    const handleClickAddAnotherCheckButton = (event: any) => {
-        let _checkDataList = checkDataList.slice();
-        _checkDataList.push({ ...defaultCheckData });
-        setCheckDataList(_checkDataList);
-    }
-
-    const handleClickRemoveButton = (event: any) => {
-        let _checkDataList = checkDataList.slice();
-        _checkDataList.pop();
-        setCheckDataList(_checkDataList);
-    }
-
-    const updateCheckDataList = (index: number, key: keyof CheckData, value: any) => {
-        let _checkDataList: CheckData[] = checkDataList.slice();
-        _checkDataList[index][key] = value;
-        setCheckDataList(_checkDataList);
-    }
-
-    
 
     const handleClickNextButton = () => {
         
         setNext(true);
         gotoNext();
+        console.log('paymentstep', dealData, remittanceChecks, roleData)
     }
     
     const gotoNext = () => {

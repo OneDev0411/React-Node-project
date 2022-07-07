@@ -12,8 +12,7 @@ const App: React.FC<EntryProps> = ({
 }) => {
   const { Wizard } = Components;
   const { deal, roles } = models;
-  const { setAgentDataList } = useApp();
-  
+  const { dealData ,setDealData, setRoleData, setRemittanceChecks } = useApp();
 
   // const { notifyOffice } = utils;
   // const { testData, setTestData } = useApp();
@@ -28,14 +27,15 @@ const App: React.FC<EntryProps> = ({
     console.log('deal##########:', deal);
     // set initial context agentData
     let agentRoles: IDealRole[] = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
-    if (setAgentDataList !== undefined) {
-      setAgentDataList(agentRoles.map((agentRole: IDealRole) => {
+    if (setRoleData !== undefined) {
+      setRoleData(agentRoles.map((agentRole: IDealRole) => {
         let { id, legal_full_name, role } = agentRole;
         return {
-          id, legal_full_name, role, sharePercent: 5, note: ""
+          deal_id: deal.id, role_id: id, legal_full_name: legal_full_name, role: role, share_percent: 0, share_value: 0, note: "", payment_unit_type: 0, payment_value: 0, payment_calculated_from: 0
         }
       }));
     }
+    if(setDealData !== undefined) setDealData({...dealData, deal_id: deal.id});
     // console.log('agentRoles:', agentRoles);
     // console.log('context:', deal.context);
     // async function doSomething() {

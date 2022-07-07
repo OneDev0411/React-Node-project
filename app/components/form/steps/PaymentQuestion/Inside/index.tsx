@@ -23,9 +23,8 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
     const { Grid, Select, MenuItem, ListSubheader,  TextField, InputAdornment, Box, Button, FormControlLabel, Checkbox, Divider } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
-    const { GCIValue, agentDataList} = useApp();
     const deal_type = deal.deal_type;
-
+    const { dealData, roleData, remittanceChecks} = useApp();
     // state
     const [selectValue, setSelectValue] = useState<number>(-1);
     const [next, setNext] = useState(false);
@@ -35,34 +34,11 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
     // const [showBuy, setShowBuy] = useState<boolean>(showBoth || deal.deal_type === "Buying");
     // const [showSell, setShowSell] = useState<boolean>(deal.deal_type === "Selling");
 
-    const handleSelectChange = (event: any) => {
-        setSelectValue(event.target.value);    
-    }
-
-    const handleClickAddAnotherCheckButton = (event: any) => {
-        let _checkDataList = checkDataList.slice();
-        _checkDataList.push({ ...defaultCheckData });
-        setCheckDataList(_checkDataList);
-    }
-
-    const handleClickRemoveButton = (event: any) => {
-        let _checkDataList = checkDataList.slice();
-        _checkDataList.pop();
-        setCheckDataList(_checkDataList);
-    }
-
-    const updateCheckDataList = (index: number, key: keyof CheckData, value: any) => {
-        let _checkDataList: CheckData[] = checkDataList.slice();
-        _checkDataList[index][key] = value;
-        setCheckDataList(_checkDataList);
-    }
-
-    
 
     const handleClickNextButton = () => {
             setNext(true);
             gotoNext();
-
+            console.log('paymentstep', dealData, remittanceChecks, roleData)
     }
     
     const gotoNext = () => {
@@ -70,7 +46,7 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
         setTimeout(() => {
             wizard.next();
             setNext(false);
-        }, 80);
+        }, 1000);
     }
 
     const updateFlag = (flag: boolean) => {

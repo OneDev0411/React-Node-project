@@ -2,19 +2,21 @@
  * Copyright by https://loizenai.com
  * youtube loizenai
  */
-
 export default (sequelize, Sequelize) => {
 	const DealData = sequelize.define('deal_data', {
 		deal_id: {
 			type: Sequelize.TEXT,
 		},
-		GCI_calculate_type: {
+		gci_calculate_type: {
             type: Sequelize.INTEGER,
         },		
-        GCI_DE: {
+        gci_de_value: {
             type: Sequelize.INTEGER
         },
-        GCI_reason: {
+        gci_reason_select: {
+            type: Sequelize.INTEGER
+        },
+        gci_reason: {
             type: Sequelize.TEXT
         },
         stage_cost: {

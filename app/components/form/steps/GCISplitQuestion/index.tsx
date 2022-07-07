@@ -1,6 +1,6 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
-import { AgentData, GCISplitStatus, IQuestionProps } from "../../../../models/type"
+import { GCISplitStatus, IQuestionProps, IRoleData } from "../../../../models/type"
 import GCIInfoItem from "./item"
 import useApp from '../../../../hooks/useApp'
 import { stylizeNumber } from '../../../../util'
@@ -16,14 +16,14 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     const { Grid, Button, Box } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
-    const { GCIValue, agentDataList, setAgentDataList } = useApp();
+    const { dealData, setDealData, roleData, setRoleData } = useApp();
     
     // state
     const [status, setStatus] = useState<GCISplitStatus>('Listing');
     const [currentRole, setCurrentObject] = useState<Partial<IDealFormRole> | IDealRole | null>(null); // data from dropdown select, can be IDealRole object or nameObject
     const [showButton, setShowButton] = useState<boolean>(true);
     const [next, setNext] = useState(false);
-    const buffer = useRef<AgentData[]>([]);
+    const buffer = useRef<IRoleData[]>([]);
 
     // this logic is updating 
     const handleCloseRoleForm = () => {
@@ -65,26 +65,26 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         // deleteRole(id);
     }
 
-    const getData = (data: AgentData) => {
+    const getData = (data: IRoleData) => {
         let dataIndex = buffer.current.findIndex((item) => {
-            return item.id == data.id;
+            return item.role_id == data.role_id;
         });
         if(dataIndex != -1) buffer.current.splice(dataIndex, 1);
         buffer.current.push(data);
-        if(setAgentDataList !== undefined) setAgentDataList(buffer.current);
-        console.log('data', data, buffer.current);
+        if(setRoleData !== undefined) setRoleData(buffer.current);
+        console.log('GCI', data, buffer.current);
     }
     const updateFlag = (flag: boolean) => {
         console.log('flag', flag);
-        if(!showButton)setShowButton(flag);
+        if(!showButton) setShowButton(flag);
     } 
 
     // variables
     // console.log('roles:', roles);
     const agentRole = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
 
-    const totalPercent = agentDataList.reduce((totalPercent: any, agentData: any) => {
-        return totalPercent + agentData.sharePercent;
+    const totalPercent = roleData.reduce((totalPercent: any, data: any) => {
+        return totalPercent + data.share_percent;
     }, 0);
 
     return (
@@ -93,9 +93,9 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 Great, here is your GCI share before splits:
             </QuestionTitle>
             <QuestionForm>
-                {agentDataList.map((_: AgentData, id: number) =>
+                {roleData.map((_: IRoleData, id: number) =>
                     <>
-                        <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={GCIValue} next={next} getData={getData} updateFlag={updateFlag}/>
+                        <GCIInfoItem Ui={Ui} key={id} index={id} role={agentRole[id]} GCIValue={dealData.gci_de_value} next={next} getData={getData} updateFlag={updateFlag}/>
                         <Button key={id} variant="outlined" onClick={() => handleClickRemoveButton(agentRole[id].id)} style={{ color: 'black !important', borderColor: '#dbdbdb !important', paddingBottom: 2, paddingTop: 2, marginLeft: 10, marginBottom:20, marginTop:-20, float: "right" }}>
                             Remove one
                         </Button>
@@ -116,7 +116,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                             </Grid>
                             <Grid item xs={4} style={{ paddingLeft: 0 }}>
                                 <label style={{ fontWeight: 300 }}>
-                                    Total: <strong>${stylizeNumber(Number(GCIValue) / 100 * totalPercent)}</strong>
+                                    Total: <strong>${stylizeNumber(Number(dealData.gci_de_value) / 100 * totalPercent)}</strong>
                                 </label>
                             </Grid>
                         </Grid>
@@ -153,7 +153,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                             </Grid>
                             <Grid item xs={4} style={{ paddingLeft: 0 }}>
                                 <label style={{ fontWeight: 300 }}>
-                                    Total: <strong>${stylizeNumber(Number(GCIValue) / 100 * totalPercent)}</strong>
+                                    Total: <strong>${stylizeNumber(Number(dealData.gci_de_value) / 100 * totalPercent)}</strong>
                                 </label>
                             </Grid>
                         </Grid>

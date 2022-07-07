@@ -1,4 +1,4 @@
-import { SelectData, PaymentType, PaymentsType, CheckData } from "./models/type"
+import { SelectData, PaymentType, CheckData, IDealData, IRoleData, IRemittanceChecks } from "./models/type"
 
 export const defaultUser: IUser = {
     last_seen_at: null,
@@ -132,22 +132,47 @@ export const paymentTypeData:PaymentType[] = [
         }
     ]
 
-export const defaultPaymentsDataInside: PaymentsType = {
-    payment_type: "Team Member",
-    paid_to: ""
+// export const defaultPaymentsDataInside: PaymentsType = {
+//     payment_type: "Team Member",
+//     paid_to: ""
     
-}
-export const defaultPaymentsDataOutside: PaymentsType = {
-    payment_type: "Outside Referral Broker",
-    paid_to: ""
+// }
+// export const defaultPaymentsDataOutside: PaymentsType = {
+//     payment_type: "Outside Referral Broker",
+//     paid_to: ""
     
-}
+// }
 
-export const defaultCheckData: CheckData[] =[
+export const defaultRemittanceChecks: IRemittanceChecks[] =[
     {
-        number: 0,
-        date: new Date(),
-        receiveDate: new Date(),
+        deal_id: "",
+        check_id: 0,
+        check_num: 0,
+        check_date: new Date(),
+        check_receive_date: new Date(),
         amount: 0,
     }
 ]
+
+export const defaultDealData: IDealData ={
+    deal_id: "",
+    gci_calculate_type: 0,
+    gci_de_value: 0,
+    gci_reason_select: 0,
+    gci_reason: "",
+    stage_cost: 0,
+    remittance_bank_wire_amount: 0,
+    inside_de_payment_type: "Team Member",
+    inside_de_paid_to: "",
+    outside_de_payment_type: "Outside Referral Broker",
+    outside_de_paid_to: "",
+    outside_de_payment_company: "",
+    outside_de_payment_company_address: "",
+    outside_de_payment_office: "",
+    outside_de_payment_cell:"",
+    outside_de_payment_fax: "",
+    outside_de_payment_tax_id: "",
+    outside_de_payment_mail: ""
+}
+
+
