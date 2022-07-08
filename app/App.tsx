@@ -12,7 +12,7 @@ const App: React.FC<EntryProps> = ({
 }) => {
   const { Wizard } = Components;
   const { deal, roles } = models;
-  const { dealData ,setDealData, setRoleData, setRemittanceChecks } = useApp();
+  const { dealData ,setDealData, roleData, setRoleData, setRemittanceChecks } = useApp();
 
   // const { notifyOffice } = utils;
   // const { testData, setTestData } = useApp();
@@ -22,16 +22,47 @@ const App: React.FC<EntryProps> = ({
   //   }
   // }, []);
 
+  const dataToContextAPI = (data: any) => {
+    let tempDealData = data.dealData;
+    delete tempDealData.id;
+    delete tempDealData.createdAt;
+    delete tempDealData.updatedAt;
+    console.log('dealData', tempDealData);
+    if(setDealData !== undefined) setDealData(tempDealData);
+    let tempRoleData = data.roleData;
+    for(let i = 0; i < tempRoleData.length; i++){
+      delete tempRoleData[i].id;
+      delete tempRoleData[i].createdAt;
+      delete tempRoleData[i].updatedAt;
+    }
+    console.log('tempRoleData', tempRoleData);
+    if(setRoleData !== undefined) setRoleData(tempRoleData);
+
+    let tempRemittanceChecks = data.remittanceChecks;
+    for(let i = 0; i < tempRemittanceChecks.length; i++){
+      delete tempRemittanceChecks[i].id;
+      delete tempRemittanceChecks[i].createdAt;
+      delete tempRemittanceChecks[i].updatedAt;
+    }
+    console.log('tempRemittanceChecks', tempRemittanceChecks);
+    if(setRemittanceChecks !== undefined) setRemittanceChecks(tempRemittanceChecks);
+
+  }
+
+  React.useEffect(() => {
+    axios.post("http://localhost:8081/total-read", {deal_id: deal.id}).then((res) => {
+        console.log('reading total data', res.data);
+        let data = res.data.data;
+        dataToContextAPI(data);
+    });
+  }, []);
 
   React.useEffect(() => {
 
-    axios.post("http://localhost:8081/total-read", {deal_id: deal.id}).then((res) => {
-        console.log('insert', res.data);
-    });
     console.log('deal##########:', deal);
     // set initial context agentData
     let agentRoles: IDealRole[] = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
-    if (setRoleData !== undefined) {
+    if (setRoleData !== undefined && roleData.length == 0) {
       setRoleData(agentRoles.map((agentRole: IDealRole) => {
         let { id, legal_full_name, role, commission_percentage, commission_dollar } = agentRole;
         return {

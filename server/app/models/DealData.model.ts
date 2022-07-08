@@ -11,7 +11,7 @@ export default (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
         },		
         gci_de_value: {
-            type: Sequelize.INTEGER
+            type: Sequelize.NUMBER
         },
         gci_reason_select: {
             type: Sequelize.INTEGER

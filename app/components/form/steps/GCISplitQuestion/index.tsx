@@ -83,7 +83,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     const agentRole = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
 
     const totalPercent = roleData.reduce((totalPercent: any, data: any) => {
-        return totalPercent + data.share_percent;
+        return Number(totalPercent) + Number(data.share_percent);
     }, 0);
 
     return (

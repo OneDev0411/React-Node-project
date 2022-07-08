@@ -19,6 +19,9 @@ export default (sequelize, Sequelize) => {
         share_percent: {
             type: Sequelize.NUMBER
         },
+        share_value: {
+            type: Sequelize.NUMBER
+        },
         note: {
             type: Sequelize.TEXT
         },

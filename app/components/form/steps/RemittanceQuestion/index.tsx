@@ -6,14 +6,13 @@ import useApp from '../../../../hooks/useApp'
 import { stylizeNumber, defaultRemittanceChecks } from '../../../../util'
 
 
-
 const RemittanceQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
     hooks: { useWizardContext, useSectionContext },
     models: { deal, roles },
     Components: { DatePicker: DayPicker },
 }) => {
-    const { useState } = React;
+    const { useState, useEffect } = React;
     const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
@@ -115,6 +114,10 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
         _setDealData(temp);
 
     }
+
+    useEffect(() => {
+        _setDealData(dealData);
+    },[dealData]);
 
     // variables
     // const showBuy =  showBoth || deal.deal_type === "Buying";

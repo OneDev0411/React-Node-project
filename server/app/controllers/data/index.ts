@@ -81,7 +81,7 @@ const totalSaveData = async(req: Request, res: Response) => {
     const roleData = totalData.roleData;
     const remittanceChecks = totalData.remittanceChecks;
 
-    let dealRes = await dealDataSave(dealData);
+    await dealDataSave(dealData);
     for(let i = 0; i < roleData.length; i++){
       await roleDataSave(roleData[i]);
     }    
@@ -93,7 +93,7 @@ const totalSaveData = async(req: Request, res: Response) => {
     })
     
   } catch (error) {
-    res.status(500).json({
+    res.status(200).json({
       message: "error",
       error: error
     });
@@ -102,7 +102,7 @@ const totalSaveData = async(req: Request, res: Response) => {
 }
 
 const dealDataRead = async(deal_id: any) => {
-  const res = await DealDataModel.findAll({
+  const res = await DealDataModel.findOne({
     where: {
       deal_id: deal_id
     }
@@ -130,9 +130,10 @@ const totalReadData = async(req: Request, res: Response) => {
  
   try {
     const deal_id = req.body.deal_id;
-    const dealData = await dealDataRead(deal_id);
-    const roleData = await roleDataRead(deal_id);
-    const remittanceChecks = await remittanceChecksRead(deal_id);
+    
+    let dealData = await dealDataRead(deal_id);
+    let roleData = await roleDataRead(deal_id);
+    let remittanceChecks = await remittanceChecksRead(deal_id);
     const totalData = { dealData: dealData, roleData: roleData, remittanceChecks: remittanceChecks}
     console.log('totalData', totalData);
     res.status(200).json({

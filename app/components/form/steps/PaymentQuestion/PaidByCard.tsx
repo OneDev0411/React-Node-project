@@ -32,6 +32,7 @@ const PaidByCard : React.FC<IPaidByCardProps> = ({ ui, name, range, index, note,
     }
 
     React.useEffect(() => {
+        if(roleData[index].payment_value !== 0) setCheckedAgent(true);
         _setRoleData(roleData[index]);
     },[roleData]);
 
