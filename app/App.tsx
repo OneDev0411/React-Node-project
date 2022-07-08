@@ -59,17 +59,24 @@ const App: React.FC<EntryProps> = ({
 
   React.useEffect(() => {
 
-    console.log('deal##########:', deal);
+    console.log('deal##########:', roles);
     // set initial context agentData
     let agentRoles: IDealRole[] = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");
-    if (setRoleData !== undefined && roleData.length == 0) {
+    if (setRoleData !== undefined) {
       setRoleData(agentRoles.map((agentRole: IDealRole) => {
         let { id, legal_full_name, role, commission_percentage, commission_dollar } = agentRole;
-        return {
-          deal_id: deal.id, role_id: id, legal_full_name: legal_full_name, role: role, share_percent: commission_percentage, share_value: commission_dollar, note: "", payment_unit_type: 0, payment_value: 0, payment_calculated_from: 0
+        let result: any;
+        let findIndex = roleData.findIndex((item) => {
+          return item.role_id == id;
+        });
+        if(findIndex !== -1){ 
+          result = {};
         }
+        else result = {deal_id: deal.id, role_id: id, legal_full_name: legal_full_name, role: role, share_percent: commission_percentage, share_value: commission_dollar, note: "", payment_unit_type: 0, payment_value: 0, payment_calculated_from: 0};
+        return result; 
       }));
     }
+    
     if(setDealData !== undefined) setDealData({...dealData, deal_id: deal.id});
     // console.log('agentRoles:', agentRoles);
     // console.log('context:', deal.context);

@@ -33,32 +33,18 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
             setDealData(temp);
         }
         
-        // deal_type == buying || selling
-        if (Number(inputValue) < 2 && setDealData !== undefined && bothType == undefined) {
+        //  less than 2 in case deal_type is buying or Selling. less than 4 in case deal_type is both.
+        if ((Number(inputValue) < 2 && bothType == undefined) ||  (Number(inputValue) < 4 && bothType !== undefined)) {
             dealData.gci_reason_select = _reasonValue;
             let temp = JSON.parse(JSON.stringify(dealData));
-            setDealData(temp);
+            if(setDealData !== undefined) setDealData(temp);
             if (_reasonValue === 2) {
                 dealData.gci_reason = _reasonNote;
                 let temp = JSON.parse(JSON.stringify(dealData));
-                setDealData(temp);
+                if(setDealData !== undefined) setDealData(temp);
             }
             
         }
-
-        // deal_type == both
-        if (Number(inputValue) < 4 && setDealData !== undefined && bothType !== undefined) {
-            dealData.gci_reason_select = _reasonValue;
-            let temp = JSON.parse(JSON.stringify(dealData));
-            setDealData(temp);
-            if (_reasonValue === 2) {
-                dealData.gci_reason = _reasonNote;
-                let temp = JSON.parse(JSON.stringify(dealData));
-                setDealData(temp);
-            }
-            
-        }
-
         setShowButton(false);
         setTimeout(() => {
             wizard.next();
