@@ -5,14 +5,7 @@ import { CheckData, IDealData, IQuestionProps, IRemittanceChecks, RemittanceStat
 import useApp from '../../../../hooks/useApp'
 import { stylizeNumber, defaultRemittanceChecks } from '../../../../util'
 
-const defaultCheckData: IRemittanceChecks = {
-    deal_id: "",
-    check_id: 0,
-    check_num: 0,
-    check_date: new Date(),
-    check_receive_date: new Date(),
-    amount: 0,
-}
+
 
 const RemittanceQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -29,6 +22,15 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     // const shouwBoth = deal.context.ender_type.text === "AgentDoubleEnder" || deal.context.ender_type.text === "OfficeDoubleEnder";
     const showBuy = showBoth || deal.deal_type === "Buying";
 
+    const defaultCheckData: IRemittanceChecks = {
+        deal_id: deal.id,
+        check_id: 0,
+        check_num: 0,
+        check_date: new Date(),
+        check_receive_date: new Date(),
+        amount: 0,
+    }
+
     // state
     const [_remittanceChecks, _setRemittanceChecks] = useState<IRemittanceChecks[]>(remittanceChecks.length > 0 ? remittanceChecks: defaultRemittanceChecks);
     const [status, setStatus] = useState<RemittanceStatus>(showBuy ? 'ShowBuy' : 'ShowSell');
@@ -38,6 +40,8 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     // const [showBuy, setShowBuy] = useState<boolean>(showBoth || deal.deal_type === "Buying");
     // const [showSell, setShowSell] = useState<boolean>(deal.deal_type === "Selling");
 
+    
+
     const handleSelectChange = (event: any) => {
         if(!showButton) setShowButton(true);
         setSelectValue(event.target.value);
@@ -46,7 +50,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     const handleClickAddAnotherCheckButton = (event: any) => {
         if(!showButton) setShowButton(true);
         let temp = _remittanceChecks.slice();
-        temp.push({ ...defaultCheckData, deal_id: deal.id });
+        temp.push(defaultCheckData);
         _setRemittanceChecks(temp);
     }
 
@@ -96,7 +100,6 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
             let temp = JSON.parse(JSON.stringify(dealData));
             setDealData(temp);
         }
-        console.log('remittance step', dealData, roleData);
         
     }
 

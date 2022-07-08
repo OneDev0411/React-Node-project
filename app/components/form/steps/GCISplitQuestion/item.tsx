@@ -18,7 +18,6 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   useEffect(() => {
     if(next) {
       getData(_roleData);
-      console.log('next', next);
     }
   }, [next]);
 

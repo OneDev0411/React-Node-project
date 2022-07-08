@@ -40,7 +40,6 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
         
         setNext(true);
         gotoNext();
-        console.log('paymentstep', dealData, remittanceChecks, roleData)
     }
     
     const gotoNext = () => {
@@ -52,7 +51,6 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
     }
 
     const updateFlag = (flag: boolean) => {
-        console.log('updateFlag', flag);
         if(!showButton)setShowButton(flag);
     }
 

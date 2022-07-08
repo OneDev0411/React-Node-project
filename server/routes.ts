@@ -7,9 +7,7 @@ import manifestRoute from './app/controllers/manifest'
 const router = express.Router()
 
 router.get('/', homeRoute)
-
-router.get('/data', dataRoute.getDealData);
-router.post('/deal-data/insert', dataRoute.insertData);
+router.post('/total-save', dataRoute.totalSaveData);
 /**
  * Please don't remove this route
  */

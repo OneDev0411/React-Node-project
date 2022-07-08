@@ -61,7 +61,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     }
 
     const handleClickRemoveButton = (id: IDealRole['id']) => {
-        console.log('remove', id);
         // deleteRole(id);
     }
 

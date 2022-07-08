@@ -2,6 +2,7 @@ import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { AppContextApi, IQuestionProps } from '../../../../models/type';
 import useApp from '../../../../hooks/useApp';
+import axios from "axios"
 
 const LastQuestion: React.FC<IQuestionProps> = ({
     Wizard,
@@ -13,6 +14,11 @@ const LastQuestion: React.FC<IQuestionProps> = ({
     const handleSubmit = () => {
         notifyOffice("Please review the Commission Slip");
         console.log('total_api', total_data);
+        
+        axios.post("http://localhost:8081/total-save", {data: total_data}).then((res) => {
+            console.log('insert', res.data);
+        });
+        
     }
 
     return (

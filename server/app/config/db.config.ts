@@ -4,7 +4,7 @@
  */
 
 import { env } from './env'
-import {Sequelize} from 'sequelize';
+import Sequelize from 'sequelize';
 
 import DealDataModel from '../models/DealData.model';
 import RoleDataModel from '../models/RoleData.model';

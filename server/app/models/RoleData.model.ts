@@ -10,6 +10,12 @@ export default (sequelize, Sequelize) => {
         role_id: {
             type: Sequelize.TEXT
         },
+        legal_full_name: {
+            type: Sequelize.TEXT
+        },
+        role: {
+            type: Sequelize.TEXT
+        },
         share_percent: {
             type: Sequelize.NUMBER
         },

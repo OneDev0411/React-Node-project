@@ -25,7 +25,13 @@ export default (sequelize, Sequelize) => {
         remittance_bank_wire_amount: {
             type: Sequelize.NUMBER
         },
+        inside_de_payment_type: {
+            type: Sequelize.TEXT
+        },
         inside_de_paid_to: {
+            type: Sequelize.TEXT
+        },
+        outside_de_payment_type: {
             type: Sequelize.TEXT
         },
         outside_de_paid_to: {

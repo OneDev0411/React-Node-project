@@ -9,7 +9,7 @@ import serveStatic from 'serve-static'
 import throng from 'throng'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
-
+import {json} from 'body-parser';
 import routes from './routes'
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -18,22 +18,37 @@ const isDevelopment = !isProduction
 const app = express()
 const port = process.env.PORT || 8081
 
-app.use(compress())
+app.use(json());
+const corsOpts = {
+  origin: '*',
 
-app.use(
-  cors(
-    (
-      req: Request,
-      callback: (err: Error | null, options?: CorsOptions) => void
-    ) => {
-      callback(null, {
-        origin:
-          /bundle\.\d+\.js|bundle.js\?v=\w+/.test(req.originalUrl) ||
-          req.originalUrl.endsWith('.json')
-      })
-    }
-  )
-)
+  methods: [
+    'GET',
+    'POST',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
+};
+
+app.use(cors(corsOpts));
+
+
+// app.use(
+//   cors(
+//     (
+//       req: Request,
+//       callback: (err: Error | null, options?: CorsOptions) => void
+//     ) => {
+//       callback(null, {
+//         origin:
+//           /bundle\.\d+\.js|bundle.js\?v=\w+/.test(req.originalUrl) ||
+//           req.originalUrl.endsWith('.json')
+//       })
+//     }
+//   )
+// )
 
 app.use(routes)
 app.use(haltOnTimedout)

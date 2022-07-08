@@ -32,7 +32,6 @@ const paymentQuestionComponent : React.FC<IPaymentQuestionDataType> = ({ range, 
         let temp =  JSON.parse(JSON.stringify(_dealData));
         temp[key] = value;
         _setDealData(temp);
-        console.log('handleChangeText', temp, );
        
     }
 
@@ -48,14 +47,12 @@ const paymentQuestionComponent : React.FC<IPaymentQuestionDataType> = ({ range, 
 
     React.useEffect(() => {
         // save data
-        console.log('_deal_data', _dealData);
         if(next) {
             if(setDealData !== undefined) setDealData(_dealData);
         }
     }, [next]);
 
     React.useEffect(() => {
-        console.log('payment component', dealData);
         _setDealData(dealData);
     }, [dealData]);
         

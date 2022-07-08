@@ -38,7 +38,6 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
     const handleClickNextButton = () => {
             setNext(true);
             gotoNext();
-            console.log('paymentstep', dealData, remittanceChecks, roleData)
     }
     
     const gotoNext = () => {
@@ -50,7 +49,6 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
     }
 
     const updateFlag = (flag: boolean) => {
-        console.log('updateFlag', flag);
         if(!showButton)setShowButton(flag);
     }
 
