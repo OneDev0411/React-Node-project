@@ -101,7 +101,56 @@ const totalSaveData = async(req: Request, res: Response) => {
   
 }
 
+const dealDataRead = async(deal_id: any) => {
+  const res = await DealDataModel.findAll({
+    where: {
+      deal_id: deal_id
+    }
+  })
+  console.log('ssss', res);
+  return res;
+}
+
+const roleDataRead = async(deal_id: any) => {
+  const res = await RoleDataModel.findAll({
+    where: {deal_id: deal_id}
+  })
+  return res;
+}
+
+const remittanceChecksRead = async(deal_id: any) => {
+  const res = await RemittanceChecksModel.findAll({
+    where: { deal_id: deal_id}
+  })
+  return res;
+}
+
+
+const totalReadData = async(req: Request, res: Response) => {
+ 
+  try {
+    const deal_id = req.body.deal_id;
+    const dealData = await dealDataRead(deal_id);
+    const roleData = await roleDataRead(deal_id);
+    const remittanceChecks = await remittanceChecksRead(deal_id);
+    const totalData = { dealData: dealData, roleData: roleData, remittanceChecks: remittanceChecks}
+    console.log('totalData', totalData);
+    res.status(200).json({
+      message: "successful",
+      data: totalData
+    })
+    
+  } catch (error) {
+    res.status(500).json({
+      message: "error",
+      error: error
+    });
+  }
+  
+}
+
 export default {
-  totalSaveData
+  totalSaveData,
+  totalReadData
 
 }

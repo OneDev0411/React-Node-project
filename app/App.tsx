@@ -2,7 +2,7 @@ import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { FormWizard } from './components/form/Wizard'
 import useApp from './hooks/useApp';
-
+import axios from 'axios';
 const App: React.FC<EntryProps> = ({
   models,
   api,
@@ -24,6 +24,10 @@ const App: React.FC<EntryProps> = ({
 
 
   React.useEffect(() => {
+
+    axios.post("http://localhost:8081/total-read", {deal_id: deal.id}).then((res) => {
+        console.log('insert', res.data);
+    });
     console.log('deal##########:', deal);
     // set initial context agentData
     let agentRoles: IDealRole[] = roles.filter((role: IDealRole) => role.role === "BuyerAgent" || role.role === "SellerAgent" || role.role === "CoBuyerAgent" || role.role === "CoSellerAgent");

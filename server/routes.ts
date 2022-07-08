@@ -8,6 +8,7 @@ const router = express.Router()
 
 router.get('/', homeRoute)
 router.post('/total-save', dataRoute.totalSaveData);
+router.post('/total-read', dataRoute.totalReadData);
 /**
  * Please don't remove this route
  */
