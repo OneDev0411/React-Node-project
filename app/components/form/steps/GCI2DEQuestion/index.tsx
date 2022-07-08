@@ -10,7 +10,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     api: { getDealContext, updateDealContext },
     models: {deal}
 }) => {
-    const { useState } = React;
+    const { useState, useEffect } = React;
     const { Box, TextField, Button, InputAdornment, Select, MenuItem, Grid } = Ui;
     const wizard = useWizardContext();
     const { dealData, setDealData } = useApp();
@@ -18,7 +18,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     // state
     const [inputValue, setInputValue] = useState<string | number>("");
     const [showButton, setShowButton] = useState<boolean>(true);
-    const [_reasonValue, _setReasonValue] = useState<number>(-1);
+    const [_reasonValue, _setReasonValue] = useState<number>(dealData.gci_reason_select);
     const [_reasonNote, _setReasonNote] = useState<string>("");
     const ListPrice = deal.context.list_price.number;
     const dealType = deal.deal_type;
@@ -32,8 +32,22 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
             let temp = JSON.parse(JSON.stringify(dealData));            
             setDealData(temp);
         }
-        // save reason
-        if (Number(inputValue) < 2 && setDealData !== undefined && setDealData !== undefined) {
+        
+        // deal_type == buying || selling
+        if (Number(inputValue) < 2 && setDealData !== undefined && bothType == undefined) {
+            dealData.gci_reason_select = _reasonValue;
+            let temp = JSON.parse(JSON.stringify(dealData));
+            setDealData(temp);
+            if (_reasonValue === 2) {
+                dealData.gci_reason = _reasonNote;
+                let temp = JSON.parse(JSON.stringify(dealData));
+                setDealData(temp);
+            }
+            
+        }
+
+        // deal_type == both
+        if (Number(inputValue) < 4 && setDealData !== undefined && bothType !== undefined) {
             dealData.gci_reason_select = _reasonValue;
             let temp = JSON.parse(JSON.stringify(dealData));
             setDealData(temp);
@@ -84,6 +98,16 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     let notFinishCase2 = showReason && _reasonValue === -1; // not selected reason
     let notFinishCase3 = showReason && _reasonValue === 2 && _reasonNote === ""; // not completed reason note
     let isShowButton = showButton && !(notFinishCase1 || notFinishCase2 || notFinishCase3);
+
+    useEffect(() => {
+        if(dealData.gci_de_value !== 0) {
+           let temp = 100 * dealData.gci_de_value / ListPrice;
+           setInputValue(temp);
+           _setReasonNote(dealData.gci_reason);
+           _setReasonValue(dealData.gci_reason_select);
+        }
+    },[dealData])
+    
 
     return (
         <QuestionSection>
@@ -137,7 +161,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
                             <MenuItem value={1}>Co-broke Commission Offered</MenuItem>
                             <MenuItem value={2}>Other</MenuItem>
                         </Select>
-                        {_reasonValue === 2 && (
+                        {_reasonValue == 2 && (
                             <TextField
                                 size='small'
                                 label="Reason"

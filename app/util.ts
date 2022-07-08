@@ -158,7 +158,7 @@ export const defaultDealData: IDealData ={
     deal_id: "",
     gci_calculate_type: 0,
     gci_de_value: 0,
-    gci_reason_select: 0,
+    gci_reason_select: -1,
     gci_reason: "",
     stage_cost: 0,
     remittance_bank_wire_amount: 0,
