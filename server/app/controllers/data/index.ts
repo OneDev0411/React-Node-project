@@ -105,22 +105,24 @@ const dealDataRead = async(deal_id: any) => {
   const res = await DealDataModel.findOne({
     where: {
       deal_id: deal_id
-    }
+    },
+    attributes: {exclude: ['id', 'createdAt', 'updatedAt']}
   })
-  console.log('ssss', res);
   return res;
 }
 
 const roleDataRead = async(deal_id: any) => {
   const res = await RoleDataModel.findAll({
-    where: {deal_id: deal_id}
+    where: {deal_id: deal_id},
+    attributes: {exclude: ['id', 'createdAt', 'updatedAt']}
   })
   return res;
 }
 
 const remittanceChecksRead = async(deal_id: any) => {
   const res = await RemittanceChecksModel.findAll({
-    where: { deal_id: deal_id}
+    where: { deal_id: deal_id},
+    attributes: {exclude: ['id', 'createdAt', 'updatedAt']}
   })
   return res;
 }
@@ -135,7 +137,6 @@ const totalReadData = async(req: Request, res: Response) => {
     let roleData = await roleDataRead(deal_id);
     let remittanceChecks = await remittanceChecksRead(deal_id);
     const totalData = { dealData: dealData, roleData: roleData, remittanceChecks: remittanceChecks}
-    console.log('totalData', totalData);
     res.status(200).json({
       message: "successful",
       data: totalData

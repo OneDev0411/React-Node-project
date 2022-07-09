@@ -1,97 +1,75 @@
-import os from 'os'
-import path from 'path'
+import os from "os";
+import path from "path";
 
-import compress from 'compression'
-import cors, { CorsOptions } from 'cors'
-import express, { Request, Response, NextFunction } from 'express'
-import enforce from 'express-sslify'
-import serveStatic from 'serve-static'
-import throng from 'throng'
-import webpack from 'webpack'
-import webpackDevMiddleware from 'webpack-dev-middleware'
-import {json} from 'body-parser';
-import routes from './routes'
+import compress from "compression";
+import cors, { CorsOptions } from "cors";
+import express, { Request, Response, NextFunction } from "express";
+import enforce from "express-sslify";
+import serveStatic from "serve-static";
+import throng from "throng";
+import webpack from "webpack";
+import webpackDevMiddleware from "webpack-dev-middleware";
+import { json } from "body-parser";
+import routes from "./routes";
 
-const isProduction = process.env.NODE_ENV === 'production'
-const isDevelopment = !isProduction
+const isProduction = process.env.NODE_ENV === "production";
+const isDevelopment = !isProduction;
 
-const app = express()
-const port = process.env.PORT || 8081
+const app = express();
+const port = process.env.PORT || 8081;
 
 app.use(json());
 const corsOpts = {
-  origin: '*',
+  origin: "*",
 
-  methods: [
-    'GET',
-    'POST',
-  ],
+  methods: ["GET", "POST"],
 
-  allowedHeaders: [
-    'Content-Type',
-  ],
+  allowedHeaders: ["Content-Type"],
 };
 
 app.use(cors(corsOpts));
-
-
-// app.use(
-//   cors(
-//     (
-//       req: Request,
-//       callback: (err: Error | null, options?: CorsOptions) => void
-//     ) => {
-//       callback(null, {
-//         origin:
-//           /bundle\.\d+\.js|bundle.js\?v=\w+/.test(req.originalUrl) ||
-//           req.originalUrl.endsWith('.json')
-//       })
-//     }
-//   )
-// )
-
-app.use(routes)
-app.use(haltOnTimedout)
+app.use(routes);
+app.use(haltOnTimedout);
 
 if (isDevelopment) {
-  const config = require('../webpack.config').default
+  const config = require("../webpack.config").default;
 
-  const compiler = webpack(config)
+  const compiler = webpack(config);
 
   app.use(
     webpackDevMiddleware(compiler, {
-      publicPath: config.output.publicPath
+      publicPath: config.output.publicPath,
     })
-  )
+  );
 
-  app.use('/static', express.static(path.resolve(__dirname, '../app/static')))
+  app.use("/static", express.static(path.resolve(__dirname, "../app/static")));
 }
 
 if (isProduction) {
-  app.set('trust proxy', 1)
-  app.disable('x-powered-by')
-  app.use(enforce.HTTPS())
+  app.set("trust proxy", 1);
+  app.disable("x-powered-by");
+  app.use(enforce.HTTPS());
 
   app.use(
-    '/',
-    serveStatic(path.resolve(__dirname, '../../dist-web'), {
-      maxAge: '7d'
+    "/",
+    serveStatic(path.resolve(__dirname, "../../dist-web"), {
+      maxAge: "7d",
     })
-  )
+  );
 }
 
 function haltOnTimedout(
   req: Request & {
-    timedout: boolean
+    timedout: boolean;
   },
   _: Response,
   next: NextFunction
 ) {
   if (req.timedout) {
-    console.error(`[ Timeout ] ${req.method}\t ${req.url}`)
+    console.error(`[ Timeout ] ${req.method}\t ${req.url}`);
   }
 
-  next()
+  next();
 }
 
 throng({
@@ -100,6 +78,6 @@ throng({
     : process.env.WEB_CONCURRENCY || Math.max(os.cpus().length, 8) || 1,
   lifetime: Infinity,
   start: () => {
-    app.listen(port, () => console.log(`App is started on 0.0.0.0:${port}`))
-  }
-})
+    app.listen(port, () => console.log(`App is started on 0.0.0.0:${port}`));
+  },
+});

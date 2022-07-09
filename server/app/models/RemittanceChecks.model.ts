@@ -8,9 +8,6 @@ export default (sequelize, Sequelize) => {
 		deal_id: {
 			type: Sequelize.TEXT,
 		},
-		check_id: {
-            type: Sequelize.NUMBER
-        },
         check_num: {
             type: Sequelize.NUMBER
         },
