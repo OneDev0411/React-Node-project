@@ -1,6 +1,6 @@
 import {
   SelectData,
-  PaymentType,
+  IPaymentData,
   IDealData,
   IRemittanceChecks,
 } from "./models/type";
@@ -103,7 +103,7 @@ export const stylizeNumber = (data: number): string => {
   return data.toLocaleString("en-US");
 };
 
-export const paymentTypeData: PaymentType[] = [
+export const paymentTypeData: IPaymentData[] = [
   {
     groupName: "DE Referral Fee",
     member: [

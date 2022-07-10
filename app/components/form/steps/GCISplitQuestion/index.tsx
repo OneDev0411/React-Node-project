@@ -16,10 +16,10 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   Components: { RoleForm, ContactRoles },
   api: { deleteRole },
 }) => {
-  const { useState, useRef } = React;
+  const { useState } = React;
   const { Grid, Button, Box } = Ui;
   const wizard = useWizardContext();
-  const { dealData, setDealData, roleData, setRoleData } = useApp();
+  const { dealData, setDealData, roleData } = useApp();
 
   // state
   const [status, setStatus] = useState<GCISplitStatus>("Listing");
@@ -93,10 +93,8 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               Ui={Ui}
               key={id}
               index={id}
-              role={agentRole[id]}
               GCIValue={dealData.gci_de_value}
-              next={next}
-              updateFlag={updateFlag}
+              saveData={{ next, updateFlag }}
             />
             <Button
               key={id}

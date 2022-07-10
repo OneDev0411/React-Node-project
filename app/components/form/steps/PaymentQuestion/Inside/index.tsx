@@ -2,7 +2,7 @@ import React from "@libs/react";
 import Ui from "@libs/material-ui";
 import { IQuestionProps } from "../../../../../models/type";
 
-import PaymentQuestionComponent from "../paymentQuestionComponent";
+import PaymentQuestionComponent from "../component";
 
 const PaymentQuestionInside: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -31,6 +31,7 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
     }, 80);
   };
 
+  // this function enable Next button.
   const updateFlag = (flag: boolean) => {
     if (!showButton) {
       setShowButton(flag);
@@ -45,9 +46,8 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
       <QuestionForm>
         <PaymentQuestionComponent
           range="inside"
-          next={next}
           deal_type={deal_type}
-          updateFlag={updateFlag}
+          saveData={{ next, updateFlag }}
         />
         {showButton && (
           <Box

@@ -25,11 +25,9 @@ export interface SelectData {
 export interface IGCIInfoItemProps {
   Ui: typeof Ui;
   // itemData: ItemData
-  role: IDealRole;
   GCIValue: Number;
   index: number;
-  next: boolean;
-  updateFlag: (flag: boolean) => void;
+  saveData: IDataToConText;
 }
 
 export interface IDealData {
@@ -104,13 +102,9 @@ export interface IDatePickerProps {
 }
 
 export interface IPaidByCardProps {
-  ui: typeof Ui;
-  name: string;
-  range: string;
+  Ui: typeof Ui;
+  saveData: IDataToConText;
   index: number;
-  note: string;
-  next: boolean;
-  updateFlag: (flag: boolean) => void;
 }
 
 export interface CheckData {
@@ -120,14 +114,18 @@ export interface CheckData {
   amount: number;
 }
 
-export interface PaymentType {
+export interface IPaymentData {
   groupName: string;
   member: string[];
 }
 
-export interface IPaymentQuestionDataType {
+export interface IPaymentQuestionData {
   range: string;
-  next: boolean;
   deal_type: string;
+  saveData: IDataToConText;
+}
+
+export interface IDataToConText {
+  next: boolean;
   updateFlag: (flag: boolean) => void;
 }

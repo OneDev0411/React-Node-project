@@ -1,25 +1,25 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
-import { IDealData, IPaymentQuestionDataType } from "../../../../models/type";
-import { PaymentType, IRoleData } from "../../../../models/type";
+import { IDealData, IPaymentQuestionData } from "../../../../models/type";
+import { IPaymentData, IRoleData } from "../../../../models/type";
 import { paymentTypeData } from "../../../../util";
 import PaidByCard from "./PaidByCard";
 import useApp from "../../../../hooks/useApp";
 
-const paymentQuestionComponent: React.FC<IPaymentQuestionDataType> = ({
+const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
+  saveData: { next, updateFlag },
   range,
-  next,
   deal_type,
-  updateFlag,
 }) => {
   const { useState, useEffect } = React;
   const { Grid, Select, MenuItem, ListSubheader, TextField } = Ui;
 
-  const { dealData, setDealData, roleData, setRoleData } = useApp();
-  const [_dealData, _setDealData] = useState<IDealData>({ ...dealData });
+  const { dealData, setDealData, roleData } = useApp();
+  const [_dealData, _setDealData] = useState<IDealData>(dealData);
 
+  // this make content of select tag
   const displayData = paymentTypeData.reduce(
-    (result: any, data: PaymentType) => {
+    (result: any, data: IPaymentData) => {
       result.push(<ListSubheader>{data.groupName}</ListSubheader>);
       data.member.map((value: string, index: number) => {
         result.push(<MenuItem value={value}>{value}</MenuItem>);
@@ -33,12 +33,13 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionDataType> = ({
     e: React.ChangeEvent<{ value: unknown }>,
     key: keyof IDealData
   ) => {
-    updateFlag(true);
+    updateFlag(true); // for Next button enable
     let temp = JSON.parse(JSON.stringify(_dealData));
     temp[key] = e.target.value;
     _setDealData(temp);
   };
 
+  // this hook save data before next wizard
   useEffect(() => {
     // save data
     if (next) {
@@ -119,12 +120,8 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionDataType> = ({
                   <PaidByCard
                     key={id}
                     index={id}
-                    ui={Ui}
-                    name={agent.legal_full_name}
-                    range={range}
-                    note={agent.note}
-                    next={next}
-                    updateFlag={updateFlag}
+                    Ui={Ui}
+                    saveData={{ next, updateFlag }}
                   />
                 )}
               {range == "outside" &&
@@ -134,12 +131,8 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionDataType> = ({
                   <PaidByCard
                     key={id}
                     index={id}
-                    ui={Ui}
-                    name={agent.legal_full_name}
-                    range={range}
-                    note={agent.note}
-                    next={next}
-                    updateFlag={updateFlag}
+                    Ui={Ui}
+                    saveData={{ next, updateFlag }}
                   />
                 )}
               {range == "inside" &&
@@ -149,12 +142,8 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionDataType> = ({
                   <PaidByCard
                     key={id}
                     index={id}
-                    ui={Ui}
-                    name={agent.legal_full_name}
-                    range={range}
-                    note={agent.note}
-                    next={next}
-                    updateFlag={updateFlag}
+                    Ui={Ui}
+                    saveData={{ next, updateFlag }}
                   />
                 )}
               {range == "outside" &&
@@ -164,12 +153,8 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionDataType> = ({
                   <PaidByCard
                     key={id}
                     index={id}
-                    ui={Ui}
-                    name={agent.legal_full_name}
-                    range={range}
-                    note={agent.note}
-                    next={next}
-                    updateFlag={updateFlag}
+                    Ui={Ui}
+                    saveData={{ next, updateFlag }}
                   />
                 )}
               {range == "outside" &&
@@ -181,12 +166,8 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionDataType> = ({
                   <PaidByCard
                     key={id}
                     index={id}
-                    ui={Ui}
-                    name={agent.legal_full_name}
-                    range={range}
-                    note={agent.note}
-                    next={next}
-                    updateFlag={updateFlag}
+                    Ui={Ui}
+                    saveData={{ next, updateFlag }}
                   />
                 )}
             </>

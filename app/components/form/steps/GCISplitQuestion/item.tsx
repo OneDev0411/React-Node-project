@@ -4,15 +4,15 @@ import { IGCIInfoItemProps, IRoleData } from "../../../../models/type";
 
 const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   Ui: { Grid, Box, TextField },
+  saveData: { next, updateFlag },
   GCIValue,
   index,
-  next,
-  updateFlag,
 }) => {
   const { useState, useEffect } = React;
   const { roleData, setRoleData } = useApp();
   const [_roleData, _setRoleData] = useState<IRoleData>(roleData[index]);
 
+  // this hook is save data to global.
   useEffect(() => {
     if (next) {
       let dataIndex = roleData.findIndex((item) => {
@@ -26,6 +26,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     }
   }, [next]);
 
+  // this hook push to state variable of component from global state
   useEffect(() => {
     _setRoleData({
       ...roleData[index],
@@ -43,7 +44,6 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     key: keyof IRoleData
   ) => {
     updateFlag(true);
-
     if (key == "share_percent" && Number(e.target.value) > 100) {
       return;
     }

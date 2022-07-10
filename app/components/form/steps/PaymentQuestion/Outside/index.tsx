@@ -2,7 +2,7 @@ import React from "@libs/react";
 import Ui from "@libs/material-ui";
 import { IQuestionProps } from "../../../../../models/type";
 
-import PaymentQuestionComponent from "../paymentQuestionComponent";
+import PaymentQuestionComponent from "../component";
 
 const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -32,6 +32,7 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
     }, 80);
   };
 
+  // this enable Next button
   const updateFlag = (flag: boolean) => {
     if (!showButton) {
       setShowButton(flag);
@@ -46,9 +47,8 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
       <QuestionForm>
         <PaymentQuestionComponent
           range="outside"
-          next={next}
           deal_type={deal_type}
-          updateFlag={updateFlag}
+          saveData={{ next, updateFlag }}
         />
         {showButton && (
           <Box

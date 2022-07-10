@@ -3,7 +3,7 @@ import { IPaidByCardProps, IRoleData } from "../../../../models/type";
 import useApp from "../../../../hooks/useApp";
 
 const PaidByCard: React.FC<IPaidByCardProps> = ({
-  ui: {
+  Ui: {
     Grid,
     TextField,
     InputAdornment,
@@ -13,14 +13,11 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
     RadioGroup,
     Radio,
   },
-  name,
+  saveData: { next, updateFlag },
   index,
-  note,
-  next,
-  updateFlag,
 }) => {
   const { roleData, setRoleData } = useApp();
-
+  // state
   const [_roleData, _setRoleData] = React.useState<IRoleData>(roleData[index]);
   const [checkedAgent, setCheckedAgent] = React.useState<boolean>(false);
 
@@ -64,6 +61,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
     _setRoleData(roleData[index]);
   }, [roleData]);
 
+  // this hook save data before next wizard
   React.useEffect(() => {
     if (next) {
       let dataIndex = roleData.findIndex((item) => {
@@ -94,7 +92,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           checked={checkedAgent}
           onChange={handleCheckedValue}
         />
-        <label>{name}</label>
+        <label>{_roleData.legal_full_name}</label>
       </Box>
       <Grid container spacing={1} style={{ padding: 0 }}>
         <Grid item xs={5} style={{ display: "inherit", marginRight: 10 }}>
@@ -212,7 +210,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
       </Grid>
       <Box style={{ padding: 10, paddingTop: 0 }}>
         <label style={{ marginRight: "5px" }}>Notes:</label>
-        <span style={{ color: "inherit", marginTop: 2 }}>{note}</span>
+        <span style={{ color: "inherit", marginTop: 2 }}>{_roleData.note}</span>
       </Box>
     </Box>
   );

@@ -1,8 +1,6 @@
 import os from "os";
 import path from "path";
-
-import compress from "compression";
-import cors, { CorsOptions } from "cors";
+import cors from "cors";
 import express, { Request, Response, NextFunction } from "express";
 import enforce from "express-sslify";
 import serveStatic from "serve-static";

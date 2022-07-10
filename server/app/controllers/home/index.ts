@@ -1,5 +1,5 @@
-import { Request, Response } from 'express'
+import { Request, Response } from "express";
 
 export default async (req: Request, res: Response) => {
-  res.send('App is running...')
-}
+  res.send("App is running...");
+};

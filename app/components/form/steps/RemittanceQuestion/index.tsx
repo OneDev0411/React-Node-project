@@ -103,6 +103,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     }, 80);
   };
 
+  // this save data before next wizard
   const saveData = () => {
     if (setRemittanceChecks !== undefined) {
       setRemittanceChecks(

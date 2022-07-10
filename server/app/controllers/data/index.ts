@@ -1,80 +1,63 @@
-import { Request, Response } from 'express'
-import db from "../../config/db.config"
-import { Op, STRING } from "sequelize"
+import { Request, Response } from "express";
+import db from "../../config/db.config";
+import { Op, STRING } from "sequelize";
 
 const { DealDataModel, RoleDataModel, RemittanceChecksModel } = db;
 
-
-const dealDataSave = async(data:any) => {
-  let result:any;
+const dealDataSave = async (data: any) => {
+  let result: any;
   const findRes = await DealDataModel.findOne({
-    where: { deal_id: data.deal_id }
-  })
-  if(findRes === null) {
-    result = await DealDataModel.create(data)  
-  }
-  else {
+    where: { deal_id: data.deal_id },
+  });
+  if (findRes === null) {
+    result = await DealDataModel.create(data);
+  } else {
     result = await DealDataModel.update(data, {
-      where: { deal_id: data.deal_id }
-    })
+      where: { deal_id: data.deal_id },
+    });
   }
   return result;
-}
+};
 
-const roleDataSave = async(data:any) => {
+const roleDataSave = async (data: any) => {
   let result: any;
   const findRes = await RoleDataModel.findOne({
-    where: { 
-      [Op.and] : [
-        { deal_id: data.deal_id },
-        { role_id: data.role_id }
-      ]
-    }
-  })
-  if(findRes == null) {
+    where: {
+      [Op.and]: [{ deal_id: data.deal_id }, { role_id: data.role_id }],
+    },
+  });
+  if (findRes == null) {
     result = await RoleDataModel.create(data);
-  }
-  else {
+  } else {
     result = await RoleDataModel.update(data, {
-      where: { 
-        [Op.and] : [
-          { deal_id: data.deal_id },
-          { role_id: data.role_id }
-        ]
-      }
-    })
+      where: {
+        [Op.and]: [{ deal_id: data.deal_id }, { role_id: data.role_id }],
+      },
+    });
   }
   return result;
-}
+};
 
-const remittanceChecksSave = async(data:any) => {
+const remittanceChecksSave = async (data: any) => {
   let result: any;
   const findRes = await RemittanceChecksModel.findOne({
-    where: { 
-      [Op.and] : [
-        { deal_id: data.deal_id },
-        { check_id: data.check_id }
-      ]
-    }
-  })
-  if(findRes == null) {
+    where: {
+      [Op.and]: [{ deal_id: data.deal_id }, { check_id: data.check_id }],
+    },
+  });
+  if (findRes == null) {
     result = await RemittanceChecksModel.create(data);
-  }
-  else {
+  } else {
     result = await RemittanceChecksModel.update(data, {
-      where: { 
-        [Op.and] : [
-          { deal_id: data.deal_id },
-          { check_id: data.check_id }
-        ]
-      }
-    })
+      where: {
+        [Op.and]: [{ deal_id: data.deal_id }, { check_id: data.check_id }],
+      },
+    });
   }
   return result;
-}
+};
 
-const totalSaveData = async(req: Request, res: Response) => {
- 
+const totalSaveData = async (req: Request, res: Response) => {
   try {
     const totalData = req.body.data;
     const dealData = totalData.dealData;
@@ -82,77 +65,74 @@ const totalSaveData = async(req: Request, res: Response) => {
     const remittanceChecks = totalData.remittanceChecks;
 
     await dealDataSave(dealData);
-    for(let i = 0; i < roleData.length; i++){
+    for (let i = 0; i < roleData.length; i++) {
       await roleDataSave(roleData[i]);
-    }    
-    for(let i = 0; i < remittanceChecks.length; i++){
+    }
+    for (let i = 0; i < remittanceChecks.length; i++) {
       await remittanceChecksSave(remittanceChecks[i]);
     }
     res.status(200).json({
       message: "successful",
-    })
-    
+    });
   } catch (error) {
     res.status(200).json({
       message: "error",
-      error: error
+      error: error,
     });
   }
-  
-}
+};
 
-const dealDataRead = async(deal_id: any) => {
+const dealDataRead = async (deal_id: any) => {
   const res = await DealDataModel.findOne({
     where: {
-      deal_id: deal_id
+      deal_id: deal_id,
     },
-    attributes: {exclude: ['id', 'createdAt', 'updatedAt']}
-  })
+    attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+  });
   return res;
-}
+};
 
-const roleDataRead = async(deal_id: any) => {
+const roleDataRead = async (deal_id: any) => {
   const res = await RoleDataModel.findAll({
-    where: {deal_id: deal_id},
-    attributes: {exclude: ['id', 'createdAt', 'updatedAt']}
-  })
+    where: { deal_id: deal_id },
+    attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+  });
   return res;
-}
+};
 
-const remittanceChecksRead = async(deal_id: any) => {
+const remittanceChecksRead = async (deal_id: any) => {
   const res = await RemittanceChecksModel.findAll({
-    where: { deal_id: deal_id},
-    attributes: {exclude: ['id', 'createdAt', 'updatedAt']}
-  })
+    where: { deal_id: deal_id },
+    attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+  });
   return res;
-}
+};
 
-
-const totalReadData = async(req: Request, res: Response) => {
- 
+const totalReadData = async (req: Request, res: Response) => {
   try {
     const deal_id = req.body.deal_id;
-    
+
     let dealData = await dealDataRead(deal_id);
     let roleData = await roleDataRead(deal_id);
     let remittanceChecks = await remittanceChecksRead(deal_id);
-    const totalData = { dealData: dealData, roleData: roleData, remittanceChecks: remittanceChecks}
+    const totalData = {
+      dealData: dealData,
+      roleData: roleData,
+      remittanceChecks: remittanceChecks,
+    };
     res.status(200).json({
       message: "successful",
-      data: totalData
-    })
-    
+      data: totalData,
+    });
   } catch (error) {
     res.status(500).json({
       message: "error",
-      error: error
+      error: error,
     });
   }
-  
-}
+};
 
 export default {
   totalSaveData,
-  totalReadData
-
-}
+  totalReadData,
+};

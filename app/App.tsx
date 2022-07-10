@@ -3,6 +3,7 @@ import { FormWizard } from "./components/form/Wizard";
 import useApp from "./hooks/useApp";
 import axios from "axios";
 import { IRoleData } from "./models/type";
+import { defaultDealData, defaultRemittanceChecks } from "./util";
 
 const App: React.FC<EntryProps> = ({
   models,
@@ -13,43 +14,14 @@ const App: React.FC<EntryProps> = ({
 }) => {
   const { Wizard } = Components;
   const { deal, roles } = models;
-  const { dealData, setDealData, roleData, setRoleData, setRemittanceChecks } =
-    useApp();
+  const { setDealData, roleData, setRoleData, setRemittanceChecks } = useApp();
 
-  // push data to contextAPI from backend data
+  // push data to global state from backend data by using contextAPI
   const dataToContextAPI = async () => {
     let res = await axios.post("http://localhost:8081/total-read", {
       deal_id: deal.id,
     });
     let data = res.data.data;
-
-    if (data !== null && data !== undefined) {
-      let tempDealData = data.dealData;
-      if (setDealData !== undefined) {
-        setDealData(tempDealData);
-      }
-      let tempRoleData = data.roleData;
-      if (setRoleData !== undefined) {
-        let temp = roleData.slice();
-        temp.push(
-          tempRoleData.filter((item: IRoleData) => {
-            let findItem = temp.find((ele: IRoleData) => {
-              return ele.role_id == item.role_id;
-            });
-            return findItem;
-          })
-        );
-        setRoleData(tempRoleData);
-      }
-
-      let tempRemittanceChecks = data.remittanceChecks;
-      if (setRemittanceChecks !== undefined) {
-        setRemittanceChecks(tempRemittanceChecks);
-      }
-    }
-  };
-
-  React.useEffect(() => {
     // set initial context agentData
     let agentRoles: IDealRole[] = roles.filter(
       (role: IDealRole) =>
@@ -58,38 +30,68 @@ const App: React.FC<EntryProps> = ({
         role.role === "CoBuyerAgent" ||
         role.role === "CoSellerAgent"
     );
+    let tempAgentRoles = agentRoles.map((agentRole: IDealRole) => {
+      let {
+        id,
+        legal_full_name,
+        role,
+        commission_percentage,
+        commission_dollar,
+      } = agentRole;
+      return {
+        deal_id: deal.id,
+        role_id: id,
+        legal_full_name: legal_full_name,
+        role: role,
+        share_percent: commission_percentage,
+        share_value: commission_dollar,
+        note: "",
+        payment_unit_type: 0,
+        payment_value: 0,
+        payment_calculated_from: 0,
+      };
+    });
 
-    if (setRoleData !== undefined) {
-      setRoleData(
-        agentRoles.map((agentRole: IDealRole) => {
-          let {
-            id,
-            legal_full_name,
-            role,
-            commission_percentage,
-            commission_dollar,
-          } = agentRole;
-          return {
-            deal_id: deal.id,
-            role_id: id,
-            legal_full_name: legal_full_name,
-            role: role,
-            share_percent: commission_percentage,
-            share_value: commission_dollar,
-            note: "",
-            payment_unit_type: 0,
-            payment_value: 0,
-            payment_calculated_from: 0,
-          };
-        })
-      );
+    if (data.dealData !== null) {
+      let tempDealData = data.dealData;
+      if (setDealData !== undefined) {
+        setDealData(tempDealData);
+      }
+      let tempRoleData = data.roleData;
+      if (setRoleData !== undefined) {
+        let temp: IRoleData[] = tempAgentRoles.filter((item: IRoleData) => {
+          let findIndex = tempRoleData.findIndex((mem: IRoleData) => {
+            return item.role_id == mem.role_id;
+          });
+          return findIndex == -1;
+        });
+
+        temp.map((item: IRoleData) => {
+          tempRoleData.push(item);
+        });
+        console.log("tempdata", tempRoleData, tempAgentRoles);
+        setRoleData(tempRoleData);
+      }
+
+      let tempRemittanceChecks = data.remittanceChecks;
+      if (setRemittanceChecks !== undefined) {
+        setRemittanceChecks(tempRemittanceChecks);
+      }
+    } else {
+      if (setDealData !== undefined) {
+        setDealData({ ...defaultDealData, deal_id: deal.id });
+      }
+      if (setRoleData !== undefined) {
+        setRoleData(tempAgentRoles);
+      }
+      if (setRemittanceChecks !== undefined) {
+        setRemittanceChecks(defaultRemittanceChecks);
+      }
     }
+  };
 
+  React.useEffect(() => {
     dataToContextAPI();
-
-    if (setDealData !== undefined) {
-      setDealData({ ...dealData, deal_id: deal.id });
-    }
   }, []);
 
   return (
