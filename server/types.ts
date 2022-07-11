@@ -53,3 +53,9 @@ export interface IRemittanceChecks {
   check_receive_date: Date;
   amount: number;
 }
+
+export interface ITotalData {
+  dealData: IDealData;
+  roleData: IRoleData[];
+  remittanceChecks: IRemittanceChecks[];
+}

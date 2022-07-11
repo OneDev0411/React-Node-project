@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import db from "../../config/db.config";
 import { Op } from "sequelize";
-import { IDealData, IRemittanceChecks, IRoleData } from "types";
+import { IDealData, IRemittanceChecks, IRoleData, ITotalData } from "types";
 
 const { DealDataModel, RoleDataModel, RemittanceChecksModel } = db;
 
@@ -78,18 +78,18 @@ const remittanceChecksSave = async (data: IRemittanceChecks) => {
 
 const totalSaveData = async (req: Request, res: Response) => {
   try {
-    const totalData = req.body.data;
+    const totalData: ITotalData = req.body.data;
     const dealData: IDealData = totalData.dealData;
     const roleData: IRoleData[] = totalData.roleData;
     const remittanceChecks: IRemittanceChecks[] = totalData.remittanceChecks;
 
     await dealDataSave(dealData);
     await roleDataRemove(dealData.deal_id);
-    for (let i = 0; i < roleData.length; i++) {
+    for (let i: number = 0; i < roleData.length; i++) {
       await roleDataSave(roleData[i]);
     }
     await remittanceChecksRemove(dealData.deal_id);
-    for (let i = 0; i < remittanceChecks.length; i++) {
+    for (let i: number = 0; i < remittanceChecks.length; i++) {
       await remittanceChecksSave(remittanceChecks[i]);
     }
     res.status(200).json({
@@ -131,14 +131,14 @@ const remittanceChecksRead = async (deal_id: IDealData["deal_id"]) => {
 
 const totalReadData = async (req: Request, res: Response) => {
   try {
-    const deal_id = req.body.deal_id;
+    const deal_id: IDealData["deal_id"] = req.body.deal_id;
 
     let dealData: IDealData = await dealDataRead(deal_id);
     let roleData: IRoleData[] = await roleDataRead(deal_id);
     let remittanceChecks: IRemittanceChecks[] = await remittanceChecksRead(
       deal_id
     );
-    const totalData = {
+    const totalData: ITotalData = {
       dealData: dealData,
       roleData: roleData,
       remittanceChecks: remittanceChecks,
