@@ -69,7 +69,6 @@ const App: React.FC<EntryProps> = ({
         temp.map((item: IRoleData) => {
           tempRoleData.push(item);
         });
-        console.log("tempdata", tempRoleData, tempAgentRoles);
         setRoleData(tempRoleData);
       }
 

@@ -77,7 +77,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     let roleModel = roles.find((role: IDealRole) => {
       return data.role_id == role.id;
     });
-    console.log("roleModel", roleModel);
     if (roleModel !== undefined) {
       await deleteRole(roleModel);
     }
@@ -105,6 +104,9 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       );
     }, 0);
     setTotalPercent(tempValue);
+    if (setRoleData !== undefined) {
+      setRoleData(temp);
+    }
   };
 
   useEffect(() => {

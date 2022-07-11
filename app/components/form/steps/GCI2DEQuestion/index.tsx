@@ -6,8 +6,7 @@ import useApp from "../../../../hooks/useApp";
 
 const GCI2DEQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-  hooks: { useWizardContext, useSectionContext },
-  api: { getDealContext, updateDealContext },
+  hooks: { useWizardContext },
   models: { deal },
 }) => {
   const { useState, useEffect } = React;
@@ -63,9 +62,13 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     }
 
     //  less than 2 in case deal_type is buying or Selling. less than 4 in case deal_type is both.
+    const value =
+      dealData.gci_calculate_type == 0
+        ? inputValue
+        : (Number(inputValue) * 100) / Number(listPrice);
     if (
-      (Number(inputValue) < 2 && bothType == undefined) ||
-      (Number(inputValue) < 4 && bothType !== undefined)
+      (Number(value) < 2 && bothType == undefined) ||
+      (Number(value) < 4 && bothType !== undefined)
     ) {
       dealData.gci_reason_select = _reasonValue;
       let temp = JSON.parse(JSON.stringify(dealData));
@@ -87,6 +90,9 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
   };
 
   const handleChangeTextField = (event: any) => {
+    if (!showButton) {
+      setShowButton(true);
+    }
     if (Number(event.target.value) + "" === "NaN") {
       return;
     }
@@ -122,10 +128,14 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
   };
 
   // variables
+  let currentvalue =
+    dealData.gci_calculate_type == 0
+      ? inputValue
+      : (Number(inputValue) * 100) / Number(listPrice);
   let showReason =
     bothType == undefined
-      ? inputValue !== "" && Number(inputValue) < 2
-      : inputValue !== "" && Number(inputValue) < 4;
+      ? inputValue !== "" && Number(currentvalue) < 2
+      : inputValue !== "" && Number(currentvalue) < 4;
   let notFinishCase1 = inputValue === ""; // not completed GCI value
   let notFinishCase2 = showReason && _reasonValue === -1; // not selected reason
   let notFinishCase3 = showReason && _reasonValue === 2 && _reasonNote === ""; // not completed reason note
@@ -134,7 +144,12 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
 
   useEffect(() => {
     if (dealData.gci_de_value !== 0) {
-      let temp = (100 * dealData.gci_de_value) / listPrice;
+      let temp: number = 0;
+      if (dealData.gci_calculate_type == 0) {
+        temp = (100 * dealData.gci_de_value) / listPrice;
+      } else {
+        temp = dealData.gci_de_value;
+      }
       setInputValue(temp);
       _setReasonNote(dealData.gci_reason);
       _setReasonValue(dealData.gci_reason_select);

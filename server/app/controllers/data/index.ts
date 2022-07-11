@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import db from "../../config/db.config";
-import { Op, STRING } from "sequelize";
+import { Op } from "sequelize";
+import { IDealData, IRemittanceChecks, IRoleData } from "types";
 
 const { DealDataModel, RoleDataModel, RemittanceChecksModel } = db;
 
-const dealDataSave = async (data: any) => {
+const dealDataSave = async (data: IDealData) => {
   let result: any;
   const findRes = await DealDataModel.findOne({
     where: { deal_id: data.deal_id },
@@ -19,7 +20,16 @@ const dealDataSave = async (data: any) => {
   return result;
 };
 
-const roleDataSave = async (data: any) => {
+const roleDataRemove = async (deal_id: IRoleData["deal_id"]) => {
+  let findRes = await RoleDataModel.destroy({
+    where: {
+      deal_id: deal_id,
+    },
+  });
+  return findRes;
+};
+
+const roleDataSave = async (data: IRoleData) => {
   let result: any;
   const findRes = await RoleDataModel.findOne({
     where: {
@@ -38,11 +48,20 @@ const roleDataSave = async (data: any) => {
   return result;
 };
 
-const remittanceChecksSave = async (data: any) => {
+const remittanceChecksRemove = async (deal_id: IRoleData["deal_id"]) => {
+  let findRes = await RemittanceChecksModel.destroy({
+    where: {
+      deal_id: deal_id,
+    },
+  });
+  return findRes;
+};
+
+const remittanceChecksSave = async (data: IRemittanceChecks) => {
   let result: any;
   const findRes = await RemittanceChecksModel.findOne({
     where: {
-      [Op.and]: [{ deal_id: data.deal_id }, { check_id: data.check_id }],
+      deal_id: data.deal_id,
     },
   });
   if (findRes == null) {
@@ -50,7 +69,7 @@ const remittanceChecksSave = async (data: any) => {
   } else {
     result = await RemittanceChecksModel.update(data, {
       where: {
-        [Op.and]: [{ deal_id: data.deal_id }, { check_id: data.check_id }],
+        deal_id: data.deal_id,
       },
     });
   }
@@ -60,14 +79,16 @@ const remittanceChecksSave = async (data: any) => {
 const totalSaveData = async (req: Request, res: Response) => {
   try {
     const totalData = req.body.data;
-    const dealData = totalData.dealData;
-    const roleData = totalData.roleData;
-    const remittanceChecks = totalData.remittanceChecks;
+    const dealData: IDealData = totalData.dealData;
+    const roleData: IRoleData[] = totalData.roleData;
+    const remittanceChecks: IRemittanceChecks[] = totalData.remittanceChecks;
 
     await dealDataSave(dealData);
+    await roleDataRemove(dealData.deal_id);
     for (let i = 0; i < roleData.length; i++) {
       await roleDataSave(roleData[i]);
     }
+    await remittanceChecksRemove(dealData.deal_id);
     for (let i = 0; i < remittanceChecks.length; i++) {
       await remittanceChecksSave(remittanceChecks[i]);
     }
@@ -82,7 +103,7 @@ const totalSaveData = async (req: Request, res: Response) => {
   }
 };
 
-const dealDataRead = async (deal_id: any) => {
+const dealDataRead = async (deal_id: IDealData["deal_id"]) => {
   const res = await DealDataModel.findOne({
     where: {
       deal_id: deal_id,
@@ -92,7 +113,7 @@ const dealDataRead = async (deal_id: any) => {
   return res;
 };
 
-const roleDataRead = async (deal_id: any) => {
+const roleDataRead = async (deal_id: IDealData["deal_id"]) => {
   const res = await RoleDataModel.findAll({
     where: { deal_id: deal_id },
     attributes: { exclude: ["id", "createdAt", "updatedAt"] },
@@ -100,7 +121,7 @@ const roleDataRead = async (deal_id: any) => {
   return res;
 };
 
-const remittanceChecksRead = async (deal_id: any) => {
+const remittanceChecksRead = async (deal_id: IDealData["deal_id"]) => {
   const res = await RemittanceChecksModel.findAll({
     where: { deal_id: deal_id },
     attributes: { exclude: ["id", "createdAt", "updatedAt"] },
@@ -112,9 +133,11 @@ const totalReadData = async (req: Request, res: Response) => {
   try {
     const deal_id = req.body.deal_id;
 
-    let dealData = await dealDataRead(deal_id);
-    let roleData = await roleDataRead(deal_id);
-    let remittanceChecks = await remittanceChecksRead(deal_id);
+    let dealData: IDealData = await dealDataRead(deal_id);
+    let roleData: IRoleData[] = await roleDataRead(deal_id);
+    let remittanceChecks: IRemittanceChecks[] = await remittanceChecksRead(
+      deal_id
+    );
     const totalData = {
       dealData: dealData,
       roleData: roleData,

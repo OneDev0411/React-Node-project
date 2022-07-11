@@ -128,7 +128,6 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     if (!showButton) {
       setShowButton(true);
     }
-
     let value: string = e.target.value;
     if (Number(value) + "" === "NaN" || (value + "").length > 16) {
       return;

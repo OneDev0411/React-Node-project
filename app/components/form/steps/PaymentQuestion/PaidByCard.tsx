@@ -27,7 +27,6 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
   ) => {
     updateFlag(true);
     let value: string = e.target.value;
-    console.log("value", value);
     if (value == "NaN" || (value + "").length > 16) {
       return;
     }
