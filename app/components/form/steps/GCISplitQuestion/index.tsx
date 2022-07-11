@@ -12,14 +12,14 @@ import { stylizeNumber } from "../../../../util";
 const GCISplitQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
-  models: { deal, roles },
+  models: { deal },
   Components: { RoleForm, ContactRoles },
   api: { deleteRole },
 }) => {
-  const { useState } = React;
+  const { useState, useEffect } = React;
   const { Grid, Button, Box } = Ui;
   const wizard = useWizardContext();
-  const { dealData, setDealData, roleData } = useApp();
+  const { dealData, roleData } = useApp();
 
   // state
   const [status, setStatus] = useState<GCISplitStatus>("Listing");
@@ -28,6 +28,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   >(null); // data from dropdown select, can be IDealRole object or nameObject
   const [showButton, setShowButton] = useState<boolean>(true);
   const [next, setNext] = useState<boolean>(false);
+  const [totalPercent, setTotalPercent] = useState<number>(0);
 
   // this logic is updating
   const handleCloseRoleForm = () => {
@@ -68,18 +69,25 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     }
   };
 
-  // variables
-  const agentRole = roles.filter(
-    (role: IDealRole) =>
-      role.role === "BuyerAgent" ||
-      role.role === "SellerAgent" ||
-      role.role === "CoBuyerAgent" ||
-      role.role === "CoSellerAgent"
-  );
+  const totalClc = (index: number, data: IRoleData) => {
+    let temp = JSON.parse(JSON.stringify(roleData));
+    temp[index] = data;
+    let tempValue = temp.reduce((totalPercent: number, data: IRoleData) => {
+      return parseFloat(
+        (Number(totalPercent) + Number(data.share_percent)).toFixed(3)
+      );
+    }, 0);
+    setTotalPercent(tempValue);
+  };
 
-  const totalPercent = roleData.reduce((totalPercent: any, data: any) => {
-    return Number(totalPercent) + Number(data.share_percent);
-  }, 0);
+  useEffect(() => {
+    let tempClc = roleData.reduce((totalPercent: any, data: any) => {
+      return parseFloat(
+        (Number(totalPercent) + Number(data.share_percent)).toFixed(3)
+      );
+    }, 0);
+    setTotalPercent(tempClc);
+  }, [roleData]);
 
   return (
     <QuestionSection>
@@ -87,7 +95,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         Great, here is your GCI share before splits:
       </QuestionTitle>
       <QuestionForm>
-        {roleData.map((_: IRoleData, id: number) => (
+        {roleData.map((item: IRoleData, id: number) => (
           <>
             <GCIInfoItem
               Ui={Ui}
@@ -95,11 +103,12 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               index={id}
               GCIValue={dealData.gci_de_value}
               saveData={{ next, updateFlag }}
+              totalClc={totalClc}
             />
             <Button
               key={id}
               variant="outlined"
-              onClick={() => handleClickRemoveButton(agentRole[id].id)}
+              onClick={() => handleClickRemoveButton(item.role_id)}
               style={{
                 color: "black !important",
                 borderColor: "#dbdbdb !important",

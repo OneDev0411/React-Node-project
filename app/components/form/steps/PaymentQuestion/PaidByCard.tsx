@@ -26,16 +26,25 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
     key: keyof IRoleData
   ) => {
     updateFlag(true);
-    let value = parseFloat(e.target.value);
-    let updateValue = JSON.parse(JSON.stringify(_roleData));
-    updateValue[key] = value;
+    let value: string = e.target.value;
+    console.log("value", value);
+    if (value == "NaN" || (value + "").length > 16) {
+      return;
+    }
     if (
       key == "payment_value" &&
-      value > 100 &&
-      updateValue.payment_unit_type == 0
+      _roleData.payment_unit_type == 0 &&
+      Number(value) > 100
     ) {
       return;
     }
+    let updateValue = JSON.parse(JSON.stringify(_roleData));
+    if (value !== "") {
+      updateValue[key] = parseFloat(value);
+    } else {
+      updateValue[key] = 0;
+    }
+
     if (key == "payment_unit_type") {
       updateValue["payment_value"] = "";
     }
@@ -109,13 +118,13 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           />
           <TextField
             size="small"
+            type="text"
             value={
               _roleData.payment_unit_type == 0 ? _roleData.payment_value : ""
             }
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeValue(e, "payment_value")
             }
-            type="number"
             style={{ paddingTop: 3 }}
             InputProps={{
               startAdornment: (
@@ -144,13 +153,13 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           />
           <TextField
             size="small"
+            type="text"
             value={
               _roleData.payment_unit_type == 1 ? _roleData.payment_value : ""
             }
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeValue(e, "payment_value")
             }
-            type="number"
             style={{ paddingTop: 3 }}
             InputProps={{
               startAdornment: (

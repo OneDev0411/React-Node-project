@@ -28,6 +28,7 @@ export interface IGCIInfoItemProps {
   GCIValue: Number;
   index: number;
   saveData: IDataToConText;
+  totalClc: (index: number, data: IRoleData) => void;
 }
 
 export interface IDealData {

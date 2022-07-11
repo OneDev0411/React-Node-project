@@ -389,7 +389,8 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
               <TextField
                 size="small"
                 value={
-                  _dealData.remittance_bank_wire_amount + _dealData.stage_cost
+                  Number(_dealData.remittance_bank_wire_amount) +
+                  Number(_dealData.stage_cost)
                 }
                 style={{ width: "100%" }}
                 type="number"

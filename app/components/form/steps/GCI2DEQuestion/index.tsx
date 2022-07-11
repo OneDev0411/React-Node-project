@@ -1,6 +1,6 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
-import { IQuestionProps } from "../../../../models/type";
+import { IQuestionProps, IRoleData } from "../../../../models/type";
 import { stylizeNumber } from "../../../../util";
 import useApp from "../../../../hooks/useApp";
 
@@ -13,7 +13,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React;
   const { Box, TextField, Button, InputAdornment, Select, MenuItem } = Ui;
   const wizard = useWizardContext();
-  const { dealData, setDealData } = useApp();
+  const { dealData, setDealData, roleData, setRoleData } = useApp();
 
   // state
   const [inputValue, setInputValue] = useState<string | number>("");
@@ -39,6 +39,27 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
       dealData.gci_de_value = GCIValue;
       let temp = JSON.parse(JSON.stringify(dealData));
       setDealData(temp);
+    }
+
+    if (setRoleData !== undefined) {
+      let temp: IRoleData[] = JSON.parse(JSON.stringify(roleData));
+      roleData.map((item: IRoleData, index: number) => {
+        temp[index].share_percent =
+          item.share_percent == null
+            ? parseFloat(
+                ((Number(item.share_value) / Number(GCIValue)) * 100).toFixed(3)
+              )
+            : item.share_percent;
+        temp[index].share_value =
+          item.share_value == null
+            ? parseFloat(
+                ((Number(GCIValue) * Number(item.share_percent)) / 100).toFixed(
+                  3
+                )
+              )
+            : item.share_value;
+      });
+      setRoleData(temp);
     }
 
     //  less than 2 in case deal_type is buying or Selling. less than 4 in case deal_type is both.
@@ -90,12 +111,14 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
     setInputValue(Number(event.target.value));
   };
 
-  const handleChangeReasonTextField = (event: any) => {
+  const handleChangeReasonTextField = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     _setReasonNote(event.target.value);
   };
 
-  const handleSelectChange = (event: any) => {
-    _setReasonValue(event.target.value);
+  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    _setReasonValue(Number(event.target.value));
   };
 
   // variables

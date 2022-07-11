@@ -3,8 +3,9 @@ import useApp from "../../../../hooks/useApp";
 import { IGCIInfoItemProps, IRoleData } from "../../../../models/type";
 
 const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
-  Ui: { Grid, Box, TextField },
+  Ui: { Grid, Box, TextField, InputAdornment },
   saveData: { next, updateFlag },
+  totalClc,
   GCIValue,
   index,
 }) => {
@@ -12,7 +13,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   const { roleData, setRoleData } = useApp();
   const [_roleData, _setRoleData] = useState<IRoleData>(roleData[index]);
 
-  // this hook is save data to global.
+  // this hook is save data to global state.
   useEffect(() => {
     if (next) {
       let dataIndex = roleData.findIndex((item) => {
@@ -28,54 +29,49 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
 
   // this hook push to state variable of component from global state
   useEffect(() => {
-    _setRoleData({
-      ...roleData[index],
-      share_value: parseFloat(
-        (
-          (Number(GCIValue) / 100) *
-          Number(roleData[index].share_percent)
-        ).toFixed(3)
-      ),
-    });
+    _setRoleData(roleData[index]);
   }, [roleData, GCIValue]);
 
-  const handleChangeValue = (
+  const handleChangeNumber = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IRoleData
   ) => {
     updateFlag(true);
-    if (key == "share_percent" && Number(e.target.value) > 100) {
+
+    let value: string = e.target.value;
+    if (Number(value) + "" === "NaN" || (value + "").length > 16) {
+      return;
+    }
+    if (key == "share_percent" && Number(value) > 100) {
       return;
     }
 
-    let value: string = e.target.value;
     let updateValue = JSON.parse(JSON.stringify(_roleData));
-
-    if (key == "note") {
-      updateValue[key] = value;
-    } else {
-      updateValue[key] = Number(value);
-    }
+    updateValue[key] = Number(value);
 
     if (key == "share_percent") {
-      if (value !== "") {
-        updateValue["share_value"] = parseFloat(
-          ((Number(GCIValue) / 100) * Number(value)).toFixed(3)
-        );
-      } else {
-        updateValue["share_value"] = 0;
-      }
+      updateValue["share_value"] = parseFloat(
+        ((Number(GCIValue) / 100) * Number(value)).toFixed(3)
+      );
     }
 
     if (key == "share_value") {
-      if (value !== "") {
-        updateValue["share_percent"] = parseFloat(
-          ((Number(value) / Number(GCIValue)) * 100).toFixed(3)
-        );
-      } else {
-        updateValue["share_percent"] = 0;
-      }
+      updateValue["share_percent"] = parseFloat(
+        ((Number(value) / Number(GCIValue)) * 100).toFixed(3)
+      );
     }
+    _setRoleData(updateValue);
+    totalClc(index, updateValue);
+  };
+
+  const handleChangeText = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    key: keyof IRoleData
+  ) => {
+    updateFlag(true);
+    let value: string = e.target.value;
+    let updateValue = JSON.parse(JSON.stringify(_roleData));
+    updateValue[key] = value;
     _setRoleData(updateValue);
   };
 
@@ -95,38 +91,43 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
       </Grid>
       <Grid item xs={4}>
         <TextField
-          required
           size="small"
+          type="text"
           label="Share(%)"
           defaultValue={5}
           value={_roleData.share_percent}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            handleChangeValue(e, "share_percent")
+            handleChangeNumber(e, "share_percent")
           }
+          InputProps={{
+            endAdornment: <InputAdornment position="end">%</InputAdornment>,
+          }}
           style={{ width: "100%" }}
         />
       </Grid>
       <Grid item xs={4}>
         <TextField
-          required
           size="small"
+          type="text"
           label="Share($)"
           value={_roleData.share_value}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            handleChangeValue(e, "share_value")
+            handleChangeNumber(e, "share_value")
           }
+          InputProps={{
+            endAdornment: <InputAdornment position="end">$</InputAdornment>,
+          }}
           style={{ width: "100%" }}
         />
       </Grid>
       <Grid item xs={4} style={{ marginTop: -10 }} />
       <Grid item xs={8} style={{ marginTop: -10 }}>
         <TextField
-          id={`GCI-item-textfield-${index}`}
-          size="small"
+          type="text"
           label="Note"
           value={_roleData.note}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            handleChangeValue(e, "note")
+            handleChangeText(e, "note")
           }
           style={{ width: "100%", marginTop: -15, marginBottom: 20 }}
         />
