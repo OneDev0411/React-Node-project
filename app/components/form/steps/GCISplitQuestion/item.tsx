@@ -3,7 +3,7 @@ import useApp from "../../../../hooks/useApp";
 import { IGCIInfoItemProps, IRoleData } from "../../../../models/type";
 
 const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
-  Ui: { Grid, Box, TextField, InputAdornment },
+  Ui: { Grid, Box, TextField },
   saveData: { next, updateFlag },
   totalClc,
   GCIValue,
@@ -45,7 +45,6 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     if (key == "share_percent" && Number(value) > 100) {
       return;
     }
-
     let updateValue = JSON.parse(JSON.stringify(_roleData));
     updateValue[key] = Number(value);
 
@@ -95,13 +94,10 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           type="text"
           label="Share(%)"
           defaultValue={5}
-          value={_roleData.share_percent}
+          value={Number(_roleData.share_percent)}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChangeNumber(e, "share_percent")
           }
-          InputProps={{
-            endAdornment: <InputAdornment position="end">%</InputAdornment>,
-          }}
           style={{ width: "100%" }}
         />
       </Grid>
@@ -110,13 +106,10 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           size="small"
           type="text"
           label="Share($)"
-          value={_roleData.share_value}
+          value={Number(_roleData.share_value)}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChangeNumber(e, "share_value")
           }
-          InputProps={{
-            endAdornment: <InputAdornment position="end">$</InputAdornment>,
-          }}
           style={{ width: "100%" }}
         />
       </Grid>
