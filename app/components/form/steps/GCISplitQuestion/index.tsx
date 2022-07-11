@@ -11,15 +11,15 @@ import { stylizeNumber } from "../../../../util";
 
 const GCISplitQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-  hooks: { useWizardContext, useSectionContext },
-  models: { deal },
+  hooks: { useWizardContext },
+  models: { deal, roles },
   Components: { RoleForm, ContactRoles },
   api: { deleteRole },
 }) => {
   const { useState, useEffect } = React;
   const { Grid, Button, Box } = Ui;
   const wizard = useWizardContext();
-  const { dealData, roleData } = useApp();
+  const { dealData, roleData, setRoleData } = useApp();
 
   // state
   const [status, setStatus] = useState<GCISplitStatus>("Listing");
@@ -29,6 +29,9 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const [showButton, setShowButton] = useState<boolean>(true);
   const [next, setNext] = useState<boolean>(false);
   const [totalPercent, setTotalPercent] = useState<number>(0);
+
+  // constants
+  const dealType = deal.deal_type;
 
   // this logic is updating
   const handleCloseRoleForm = () => {
@@ -59,8 +62,32 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     setStatus("Listing");
   };
 
-  const handleClickRemoveButton = (id: IDealRole["id"]) => {
-    // deleteRole(id);
+  const isPrimaryAgent = (role: IRoleData["role"]) => {
+    return (
+      (role === "BuyerAgent" && dealType === "Buying") ||
+      (role === "SellerAgent" && dealType === "Selling")
+    );
+  };
+
+  const handleClickRemoveButton = async (data: IRoleData, index: number) => {
+    let isPrimary = isPrimaryAgent(data.role);
+    if (isPrimary) {
+      return;
+    }
+    let roleModel = roles.find((role: IDealRole) => {
+      return data.role_id == role.id;
+    });
+    console.log("roleModel", roleModel);
+    if (roleModel !== undefined) {
+      await deleteRole(roleModel);
+    }
+
+    // for display deleting result
+    let temp: IRoleData[] = roleData.slice();
+    temp.splice(index, 1);
+    if (setRoleData !== undefined) {
+      setRoleData(temp);
+    }
   };
 
   const updateFlag = (flag: boolean) => {
@@ -108,7 +135,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
             <Button
               key={id}
               variant="outlined"
-              onClick={() => handleClickRemoveButton(item.role_id)}
+              onClick={() => handleClickRemoveButton(item, id)}
               style={{
                 color: "black !important",
                 borderColor: "#dbdbdb !important",
