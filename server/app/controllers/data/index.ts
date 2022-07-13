@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import db from "../../config/db.config";
 import { Op } from "sequelize";
 import { IDealData, IRemittanceChecks, IRoleData, ITotalData } from "types";
-
+import db from "../../models";
 const { DealDataModel, RoleDataModel, RemittanceChecksModel } = db;
 
 const dealDataSave = async (data: IDealData) => {
@@ -148,7 +147,8 @@ const totalReadData = async (req: Request, res: Response) => {
       data: totalData,
     });
   } catch (error) {
-    res.status(500).json({
+    console.log("error", error);
+    res.status(200).json({
       message: "error",
       error: error,
     });

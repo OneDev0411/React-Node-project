@@ -3,7 +3,7 @@
  * youtube loizenai
  */
 export default (sequelize, Sequelize) => {
-  const DealData = sequelize.define("deal_data", {
+  const DealDataModel = sequelize.define("DealDatas", {
     deal_id: {
       type: Sequelize.TEXT,
     },
@@ -11,19 +11,19 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
     },
     gci_de_value: {
-      type: Sequelize.NUMBER,
+      type: Sequelize.FLOAT,
     },
     gci_reason_select: {
-      type: Sequelize.NUMBER,
+      type: Sequelize.INTEGER,
     },
     gci_reason: {
       type: Sequelize.TEXT,
     },
     stage_cost: {
-      type: Sequelize.NUMBER,
+      type: Sequelize.FLOAT,
     },
     remittance_bank_wire_amount: {
-      type: Sequelize.NUMBER,
+      type: Sequelize.FLOAT,
     },
     inside_de_payment_type: {
       type: Sequelize.TEXT,
@@ -59,5 +59,5 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.TEXT,
     },
   });
-  return DealData;
+  return DealDataModel;
 };

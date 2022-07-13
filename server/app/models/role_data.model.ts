@@ -3,7 +3,7 @@
  * youtube loizenai
  */
 export default (sequelize, Sequelize) => {
-  const RoleData = sequelize.define("role_data", {
+  const RoleDataModel = sequelize.define("RoleDatas", {
     deal_id: {
       type: Sequelize.TEXT,
     },
@@ -17,10 +17,10 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.TEXT,
     },
     share_percent: {
-      type: Sequelize.NUMBER,
+      type: Sequelize.FLOAT,
     },
     share_value: {
-      type: Sequelize.NUMBER,
+      type: Sequelize.REAL,
     },
     note: {
       type: Sequelize.TEXT,
@@ -29,8 +29,8 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
     },
     payment_value: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
     },
   });
-  return RoleData;
+  return RoleDataModel;
 };

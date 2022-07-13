@@ -5,7 +5,7 @@
 import { Options } from "sequelize/types";
 
 export const env: Options = {
-  database: "rechat",
+  database: "test6",
   username: "postgres",
   password: "1912ab0519",
   host: "localhost",

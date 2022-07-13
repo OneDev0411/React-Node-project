@@ -4,12 +4,12 @@
  */
 
 export default (sequelize, Sequelize) => {
-  const RemittanceChecks = sequelize.define("remittance_check", {
+  const RemittanceChecksModel = sequelize.define("RemittanceChecks", {
     deal_id: {
       type: Sequelize.TEXT,
     },
     check_num: {
-      type: Sequelize.NUMBER,
+      type: Sequelize.INTEGER,
     },
     check_date: {
       type: Sequelize.DATE,
@@ -18,8 +18,8 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.DATE,
     },
     amount: {
-      type: Sequelize.NUMBER,
+      type: Sequelize.FLOAT,
     },
   });
-  return RemittanceChecks;
+  return RemittanceChecksModel;
 };

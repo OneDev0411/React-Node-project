@@ -3,12 +3,12 @@
  * youtube loizenai
  */
 
-import { env } from "./env";
+import { env } from "../config/env";
 import Sequelize from "sequelize";
 
-import DealDataModel from "../models/DealData.model";
-import RoleDataModel from "../models/RoleData.model";
-import RemittanceChecksModel from "../models/RemittanceChecks.model";
+import DealDataModel from "./deal_data.model";
+import RoleDataModel from "./role_data.model";
+import RemittanceChecksModel from "./remitttance_checks.model";
 
 // @ts-ignore
 const sequelize: typeof Sequelize = new Sequelize(

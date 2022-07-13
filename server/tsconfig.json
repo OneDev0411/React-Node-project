@@ -18,24 +18,11 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "outDir": "../dist-server",
-    "lib": [
-      "es6"
-    ],
-    "types": [
-      "node"
-    ],
-    "typeRoots": [
-      "types",
-      "node_modules/@types"
-    ],
+    "lib": ["es6"],
+    "types": ["node"],
+    "typeRoots": ["types", "node_modules/@types"],
     "paths": {}
   },
-  "include": [
-    "app/**/*",
-    "types/**/*",
-    "main.ts"
-  ],
-  "exclude": [
-    "app/**/*.test.ts"
-  ]
+  "include": ["app/**/*", "types/**/*", "main.ts"],
+  "exclude": ["app/**/*.test.ts"]
 }
