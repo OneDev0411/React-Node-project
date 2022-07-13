@@ -5,10 +5,10 @@
 import { Options } from "sequelize/types";
 
 export const env: Options = {
-  database: "test6",
+  database: "postgres",
   username: "postgres",
-  password: "1912ab0519",
-  host: "localhost",
+  password: "T-[fhK/tAcP0DgtH",
+  host: "35.184.70.27",
   dialect: "postgres",
   pool: {
     max: 5,

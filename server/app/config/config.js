@@ -3,9 +3,9 @@ const inflection = require("inflection");
 
 module.exports = {
   username: "postgres",
-  password: "1912ab0519",
-  database: "test6",
-  host: "localhost",
+  password: "T-[fhK/tAcP0DgtH",
+  database: "postgres",
+  host: "35.184.70.27",
   dialect: "postgres",
   models: [path.join(process.cwd(), "models")],
   modelMatch: (_filename, _member) => {
