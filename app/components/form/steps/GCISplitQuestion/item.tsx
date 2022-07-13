@@ -60,7 +60,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
       );
     }
     _setRoleData(updateValue);
-    totalClc(index, updateValue);
+    totalClc(index, updateValue, true);
   };
 
   const handleChangeText = (
@@ -72,6 +72,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     let updateValue = JSON.parse(JSON.stringify(_roleData));
     updateValue[key] = value;
     _setRoleData(updateValue);
+    totalClc(index, updateValue, false);
   };
 
   return (

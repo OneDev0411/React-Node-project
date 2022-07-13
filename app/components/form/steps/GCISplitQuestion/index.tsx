@@ -22,6 +22,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const { dealData, roleData, setRoleData } = useApp();
 
   // state
+  const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData);
   const [status, setStatus] = useState<GCISplitStatus>("Listing");
   const [currentRole, setCurrentObject] = useState<
     Partial<IDealFormRole> | IDealRole | null
@@ -82,7 +83,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     }
 
     // for display deleting result
-    let temp: IRoleData[] = roleData.slice();
+    let temp: IRoleData[] = _roleData.slice();
     temp.splice(index, 1);
     if (setRoleData !== undefined) {
       setRoleData(temp);
@@ -95,27 +96,31 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     }
   };
 
-  const totalClc = (index: number, data: IRoleData) => {
-    let temp = JSON.parse(JSON.stringify(roleData));
+  const totalClc = (index: number, data: IRoleData, clcFlag: boolean) => {
+    let temp = JSON.parse(JSON.stringify(_roleData));
     temp[index] = data;
-    let tempValue = temp.reduce((totalPercent: number, data: IRoleData) => {
-      return parseFloat(
-        (Number(totalPercent) + Number(data.share_percent)).toFixed(3)
-      );
-    }, 0);
-    setTotalPercent(tempValue);
-    if (setRoleData !== undefined) {
-      setRoleData(temp);
+    if (clcFlag) {
+      let tempValue = temp.reduce((totalPercent: number, data: IRoleData) => {
+        return parseFloat(
+          (Number(totalPercent) + Number(data.share_percent)).toFixed(3)
+        );
+      }, 0);
+      setTotalPercent(tempValue);
     }
+    _setRoleData(temp);
   };
 
   useEffect(() => {
-    let tempClc = roleData.reduce((totalPercent: any, data: any) => {
+    let tempClc = _roleData.reduce((totalPercent: any, data: IRoleData) => {
       return parseFloat(
         (Number(totalPercent) + Number(data.share_percent)).toFixed(3)
       );
     }, 0);
     setTotalPercent(tempClc);
+  }, [_roleData]);
+
+  useEffect(() => {
+    _setRoleData(roleData);
   }, [roleData]);
 
   return (
@@ -124,7 +129,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         Great, here is your GCI share before splits:
       </QuestionTitle>
       <QuestionForm>
-        {roleData.map((item: IRoleData, id: number) => (
+        {_roleData.map((item: IRoleData, id: number) => (
           <>
             <GCIInfoItem
               Ui={Ui}
