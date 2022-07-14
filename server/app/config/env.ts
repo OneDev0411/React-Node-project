@@ -5,10 +5,10 @@
 import { Options } from "sequelize/types";
 
 export const env: Options = {
-  database: "postgres",
-  username: "postgres",
-  password: "T-[fhK/tAcP0DgtH",
-  host: "35.184.70.27",
+  database: process.env.APP_DATABASE_CONFIG_DATABASE,
+  username: process.env.APP_DATABASE_CONFIG_USER_NAME,
+  password: process.env.APP_DATABASE_CONFIG_PASSWORD,
+  host: process.env.APP_DATABASE_CONFIG_HOST,
   dialect: "postgres",
   pool: {
     max: 5,

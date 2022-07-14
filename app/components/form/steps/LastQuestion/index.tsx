@@ -14,9 +14,12 @@ const LastQuestion: React.FC<IQuestionProps> = ({
 
   const handleSubmit = async () => {
     notifyOffice("Please review the Commission Slip");
-    let res = await axios.post("http://localhost:8081/total-save", {
-      data: total_data,
-    });
+    let res = await axios.post(
+      "http://localhost:8081/rechat-commission-app-data-save",
+      {
+        data: total_data,
+      }
+    );
   };
 
   return (

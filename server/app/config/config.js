@@ -2,10 +2,10 @@ const path = require("path");
 const inflection = require("inflection");
 
 module.exports = {
-  username: "postgres",
-  password: "T-[fhK/tAcP0DgtH",
-  database: "postgres",
-  host: "35.184.70.27",
+  username: process.env.APP_DATABASE_CONFIG_USER_NAME,
+  password: process.env.APP_DATABASE_CONFIG_PASSWORD,
+  database: process.env.APP_DATABASE_CONFIG_DATABASE,
+  host: process.env.APP_DATABASE_CONFIG_HOST,
   dialect: "postgres",
   models: [path.join(process.cwd(), "models")],
   modelMatch: (_filename, _member) => {
