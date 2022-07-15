@@ -9,6 +9,7 @@ import Sequelize from "sequelize";
 import DealDataModel from "./deal_data.model";
 import RoleDataModel from "./role_data.model";
 import RemittanceChecksModel from "./remitttance_checks.model";
+import DealInfoModel from "./deal_info.model";
 
 // @ts-ignore
 const sequelize: typeof Sequelize = new Sequelize(
@@ -35,6 +36,9 @@ interface DB {
   DealDataModel?: any;
   RoleDataModel?: any;
   RemittanceChecksModel?: any;
+  UserModel?: any;
+  RolesModel?: any;
+  DealInfoModel?: any;
 }
 
 const db: DB = {};
@@ -45,5 +49,6 @@ db.sequelize = sequelize;
 db.DealDataModel = DealDataModel(sequelize, Sequelize);
 db.RoleDataModel = RoleDataModel(sequelize, Sequelize);
 db.RemittanceChecksModel = RemittanceChecksModel(sequelize, Sequelize);
+db.DealInfoModel = DealInfoModel(sequelize, Sequelize);
 
 export default db;

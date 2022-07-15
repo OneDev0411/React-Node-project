@@ -11,6 +11,7 @@
     "migrate": "node -e \"require('./server/app/migration').migrate()\"",
     "migrate:rollback": "node -e \"require('./server/app/migration').migrateRollback()\"",
     "migrate:reset": "node -e \"require('./server/app/migration').migrateReset()\"",
+    "develop_start": "npm run migrate && npm run develop",
     "clean": "rm -rf dist-web && rm -rf dist-server",
     "build": "npm run clean && npm run build:manifest && npm run build:web && npm run build:server",
     "build:manifest": "node -r ts-node/register ./.configuration/update-manifest/index.ts",
