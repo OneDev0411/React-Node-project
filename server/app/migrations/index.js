@@ -2,18 +2,10 @@
 
 var Sequelize = require("sequelize");
 
-/**
- * Actions summary:
- *
- * createTable "CarBrands", deps: []
- * createTable "Cars", deps: [CarBrands]
- *
- **/
-
 var info = {
   revision: 1,
   name: "noname",
-  created: "2020-04-12T15:49:58.814Z",
+  created: "2022-07-12T15:49:58.814Z",
   comment: "",
 };
 
@@ -185,6 +177,36 @@ var migrationCommands = [
       {},
     ],
   },
+
+  {
+    fn: "createTable",
+    params: [
+      "DealInfos",
+      {
+        id: {
+          autoIncrement: true,
+          primaryKey: true,
+          allowNull: false,
+          type: Sequelize.INTEGER,
+        },
+        deal_id: {
+          type: Sequelize.STRING,
+        },
+        data: {
+          type: Sequelize.JSONB,
+        },
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+        },
+      },
+      {},
+    ],
+  },
 ];
 
 var rollbackCommands = [
@@ -199,6 +221,10 @@ var rollbackCommands = [
   {
     fn: "dropTable",
     params: ["RemittanceChecks"],
+  },
+  {
+    fn: "dropTable",
+    params: ["DealInfos"],
   },
 ];
 

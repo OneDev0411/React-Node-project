@@ -21,7 +21,6 @@ const processWebhook = async (req: Request, res: Response) => {
     case "SEND_DEAL_INFO":
       // Do logic here for VERIFICATION_REVIEWED event
       result = await dealInfo.readData(req.body);
-      console.log("result", result);
       break;
     default:
   }
