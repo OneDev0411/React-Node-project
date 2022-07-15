@@ -14,14 +14,13 @@ const processWebhook = async (req: Request, res: Response) => {
   const webhook = webhookHelper.decryptWebhookIfNeeded(req);
   let result;
   switch (webhook.event) {
-    case "RECEIVED_DEAL_INFO":
+    case "DEAL_DATA":
       dealInfo.saveData(createData(req.body));
       result = "Data is saved successfully";
       break;
-    case "SEND_DEAL_INFO":
-      // Do logic here for VERIFICATION_REVIEWED event
-      result = await dealInfo.readData(req.body);
-      break;
+    // case "SEND_DEAL_INFO":
+    // result = await dealInfo.readData(req.body);
+    // break;
     default:
   }
   res.status(200).json({

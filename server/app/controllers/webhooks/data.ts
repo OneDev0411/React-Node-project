@@ -1,6 +1,3 @@
-import { Request, Response } from "express";
-import { Op } from "sequelize";
-import { IDealData } from "types";
 import db from "../../models";
 const { DealInfoModel } = db;
 
@@ -20,12 +17,10 @@ const saveData = async (data: any) => {
 };
 
 const readData = async (data: any) => {
-  console.log("data", data.deal_id);
   const res = await DealInfoModel.findOne({
     where: { deal_id: data.deal_id },
     attributes: { exclude: ["id", "createdAt", "updatedAt"] },
   });
-  console.log("res", res);
   return res;
 };
 

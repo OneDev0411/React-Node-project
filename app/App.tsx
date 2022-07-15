@@ -19,7 +19,7 @@ const App: React.FC<EntryProps> = ({
   // push data to global state from backend data by using contextAPI
   const dataToContextAPI = async () => {
     let res = await axios.post(
-      "http://localhost:8081/rechat-commission-app-data-read",
+      `http://localhost:8081/rechat-commission-app-data-read`,
       {
         deal_id: deal.id,
       }

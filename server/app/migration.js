@@ -4,8 +4,6 @@ const { exec } = require("child_process");
 
 module.exports = {
   migrate: () => {
-    console.log("**************");
-    console.log(process.env.APP_ENV);
     exec(
       `npx sequelize db:migrate --env ${process.env.APP_ENV}`,
       (err, stdout, stderr) => {
