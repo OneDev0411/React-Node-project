@@ -4,7 +4,7 @@
  */
 
 export default (sequelize, Sequelize) => {
-  const RemittanceChecksModel = sequelize.define("RemittanceChecks", {
+  const RemittanceChecksModel = sequelize.define("remittance_checks", {
     deal_id: {
       type: Sequelize.TEXT,
     },

@@ -1,9 +1,5 @@
-/**
- * Copyright by https://loizenai.com
- * youtube loizenai
- */
 export default (sequelize, Sequelize) => {
-  const RoleDataModel = sequelize.define("RoleDatas", {
+  const RoleDataModel = sequelize.define("role_datas", {
     deal_id: {
       type: Sequelize.TEXT,
     },

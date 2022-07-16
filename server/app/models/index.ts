@@ -3,32 +3,29 @@
  * youtube loizenai
  */
 
-import { env } from "../config/env";
 import Sequelize from "sequelize";
 
 import DealDataModel from "./deal_data.model";
 import RoleDataModel from "./role_data.model";
 import RemittanceChecksModel from "./remitttance_checks.model";
 import DealInfoModel from "./deal_info.model";
+import { makeUrl } from "../../util";
 
 // @ts-ignore
-const sequelize: typeof Sequelize = new Sequelize(
-  env.database,
-  env.username,
-  env.password,
-  {
-    host: env.host,
-    dialect: env.dialect,
-    operatorsAliases: false,
 
-    pool: {
-      max: env.pool?.max,
-      min: env.pool?.min,
-      acquire: env.pool?.acquire,
-      idle: env.pool?.idle,
-    },
-  }
-);
+const sequelize: Sequelize = new Sequelize(makeUrl(), {
+  dialect: "postgres",
+  dialectOptions: {
+    ssl: false,
+  },
+  operatorsAliases: false,
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
+});
 
 interface DB {
   Sequelize?: typeof Sequelize;

@@ -13,7 +13,7 @@ var migrationCommands = [
   {
     fn: "createTable",
     params: [
-      "DealDatas",
+      "deal_datas",
       {
         id: {
           autoIncrement: true,
@@ -91,7 +91,7 @@ var migrationCommands = [
   {
     fn: "createTable",
     params: [
-      "RoleDatas",
+      "role_datas",
       {
         id: {
           autoIncrement: true,
@@ -142,7 +142,7 @@ var migrationCommands = [
   {
     fn: "createTable",
     params: [
-      "RemittanceChecks",
+      "remittance_checks",
       {
         id: {
           autoIncrement: true,
@@ -181,7 +181,7 @@ var migrationCommands = [
   {
     fn: "createTable",
     params: [
-      "DealInfos",
+      "deal_infos",
       {
         id: {
           autoIncrement: true,
@@ -212,19 +212,19 @@ var migrationCommands = [
 var rollbackCommands = [
   {
     fn: "dropTable",
-    params: ["DealDatas"],
+    params: ["deal_datas"],
   },
   {
     fn: "dropTable",
-    params: ["RoleDatas"],
+    params: ["role_datas"],
   },
   {
     fn: "dropTable",
-    params: ["RemittanceChecks"],
+    params: ["remittance_checks"],
   },
   {
     fn: "dropTable",
-    params: ["DealInfos"],
+    params: ["deal_infos"],
   },
 ];
 

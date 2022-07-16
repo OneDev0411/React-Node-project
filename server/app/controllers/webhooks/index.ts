@@ -11,22 +11,30 @@ const createData = (data: any) => {
 };
 
 const processWebhook = async (req: Request, res: Response) => {
-  const webhook = webhookHelper.decryptWebhookIfNeeded(req);
-  let result;
-  switch (webhook.event) {
-    case "DEAL_DATA":
-      dealInfo.saveData(createData(req.body));
-      result = "Data is saved successfully";
-      break;
-    // case "SEND_DEAL_INFO":
-    // result = await dealInfo.readData(req.body);
-    // break;
-    default:
+  try {
+    const webhook = webhookHelper.decryptWebhookIfNeeded(req);
+    let result;
+    switch (webhook.event) {
+      case "DEAL_DATA":
+        await dealInfo.saveData(createData(req.body));
+        result = "Data is saved successfully";
+        break;
+      // case "SEND_DEAL_INFO":
+      // result = await dealInfo.readData(req.body);
+      // break;
+      default:
+    }
+    res.status(200).json({
+      message: "successful",
+      data: result,
+    });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({
+      message: "error",
+      error: error,
+    });
   }
-  res.status(200).json({
-    message: "successful",
-    data: result,
-  });
 };
 
 export default {

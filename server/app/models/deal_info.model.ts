@@ -3,7 +3,7 @@
  * youtube loizenai
  */
 export default (sequelize, Sequelize) => {
-  const DealInfoModel = sequelize.define("DealInfos", {
+  const DealInfoModel = sequelize.define("deal_infos", {
     deal_id: {
       type: Sequelize.STRING,
     },
