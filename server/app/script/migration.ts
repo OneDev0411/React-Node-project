@@ -15,7 +15,7 @@ const makeUrl = () => {
 
 const migrate = (argv) => {
   switch (argv[2]) {
-    case "1":
+    case "migrate":
       exec(
         `npx sequelize db:migrate --url ${makeUrl()}`,
         (err, stdout, stderr) => {
@@ -27,7 +27,7 @@ const migrate = (argv) => {
         }
       );
       break;
-    case "2":
+    case "rollback":
       exec(
         `npx sequelize db:migrate:undo --url ${makeUrl()}`,
         (err, stdout, stderr) => {
@@ -40,7 +40,7 @@ const migrate = (argv) => {
         }
       );
       break;
-    case "3":
+    case "reset":
       exec(
         `npx sequelize db:migrate:undo:all --url ${makeUrl()}`,
         (err, stdout, stderr) => {

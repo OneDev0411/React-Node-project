@@ -8,9 +8,9 @@
   "license": "",
   "scripts": {
     "develop": "cross-env NODE_ENV=development TS_NODE_PROJECT='server/tsconfig.json' node -r ts-node/register server/main.ts",
-    "migrate": "node ./server/app/script/migration.ts 1",
-    "migrate:rollback": "node -e \"require('./server/app/migration').migrateRollback()\"",
-    "migrate:reset": "node -e \"require('./server/app/migration').migrateReset()\"",
+    "migrate": "node ./server/app/script/migration.ts migrate",
+    "migrate:rollback": "node ./server/app/script/migration.ts rollback",
+    "migrate:reset": "node ./server/app/script/migration.ts reset",
     "develop_start": "npm run migrate && npm run develop",
     "clean": "rm -rf dist-web && rm -rf dist-server",
     "build": "npm run clean && npm run build:manifest && npm run build:web && npm run build:server",
