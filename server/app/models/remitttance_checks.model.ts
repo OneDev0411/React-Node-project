@@ -1,8 +1,3 @@
-/**
- * Copyright by https://loizenai.com
- * youtube loizenai
- */
-
 export default (sequelize, Sequelize) => {
   const RemittanceChecksModel = sequelize.define("remittance_checks", {
     deal_id: {

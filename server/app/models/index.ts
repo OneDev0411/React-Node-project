@@ -1,8 +1,3 @@
-/**
- * Copyright by https://loizenai.com
- * youtube loizenai
- */
-
 import Sequelize from "sequelize";
 
 import DealDataModel from "./deal_data.model";

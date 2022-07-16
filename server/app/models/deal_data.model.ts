@@ -1,7 +1,3 @@
-/**
- * Copyright by https://loizenai.com
- * youtube loizenai
- */
 export default (sequelize, Sequelize) => {
   const DealDataModel = sequelize.define("deal_datas", {
     deal_id: {
