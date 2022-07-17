@@ -7,7 +7,6 @@ import DealInfoModel from "./deal_info.model";
 import { makeUrl } from "../../util";
 
 // @ts-ignore
-
 const sequelize: Sequelize = new Sequelize(makeUrl(), {
   dialect: "postgres",
   dialectOptions: {

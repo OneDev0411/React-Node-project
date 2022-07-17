@@ -13,9 +13,10 @@ const createData = (data: any) => {
 const processWebhook = async (req: Request, res: Response) => {
   try {
     const webhook = webhookHelper.decryptWebhookIfNeeded(req);
+    console.log("event", webhook.event);
     let result;
     switch (webhook.event) {
-      case "DEAL_DATA":
+      case "add":
         await dealInfo.saveData(createData(req.body));
         result = "Data is saved successfully";
         break;
