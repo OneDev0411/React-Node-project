@@ -10,7 +10,7 @@
     "develop": "cross-env NODE_ENV=development TS_NODE_PROJECT='server/tsconfig.json' node -r ts-node/register server/main.ts",
     "sync": "npm run build:server && node ./dist-server/server/app/scripts/sync.js",
     "bootstraps": "ts-node -T -r tsconfig-paths/register ./server/app/scripts/bootstraps.ts",
-    "migrate": "ts-node -T -r tsconfig-paths/register ./server/app/scripts/bootstraps.ts && ts-node -T -r tsconfig-paths/register ./server/app/scripts/migration.ts migrate",
+    "migrate": "ts-node -T -r tsconfig-paths/register ./server/app/scripts/bootstraps.ts && npm run bootstraps",
     "migrate:rollback": "ts-node -T -r tsconfig-paths/register ./server/app/scripts/migration.ts rollback",
     "migrate:reset": "ts-node -T -r tsconfig-paths/register ./server/app/scripts/migration.ts reset",
     "dev": "npm run bootstraps && npm run migrate",
