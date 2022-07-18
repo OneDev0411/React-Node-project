@@ -3,3 +3,4 @@ dist-web
 dist-server
 ./Todo.md
 Todo.md
+server/app/migrations/00000001-noname.js

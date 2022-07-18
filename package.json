@@ -9,7 +9,10 @@
   "scripts": {
     "develop": "cross-env NODE_ENV=development TS_NODE_PROJECT='server/tsconfig.json' node -r ts-node/register server/main.ts",
     "sync": "npm run build:server && node ./dist-server/server/app/scripts/sync.js",
-    "develop_start": "npm run migrate && npm run develop",
+    "migrate": "ts-node -T -r tsconfig-paths/register ./server/app/scripts/bootstraps.ts && ts-node -T -r tsconfig-paths/register ./server/app/scripts/migration.ts migrate",
+    "migrate:rollback": "ts-node -T -r tsconfig-paths/register ./server/app/scripts/migration.ts rollback",
+    "migrate:reset": "ts-node -T -r tsconfig-paths/register ./server/app/scripts/migration.ts reset",
+    "dev": "npm run bootstraps && npm run migrate",
     "clean": "rm -rf dist-web && rm -rf dist-server",
     "build": "npm run clean && npm run build:manifest && npm run build:web && npm run build:server",
     "build:manifest": "node -r ts-node/register ./.configuration/update-manifest/index.ts",
@@ -39,6 +42,7 @@
     "react-use": "^17.4.0",
     "sequelize": "^6.21.2",
     "sequelize-typescript": "^2.1.3",
+    "sequelize-typescript-migration-fix": "^0.0.2",
     "serve-static": "^1.15.0",
     "throng": "^5.0.0",
     "webpack-dev-middleware": "^5.3.3"
