@@ -142,6 +142,10 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     _setDealData(dealData);
   }, [dealData]);
 
+  useEffect(() => {
+    _setRemittanceChecks(remittanceChecks);
+  }, [remittanceChecks]);
+
   return (
     <QuestionSection>
       <QuestionTitle>Please input remittance info.</QuestionTitle>
@@ -247,7 +251,11 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                         <Grid item xs={6}>
                           <DatePicker
                             Picker={DayPicker}
-                            value={checkData.check_date}
+                            value={
+                              typeof checkData.check_date == "string"
+                                ? new Date(checkData.check_date)
+                                : checkData.check_date
+                            }
                             setValue={(value: Date) =>
                               updateCheckDataList(index, "check_date", value)
                             }
@@ -257,7 +265,11 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                         <Grid item xs={6}>
                           <DatePicker
                             Picker={DayPicker}
-                            value={checkData.check_receive_date}
+                            value={
+                              typeof checkData.check_receive_date == "string"
+                                ? new Date(checkData.check_receive_date)
+                                : checkData.check_receive_date
+                            }
                             setValue={(value: Date) =>
                               updateCheckDataList(
                                 index,

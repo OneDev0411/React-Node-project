@@ -29,6 +29,7 @@ const readDealData = async (deal_id: string, model: any) => {
   return res;
 };
 
+// send deal information and commission app data to DE
 const sendDealData = async (deal_id: string) => {
   let data = await readCombinedData(deal_id);
   // await axios.post("http://DE-API", {
@@ -44,7 +45,7 @@ const saveCommissionData = async (req: Request, res: Response) => {
       payload: JSON.stringify(totalData),
     };
     await saveDealData(data, CommissionDataModel);
-    await sendDealData(data.deal_id);
+    await sendDealData(data.deal_id); // send deal information and commission app data to DE company
     res.status(200).json({
       message: "successful",
       error: "no error",
@@ -93,8 +94,8 @@ const readCombinedData = async (deal_id: string) => {
   let commissionData = await readDealData(deal_id, CommissionDataModel);
   let dealInfo = await readDealData(deal_id, DealInfoModel);
   let data = {
-    commissionData: commissionData !== null ? commissionData.payload : null,
-    dealInfo: dealInfo !== null ? dealInfo.payload : null,
+    commissionData: commissionData?.payload,
+    dealInfo: dealInfo?.payload,
   };
   return data;
 };
