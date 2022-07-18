@@ -1,7 +1,5 @@
 import { SequelizeTypescriptMigration } from "sequelize-typescript-migration-fix";
-import { Sequelize } from "sequelize-typescript";
 import * as path from "path";
-import { makeUrl } from "../../util";
 import db from "../models";
 
 const bootstrap = async () => {

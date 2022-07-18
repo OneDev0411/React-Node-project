@@ -1,5 +1,4 @@
-import Sequelize from "sequelize";
-
+import { Sequelize } from "sequelize-typescript";
 import DealDataModel from "./deal_data.model";
 import RoleDataModel from "./role_data.model";
 import RemittanceChecksModel from "./remitttance_checks.model";
