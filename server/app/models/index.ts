@@ -1,8 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
-import DealDataModel from "./deal_data.model";
-import RoleDataModel from "./role_data.model";
-import RemittanceChecksModel from "./remitttance_checks.model";
-import DealInfoModel from "./deal_info.model";
+import CommissionDataModel from "../models/commission_data.model";
+import DealInfoModel from "../models/deal_info.model";
 import { makeUrl } from "../../util";
 
 // @ts-ignore
@@ -23,11 +21,7 @@ const sequelize: Sequelize = new Sequelize(makeUrl(), {
 interface DB {
   Sequelize?: typeof Sequelize;
   sequelize?: any;
-  DealDataModel?: any;
-  RoleDataModel?: any;
-  RemittanceChecksModel?: any;
-  UserModel?: any;
-  RolesModel?: any;
+  CommissionDataModel?: any;
   DealInfoModel?: any;
 }
 
@@ -36,9 +30,7 @@ const db: DB = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.DealDataModel = DealDataModel(sequelize, Sequelize);
-db.RoleDataModel = RoleDataModel(sequelize, Sequelize);
-db.RemittanceChecksModel = RemittanceChecksModel(sequelize, Sequelize);
+db.CommissionDataModel = CommissionDataModel(sequelize, Sequelize);
 db.DealInfoModel = DealInfoModel(sequelize, Sequelize);
 
 export default db;

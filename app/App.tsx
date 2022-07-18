@@ -54,9 +54,8 @@ const App: React.FC<EntryProps> = ({
         payment_calculated_from: 0,
       };
     });
-
     try {
-      if (data.dealData !== null) {
+      if (data !== null) {
         let tempDealData = data.dealData;
         if (setDealData !== undefined) {
           setDealData(tempDealData);

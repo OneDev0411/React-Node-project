@@ -1,9 +1,9 @@
 export default (sequelize, Sequelize) => {
-  const DealInfoModel = sequelize.define("deal_infos", {
+  const DealInfoModel = sequelize.define("deal_info", {
     deal_id: {
       type: Sequelize.STRING,
     },
-    data: {
+    payload: {
       type: Sequelize.JSONB,
     },
   });

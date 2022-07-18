@@ -5,15 +5,15 @@ import dataRoute from "./app/controllers/data";
 import manifestRoute from "./app/controllers/manifest";
 
 // webhooks
-import webHooks from "./app/controllers/webhooks";
+import webhooks from "./app/controllers/webhooks";
 const router = express.Router();
 
 router.get("/", homeRoute);
-router.post("/rechat-commission-app-data-save", dataRoute.totalSaveData);
-router.post("/rechat-commission-app-data-read", dataRoute.totalReadData);
+router.post("/rechat-commission-app-data-save", dataRoute.commissionDataSave);
+router.post("/rechat-commission-app-data-read", dataRoute.commissionDataRead);
 
 // webhooks
-router.post("/deal-webhooks-endpoint", webHooks.processWebhook);
+router.post("/deal-webhooks-endpoint", webhooks.processDealWebHook);
 /**
  * Please don't remove this route
  */
