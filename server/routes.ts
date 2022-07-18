@@ -9,8 +9,8 @@ import webhooks from "./app/controllers/webhooks";
 const router = express.Router();
 
 router.get("/", homeRoute);
-router.post("/rechat-commission-app-data-save", dataRoute.commissionDataSave);
-router.post("/rechat-commission-app-data-read", dataRoute.commissionDataRead);
+router.post("/rechat-commission-app-data-save", dataRoute.saveCommissionData);
+router.post("/rechat-commission-app-data-read", dataRoute.readCommissionData);
 
 // webhooks
 router.post("/deal-webhooks-endpoint", webhooks.processDealWebHook);

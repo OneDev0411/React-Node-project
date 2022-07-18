@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import { Op } from "sequelize";
+import { IdealData } from "../../../type";
 import db from "../../models";
+import { Model } from "sequelize";
 const { DealInfoModel, CommissionDataModel } = db;
 
-const dealDataSave = async (data: any, model: any) => {
+const saveDealData = async (data: IdealData, model: any) => {
   const findRes = await model.findOne({
     where: { deal_id: data.deal_id },
   });
@@ -16,7 +18,7 @@ const dealDataSave = async (data: any, model: any) => {
   }
 };
 
-const dealDataRead = async (deal_id: string, model: any) => {
+const readDealData = async (deal_id: string, model: any) => {
   const res = await model.findOne({
     where: {
       deal_id: deal_id,
@@ -26,15 +28,14 @@ const dealDataRead = async (deal_id: string, model: any) => {
   return res;
 };
 
-const commissionDataSave = async (req: Request, res: Response) => {
+const saveCommissionData = async (req: Request, res: Response) => {
   try {
     let totalData = req.body.data;
     let data = {
       deal_id: totalData.dealData.deal_id,
       payload: JSON.stringify(totalData),
     };
-    console.log("data", totalData, data);
-    await dealDataSave(data, CommissionDataModel);
+    await saveDealData(data, CommissionDataModel);
     res.status(200).json({
       message: "successful",
       error: "no error",
@@ -47,10 +48,10 @@ const commissionDataSave = async (req: Request, res: Response) => {
   }
 };
 
-const commissionDataRead = async (req: Request, res: Response) => {
+const readCommissionData = async (req: Request, res: Response) => {
   try {
     const deal_id: string = req.body.deal_id;
-    let data = await dealDataRead(deal_id, CommissionDataModel);
+    let data = await readDealData(deal_id, CommissionDataModel);
     let totalData;
     if (data !== null) {
       totalData = JSON.parse(data.payload);
@@ -70,16 +71,16 @@ const commissionDataRead = async (req: Request, res: Response) => {
   }
 };
 
-const dealInfoSave = async (payload: any) => {
+const saveDealFromWebhook = async (payload: any) => {
   let data = {
     deal_id: payload.deal.id,
     payload: JSON.stringify(payload),
   };
-  await dealDataSave(data, DealInfoModel);
+  await saveDealData(data, DealInfoModel);
 };
 
 export default {
-  dealInfoSave,
-  commissionDataSave,
-  commissionDataRead,
+  saveDealFromWebhook,
+  saveCommissionData,
+  readCommissionData,
 };

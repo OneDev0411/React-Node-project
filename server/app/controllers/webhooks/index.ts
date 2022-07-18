@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import dealInfo from "../data";
+
 const processDealWebHook = async (req: Request, res: Response) => {
   try {
     let result;
     switch (req.body.event) {
       // case "Added":
       case "Updated":
-        await dealInfo.dealInfoSave(req.body.payload);
+        await dealInfo.saveDealFromWebhook(req.body.payload);
         result = "Data is saved successfully";
         break;
       default:
@@ -22,6 +23,7 @@ const processDealWebHook = async (req: Request, res: Response) => {
     });
   }
 };
+
 export default {
   processDealWebHook,
 };

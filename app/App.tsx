@@ -91,7 +91,6 @@ const App: React.FC<EntryProps> = ({
         }
       }
     } catch (error) {
-      console.log("server", res.data.error);
       console.log(error);
     }
   };
