@@ -1,4 +1,5 @@
 import db from "../models/index";
+
 const sync = async () => {
   try {
     await db.sequelize.sync({ alter: true });
@@ -8,4 +9,5 @@ const sync = async () => {
     throw err;
   }
 };
+
 sync();
