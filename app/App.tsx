@@ -55,40 +55,45 @@ const App: React.FC<EntryProps> = ({
       };
     });
 
-    if (data.dealData !== null) {
-      let tempDealData = data.dealData;
-      if (setDealData !== undefined) {
-        setDealData(tempDealData);
-      }
-      let tempRoleData = data.roleData;
-      if (setRoleData !== undefined) {
-        let temp: IRoleData[] = tempAgentRoles.filter((item: IRoleData) => {
-          let findIndex = tempRoleData.findIndex((mem: IRoleData) => {
-            return item.role_id == mem.role_id;
+    try {
+      if (data.dealData !== null) {
+        let tempDealData = data.dealData;
+        if (setDealData !== undefined) {
+          setDealData(tempDealData);
+        }
+        let tempRoleData = data.roleData;
+        if (setRoleData !== undefined) {
+          let temp: IRoleData[] = tempAgentRoles.filter((item: IRoleData) => {
+            let findIndex = tempRoleData.findIndex((mem: IRoleData) => {
+              return item.role_id == mem.role_id;
+            });
+            return findIndex == -1;
           });
-          return findIndex == -1;
-        });
 
-        temp.map((item: IRoleData) => {
-          tempRoleData.push(item);
-        });
-        setRoleData(tempRoleData);
-      }
+          temp.map((item: IRoleData) => {
+            tempRoleData.push(item);
+          });
+          setRoleData(tempRoleData);
+        }
 
-      let tempRemittanceChecks = data.remittanceChecks;
-      if (setRemittanceChecks !== undefined) {
-        setRemittanceChecks(tempRemittanceChecks);
+        let tempRemittanceChecks = data.remittanceChecks;
+        if (setRemittanceChecks !== undefined) {
+          setRemittanceChecks(tempRemittanceChecks);
+        }
+      } else {
+        if (setDealData !== undefined) {
+          setDealData({ ...defaultDealData, deal_id: deal.id });
+        }
+        if (setRoleData !== undefined) {
+          setRoleData(tempAgentRoles);
+        }
+        if (setRemittanceChecks !== undefined) {
+          setRemittanceChecks(defaultRemittanceChecks);
+        }
       }
-    } else {
-      if (setDealData !== undefined) {
-        setDealData({ ...defaultDealData, deal_id: deal.id });
-      }
-      if (setRoleData !== undefined) {
-        setRoleData(tempAgentRoles);
-      }
-      if (setRemittanceChecks !== undefined) {
-        setRemittanceChecks(defaultRemittanceChecks);
-      }
+    } catch (error) {
+      console.log("server", res.data.error);
+      console.log(error);
     }
   };
 

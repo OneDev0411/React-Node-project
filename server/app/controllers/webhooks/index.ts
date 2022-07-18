@@ -27,6 +27,7 @@ const processWebhook = async (req: Request, res: Response) => {
     }
     res.status(200).json({
       message: "successful",
+      error: "no error",
       data: result,
     });
   } catch (error) {

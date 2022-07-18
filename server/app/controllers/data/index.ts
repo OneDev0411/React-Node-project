@@ -95,7 +95,7 @@ const totalSaveData = async (req: Request, res: Response) => {
       message: "successful",
     });
   } catch (error) {
-    res.status(200).json({
+    res.status(500).json({
       message: "error",
       error: error,
     });
@@ -144,11 +144,12 @@ const totalReadData = async (req: Request, res: Response) => {
     };
     res.status(200).json({
       message: "successful",
+      error: "no error",
       data: totalData,
     });
   } catch (error) {
     console.log("error", error);
-    res.status(200).json({
+    res.status(500).json({
       message: "error",
       error: error,
     });
