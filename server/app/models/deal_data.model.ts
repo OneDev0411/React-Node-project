@@ -7,7 +7,7 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
     },
     gci_de_value: {
-      type: Sequelize.FLOAT,
+      type: Sequelize.NUMERIC,
     },
     gci_reason_select: {
       type: Sequelize.INTEGER,
@@ -16,10 +16,10 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.TEXT,
     },
     stage_cost: {
-      type: Sequelize.FLOAT,
+      type: Sequelize.NUMERIC,
     },
     remittance_bank_wire_amount: {
-      type: Sequelize.FLOAT,
+      type: Sequelize.NUMERIC,
     },
     inside_de_payment_type: {
       type: Sequelize.TEXT,

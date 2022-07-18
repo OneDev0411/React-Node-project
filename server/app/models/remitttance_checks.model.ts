@@ -13,7 +13,7 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.DATE,
     },
     amount: {
-      type: Sequelize.FLOAT,
+      type: Sequelize.NUMERIC,
     },
   });
   return RemittanceChecksModel;

@@ -13,10 +13,10 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.TEXT,
     },
     share_percent: {
-      type: Sequelize.FLOAT,
+      type: Sequelize.NUMERIC,
     },
     share_value: {
-      type: Sequelize.REAL,
+      type: Sequelize.NUMERIC,
     },
     note: {
       type: Sequelize.TEXT,
@@ -25,7 +25,7 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
     },
     payment_value: {
-      type: Sequelize.FLOAT,
+      type: Sequelize.NUMERIC,
     },
   });
   return RoleDataModel;
