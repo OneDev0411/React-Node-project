@@ -16,7 +16,8 @@ const isDevelopment = !isProduction;
 const app = express();
 const port = process.env.PORT || 8081;
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(bodyParser.text());
 
 const corsOpts = {

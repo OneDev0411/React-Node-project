@@ -4,8 +4,8 @@ import dealInfo from "./data";
 
 const createData = (data: any) => {
   let temp = {
-    deal_id: data.deal_id,
-    data: JSON.stringify(data.data).toString(),
+    deal_id: data.payload.deal.id,
+    data: JSON.stringify(data.payload),
   };
   return temp;
 };
@@ -13,18 +13,15 @@ const createData = (data: any) => {
 const processWebhook = async (req: Request, res: Response) => {
   try {
     const webhook = webhookHelper.decryptWebhookIfNeeded(req);
-    console.log("event", webhook.event);
-    let result;
+    let result: string = "";
     switch (webhook.event) {
-      case "add":
+      case "Updated":
         await dealInfo.saveData(createData(req.body));
-        result = "Data is saved successfully";
+        result = "Deal information is updated successfully";
         break;
-      // case "SEND_DEAL_INFO":
-      // result = await dealInfo.readData(req.body);
-      // break;
       default:
     }
+    console.log("event", result);
     res.status(200).json({
       message: "successful",
       error: "no error",
@@ -35,6 +32,7 @@ const processWebhook = async (req: Request, res: Response) => {
     res.status(500).json({
       message: "error",
       error: error,
+      data: null,
     });
   }
 };

@@ -9,10 +9,6 @@ import webHooks from "./app/controllers/webhooks";
 const router = express.Router();
 
 router.get("/", homeRoute);
-router.post("/test", function (req, res) {
-  console.log("deal", req.body);
-  res.json({ result: "good" });
-});
 router.post("/rechat-commission-app-data-save", dataRoute.totalSaveData);
 router.post("/rechat-commission-app-data-read", dataRoute.totalReadData);
 
