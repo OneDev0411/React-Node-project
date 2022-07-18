@@ -3,6 +3,7 @@ import { Op } from "sequelize";
 import { IdealData } from "../../../type";
 import db from "../../models";
 import { Model } from "sequelize";
+import axios from "axios";
 const { DealInfoModel, CommissionDataModel } = db;
 
 const saveDealData = async (data: IdealData, model: any) => {
@@ -28,6 +29,13 @@ const readDealData = async (deal_id: string, model: any) => {
   return res;
 };
 
+const sendDealData = async (deal_id: string) => {
+  let data = await readCombinedData(deal_id);
+  // await axios.post("http://DE-API", {
+  //   data: data,
+  // });
+};
+
 const saveCommissionData = async (req: Request, res: Response) => {
   try {
     let totalData = req.body.data;
@@ -36,11 +44,13 @@ const saveCommissionData = async (req: Request, res: Response) => {
       payload: JSON.stringify(totalData),
     };
     await saveDealData(data, CommissionDataModel);
+    await sendDealData(data.deal_id);
     res.status(200).json({
       message: "successful",
       error: "no error",
     });
   } catch (error) {
+    console.log("error", error);
     res.status(500).json({
       message: "error",
       error: error,
@@ -79,8 +89,20 @@ const saveDealFromWebhook = async (payload: any) => {
   await saveDealData(data, DealInfoModel);
 };
 
+const readCombinedData = async (deal_id: string) => {
+  let commissionData = await readDealData(deal_id, CommissionDataModel);
+  let dealInfo = await readDealData(deal_id, DealInfoModel);
+  let data = {
+    commissionData: commissionData !== null ? commissionData.payload : null,
+    dealInfo: dealInfo !== null ? dealInfo.payload : null,
+  };
+  return data;
+};
+
 export default {
   saveDealFromWebhook,
   saveCommissionData,
   readCommissionData,
+  readCombinedData,
+  sendDealData,
 };

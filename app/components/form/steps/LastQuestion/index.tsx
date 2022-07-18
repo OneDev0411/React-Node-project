@@ -11,7 +11,6 @@ const LastQuestion: React.FC<IQuestionProps> = ({
   const { QuestionSection, QuestionTitle, QuestionForm } = Wizard;
   const { Box, Button } = Ui;
   const total_data: AppContextApi = useApp();
-  console.log("total_data", total_data);
   const handleSubmit = async () => {
     notifyOffice("Please review the Commission Slip");
     let res = await axios.post(
