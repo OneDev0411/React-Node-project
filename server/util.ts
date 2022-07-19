@@ -8,6 +8,25 @@ export const makeUrl = (database_url: string): string => {
   return url;
 };
 
+export const getContextFromDeal = (deal: Object, key: string) => {
+  return deal["context"][key]["text"];
+}
+
+export const DEAL = {
+  SELLING: "Selling",
+  BUYING: "Buying",
+  AGENT_DOUBLE_ENDER: "Agent_double_ender",
+  OFFICE_DOUBLE_ENDER: "Office_double_ender",
+}
+
+
+export const BRAND = {
+  REGION: "Region",
+  OFFICE: "Office",
+}
+
+
+
 module.exports = {
   makeUrl,
 };
