@@ -4,7 +4,7 @@ import { IdealData } from "../../../../type";
 import db from "../../../models/database1";
 import { Model } from "sequelize";
 import axios from "axios";
-const { DealInfoModel, CommissionDataModel } = db;
+const { DealInfoModel, CommissionDataModel, DeDealModel } = db;
 
 const saveDealData = async (data: IdealData, model: any) => {
   const findRes = await model.findOne({

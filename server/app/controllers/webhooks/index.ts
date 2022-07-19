@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import dataRoute from "../data/database1";
+import dataRoute from "../data/database2";
 
 const processDealWebHook = async (req: Request, res: Response) => {
   try {
