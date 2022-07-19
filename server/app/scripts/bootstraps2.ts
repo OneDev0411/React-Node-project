@@ -1,6 +1,6 @@
 import { SequelizeTypescriptMigration } from "sequelize-typescript-migration-fix";
 import * as path from "path";
-import db from "../models";
+import db from "../models/database2";
 
 const bootstrap = async () => {
   try {
@@ -16,4 +16,5 @@ const bootstrap = async () => {
     console.log("error", e);
   }
 };
+
 bootstrap();

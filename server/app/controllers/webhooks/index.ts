@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import dataRoute from "../data";
+import dataRoute from "../data/database1";
+
 const processDealWebHook = async (req: Request, res: Response) => {
   try {
     let result;

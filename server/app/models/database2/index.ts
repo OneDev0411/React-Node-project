@@ -1,10 +1,12 @@
 import { Sequelize } from "sequelize-typescript";
-import CommissionDataModel from "../models/commission_data.model";
-import DealInfoModel from "../models/deal_info.model";
-import { makeUrl } from "../../util";
+import CommissionDataModel from "./commission_data.model";
+import DealInfoModel from "./deal_info.model";
+import { makeUrl } from "../../../util";
+
+const database_url: string = process.env.DATABASE_URL2 || "";
 
 // @ts-ignore
-const sequelize: Sequelize = new Sequelize(makeUrl(), {
+const sequelize: Sequelize = new Sequelize(makeUrl(database_url), {
   dialect: "postgres",
   dialectOptions: {
     ssl: false,

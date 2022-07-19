@@ -96,6 +96,7 @@ const App: React.FC<EntryProps> = ({
   };
 
   React.useEffect(() => {
+    console.log("deal information", models);
     dataToContextAPI();
   }, []);
 

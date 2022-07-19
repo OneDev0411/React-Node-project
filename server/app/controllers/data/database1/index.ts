@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Op } from "sequelize";
-import { IdealData } from "../../../type";
-import db from "../../models";
+import { IdealData } from "../../../../type";
+import db from "../../../models/database1";
 import { Model } from "sequelize";
 import axios from "axios";
 const { DealInfoModel, CommissionDataModel } = db;

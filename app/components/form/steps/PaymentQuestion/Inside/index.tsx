@@ -1,7 +1,6 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
 import { IQuestionProps } from "../../../../../models/type";
-
 import PaymentQuestionComponent from "../component";
 
 const PaymentQuestionInside: React.FC<IQuestionProps> = ({

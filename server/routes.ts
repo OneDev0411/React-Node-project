@@ -1,7 +1,7 @@
 import express from "express";
 
 import homeRoute from "./app/controllers/home";
-import dataRoute from "./app/controllers/data";
+import dataRoute from "./app/controllers/data/database1";
 import manifestRoute from "./app/controllers/manifest";
 // webhooks
 import webhooks from "./app/controllers/webhooks";
