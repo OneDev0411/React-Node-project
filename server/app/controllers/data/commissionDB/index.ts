@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
-import { Op } from "sequelize";
 import { IdealData } from "../../../../type";
-import db from "../../../models/database1";
-import { Model } from "sequelize";
-import axios from "axios";
-const { DealInfoModel, CommissionDataModel, DeDealModel } = db;
+import db from "../../../models/commissionDB";
+import sync from "../../../services/de_deal_sync";
+const { DealInfoModel, CommissionDataModel } = db;
 
-const saveDealData = async (data: IdealData, model: any) => {
+const saveData = async (data: IdealData, model: any) => {
   const findRes = await model.findOne({
     where: { deal_id: data.deal_id },
   });
@@ -19,7 +17,7 @@ const saveDealData = async (data: IdealData, model: any) => {
   }
 };
 
-const readDealData = async (deal_id: string, model: any) => {
+const readData = async (deal_id: string, model: any) => {
   const res = await model.findOne({
     where: {
       deal_id: deal_id,
@@ -44,7 +42,7 @@ const saveCommissionData = async (req: Request, res: Response) => {
       deal_id: totalData.dealData.deal_id,
       payload: JSON.stringify(totalData),
     };
-    await saveDealData(data, CommissionDataModel);
+    await saveData(data, CommissionDataModel);
     await sendDealData(data.deal_id); // send deal information and commission app data to DE company
     res.status(200).json({
       message: "successful",
@@ -62,7 +60,7 @@ const saveCommissionData = async (req: Request, res: Response) => {
 const readCommissionData = async (req: Request, res: Response) => {
   try {
     const deal_id: string = req.body.deal_id;
-    let data = await readDealData(deal_id, CommissionDataModel);
+    let data = await readData(deal_id, CommissionDataModel);
     let totalData;
     if (data !== null) {
       totalData = JSON.parse(data.payload);
@@ -82,17 +80,21 @@ const readCommissionData = async (req: Request, res: Response) => {
   }
 };
 
-const saveDealFromWebhook = async (payload: any) => {
+const handleUpsertFromWebhook = async (deal: any) => {
   let data = {
-    deal_id: payload.deal.id,
-    payload: JSON.stringify(payload),
+    deal_id: deal.deal.id,
+    payload: JSON.stringify(deal),
   };
-  await saveDealData(data, DealInfoModel);
+  // upsert data to commissionDB/deal
+  await saveData(data, DealInfoModel);
+
+  // make de_deal data, sync with DE, upsert data to commissionDB/de_deal
+  await sync(deal);
 };
 
 const readCombinedData = async (deal_id: string) => {
-  let commissionData = await readDealData(deal_id, CommissionDataModel);
-  let dealInfo = await readDealData(deal_id, DealInfoModel);
+  let commissionData = await readData(deal_id, CommissionDataModel);
+  let dealInfo = await readData(deal_id, DealInfoModel);
   let data = {
     commissionData: commissionData?.payload,
     dealInfo: dealInfo?.payload,
@@ -101,7 +103,7 @@ const readCombinedData = async (deal_id: string) => {
 };
 
 export default {
-  saveDealFromWebhook,
+  handleUpsertFromWebhook,
   saveCommissionData,
   readCommissionData,
   readCombinedData,

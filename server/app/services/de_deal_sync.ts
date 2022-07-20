@@ -1,21 +1,17 @@
 import { BRAND, DEAL, getContextFromDeal, getTokenURL } from "../../util"
 
 import moment from 'moment'
-// import request from 'request-promise-native'
 import _ from 'lodash'
 import states from 'us-state-codes';
 
-import db from '../models/database2/index';
+import rechatDB from '../models/rechatDB/index';
+import commissionDB from '../models/commissionDB/index';
 import mockupDeal from './mockup_deal'
 import axios from "axios";
 
 const getState = async deal => {
-  try {
-    const result = await db.DealModel.findOne({ deal });
-    return result
-  } catch(e) {
-    console.log('ERROR:', e.message);
-  }
+  const { dataValues } = await rechatDB.DealModel.findOne({ deal });
+  return dataValues
 }
 
 const getToken = async () => {
@@ -54,14 +50,15 @@ const getCommissionRate = (total, role) => {
   return (role.commission_dollar / total) * 100
 }
 
+// NEED TO TEST
 const save = async ({ deal, is_finalized = false }) => {
-  const findRes = await db.DealModel.findOne({
+  const findRes = await commissionDB.DeDealModel.findOne({
     where: { deal },
   });
   if (findRes === null) {
-    await db.DealModel.create({ deal, is_finalized });
+    await commissionDB.DeDealModel.create({ deal, is_finalized });
   } else {
-    await db.DealModel.update({ deal, is_finalized }, {
+    await commissionDB.DeDealModel.update({ deal, is_finalized }, {
       where: { deal },
     });
   }
@@ -74,28 +71,39 @@ const save = async ({ deal, is_finalized = false }) => {
   // ])
 }
 
-// const getRegionDetails = async (brand): Promise<any> => {
-// const { rows } = await db.executeSql.promise('SELECT * FROM de.regions WHERE brand = $1', [brand.id])
-// return rows[0]
-// }
+const getRegionDetails = async (brand) => {
+  const { dataValues } = await rechatDB.RegionModel.findOne({ brand: brand.id });
+  return dataValues;
+}
 
-// const getOfficeDetails = async (brand): Promise<any> => {
-// const { rows } = await db.executeSql.promise('SELECT * FROM de.offices WHERE brand = $1', [brand.id])
-// return rows[0]
-// }
+const getOfficeDetails = async (brand): Promise<any> => {
+  const { dataValues } = await rechatDB.OfficeModel.findOne({ brand: brand.id });
+  return dataValues;
+}
 
-// const getAgentDetails = async (role_ids): Promise<any> => {
-// const { rows } = await db.executeSql.promise(`SELECT
-//     deals_roles.id,
-//     public.users.id as user, 
-//     de.users.object->>'d365AgentId' as "AgentId", 
-//     de.users.object->'offices'->0->'businessLocations'->0->>'businessLocation' as "BusinessLocation"
-//   FROM deals_roles
-//   LEFT JOIN public.users ON LOWER(deals_roles.email) = LOWER(public.users.email)
-//   LEFT JOIN de.users ON de.users.user = public.users.id
-//   WHERE deals_roles.id = ANY($1::uuid[])`, [role_ids])
-// return rows
-// }
+const getAgentDetails = async (role_ids): Promise<any> => {
+  const result = await rechatDB.sequelize.query(`SELECT
+      deals_roles.id,
+      public.users.id as user, 
+      de.users.object->>'d365AgentId' as "AgentId", 
+      de.users.object->'offices'->0->'businessLocations'->0->>'businessLocation' as "BusinessLocation"
+    FROM deals_roles
+    LEFT JOIN public.users ON LOWER(deals_roles.email) = LOWER(public.users.email)
+    LEFT JOIN de.users ON de.users.user = public.users.id
+    WHERE deals_roles.id = ANY(${role_ids}::uuid[])`)
+  return result;
+
+  // const { rows } = await db.executeSql.promise(`SELECT
+  //     deals_roles.id,
+  //     public.users.id as user, 
+  //     de.users.object->>'d365AgentId' as "AgentId", 
+  //     de.users.object->'offices'->0->'businessLocations'->0->>'businessLocation' as "BusinessLocation"
+  //   FROM deals_roles
+  //   LEFT JOIN public.users ON LOWER(deals_roles.email) = LOWER(public.users.email)
+  //   LEFT JOIN de.users ON de.users.user = public.users.id
+  //   WHERE deals_roles.id = ANY($1::uuid[])`, [role_ids])
+  // return rows
+}
 
 const isDoubleEnded = deal => {
   const ender_type = getContextFromDeal(deal, 'ender_type')
@@ -340,7 +348,6 @@ const sync = async (deal = mockupDeal) => {
    * So, in case of Hip Pockets, we don't have Listing Date. Michael asked me to provide the DealDate for those cases.
    * In case of buy-side deals, we don't have listing date. In those cases, James asked me to provide executed date aka contract date.
    */
-  console.log("###############:", getContextFromDeal(deal, 'list_date'));
   const ListingDate = getContextFromDeal(deal, 'list_date')
     ?? (isHippocket ? DealDate : null)
     ?? getContextFromDeal(deal, 'contract_date')
@@ -374,7 +381,6 @@ const sync = async (deal = mockupDeal) => {
   if (isDoubleEnded(deal))
     DealSide = 'Both'
 
-
   const leaseAttributes = property_type.is_lease ? getLeaseAttributes({ deal, roles }) : {}
   const saleAttributes = !property_type.is_lease ? getSaleAttributes({ deal, roles }) : {}
 
@@ -383,7 +389,6 @@ const sync = async (deal = mockupDeal) => {
       'SellerAgent',
       'CoSellerAgent',
       'SellerReferral',
-
       'BuyerAgent',
       'CoBuyerAgent',
       'BuyerReferral',
@@ -492,10 +497,10 @@ const sync = async (deal = mockupDeal) => {
       DealDate,
       // PaidBy: region_details.paid_by,
       PaidBy: "payroll",
-      
+
       ...leaseAttributes,
       ...saleAttributes,
-      
+
       // custom code
       LeaseStartDate: "2022-01-01",
       LeaseEndDate: "2022-01-01",
@@ -508,6 +513,20 @@ const sync = async (deal = mockupDeal) => {
     })
   }
 
+//   try {
+//     console.log('body:', body);
+//     const res: any = await axios.post(uri, body, {
+//       headers: {
+//         Authorization: `Bearer ${token}`
+//       }
+//     });
+//     // console.log('request:', request);
+//     console.log('res:', res.data);
+//   } catch (e) {
+//     console.log('error:', e.response.data);
+//   }
+// }
+
   try {
     console.log('body:', body);
     const res: any = await axios.post(uri, body, {
@@ -515,51 +534,26 @@ const sync = async (deal = mockupDeal) => {
         Authorization: `Bearer ${token}`
       }
     });
-    // console.log('request:', request);
     console.log('res:', res.data);
+    if (res.data.successful)
+      await save({ deal })
+    console.log('Sync Result', res.data);
   } catch (e) {
-    console.log('error:', e.response.data);
+
+    /*
+     * When a deal goes goes from their API to D365, it's locked out and we wont be able to amend it there.
+     * When this happens, mark it as finalized and we wont try sending more updates to D365.
+     */
+    console.log('error:', e.message);
+    if (e.statusCode === 409) {
+      await save({ deal, is_finalized: true })
+      console.log('Sync Finalized');
+      return
+    }
+
+    throw e
   }
 }
-
-//   try {
-//     console.log('body:', body);
-//     // const res = await request({
-//     //   uri,
-//     //   headers: {
-//     //     Authorization: `Bearer ${token}`
-//     //   },
-//     //   json: true,
-//     //   method: 'post',
-//     //   body
-//     // })
-//     const res: any = await axios.post(uri, body, {
-//       headers: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     });
-//     console.log('res:', res);
-//     if (res.successful)
-//       await save({ deal })
-//     console.log('Sync Result', res);
-//     // Context.log('Sync Result', res)
-//   } catch (e) {
-
-//     /*
-//      * When a deal goes goes from their API to D365, it's locked out and we wont be able to amend it there.
-//      * When this happens, mark it as finalized and we wont try sending more updates to D365.
-//      */
-//     console.log('error:', e.message);
-//     if (e.statusCode === 409) {
-//       await save({ deal, is_finalized: true })
-//       console.log('Sync Finalized');
-//       // Context.log('Sync Finalized')
-//       return
-//     }
-
-//     throw e
-//   }
-// }
 
 // const sync = async (deal, brand_ids) => {
 //   const state = await getState(deal.id)
@@ -569,10 +563,5 @@ const sync = async (deal = mockupDeal) => {
 //   await queue(deal, brand_ids)
 // }
 
-// export default sync;
+export default sync;
 // sync();
-getState("17013336-d079-11ec-a6b2-0271a4acc769");
-
-// module.exports = {
-  // sync
-// }

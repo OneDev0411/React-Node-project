@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Op } from "sequelize";
 import { IdealData } from "../../../../type";
-import db from "../../../models/database2";
+import db from "../../../models/rechatDB";
 import { Model } from "sequelize";
 import axios from "axios";
 

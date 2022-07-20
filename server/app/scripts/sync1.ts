@@ -1,4 +1,4 @@
-import db from "../models/database2/index";
+import db from "../models/rechatDB/index";
 
 const sync = async () => {
   try {

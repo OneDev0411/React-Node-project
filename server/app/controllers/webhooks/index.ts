@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import dataRoute from "../data/database2";
+import dataRoute from "../data/commissionDB";
 
 const processDealWebHook = async (req: Request, res: Response) => {
   try {
@@ -7,7 +7,8 @@ const processDealWebHook = async (req: Request, res: Response) => {
     switch (req.body.event) {
       // case "Added":
       case "Updated":
-        let res = await dataRoute.saveDealFromWebhook(req.body.payload);
+        // save 
+        let res = await dataRoute.handleUpsertFromWebhook(req.body.payload);
         if (res !== null) {
           result = "Data is saved successfully";
           let deal_id = req.body.payload.deal.id;
@@ -15,7 +16,6 @@ const processDealWebHook = async (req: Request, res: Response) => {
         } else {
           result = "Data isn't saved";
         }
-
         break;
       default:
     }
