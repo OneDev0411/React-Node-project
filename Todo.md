@@ -23,12 +23,12 @@ NEED_TO_UPDATE_THIS_CODE
 
 
 # Backend Todo
-2. check Brand.REGION, OFFICE
-3. assume deal.brands
-5. check second sync function
-6. set index, foreign key
-7. check AGENT_DOUBLE_ENDER, OFFICE_DOUBLE_ENDER of DEAL
-8. replace rechat.deal with commission.de_deal 
-9. test sync function
+1. check comissionDB/de_deal data from rechatDB/de.deal data (index, foreign key)
+2. ##test save function in de_deal_sync
+4. replace rechat.deal with commission.de_deal 
+5. find a way to make type definition possible in backend side
+6. define types in backend
+7. test sync function with proper data
+8. ##test integration part
 
 

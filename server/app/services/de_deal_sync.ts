@@ -72,7 +72,7 @@ const getRegionDetails = async (brand) => {
     return dataValues;
   } catch (e) {
     console.log("error:", e.message);
-    throw e;
+    // throw e;
   }
 };
 
@@ -146,7 +146,6 @@ const getLeaseAttributes = ({ deal, roles }) => {
     role.role === "BuyerAgent" || role.role === "CoBuyerAgent";
 
   const leased_price = getContextFromDeal(deal, "leased_price");
-  console.log("leased_price", leased_price);
   const sum = (s, n) => s + n;
 
   if (deal.deal_type === DEAL.SELLING) {
@@ -474,7 +473,6 @@ const sync = async (deal = mockupDeal) => {
   const agent_details = await getAgentDetails(role_ids, user_ids);
   const region_details = await getRegionDetails(region);
   const office_details = await getOfficeDetails(office);
-  console.log("+++++++", office_details);
 
   const isInternal = (role) => {
     const details = _.find(agent_details, { id: role.id });
@@ -537,19 +535,20 @@ const sync = async (deal = mockupDeal) => {
       Street,
       ZipCode,
       PropertyType,
-      ListingDate: "2022-02-02",
-      ListingPrice: 30000,
+      ListingDate,
+      ListingPrice,
       UnitNum,
       City,
       State,
       ListingType: "Other",
-      BusinessLocation: office_details.business_locations,
+      BusinessLocation: "office_details.business_locations",
+      // BusinessLocation: office_details.business_locations[0],
     },
     deal: {
       Source: "StudioPro",
       DealUniqueRef: `SP${deal.number}`,
       DealSide,
-      LineOfBusiness: "Brokerage",
+      'LineOfBusiness': 'Brokerage',
       ClosingDate,
       DealDate,
       // PaidBy: region_details.paid_by,
@@ -558,21 +557,16 @@ const sync = async (deal = mockupDeal) => {
       ...leaseAttributes,
       ...saleAttributes,
 
-      // custom code
-      LeaseStartDate: "2022-01-01",
-      LeaseEndDate: "2022-01-01",
-      MonthlyRent: 30000,
-      ListSideDealValue: 10000,
-      ListSideCommissionRate: 3,
     },
-    agents: agents.map((agent) => {
-      return {
-        ...agent,
-        AgentID: "test",
-        BusinessLocation: "test",
-        OfficeGCIAllocation: 10,
-      };
-    }),
+    // agents: agents.map((agent) => {
+    //   return {
+    //     ...agent,
+    //     AgentID: "test",
+    //     BusinessLocation: "test",
+    //     OfficeGCIAllocation: 10,
+    //   };
+    // }),
+    agents,
   };
 
   try {
@@ -583,31 +577,25 @@ const sync = async (deal = mockupDeal) => {
       },
     });
     console.log("res:", res.data);
-    if (res.data.successful) await save({ deal });
+    if (res.data.successful)  {
+      await save({ deal });
+    }
     console.log("Sync Result", res.data);
   } catch (e) {
     /*
      * When a deal goes goes from their API to D365, it's locked out and we wont be able to amend it there.
      * When this happens, mark it as finalized and we wont try sending more updates to D365.
      */
-    console.log("error:", e.message);
+    console.log("error:", e);
     if (e.statusCode === 409) {
       await save({ deal, is_finalized: true });
       console.log("Sync Finalized");
       return;
     }
 
-    throw e;
+    // throw e;
   }
 };
-
-// const sync = async (deal, brand_ids) => {
-//   const state = await getState(deal.id)
-//   if (state?.is_finalized)
-//     return
-
-//   await queue(deal, brand_ids)
-// }
 
 // export default sync;
 sync();

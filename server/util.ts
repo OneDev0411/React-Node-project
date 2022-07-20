@@ -10,24 +10,40 @@ export const makeUrl = (database_url: string): string => {
   return url;
 };
 
-export const getContextFromDeal = (deal: any, key: string) => {
-  if (key === "list_date") {
-    return (deal["context"][key] || {})["date"];
-  }
-  if (key === "list_price") {
-    return (deal["context"][key] || {})["number"];
-  }
-  return (deal["context"][key] || {})["text"] || "";
-};
+// export const getContextFromDeal = (deal: any, key: string) => {
+//   if (key === "list_date") {
+//     return (deal["context"][key] || {})["date"];
+//   }
+//   if (key === "list_price") {
+//     return (deal["context"][key] || {})["number"];
+//   }
+//   return (deal["context"][key] || {})["text"] || "";
+// };
 
-export const getTokenURL: string =
-  "https://staging.webapi.elliman.com/token?username=emil@rechat.com&password=Skiing4-Monetize-Excitable";
+export const getContextFromDeal = (deal, key, default_value = null) => {
+  const context = deal.context ? deal.context : {}
+
+  const { text, number, date, data_type } = context[key] || {}
+
+  if (data_type === 'Text')
+    return text
+
+  if (data_type === 'Date' && date)
+    return new Date(date * 1000)
+
+  if (data_type === 'Number')
+    return parseFloat(number)
+
+  return default_value
+}
+
+export const getTokenURL: string = "https://staging.webapi.elliman.com/token?username=emil@rechat.com&password=Skiing4-Monetize-Excitable";
 
 export const DEAL = {
   SELLING: "Selling",
   BUYING: "Buying",
-  AGENT_DOUBLE_ENDER: "Agent_double_ender",
-  OFFICE_DOUBLE_ENDER: "Office_double_ender",
+  AGENT_DOUBLE_ENDER: 'AgentDoubleEnder',
+  OFFICE_DOUBLE_ENDER: 'OfficeDoubleEnder',
 };
 
 export const BRAND = {
