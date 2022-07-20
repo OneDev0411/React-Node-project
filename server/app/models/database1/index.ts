@@ -1,7 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
-import CommissionDataModel from "./commission_data.model";
-import DealInfoModel from "./deal_info.model";
-import DeDealModel from "./de_deal.model";
+import CommissionDataModel from "../../models/commissionDB/commission_data.model";
+import DealInfoModel from "../../models/commissionDB/deal_info.model";
 import { makeUrl } from "../../../util";
 
 const database_url: string = process.env.DATABASE_URL1 || "";
@@ -36,9 +35,7 @@ db.sequelize = sequelize;
 
 db.CommissionDataModel = CommissionDataModel(sequelize, Sequelize);
 db.DealInfoModel = DealInfoModel(sequelize, Sequelize);
-db.DeDealModel = DeDealModel(sequelize, Sequelize);
-
-db.DeDealModel.hasOne(db.DealInfoModel);
-db.DealInfoModel.belongsTo(db.DeDealModel);
+db.CommissionDataModel.hasOne(db.DealInfoModel);
+db.DealInfoModel.belongsTo(db.CommissionDataModel);
 
 export default db;

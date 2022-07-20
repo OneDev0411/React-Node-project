@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { IdealData } from "../../../../type";
 import db from "../../../models/commissionDB";
 import sync from "../../../services/de_deal_sync";
-const { DealInfoModel, CommissionDataModel } = db;
+const { DealInfoModel, CommissionDataModel, DeDealModel } = db;
 
 const saveData = async (data: IdealData, model: any) => {
   const findRes = await model.findOne({
@@ -102,10 +102,17 @@ const readCombinedData = async (deal_id: string) => {
   return data;
 };
 
+const saveAllData = async (data: any, model: any) => {
+  for (let i = 0; i < data.length; i++) {
+    await model.create(data[i].dataValues);
+  }
+};
+
 export default {
   handleUpsertFromWebhook,
   saveCommissionData,
   readCommissionData,
   readCombinedData,
   sendDealData,
+  saveAllData,
 };
