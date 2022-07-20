@@ -6,7 +6,7 @@ import OfficeModel from "./office.model";
 import RegionModel from "./region.model";
 import UserModel from "./user.model";
 import ContactModel from "./contact.model";
-import { makeUrl } from "../../../util";
+import { makeUrl, removeAttribute } from "../../../util";
 
 const database_url: string = process.env.DATABASE_URL2 || "";
 
@@ -47,7 +47,9 @@ db.AgentsOfficeModel = AgentsOfficeModel(sequelize, Sequelize);
 db.ContactModel = ContactModel(sequelize, Sequelize);
 db.DeDealModel = DeDealModel(sequelize, Sequelize);
 db.OfficeModel = OfficeModel(sequelize, Sequelize);
+removeAttribute(db.OfficeModel, ["id", "created_at", "updated_at"]);
 db.RegionModel = RegionModel(sequelize, Sequelize);
+removeAttribute(db.RegionModel, ["id", "created_at", "updated_at"]);
 db.UserModel = UserModel(sequelize, Sequelize);
 
 export default db;

@@ -18,9 +18,10 @@ export const getContextFromDeal = (deal: any, key: string) => {
     return (deal["context"][key] || {})["number"];
   }
   return (deal["context"][key] || {})["text"] || "";
-}
+};
 
-export const getTokenURL:string = 'https://staging.webapi.elliman.com/token?username=emil@rechat.com&password=Skiing4-Monetize-Excitable';
+export const getTokenURL: string =
+  "https://staging.webapi.elliman.com/token?username=emil@rechat.com&password=Skiing4-Monetize-Excitable";
 
 export const DEAL = {
   SELLING: "Selling",
@@ -30,11 +31,16 @@ export const DEAL = {
 };
 
 export const BRAND = {
-  BROKERAGE: 'Brokerage',
-  REGION: 'Region',
-  OFFICE: 'Office',
-  TEAM: 'Team',
-  PERSONAL: 'Personal',
-  OTHER: 'Other',
-}
+  BROKERAGE: "Brokerage",
+  REGION: "Region",
+  OFFICE: "Office",
+  TEAM: "Team",
+  PERSONAL: "Personal",
+  OTHER: "Other",
+};
 
+export const removeAttribute = (model: any, removeItem: string[]) => {
+  removeItem.map((item: string) => {
+    model.removeAttribute(item);
+  });
+};
