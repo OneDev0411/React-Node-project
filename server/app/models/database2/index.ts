@@ -13,6 +13,9 @@ const database_url: string = process.env.DATABASE_URL2 || "";
 // @ts-ignore
 const sequelize: Sequelize = new Sequelize(makeUrl(database_url), {
   dialect: "postgres",
+  dialectOptions: {
+    ssl: true,
+  },
   operatorsAliases: false,
   pool: {
     max: 5,

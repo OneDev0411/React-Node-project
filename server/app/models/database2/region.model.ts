@@ -12,6 +12,11 @@ export default (sequelize, Sequelize) => {
     paid_by: {
       type: Sequelize.TEXT,
     },
+  },
+  {
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   });
   return RegionModel;
 };

@@ -9,6 +9,11 @@ export default (sequelize, Sequelize) => {
     business_locations: {
       type: Sequelize.TEXT,
     },
+  },
+  {
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   });
   return OfficeModel;
 };

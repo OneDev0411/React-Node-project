@@ -12,6 +12,11 @@ export default (sequelize, Sequelize) => {
     updated_at: {
       type: Sequelize.DATE,
     },
+  },
+  {
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   });
   return UserModel;
 };

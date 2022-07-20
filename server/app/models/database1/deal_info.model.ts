@@ -6,6 +6,11 @@ export default (sequelize, Sequelize) => {
     payload: {
       type: Sequelize.JSONB,
     },
+  },
+  {
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   });
   return DealInfoModel;
 };

@@ -5,23 +5,17 @@ import moment from 'moment'
 import _ from 'lodash'
 import states from 'us-state-codes';
 
-import db from '../models/database1/index';
+import db from '../models/database2/index';
 import mockupDeal from './mockup_deal'
 import axios from "axios";
-import { request } from "express";
 
 const getState = async deal => {
-  const rows = await db.DeDealModel.findOne({ deal });
-  // const { rows } = await db.executeSql.promise('SELECT * FROM de.deals WHERE deal = $1', [deal])
-  const [row] = rows
-  return row
-  // return {
-  //   id: "c9f46245-2534-11ea-5635-027d31a17536",
-  //   deal: "c9f46245-2534-11ea-5635-027d31a18632",
-  //   is_finalized: false,
-  //   created_at: new Date(),
-  //   updated_at: new Date(),
-  // }
+  try {
+    const result = await db.DealModel.findOne({ deal });
+    return result
+  } catch(e) {
+    console.log('ERROR:', e.message);
+  }
 }
 
 const getToken = async () => {
@@ -61,13 +55,13 @@ const getCommissionRate = (total, role) => {
 }
 
 const save = async ({ deal, is_finalized = false }) => {
-  const findRes = await db.DeDealModel.findOne({
+  const findRes = await db.DealModel.findOne({
     where: { deal },
   });
   if (findRes === null) {
-    await db.DeDealModel.create({ deal, is_finalized });
+    await db.DealModel.create({ deal, is_finalized });
   } else {
-    await db.DeDealModel.update({ deal, is_finalized }, {
+    await db.DealModel.update({ deal, is_finalized }, {
       where: { deal },
     });
   }
@@ -577,7 +571,7 @@ const sync = async (deal = mockupDeal) => {
 
 // export default sync;
 // sync();
-console.log(getState("17013336-d079-11ec-a6b2-0271a4acc769"));
+getState("17013336-d079-11ec-a6b2-0271a4acc769");
 
 // module.exports = {
   // sync
