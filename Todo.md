@@ -28,5 +28,7 @@ NEED_TO_UPDATE_THIS_CODE
 5. check second sync function
 6. set index, foreign key
 7. check AGENT_DOUBLE_ENDER, OFFICE_DOUBLE_ENDER of DEAL
-6. replace rechat.deal with commission.de_deal 
+8. replace rechat.deal with commission.de_deal 
+9. test sync function
+
 

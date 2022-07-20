@@ -11,14 +11,12 @@ export const makeUrl = (database_url: string): string => {
 };
 
 export const getContextFromDeal = (deal: any, key: string) => {
-  // console.log('deal:', deal);
-  // console.log('key:', key);
-  // console.log('context:', deal.context);
-  // console.log('key:', deal.context[key]);
-  // console.log('text:', (deal.context[key] || {})['text']);
-  // if (deal.context[key] === undefined) {
-  //   return "";
-  // }
+  if (key === "list_date") {
+    return (deal["context"][key] || {})["date"];
+  }
+  if (key === "list_price") {
+    return (deal["context"][key] || {})["number"];
+  }
   return (deal["context"][key] || {})["text"] || "";
 }
 
@@ -32,6 +30,11 @@ export const DEAL = {
 };
 
 export const BRAND = {
-  REGION: "Region",
-  OFFICE: "Office",
+  BROKERAGE: 'Brokerage',
+  REGION: 'Region',
+  OFFICE: 'Office',
+  TEAM: 'Team',
+  PERSONAL: 'Personal',
+  OTHER: 'Other',
 }
+

@@ -8,6 +8,7 @@ import rechatDB from '../models/rechatDB/index';
 import commissionDB from '../models/commissionDB/index';
 import mockupDeal from './mockup_deal'
 import axios from "axios";
+import { QueryTypes } from "sequelize";
 
 const getState = async deal => {
   const { dataValues } = await rechatDB.DealModel.findOne({ deal });
@@ -62,47 +63,62 @@ const save = async ({ deal, is_finalized = false }) => {
       where: { deal },
     });
   }
-  // return db.executeSql.promise(`INSERT INTO de.deals(deal, is_finalized) 
-  // VALUES ($1, $2)
-  // ON CONFLICT (deal) 
-  // DO UPDATE SET is_finalized = EXCLUDED.is_finalized, updated_at = NOW()`, [
-  // deal.id,
-  // is_finalized
-  // ])
 }
 
 const getRegionDetails = async (brand) => {
-  const { dataValues } = await rechatDB.RegionModel.findOne({ brand: brand.id });
-  return dataValues;
+  try {
+    const { dataValues } = await rechatDB.RegionModel.findOne({ brand: brand.id });
+    return dataValues;
+  } catch(e) {
+    console.log('error:', e.message);
+    throw e;
+  }
 }
 
-const getOfficeDetails = async (brand): Promise<any> => {
+const getOfficeDetails = async (brand) => {
   const { dataValues } = await rechatDB.OfficeModel.findOne({ brand: brand.id });
   return dataValues;
 }
 
-const getAgentDetails = async (role_ids): Promise<any> => {
-  const result = await rechatDB.sequelize.query(`SELECT
-      deals_roles.id,
-      public.users.id as user, 
+// const getAgentDetails = async (role_ids = ["cae39d20-110f-11ea-9c5d-027d31a1f7a0", "cb73df76-833c-11ea-9de1-027d31a1f7a0"], user_ids = ["50f23824-9d26-11eb-beca-027d2d7e1395", undefined]) => {
+  const getAgentDetails = async (role_ids, user_ids) => {
+  try {
+    // get de user data from user id in deal data
+    const dataList = await rechatDB.sequelize.query(`SELECT
+      de.users.user as user, 
       de.users.object->>'d365AgentId' as "AgentId", 
       de.users.object->'offices'->0->'businessLocations'->0->>'businessLocation' as "BusinessLocation"
-    FROM deals_roles
-    LEFT JOIN public.users ON LOWER(deals_roles.email) = LOWER(public.users.email)
-    LEFT JOIN de.users ON de.users.user = public.users.id
-    WHERE deals_roles.id = ANY(${role_ids}::uuid[])`)
-  return result;
+      FROM de.users
+      WHERE de.users.user = ANY($1::uuid[])`,
+      {
+        bind: [user_ids],
+        type: QueryTypes.SELECT
+      }
+    );
 
-  // const { rows } = await db.executeSql.promise(`SELECT
-  //     deals_roles.id,
-  //     public.users.id as user, 
-  //     de.users.object->>'d365AgentId' as "AgentId", 
-  //     de.users.object->'offices'->0->'businessLocations'->0->>'businessLocation' as "BusinessLocation"
-  //   FROM deals_roles
-  //   LEFT JOIN public.users ON LOWER(deals_roles.email) = LOWER(public.users.email)
-  //   LEFT JOIN de.users ON de.users.user = public.users.id
-  //   WHERE deals_roles.id = ANY($1::uuid[])`, [role_ids])
-  // return rows
+    // set empy data to roles without user
+    const result = role_ids.map((role_id, index) => {
+      let user_id = user_ids[index];
+      if (user_id !== undefined) {
+        let data = dataList.filter(data => data.user == user_id)
+        return {
+          id: role_id,
+          ...data[0],
+        }
+      } else {
+        return {
+          id: role_id,
+          user: null,
+          AgentID: null,
+          BusinessLocation: null,
+        }
+      }
+    });
+    return result;
+  } catch (e) {
+    console.log('ERROR:', e.message);
+  }
+
 }
 
 const isDoubleEnded = deal => {
@@ -311,18 +327,28 @@ const getSaleAttributes = ({ deal, roles }) => {
   }
 }
 
+const getBrandsFromDeal = (brand, brands) => {
+  let { parent, ..._brand } = brand; 
+  brands.push(_brand);
+  if (brand.parent !== null) {
+    getBrandsFromDeal(brand.parent, brands)
+  }
+}
+
 const sync = async (deal = mockupDeal) => {
   // const sync = async (deal, brand_ids) => {
-  // Context.log('Syncing D365 for', deal.id)
+  console.log('Syncing D365 for', deal.id);
   deal = mockupDeal;
 
   const token = await getToken()
 
-  const state = await getState(deal.id)
-  // const brands = deal.brands;
+  const state = await getState(deal.id);
 
-  // const region = _.find(brands, { brand_type: BRAND.REGION })
-  // const office = _.find(brands, { brand_type: BRAND.OFFICE })
+  let brands = [];
+  getBrandsFromDeal(deal.brand, brands);
+
+  const region = _.find(brands, { brand_type: BRAND.REGION })
+  const office = _.find(brands, { brand_type: BRAND.OFFICE })
 
   const property_type = deal.property_type;
 
@@ -412,19 +438,20 @@ const sync = async (deal = mockupDeal) => {
         'CoBuyerAgent',
         'BuyerReferral',
       ].includes(role.role)
+
+    return false;
   }
 
-  const role_ids = _.map(roles, 'id')
+  const role_ids = _.map(roles, 'id');
+  const user_ids = _.map(_.map(roles, 'user'), 'id');
 
-  // const agent_details = await getAgentDetails(role_ids)
-  const agent_details = []
-  // const region_details = await getRegionDetails(region)
-  // const office_details = await getOfficeDetails(office)
+  const agent_details = await getAgentDetails(role_ids, user_ids)
+  const region_details = await getRegionDetails(region)
+  const office_details = await getOfficeDetails(office)
 
   const isInternal = role => {
     const details = _.find(agent_details, { id: role.id })
-    return true;
-    // return Boolean(details.AgentId)
+    return Boolean(details.AgentId)
   }
 
   const getDealSide = role => {
@@ -437,14 +464,14 @@ const sync = async (deal = mockupDeal) => {
     if (!AgentType)
       return
 
-    // const details = _.find(agent_details, { id: role.id })
+    const details = _.find(agent_details, { id: role.id })
 
-    // const { AgentId, BusinessLocation } = details
+    const { AgentId, BusinessLocation } = details
 
     return {
       AgentType,
-      // AgentId,
-      // BusinessLocation,
+      AgentId,
+      BusinessLocation,
       'OfficeGCIAllocation': 100,
       CompanyName: role.company_title,
       DealSide: getDealSide(role),
@@ -469,7 +496,7 @@ const sync = async (deal = mockupDeal) => {
 
   const agents = _.chain(roles)
     .filter(isAgent)
-    // .filter(doesNeedCommission)
+    .filter(doesNeedCommission)
     .map(role => isInternal(role) ? mapInternal(role) : mapExternal(role))
     .value()
 
@@ -485,8 +512,7 @@ const sync = async (deal = mockupDeal) => {
       City,
       State,
       ListingType: 'Other',
-      BusinessLocation: "business_location"
-      // BusinessLocation: office_details.business_locations[0]
+      BusinessLocation: office_details.business_locations[0]
     },
     deal: {
       Source: 'StudioPro',
@@ -496,7 +522,7 @@ const sync = async (deal = mockupDeal) => {
       ClosingDate,
       DealDate,
       // PaidBy: region_details.paid_by,
-      PaidBy: "payroll",
+      PaidBy: "Escrow",
 
       ...leaseAttributes,
       ...saleAttributes,
@@ -512,20 +538,6 @@ const sync = async (deal = mockupDeal) => {
       return { ...agent, AgentID: "test", BusinessLocation: "test", OfficeGCIAllocation: 10 }
     })
   }
-
-//   try {
-//     console.log('body:', body);
-//     const res: any = await axios.post(uri, body, {
-//       headers: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     });
-//     // console.log('request:', request);
-//     console.log('res:', res.data);
-//   } catch (e) {
-//     console.log('error:', e.response.data);
-//   }
-// }
 
   try {
     console.log('body:', body);
@@ -555,6 +567,7 @@ const sync = async (deal = mockupDeal) => {
   }
 }
 
+
 // const sync = async (deal, brand_ids) => {
 //   const state = await getState(deal.id)
 //   if (state?.is_finalized)
@@ -563,5 +576,5 @@ const sync = async (deal = mockupDeal) => {
 //   await queue(deal, brand_ids)
 // }
 
-export default sync;
-// sync();
+// export default sync;
+sync();

@@ -4,6 +4,102 @@ const mockupDeal = {
     "updated_at": 1574857009.86763,
     "deleted_at": null,
     "listing": "3acf3192-d8e9-11eb-9a9a-42010a960002",
+    "brand": {
+        "id": "88c7100a-9ed1-11e7-8c9b-0242ac110003",
+        "created_at": 1506000843.81902,
+        "updated_at": 1506000843.81902,
+        "palette": {
+            "primary": "#af5353",
+            "type": "brand_palette"
+        },
+        "assets": null,
+        "messages": {
+            "type": "brand_messages"
+        },
+        "parent": {
+            "id": "f8ba68ec-9ded-11e7-b2b3-0242ac110003",
+            "created_at": 1505903106.38657,
+            "updated_at": 1505903106.38657,
+            "palette": {
+                "type": "brand_palette"
+            },
+            "assets": null,
+            "messages": {
+                "type": "brand_messages"
+            },
+            "parent": {
+                "id": "8cb4a358-8973-11e7-9089-0242ac110003",
+                "created_at": 1503651503.29826,
+                "updated_at": 1503651503.29826,
+                "palette": {
+                    "type": "brand_palette",
+                    "primary": "#3e77b9",
+                    "marketing": {
+                        "beta": {
+                            "bg": "#002344",
+                            "ta": "#d5ae6a",
+                            "tb": "#fff"
+                        },
+                        "alpha": {
+                            "bg": "#fff",
+                            "ta": "#002344"
+                        },
+                        "theta": {
+                            "bg": "#d5ae6a",
+                            "ta": "#002344",
+                            "tb": "#fff"
+                        }
+                    }
+                },
+                "assets": {
+                    "type": "brand_assets",
+                    "marketing": {
+                        "logo-wide-beta": "https://assets.rechat.com/briggsfreeman/logo-wide-beta.png",
+                        "logo-wide-alpha": "https://assets.rechat.com/briggsfreeman/logo-wide-alpha.png",
+                        "logo-square-beta": "https://assets.rechat.com/briggsfreeman/logo-square-beta.png",
+                        "logo-square-alpha": "https://assets.rechat.com/briggsfreeman/logo-square-alpha.png"
+                    },
+                    "site_logo": "https://d35hljz7a9994c.cloudfront.net/default_images/logo2.png",
+                    "site_logo_wide": "https://cdn1.imggmi.com/uploads/2019/1/23/3eb591762cf59e09b46400e456a98e25-full.png"
+                },
+                "messages": {
+                    "type": "brand_messages",
+                    "site_title": "Main Office",
+                    "listing_url": "http://www.briggsfreeman.com/ecard.asp?L=%1",
+                    "branch_title": "Root Office",
+                    "office_title": "Main Office",
+                    "mmm_cost_center": "BFSIRCorporate"
+                },
+                "parent": null,
+                "name": "Main Office",
+                "deleted_at": null,
+                "training": false,
+                "brand_type": "Brokerage",
+                "type": "brand",
+                "hostnames": [
+                    "training.rechat.com"
+                ],
+                "member_count": 51,
+                "base_url": "https://training.rechat.com"
+            },
+            "name": "Rechat Back Office",
+            "deleted_at": null,
+            "training": false,
+            "brand_type": "Office",
+            "type": "brand",
+            "hostnames": null,
+            "member_count": 10,
+            "base_url": "https://beta.rechat.com"
+        },
+        "name": "Emil Sedgh's Team",
+        "deleted_at": null,
+        "training": false,
+        "brand_type": "Region",
+        "type": "brand",
+        "hostnames": null,
+        "member_count": 4,
+        "base_url": "https://beta.rechat.com"
+    },
     "deal_type": "Selling",
     "brokerwolf_tier_id": null,
     "brokerwolf_id": null,
@@ -437,7 +533,7 @@ const mockupDeal = {
                 "youtube": null,
                 "facebook": null,
                 "designation": null,
-                "current_time": "3:34 AM - Monday Jul 18, 2022",
+                "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                 "push_allowed": false,
                 "agents": null,
                 "last_seen_type": "Web",
@@ -681,12 +777,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -697,7 +793,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -708,7 +804,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -900,7 +996,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -940,12 +1036,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -956,7 +1052,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -967,7 +1063,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -1159,7 +1255,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -1194,12 +1290,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -1210,7 +1306,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -1221,7 +1317,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -1413,7 +1509,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -1441,7 +1537,7 @@ const mockupDeal = {
                     "type": "task",
                     "deal": "c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0",
                     "attention_requested": false,
-                    "pdf_url": "https://boer.api.rechat.com:443/tasks/880e548c-9a28-11ec-a037-42010a960002/submission.pdf?hash=jFzZqXtHACj104WDFmZ3XK9rj%2BufLBmOXGMJY9xSMiXED3Z%2BT4HF4uZPmS4SB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA2oJGzGu8sxpXmhAutxf0IATg%3D%3D"
+                    "pdf_url": "https://boer.api.rechat.com:443/tasks/880e548c-9a28-11ec-a037-42010a960002/submission.pdf?hash=jFzZqXtHACj104WDFmZ3XK9rj%2BufLBmOXGMJY9xSMiXED3Z%2BT4HF4uZPmS4SB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA6gJGzGu8o8pX6lAux0e0IATg%3D%3D"
                 },
                 {
                     "id": "8afb7652-9a28-11ec-a037-42010a960002",
@@ -1478,12 +1574,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -1494,7 +1590,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -1505,7 +1601,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -1697,7 +1793,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -1737,12 +1833,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -1753,7 +1849,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -1764,7 +1860,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -1956,7 +2052,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -1991,12 +2087,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -2007,7 +2103,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -2018,7 +2114,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -2210,7 +2306,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -2238,7 +2334,7 @@ const mockupDeal = {
                     "type": "task",
                     "deal": "c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0",
                     "attention_requested": false,
-                    "pdf_url": "https://boer.api.rechat.com:443/tasks/8afb7652-9a28-11ec-a037-42010a960002/submission.pdf?hash=jFzZqXtHACj109zVEWR1Uf5rj%2BufLBmOXGMJY9xSMiXED3Z%2BT4HF4uZPmS4SB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA2oJGzGu8sxpXmhAutxf0IATg%3D%3D"
+                    "pdf_url": "https://boer.api.rechat.com:443/tasks/8afb7652-9a28-11ec-a037-42010a960002/submission.pdf?hash=jFzZqXtHACj109zVEWR1Uf5rj%2BufLBmOXGMJY9xSMiXED3Z%2BT4HF4uZPmS4SB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA6gJGzGu8o8pX6lAux0e0IATg%3D%3D"
                 },
                 {
                     "id": "90cafc24-9a28-11ec-9bd2-42010a960002",
@@ -2275,12 +2371,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -2291,7 +2387,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -2302,7 +2398,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -2494,7 +2590,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -2534,12 +2630,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -2550,7 +2646,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -2561,7 +2657,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -2753,7 +2849,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -2788,12 +2884,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -2804,7 +2900,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -2815,7 +2911,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -3007,7 +3103,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -3035,7 +3131,7 @@ const mockupDeal = {
                     "type": "task",
                     "deal": "c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0",
                     "attention_requested": false,
-                    "pdf_url": "https://boer.api.rechat.com:443/tasks/90cafc24-9a28-11ec-9bd2-42010a960002/submission.pdf?hash=jFzZqXtHACj10o3QEjUgVvhrj%2BufLBmOXGMJY4QAZSDED3Z%2BT4HF4uZPmS4SB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA2oJGzGu8sxpXmhAutxfEIATg%3D%3D"
+                    "pdf_url": "https://boer.api.rechat.com:443/tasks/90cafc24-9a28-11ec-9bd2-42010a960002/submission.pdf?hash=jFzZqXtHACj10o3QEjUgVvhrj%2BufLBmOXGMJY4QAZSDED3Z%2BT4HF4uZPmS4SB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA6gJGzGu8o8pX6lAux0e0IATg%3D%3D"
                 }
             ],
             "is_deactivatable": false,
@@ -3120,7 +3216,7 @@ const mockupDeal = {
                                 "youtube": null,
                                 "facebook": null,
                                 "designation": null,
-                                "current_time": "3:34 AM - Monday Jul 18, 2022",
+                                "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                                 "push_allowed": false,
                                 "agents": [
                                     {
@@ -3214,7 +3310,7 @@ const mockupDeal = {
                                     "name": "Deal View Sketch Rev-1.pdf",
                                     "public": false,
                                     "type": "file",
-                                    "url": "https://private-cdn.irish.rechat.com/ca5bfc3a-110f-11ea-bf23-027d31a1f7a0/b4feaf70-75f5-11ec-9045-33ccd9f3f22e.pdf?Expires=1658219683381&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=Grb~TfF4yKeZ7ydeasuUsjDT7a-fc8fO63tK6UV2yJe1n49ZPRzll2BYXlcSnW5-Z1CUL8Fhfs7LHXCt675RgTgJ~Zy~mPDbIA7PY~MGug8XT0AFU7GGHUNse7HPDKLbfb6FuVKIox8O0ajEqEGkB1lgMYYJM37fRoSYJ49HDuVd~cHGzi0zqmMhOHpVxR0v7sFnb9tVwL9zPv8o1IwYuSfgDSJQnKmjeQPd3GqAFWRTwog-5umTZyC6ldWho7hfj9R3~nltr4kmFGHCgZBGL7wWOc2LGSfzv9NaWm0h2BKBjJiKo15ZeHoM5DkWYvdgPym3aP-Gp0PBENZPT2dp-Q__",
+                                    "url": "https://private-cdn.irish.rechat.com/ca5bfc3a-110f-11ea-bf23-027d31a1f7a0/b4feaf70-75f5-11ec-9045-33ccd9f3f22e.pdf?Expires=1658392160710&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=eo8aW-HDJlUAqtvzU-0nUCB9AYRQCRJNEhe~SzTjZ2vKPjlKT0cjGXeEmqPg6j4xwARCyz3ObPcd44mPmiTWABQRN3Pvms-QxeyEzAi07MkdyMYe-3Yaznxv2hO4fpfCeSQ7LHBO9io1kNS8q8RRf7Rj0cQBbzP-BBEh90wqYmDFHV5P1AO1htDZypqOy46Ya1q46-B66WCk00p8ypNF74F4MyfqSkBEBkSTrsqmE4~RQWfmBIP1dmgrlQ3SeBgnQtnfd09jnGxctCnQbURk-ng33dn4Jg0PcbvVv9aIXcnFN72E6xBHus3sajWnlT39Rg9JjTuvR83pLPL~VoZJwg__",
                                     "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                                     "mime": "application/pdf"
                                 }
@@ -3277,7 +3373,7 @@ const mockupDeal = {
                                 "youtube": null,
                                 "facebook": null,
                                 "designation": null,
-                                "current_time": "3:34 AM - Monday Jul 18, 2022",
+                                "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                                 "push_allowed": false,
                                 "agents": [
                                     {
@@ -3405,7 +3501,7 @@ const mockupDeal = {
                                 "youtube": null,
                                 "facebook": null,
                                 "designation": null,
-                                "current_time": "1:04 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": null,
                                 "last_seen_type": "Web",
@@ -3427,12 +3523,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -3443,7 +3539,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -3454,7 +3550,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -3646,7 +3742,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -3689,7 +3785,7 @@ const mockupDeal = {
                                 "youtube": null,
                                 "facebook": null,
                                 "designation": null,
-                                "current_time": "3:34 AM - Monday Jul 18, 2022",
+                                "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                                 "push_allowed": false,
                                 "agents": [
                                     {
@@ -3851,7 +3947,7 @@ const mockupDeal = {
                                 "youtube": null,
                                 "facebook": null,
                                 "designation": null,
-                                "current_time": "3:34 AM - Monday Jul 18, 2022",
+                                "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                                 "push_allowed": false,
                                 "agents": [
                                     {
@@ -3952,7 +4048,7 @@ const mockupDeal = {
                                 "youtube": null,
                                 "facebook": null,
                                 "designation": null,
-                                "current_time": "3:34 AM - Monday Jul 18, 2022",
+                                "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                                 "push_allowed": false,
                                 "agents": [
                                     {
@@ -4048,7 +4144,7 @@ const mockupDeal = {
                                 "youtube": null,
                                 "facebook": null,
                                 "designation": null,
-                                "current_time": "1:04 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": null,
                                 "last_seen_type": "Web",
@@ -4095,7 +4191,7 @@ const mockupDeal = {
                                 "youtube": null,
                                 "facebook": null,
                                 "designation": null,
-                                "current_time": "3:34 AM - Monday Jul 18, 2022",
+                                "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                                 "push_allowed": false,
                                 "agents": [
                                     {
@@ -4149,12 +4245,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -4165,7 +4261,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -4176,7 +4272,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -4368,7 +4464,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -4400,7 +4496,7 @@ const mockupDeal = {
                             "name": "Residential Real Estate Listing Agreement, Exclusive Right to Sell (TAR 1101)\t\t\t\t\t.pdf",
                             "public": false,
                             "type": "file",
-                            "url": "https://private-cdn.irish.rechat.com/tasks/ca66908c-110f-11ea-9e48-027d31a1f7a0/5d7c11b0-111c-11ea-801f-f3bb44e1af0c.pdf?Expires=1658219683362&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=Ejy6oDyJoqQyUKJMrIoHlqmI2ukYmXDrzA83UNoCNGosL~pFecUOnsWyatOPW60tjPUUjVeTlxWT174vuKByLFg1HVPOhTEfcrZZOQ1k6ObZB~0jfDLoiLMhmtNuP6QK8op8PTUE6-nRKN-YnMsk7AG66GJma~b0GT-mOL~qGzTo5WTpWF0CQdXSUwzqdEN34yT4AbPmvEdhCyoY1R3JlBwPP3Gqmzmjh40DxvfLt1niRBmxl3TqRB7U2kouf5xP64NngdJNilOEUOBuPkK0jVAhb601tkhd2thYRqkn90qochzKptOsmaLAmCf~3HFX5pBAdGTqox9NZWPdUSXDFA__",
+                            "url": "https://private-cdn.irish.rechat.com/tasks/ca66908c-110f-11ea-9e48-027d31a1f7a0/5d7c11b0-111c-11ea-801f-f3bb44e1af0c.pdf?Expires=1658392160715&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=ZzcO-QY8DpQwBw48C2cjquKl7Pn7kfnNpH0Sj2pIMtC8KHviMGCNl~3JA1-7JK7HmEtR0L7Hs2O96KJABNs4SMKGkG7kARJt5WauJqa60shD2Bh5rDAZxosBueCvYDf3nJP9Ngazy4b8gch~luEVvhgU90Hlt5uKb0FEAZ050sB-zw9N5ut2seZys0Q8OWgQVtHDGBWI3qLt2lG9L4OzHchJzgWNKKQ~gLFVUZdKubw2GU3S8Qa4M0VgmEkVq0u5e2pmU3rvfST1EuMbUrxzsZCxiZcH3y2WHidXOPQ91cADdQk42tx0azWcFlj0YDXOoQUUB~8jHvSBg2O6u82b3Q__",
                             "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                             "mime": "application/pdf"
                         },
@@ -4422,7 +4518,7 @@ const mockupDeal = {
                     "type": "task",
                     "deal": "c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0",
                     "attention_requested": true,
-                    "pdf_url": "https://boer.api.rechat.com:443/tasks/ca66908c-110f-11ea-9e48-027d31a1f7a0/submission.pdf?hash=jFzZqXtHACj1iNyFRWpzXK9rh7udchmOXGMLY4QHNSrEC3Z5GoKVuuEZnn8QB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA2oJGzGu8sxpXmhAutxfEIATg%3D%3D"
+                    "pdf_url": "https://boer.api.rechat.com:443/tasks/ca66908c-110f-11ea-9e48-027d31a1f7a0/submission.pdf?hash=jFzZqXtHACj1iNyFRWpzXK9rh7udchmOXGMLY4QHNSrEC3Z5GoKVuuEZnn8QB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA6gJGzGu8o8pX6lAux0e0IATg%3D%3D"
                 },
                 {
                     "id": "ca6cca9c-110f-11ea-88fb-027d31a1f7a0",
@@ -4484,7 +4580,7 @@ const mockupDeal = {
                                 "youtube": null,
                                 "facebook": null,
                                 "designation": null,
-                                "current_time": "3:34 AM - Monday Jul 18, 2022",
+                                "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                                 "push_allowed": false,
                                 "agents": [
                                     {
@@ -4617,7 +4713,7 @@ const mockupDeal = {
                                 "youtube": null,
                                 "facebook": null,
                                 "designation": null,
-                                "current_time": "3:34 AM - Monday Jul 18, 2022",
+                                "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                                 "push_allowed": false,
                                 "agents": [
                                     {
@@ -4720,12 +4816,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -4736,7 +4832,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -4747,7 +4843,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -4939,7 +5035,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -4982,7 +5078,7 @@ const mockupDeal = {
                                 "youtube": null,
                                 "facebook": null,
                                 "designation": null,
-                                "current_time": "3:34 AM - Monday Jul 18, 2022",
+                                "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                                 "push_allowed": false,
                                 "agents": [
                                     {
@@ -5082,7 +5178,7 @@ const mockupDeal = {
                             "name": "Information About Brokerage Services (TAR 2501)\t\t\t\t\t.pdf",
                             "public": false,
                             "type": "file",
-                            "url": "https://private-cdn.irish.rechat.com/tasks/ca6cca9c-110f-11ea-88fb-027d31a1f7a0/a6e3e0d0-111c-11ea-801f-f3bb44e1af0c.pdf?Expires=1658219683363&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=Ks8rAMhEI-MvCe~-33Ut~MRqWZRCjIdckg1cvWE9IL3j4NzGqYq9yRFlb4AeR~pytRLrck6BMXU59ck4UCAkNyYPhN-3AqTFTTPZ0q971zQIaA4aTqmluaDunzCkvNxHg-xRqij2XzZ5RZ5OlqdvvCjUVAJ3qL4owoigHOEhh78iGBQiKqgYRhTK6s87kyA7RtuumxdMpzJrFzv93VYPGv5IE7hHFV~jtgSd91~tU93b0FDlDlmJSIraPC5MfqTzFGyEErzkzBNhZV0sk9tWraI8WWZuUo0vLpjKjLz14jhK9TwNulpiis8AVpSJfIXqOwPO79xu3pBckqDOB2hchw__",
+                            "url": "https://private-cdn.irish.rechat.com/tasks/ca6cca9c-110f-11ea-88fb-027d31a1f7a0/a6e3e0d0-111c-11ea-801f-f3bb44e1af0c.pdf?Expires=1658392160718&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=M3cGE-WvVchI4udKAeDN9bdFaKFeBL~8Um0B4v6JGp62fTStoWKPefwmpp755F9Hxt0uV-SLKg9gIRCJMHb79A-lJWkLyPRMw56AHucRo0dWhkBnZyk69aX2iKBXSwSEdywFgypo3-9cmNEi8HR4CwghPabLIl73Dmb9pWV6CUAXpdAePthQVj0oeo6b9l56ReXEfRiCqfr2UTi3-VfAvR2DMF-93353bYbvCQpKtTeAKtzj-kYihx9GcBtQct~g0yL7w6dCVraPweCA9jQUDiGFx-db0pcJwc12DwuUJwD4GfRZR-WnlEy~WWXzslVLXprHQfHaENvxvAJXp6w2IQ__",
                             "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                             "mime": "application/pdf"
                         },
@@ -5110,7 +5206,7 @@ const mockupDeal = {
                     "type": "task",
                     "deal": "c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0",
                     "attention_requested": false,
-                    "pdf_url": "https://boer.api.rechat.com:443/tasks/ca6cca9c-110f-11ea-88fb-027d31a1f7a0/submission.pdf?hash=jFzZqXtHACj1iNyFEDAiXa9rh7udchmOXGMLY4VaZ3DEC3Z5GoKVuuEZnn8QB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA2oJGzGu8sxpXmhAutxfEIATg%3D%3D"
+                    "pdf_url": "https://boer.api.rechat.com:443/tasks/ca6cca9c-110f-11ea-88fb-027d31a1f7a0/submission.pdf?hash=jFzZqXtHACj1iNyFEDAiXa9rh7udchmOXGMLY4VaZ3DEC3Z5GoKVuuEZnn8QB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA6gJGzGu8o8pX6lAux0e0IATg%3D%3D"
                 },
                 {
                     "id": "ca727334-110f-11ea-8b9e-027d31a1f7a0",
@@ -5188,12 +5284,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -5204,7 +5300,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -5215,7 +5311,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -5407,7 +5503,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -5439,7 +5535,7 @@ const mockupDeal = {
                             "name": "Seller’s Disclosure Notice (TAR 1406).pdf",
                             "public": false,
                             "type": "file",
-                            "url": "https://private-cdn.irish.rechat.com/tasks/ca727334-110f-11ea-8b9e-027d31a1f7a0/312bcfa0-111d-11ea-801f-f3bb44e1af0c.pdf?Expires=1658219683365&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=TDSJM1jHcgITqckDkHp6PjK1Mb3pKcdNdi0UrNJHQln6bbIf8denSOjrQc2jOFZzWqcIEfIJ6TTiU94s1UXToCmVzymmt-I24cw4ZN74dFeFCx~2yYd0IBjBZlr0Tu9F26WHmSDyG8tOW3y4nUIB4ZE92up5LGCmw75JAw4-n78vOasf4cAqic-tiNH-JJOriPExAjmjIOUBmcA3ppFLp9eIsLvcz74LHnrw9R~hs3gVgdCAcQtkpGChz0R-GDAnS8nsodJhkyuNoqRVLsU2-Uz0TkoQ2~kuh6ELMlxSXJY8KPKP-upsX~iZap6Vib2Jlv24u7WLfa7HSdMWlwjUcg__",
+                            "url": "https://private-cdn.irish.rechat.com/tasks/ca727334-110f-11ea-8b9e-027d31a1f7a0/312bcfa0-111d-11ea-801f-f3bb44e1af0c.pdf?Expires=1658392160721&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=IyV66b-ly4apntmQKXftYyBPyVESHIoeALYbBYWb01E4WwhK880oPF9blNpJUOvynpjChnX4GtNk7F1rWN0KYoB9EfpeM8lUIinW8O2PpJ1-VWybcSPMPs8~OVGw4dMVZ0RbadtV6QZDbQHKnc50E~CR7vYsn8RLuRSfw2NvGSeTR0pA6vtYxjTv-~eJkfw5ufTSqs8vGbx5WOiJm19EgJcYhiUY-5mdwLTh4CTjasGeMBXE5pzjzt6k~SmYK9M0zof5OyC6O5GZvHdTnF4QWovK6R23doEMYEfMJxy-ra1R1DdtJRuyD3TJ-n2zQF-Fy-5vUz1AiaSXZxGIwu5iQA__",
                             "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                             "mime": "application/pdf"
                         },
@@ -5461,7 +5557,7 @@ const mockupDeal = {
                     "type": "task",
                     "deal": "c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0",
                     "attention_requested": false,
-                    "pdf_url": "https://boer.api.rechat.com:443/tasks/ca727334-110f-11ea-8b9e-027d31a1f7a0/submission.pdf?hash=jFzZqXtHACj1iNyEQWRwV%2Fhrh7udchmOXGMLY4UAOHfEC3Z5GoKVuuEZnn8QB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA2oJGzGu8sxpXmhAutxfEIATg%3D%3D"
+                    "pdf_url": "https://boer.api.rechat.com:443/tasks/ca727334-110f-11ea-8b9e-027d31a1f7a0/submission.pdf?hash=jFzZqXtHACj1iNyEQWRwV%2Fhrh7udchmOXGMLY4UAOHfEC3Z5GoKVuuEZnn8QB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA6gJGzGu8o8pX6lAux0eEIATg%3D%3D"
                 },
                 {
                     "id": "ca78ebb0-110f-11ea-a2e1-027d31a1f7a0",
@@ -5539,12 +5635,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -5555,7 +5651,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -5566,7 +5662,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -5758,7 +5854,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -5790,7 +5886,7 @@ const mockupDeal = {
                             "name": "Residential Input Form (NTREIS)\t\t\t\t\t.pdf",
                             "public": false,
                             "type": "file",
-                            "url": "https://private-cdn.irish.rechat.com/tasks/ca78ebb0-110f-11ea-a2e1-027d31a1f7a0/dab4d7b0-111d-11ea-801f-f3bb44e1af0c.pdf?Expires=1658219683366&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=eHOL7j~8haLUz5esKMEtKr0LV7i1Yd35~JTDPaipC--ppcDwdaKaZOQivTl5ADmiKJpCpEEZr9oFrBFgkMoIGPj4J0DjqirIrQh9yti1J1TeCIaT0rTAYPzAQW7ur1We2KgTtc2-XDg55fooK67BZ~B~qOwLf~lMwDdTpCu5dOKuTs-YmR3QUjhwv-ytA3Em5-iH1VLq8rHiYbEXqKwgJLa0sdqResQ3lFn8zrtprWdHspfrzDhoBueeYYYwjnp9R45QDOb7X~Or-ckrGcQP38kOg8uhQ7dlpyXCeZCpWRwHaicdXnL8P0XKzRESAUTrsZ595Gj1-j1PAPfJgFqyGQ__",
+                            "url": "https://private-cdn.irish.rechat.com/tasks/ca78ebb0-110f-11ea-a2e1-027d31a1f7a0/dab4d7b0-111d-11ea-801f-f3bb44e1af0c.pdf?Expires=1658392160723&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=DdNQlBTWTouopjgCqcEyB~VrYLHcd766i45F2N0ucZJ~fWSOu2NOxxuDAnhwZZR5h0ObRTc5ept0YJab-Uqs9aAahCaSwKVflkq7b-m5EjY5Fe6dFx53B8CjBJX4LMR0402uzQc7iKaMk9lBV9eSBGzHBjLK4pDlih1okwVdYCJ-hCAKHfLVojivPyD--aDj~tT1TYFN8SbZDjVoj3p4k7fYd6r4rXDeCIV-7RxhC5hO-2Od3K8nWdZoPBPW8hmpSPosT-bwZsd56WMmtUL0PdM3wqhizh-jYRbvc7VJduhb9eRjvI11-Uq1usMRXe1mhnUuCtSxJgsVpZX8b0Jv2w__",
                             "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                             "mime": "application/pdf"
                         },
@@ -5812,7 +5908,7 @@ const mockupDeal = {
                     "type": "task",
                     "deal": "c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0",
                     "attention_requested": false,
-                    "pdf_url": "https://boer.api.rechat.com:443/tasks/ca78ebb0-110f-11ea-a2e1-027d31a1f7a0/submission.pdf?hash=jFzZqXtHACj1iNyESzYhBvxrh7udchmOXGMLY9xQZCPEC3Z5GoKVuuEZnn8QB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA2oJGzGu8sxpXmhAutxfEIATg%3D%3D"
+                    "pdf_url": "https://boer.api.rechat.com:443/tasks/ca78ebb0-110f-11ea-a2e1-027d31a1f7a0/submission.pdf?hash=jFzZqXtHACj1iNyESzYhBvxrh7udchmOXGMLY9xQZCPEC3Z5GoKVuuEZnn8QB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA6gJGzGu8o8pX6lAux0eEIATg%3D%3D"
                 },
                 {
                     "id": "34b16cda-0214-11ed-9349-42010a960002",
@@ -5849,12 +5945,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -5865,7 +5961,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -5876,7 +5972,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -6068,7 +6164,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -6108,12 +6204,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -6124,7 +6220,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -6135,7 +6231,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -6327,7 +6423,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -6362,12 +6458,12 @@ const mockupDeal = {
                                 "address_id": null,
                                 "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                                 "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                                "updated_at": 1657899610.60953,
+                                "updated_at": 1658256321.14614,
                                 "user_status": "Active",
                                 "profile_image_thumbnail_url": null,
                                 "cover_image_thumbnail_url": null,
                                 "email_confirmed": true,
-                                "timezone": "Asia/Dubai",
+                                "timezone": "Asia/Tehran",
                                 "user_type": "Agent",
                                 "deleted_at": null,
                                 "phone_confirmed": false,
@@ -6378,7 +6474,7 @@ const mockupDeal = {
                                 "features": [
                                     "Deals"
                                 ],
-                                "last_seen_at": 1658133229.017,
+                                "last_seen_at": 1658305756.889,
                                 "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                                 "daily_enabled": true,
                                 "email_quota": 30000,
@@ -6389,7 +6485,7 @@ const mockupDeal = {
                                 "youtube": "http://youtube.com",
                                 "facebook": "https://facebook.com/username",
                                 "designation": null,
-                                "current_time": "12:34 PM - Monday Jul 18, 2022",
+                                "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                                 "push_allowed": true,
                                 "agents": [
                                     {
@@ -6581,7 +6677,7 @@ const mockupDeal = {
                                     }
                                 ],
                                 "last_seen_type": "Web",
-                                "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                                "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                                 "display_name": "Emil Sedghd",
                                 "abbreviated_display_name": "Emil",
                                 "online_state": "Online",
@@ -6609,7 +6705,7 @@ const mockupDeal = {
                     "type": "task",
                     "deal": "c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0",
                     "attention_requested": false,
-                    "pdf_url": "https://boer.api.rechat.com:443/tasks/34b16cda-0214-11ed-9349-42010a960002/submission.pdf?hash=jFzZqXtHACj12InRQmUgAK1rhricIBmOXGMOY4RRNSvED3Z%2BT4HF4uZPmS4SB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA2oJGzGu8sxpXmhAutxfEIATg%3D%3D"
+                    "pdf_url": "https://boer.api.rechat.com:443/tasks/34b16cda-0214-11ed-9349-42010a960002/submission.pdf?hash=jFzZqXtHACj12InRQmUgAK1rhricIBmOXGMOY4RRNSvED3Z%2BT4HF4uZPmS4SB2inxE%2BVOb1Ni8tOGKgR40fsmhaRQrICd5ZalAHuu080Z1x0msLkjCVtLF9nbKoeYPGdRmKCTXNE1lZ2WqV6aA6gJGzGu8o8pX6lAux0eEIATg%3D%3D"
                 }
             ],
             "is_deactivatable": false,
@@ -6675,6 +6771,25 @@ const mockupDeal = {
             "source": "Provided",
             "definition": "987ca3e0-1061-11e9-9ef2-0a95998482ac",
             "searchable": "'-04':2 '-20':3 '2020':1",
+            "deleted_at": null
+        },
+        "sales_price": {
+            "id": "5601c660-ff85-11eb-b7ac-42010a960002",
+            "type": "deal_context_item",
+            "created_at": "2021-08-17T18:02:50.30104+00:00",
+            "created_by": "8725b638-3b09-11e7-b651-0242ac110003",
+            "approved_by": "8725b638-3b09-11e7-b651-0242ac110003",
+            "approved_at": "2021-08-17T18:02:50.362124+00:00",
+            "key": "sales_price",
+            "text": "25000",
+            "number": 25000,
+            "date": null,
+            "data_type": "Number",
+            "deal": "c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0",
+            "checklist": "ca58a7e2-110f-11ea-bf22-027d31a1f7a0",
+            "source": "Provided",
+            "definition": "99555ea6-1061-11e9-9efb-0a95998482ac",
+            "searchable": "'25000':1",
             "deleted_at": null
         },
         "city": {
@@ -6754,22 +6869,22 @@ const mockupDeal = {
             "deleted_at": null
         },
         "expiration_date": {
-            "id": "78ad1150-0674-11ed-b4ca-42010a960002",
+            "id": "173b7a4a-0806-11ed-a010-42010a960002",
             "type": "deal_context_item",
-            "created_at": "2022-07-18T08:34:42.778009+00:00",
+            "created_at": "2022-07-20T08:29:37.017702+00:00",
             "created_by": "8725b638-3b09-11e7-b651-0242ac110003",
             "approved_by": "8725b638-3b09-11e7-b651-0242ac110003",
-            "approved_at": "2022-07-18T08:34:42.893377+00:00",
+            "approved_at": "2022-07-20T08:29:37.095251+00:00",
             "key": "expiration_date",
-            "text": "2019-11-27",
+            "text": "2019-11-28",
             "number": null,
-            "date": 1574812800,
+            "date": 1574899200,
             "data_type": "Date",
             "deal": "c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0",
             "checklist": "ca58a7e2-110f-11ea-bf22-027d31a1f7a0",
             "source": "Provided",
             "definition": "9864ebba-1061-11e9-9ef1-0a95998482ac",
-            "searchable": "'-11':2 '-27':3 '2019':1",
+            "searchable": "'-11':2 '-28':3 '2019':1",
             "deleted_at": null
         },
         "full_address": {
@@ -7057,25 +7172,6 @@ const mockupDeal = {
             "searchable": "'commerci':1 'leas':2",
             "deleted_at": null
         },
-        "sales_price": {
-            "id": "5601c660-ff85-11eb-b7ac-42010a960002",
-            "type": "deal_context_item",
-            "created_at": "2021-08-17T18:02:50.30104+00:00",
-            "created_by": "8725b638-3b09-11e7-b651-0242ac110003",
-            "approved_by": "8725b638-3b09-11e7-b651-0242ac110003",
-            "approved_at": "2021-08-17T18:02:50.362124+00:00",
-            "key": "sales_price",
-            "text": "25000",
-            "number": 25000,
-            "date": null,
-            "data_type": "Number",
-            "deal": "c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0",
-            "checklist": "ca58a7e2-110f-11ea-bf22-027d31a1f7a0",
-            "source": "Provided",
-            "definition": "99555ea6-1061-11e9-9efb-0a95998482ac",
-            "searchable": "'25000':1",
-            "deleted_at": null
-        },
         "state": {
             "id": null,
             "type": "deal_context_item",
@@ -7318,7 +7414,7 @@ const mockupDeal = {
                             "youtube": null,
                             "facebook": null,
                             "designation": null,
-                            "current_time": "3:34 AM - Monday Jul 18, 2022",
+                            "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                             "push_allowed": false,
                             "agents": null,
                             "last_seen_type": "Web",
@@ -7385,7 +7481,7 @@ const mockupDeal = {
                         "name": "One to Four Family Contract (TREC 20-14).pdf.pdf",
                         "public": false,
                         "type": "file",
-                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/83e2e4d0-c79d-11eb-875c-ab12904cd2e7.pdf?Expires=1658219683260&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=Sqn78lG5~1kXAG~xkZL43KF7bdNMXSOsd27436pkgq644r0p3KFDZ8If-Rh0ZdxYjc0xDG86DHrswksnPqlFUdhrFqB-FNeMkW4XUErPhIajIgZH02kT5Z0qU4e59Ccn1VpSMIErOdQSDW5MQJmF7uERyAxQQFsog0NUJRLWbFP1SBGMO6bSbL4t-pU9osgVludTMTArfFMlf-Xy-4nZpSeV9jaELdQfoEmNOeKkksgscppOokkOAfKwQcFnylk5rBjBuD95QT1drCtWcn8zPU9T-AvKpnWV-TMV84JYbtQLKHHzBvx9PuS355ETfHbUWFya8rAQnT3zPn~wo6b2-Q__",
+                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/83e2e4d0-c79d-11eb-875c-ab12904cd2e7.pdf?Expires=1658392160572&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=Qt~OqTxX2o7-aPn~wpO3iUepmdUVQoMsVm4RGyGhz2mkp-a5hb6GZpZJI~8kcY7Nxt-Tu~i5futLvygS768uzg40JqoQgpQRNRewuxgOB0vfajcw9oEGPJFPm1CU1tESBU-NObvi5NjSr7sc9DaOI5PIuw6wFB5VUB1OXdpXGT-PcfQL~sWG46P8Sy93sVWReLMcmjST~nqZYapVHkM~QW0CkmyLpZD1w~DVOXw-8zUhoPndFB0SbFSiJTcUUZQNGzfE38MHrZS5d40cCdaxZNFbqZhc32G2X~f7JyasK~bnw2OaJLhda8kDYim6OSDPsb5-14OHTQwIAjLK0mEfRg__",
                         "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                         "mime": "application/pdf"
                     }
@@ -7432,12 +7528,12 @@ const mockupDeal = {
                             "address_id": null,
                             "cover_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/3d8b3860-bc15-11e9-89aa-ff3f496e37fc.png",
                             "profile_image_url": "https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/9e6211a0-2d55-11ec-85c8-bbccbff4e62c.jpg",
-                            "updated_at": 1657899610.60953,
+                            "updated_at": 1658256321.14614,
                             "user_status": "Active",
                             "profile_image_thumbnail_url": null,
                             "cover_image_thumbnail_url": null,
                             "email_confirmed": true,
-                            "timezone": "Asia/Dubai",
+                            "timezone": "Asia/Tehran",
                             "user_type": "Agent",
                             "deleted_at": null,
                             "phone_confirmed": false,
@@ -7448,7 +7544,7 @@ const mockupDeal = {
                             "features": [
                                 "Deals"
                             ],
-                            "last_seen_at": 1658133229.017,
+                            "last_seen_at": 1658305756.889,
                             "email_signature": "<div><a href=\"mailto:emil+agent@rechat.com\"><u>Emil Sedgh</u></a>, Rechat Inc.</div>\n<figure><br></figure>\n<figure style=\"margin:0;\" ><img style=\"width:12px;\" src=\"https://d2dzyv4cb7po1i.cloudfront.net/8725b638-3b09-11e7-b651-0242ac110003/signatures/91fcf900-b225-11e9-aa84-f34e78a41b74.jpg\" width=\"12\" align=\"default\" /></figure>\n<div><br>\n</div>\n<div>-</div>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://new.grand-jete.com/email2/?ver=five&name=JOVANNI%20WILLIAM&lo=tel%3A%20315-215-0723&ltw=dre%23%2000000000&lth=dev%40jovanni.services\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_03a.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_04.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_05.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_06.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_07.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_08.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_09.png\"  align=\"left\" /></figure>\n<figure style=\"margin:0;\" ><img style=\"float:left;width:40px;\" src=\"https://grand-jete.com/email/images/NA_Sig_01a_10.png\"  align=\"left\" /></figure>\n<div><br></div>",
                             "daily_enabled": true,
                             "email_quota": 30000,
@@ -7459,7 +7555,7 @@ const mockupDeal = {
                             "youtube": "http://youtube.com",
                             "facebook": "https://facebook.com/username",
                             "designation": null,
-                            "current_time": "12:34 PM - Monday Jul 18, 2022",
+                            "current_time": "12:59 PM - Wednesday Jul 20, 2022",
                             "push_allowed": true,
                             "agents": [
                                 {
@@ -7651,7 +7747,7 @@ const mockupDeal = {
                                 }
                             ],
                             "last_seen_type": "Web",
-                            "active_brand": "33086860-956a-11eb-80ab-02686217f2b9",
+                            "active_brand": "8cb4a358-8973-11e7-9089-0242ac110003",
                             "display_name": "Emil Sedghd",
                             "abbreviated_display_name": "Emil",
                             "online_state": "Online",
@@ -7744,7 +7840,7 @@ const mockupDeal = {
                         "name": "Residential Real Property Affidavit T-47 (TAR 1907)\t\t\t\t\t.pdf.pdf",
                         "public": false,
                         "type": "file",
-                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/66a981d0-8a90-11ea-a084-33d4d1a5f310.pdf?Expires=1658219683262&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=P76YIACPxq9TdxPqctHpkexdBsjExoh2AZVyR5VRhE43n6ya593Ibrr5VGHXiuv1fM46xUP~nOV25TFhCzUVEwcXoMoCGOUnDfyjqambfVab60PvFySc8lUPsW5WeNLu69w7Yjt1dWKbQnViHxjqBdobQLX~vmpFF4Rn8eYRLVlnaaqrAyo55x-3lWxMaXbedAzPPy40VK1amlwMYQ0jbT-tMVIjD4NMF00kkwTW1VD7DypsL3ggw~-rpdDI2ehvvoBqm1UGVPw4exXo5fJ1SIKYQfV81A9OO7Wy4zPZ5AH4QKg1hliM13pbVU6oT3DeJgSrBccOVS260qfuSvbS0Q__",
+                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/66a981d0-8a90-11ea-a084-33d4d1a5f310.pdf?Expires=1658392160575&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=GTgUIDQ-JhPAu1VjhWPF2CkD-5DEgOerWvzR8oiBz~TnCXLXb1T9RrwAWmnvzZsqlf5rXTr6reZB-bhmL8bQ2XSQuOo-rLAu1~E59khlQDjD~sQwPhNBp~HMSzICC4jMDKBl8YdlJVivou7vULCuppEqsiEqqlRHTssDPA~SvGtm5umkuC3WgkK01OlbH2svJs~5U5FqYusfmvSyIFK~wkc6V93KZBXC30c4eFwNNtAtFN-VIbrtITXGKDr9xwmSbYwZfUQ2g-aiDmDZGFzQUcX21YFA8pqJ47B3c5giZMrEwHqjpwb~GbRy4TKcf~vFzn-cIeMa1kkC8LWVt8Flug__",
                         "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                         "mime": "application/pdf"
                     }
@@ -7819,7 +7915,7 @@ const mockupDeal = {
                             "youtube": null,
                             "facebook": null,
                             "designation": null,
-                            "current_time": "3:34 AM - Monday Jul 18, 2022",
+                            "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                             "push_allowed": false,
                             "agents": null,
                             "last_seen_type": "Web",
@@ -7886,7 +7982,7 @@ const mockupDeal = {
                         "name": "Sotheby's Property Information (BFSIR).pdf.pdf",
                         "public": false,
                         "type": "file",
-                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/00453fc0-1122-11ea-801f-f3bb44e1af0c.pdf?Expires=1658219683263&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=YSkfocznOiEL64~szgqyodrV4M8NyUIC5Q8Ax3UncVaE~3uxGPEaSah2Q1UAuRf87tChQZgH5eAWy~TzDIjhiDUvEKg-bsmoWZNl0ufIc1MQIYQ-oEy5BVTe8ucAPsIWBCulSKNUSmt6EPeS0nrMdEg8QZL7qRmfZKbn1Sj8AjqhMmexlkpY78VVh4wm3LBUBz1lZ6rVpxkYM7HnLcqPL4qs9i8CSN4OkhRLwQVRmkSXyUY6IbzeAPiRU29z2QoKzC0Mzyv8D9bHiQ0r8ZBXEvz8dfSXpbD89apG4zlso03HX5dbm8D89c2m3Rv2~7LThgwJWIhOj2L2bdFqPrYJsw__",
+                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/00453fc0-1122-11ea-801f-f3bb44e1af0c.pdf?Expires=1658392160577&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=i8g3ORoWaCUDdAI32jwM3O0LZaMShkrm0PRZJsdfEM0ThkynfMu7kHi5EhdZKVe-xhB2S-2DAFbkhz8GLTvlvLYcQSpmnYFwH2xp3E6RrHP8JZlwT6HKqFbcVBlGeRqWtaeLWnhMcdbaOtosZIfHt9iP2p9DX6XmTzIEaPOfDlgY5pXx8u8uxkV5TTYR9IB18MZsLju-aI7C0nEfTukxjkDq5KVTCLikJ6ouIBOkF8HNMDqUid56GDAoIcRuTugQ7IPQ07E1v4kKFxeZjHNWDyyzOL4XsXnH1oVWfXmP8d6vPiuvPAR6s7NbaS-HrZBeQhLx-JZHxbPxpm6tybgQvQ__",
                         "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                         "mime": "application/pdf"
                     }
@@ -7961,7 +8057,7 @@ const mockupDeal = {
                             "youtube": null,
                             "facebook": null,
                             "designation": null,
-                            "current_time": "3:34 AM - Monday Jul 18, 2022",
+                            "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                             "push_allowed": false,
                             "agents": null,
                             "last_seen_type": "Web",
@@ -8028,7 +8124,7 @@ const mockupDeal = {
                         "name": "Sotheby's Amenities Checklist (BFSIR)\t\t\t\t\t.pdf.pdf",
                         "public": false,
                         "type": "file",
-                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/10aaf880-111f-11ea-801f-f3bb44e1af0c.pdf?Expires=1658219683264&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=f6OvxLigyXxAjPrDEeoPN9bmCQSyadmqtH7SsuoIf17wZcS2FnxM7QeMnRLXOEyTGy1OVYE-n~ETaeDOTdlLnPVI5cL8EooqjFUguTQBIS9WRUMFFnDbnCzY23KWn2HVJ7rDAU~eOgtfifoIcK9GvdGTtiQ0dBYd9nDZAE~d2cdY~iw1wWKHU8mt9qlHV42fLvn7CHLtGhhRdmAbqyad-IuuD3pRxGZiSwFZpIPM~j8U8OUbbDo36P43fawMO6MpPeMmP60g8qMEy2rHQ5Xd5-ivRMhIpTwvu2XLWw3ARigaIE48sFEpmjm6xKRi5R03qDwVBDAzXfGJ1pnHE~UsgQ__",
+                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/10aaf880-111f-11ea-801f-f3bb44e1af0c.pdf?Expires=1658392160579&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=anTNmkrQDsmkPp9yThImSbaKQeWMHeQ8m6CqbOyCfpnxLctZTW5KGVAp5Ww9KPmkrlK21EJWUN0EhndRbyju26AOVvyBxYR2gCqgMy7jnS-wxwVEg2qquQxB51d1m3cb94G46R1h8sZBKb3tZrzZTOhHMCfBF50U~RQlTkLxld2rS0Vn36zlin7mvsXgdz07KX2uD~-emgSXUHRvUdBaMzVc4n3tymRXjql4Qh2g7pZIrCNPqPaujkJGexe6BjlNNT6FB7Fbpk8CtoJpGPgdmNYra-uCGQQmvzQCxlrUs4iKZ2nWS7RZqQ2l0L4Lzk7SPRLoa1f4BXwVGpkiAfktyw__",
                         "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                         "mime": "application/pdf"
                     }
@@ -8103,7 +8199,7 @@ const mockupDeal = {
                             "youtube": null,
                             "facebook": null,
                             "designation": null,
-                            "current_time": "3:34 AM - Monday Jul 18, 2022",
+                            "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                             "push_allowed": false,
                             "agents": null,
                             "last_seen_type": "Web",
@@ -8170,7 +8266,7 @@ const mockupDeal = {
                         "name": "Residential Input Form (NTREIS)\t\t\t\t\t.pdf.pdf",
                         "public": false,
                         "type": "file",
-                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/dfdf2b50-111d-11ea-801f-f3bb44e1af0c.pdf?Expires=1658219683266&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=AHxoDSYjlu4jSCVqBLFNKyQgWMzKYraGacNfziJxv-NowjAU3NRhJ6~NYfdHQifIPur98qolR1boEgM-v6wMKK5NaL9w3T0u3OFVKSmO~vAQuX8cHeD2TGUw~26f2s391navJRxi7y700Ht4tON5JpztbjnRL5GjQwAiL9bSbmDPR7YGUDV6k0HgFxp-u26Qtu8VJi4r5aUJ60PUa6n78dyWO-93cKT7MxSwJour9gwy8EnXMc383oJ-66v607KawdXdxR7-QG5sA2USF1nIoRkeZQatqMIVQGBjpKVp17FRhdIQG-hqT4oDR3043nEId4xE0RDv7W1zTZ7RW-J4HA__",
+                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/dfdf2b50-111d-11ea-801f-f3bb44e1af0c.pdf?Expires=1658392160580&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=QbTfsg1y6h9tRhxzpzxWMBFWqq4pwKZG8qhx1mGODnOdTvvIOfkWGE68i77Wi5RFZHta6O-trXqIjwvHYRy2Iif4Ehg7Jc0r850a5vJwHUchDnfY-PKwhuPeuVgfhDM2g2rQvRPvAFyZdqkThrsqjGzqCAPPZicRbanUjYKDH8uHAf8RreifoD-nFXQIWz44FAGeStrXNDgibMyI~mYsiYr3ArZqXuTaFYNgFJtaiAApVfU0RoE750f6MmZZzbxaFBsO6VTZMLiV9Dl1Lsci7PKgLS6-hicSHLrK-3702iW10Z4fbaVuV9Hj2RJJOm4zy~3jS5q3HXk3rYTr3Gx2hQ__",
                         "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                         "mime": "application/pdf"
                     }
@@ -8245,7 +8341,7 @@ const mockupDeal = {
                             "youtube": null,
                             "facebook": null,
                             "designation": null,
-                            "current_time": "3:34 AM - Monday Jul 18, 2022",
+                            "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                             "push_allowed": false,
                             "agents": null,
                             "last_seen_type": "Web",
@@ -8312,7 +8408,7 @@ const mockupDeal = {
                         "name": "Seller’s Disclosure Notice (TAR 1406).pdf.pdf",
                         "public": false,
                         "type": "file",
-                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/35b109a0-111d-11ea-801f-f3bb44e1af0c.pdf?Expires=1658219683267&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=PrblBIFTU71TY2J-DBYpl~EJ4u~ZgYfqwGCBVDL7kWLBzYv8qZMfWo972aco5g9ib1vHXVtcpFZ5I-FISBqmJ-8jMV5b-B869kpq8ZnjNfpdU7dBdj4zupBfaFrSyGJ-XDMArz3zIc4-BnxnEwKoo3filzy-FmYyiohfxrQqlFBo1-doqWUL7XHIydyYWijxuzM5H2bSDHI5MzAjn6JM0w2FNku1ghuLaqSCowja9ycU10q5FPQyPVRf1JjLZQnk6WEQWH51Gr5ZPytu~ERJleGjLJlL45wBXHSthgsWTFEqoTv-aTvXT9n-gXNXbmBlZ1M3iFO-g6Y4Z2HpwJDD4A__",
+                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/35b109a0-111d-11ea-801f-f3bb44e1af0c.pdf?Expires=1658392160582&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=NfhULV~FRTUVUv-NPHKaE1kjuP-kjxIKzy-bwDEJmkI31RFvA1J3vajVWIx8gafRBKpIw6yNuPQyOETm94DyU-06FKzkMXKhLmtpskZAcEJLoJKugXbp2EMpJf4vFCfbPx9cPYsH~U0UNHYhEulDEQX7sd5U1c~Sjyo8gprQOSB~7lgcHA8jpA5pV5sE9lUhoufxG6zHuOJPEv5j10n9NqIGNMeEKjy-LaMZaf~ZmLgtZN~cEjMBpGbPh8L-jM3LLs8VtqHgipA18EEbMVOjBR~DUNhb9o26ugFJdECSIy1NC3cOPtZvqZdbPHM3lOHb-CQf-oKFUTFeVJidYzqACA__",
                         "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                         "mime": "application/pdf"
                     }
@@ -8387,7 +8483,7 @@ const mockupDeal = {
                             "youtube": null,
                             "facebook": null,
                             "designation": null,
-                            "current_time": "3:34 AM - Monday Jul 18, 2022",
+                            "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                             "push_allowed": false,
                             "agents": null,
                             "last_seen_type": "Web",
@@ -8454,7 +8550,7 @@ const mockupDeal = {
                         "name": "Information About Brokerage Services (TAR 2501)\t\t\t\t\t.pdf.pdf",
                         "public": false,
                         "type": "file",
-                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/aa497a00-111c-11ea-801f-f3bb44e1af0c.pdf?Expires=1658219683268&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=E7VVApPFNJD4nGlahdOXxDetBtG9o4rvTyprWgFzjjmK2H72ZlyMAQcA6JIZMNtJ4NwmoMqYPNBh-oLjWZm4QGfuTwj98NF8sUVmN-oLHkis4ZL-AqSl1dF6Oe46ScObPQ2~PfwVrFqztk6hhoKHhH0O5NiloYWDKorQSaI3q84z839xo7ChJtaR-tqj4o4LmsnsGdVLR7ovP26vwga44ImY0Q1RR65OmKOKVSk~nnW3SbVVPUEwGGS9l8bi4xZWXVLTlhMYnsZX9AS2B1bINV8mPXlmGGbHRkVRJx1Dn85-ycB1Yg1Bt~Y1VAxTALOjyt7Sr17P6GcF8jobmxm0Tg__",
+                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/aa497a00-111c-11ea-801f-f3bb44e1af0c.pdf?Expires=1658392160584&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=CBQHvDP7rpSGvL67LcaWX88E--jcypew~IdrAgZr4uIZ7gRQrby2ImJ9TQnZ86iIZfmetCoqzi4a04KGUJB0-TGCzY8jxHotppW8VjoR9v4H1WmDV3oum3hxd-4qUiY6IATZNvd5NwOKcF72Ct5~tKB3otzfglrKKy5wlxrhm-lZ6~1mZalyGP7FmY4RjeXEKXSPthRRVAtLqlirGrLBmdCrQ8eYlPGYz73jf6Fl-EKHd9l1ZZNaqL-AzpuNtA0pth89lb70JWJ7gXvvA3EoARdTwuY3ywX9VM1PGvcRulPDtZdjasrf9Yf3jwf8Yy3xTYGP~VV0Frb67hBuVh3~zQ__",
                         "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                         "mime": "application/pdf"
                     }
@@ -8529,7 +8625,7 @@ const mockupDeal = {
                             "youtube": null,
                             "facebook": null,
                             "designation": null,
-                            "current_time": "3:34 AM - Monday Jul 18, 2022",
+                            "current_time": "3:29 AM - Wednesday Jul 20, 2022",
                             "push_allowed": false,
                             "agents": null,
                             "last_seen_type": "Web",
@@ -8596,7 +8692,7 @@ const mockupDeal = {
                         "name": "Residential Real Estate Listing Agreement, Exclusive Right to Sell (TAR 1101)\t\t\t\t\t.pdf.pdf",
                         "public": false,
                         "type": "file",
-                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/61e9a500-111c-11ea-801f-f3bb44e1af0c.pdf?Expires=1658219683270&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=GzIKTGinFxvQ-8lMuFvqiX9Mt9o6YgBGpa7Rv81YCKauF5DDajx4m5kgdv3hdMDjsKfiCRYjoJeSarMncIB1ZOOwuuVlkKZOiBXePsP1YT0PNt616t0Qnlf34D1GyPKeYVVVbEJjiX68dK-rYbk46s4EiUdGNgRSSr5HJcVzFDw0hV2jTIRXvAWuvcCh0xo4gjy~l7ZY8z03jpjxsaTzXufffvREEudwttV6Cerv4daeA~nnWivuu7SmYiqUj9LSG3Jh-jYF3fE~f3JOFl6tBqeOADzyNtgXR3w-DqrHCmb~TkqXvSo4WVK60Lp8TSfO5GqgnORprvgvwSvx8gl8GQ__",
+                        "url": "https://private-cdn.irish.rechat.com/c9f4f1e8-110f-11ea-9c5b-027d31a1f7a0/61e9a500-111c-11ea-801f-f3bb44e1af0c.pdf?Expires=1658392160586&Key-Pair-Id=APKAIIRG223GKFAC4MHA&Signature=I37XLMwePG5yYsfdjR80aICP8qdD-nSRosA67glKDSjuR-hZLtdlfeVaaLMggkE42W2qpt-WnhqLQqngAkRXw3hD8-mByoYgg1I3HpM0HN~MCAazoBWP-h9SgsgBJHHMe3ruSwOWQSv6CNFaJRf0muCWbv4sw1eO7m5bgaAW51-RfM2SJWCt6jY-aMly5DJfwE8VfGaAlwDPdcYZR~fwA2FZTnJoUx8vua~3Ty2XI5RGoAQKKDJf1QUxGw8ljaCARjrIuWU2eFaTYrnx08w4rdJ11hdTfrCGM0xrhcgQDcKO3Sij6B-cG7MEJkYzGPPTjVVwtmhHh3WW9WZLs2wGog__",
                         "preview_url": "http://assets.rechat.com/mimes/application-pdf.png",
                         "mime": "application/pdf"
                     }
