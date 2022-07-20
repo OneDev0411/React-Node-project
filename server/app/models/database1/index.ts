@@ -1,7 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import CommissionDataModel from "./commission_data.model";
 import DealInfoModel from "./deal_info.model";
-import DeDealModel from "../database1/de_deal.model";
 import { makeUrl } from "../../../util";
 
 const database_url: string = process.env.DATABASE_URL1 || "";
@@ -36,6 +35,5 @@ db.sequelize = sequelize;
 
 db.CommissionDataModel = CommissionDataModel(sequelize, Sequelize);
 db.DealInfoModel = DealInfoModel(sequelize, Sequelize);
-db.DeDealModel = DeDealModel(sequelize, Sequelize);
 
 export default db;

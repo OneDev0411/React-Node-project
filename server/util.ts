@@ -1,3 +1,5 @@
+import { IdealData } from "type";
+
 require("dotenv").config();
 
 export const makeUrl = (database_url: string): string => {
@@ -27,8 +29,7 @@ export const DEAL = {
   BUYING: "Buying",
   AGENT_DOUBLE_ENDER: "Agent_double_ender",
   OFFICE_DOUBLE_ENDER: "Office_double_ender",
-}
-
+};
 
 export const BRAND = {
   REGION: "Region",
