@@ -5,6 +5,7 @@ import dataRoute from "./app/controllers/data/database1";
 import manifestRoute from "./app/controllers/manifest";
 // webhooks
 import webhooks from "./app/controllers/webhooks";
+// import sync from "./app/services/de_deal_sync";
 const router = express.Router();
 
 router.get("/", homeRoute);
@@ -17,5 +18,7 @@ router.post("/deal-webhooks-endpoint", webhooks.processDealWebHook);
  * Please don't remove this route
  */
 router.get("/manifest.json", manifestRoute);
+
+// router.get("/test", sync);
 
 export default router;

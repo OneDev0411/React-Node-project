@@ -8,9 +8,19 @@ export const makeUrl = (database_url: string): string => {
   return url;
 };
 
-export const getContextFromDeal = (deal: Object, key: string) => {
-  return deal["context"][key]["text"];
+export const getContextFromDeal = (deal: any, key: string) => {
+  // console.log('deal:', deal);
+  // console.log('key:', key);
+  // console.log('context:', deal.context);
+  // console.log('key:', deal.context[key]);
+  // console.log('text:', (deal.context[key] || {})['text']);
+  // if (deal.context[key] === undefined) {
+  //   return "";
+  // }
+  return (deal["context"][key] || {})["text"] || "";
 }
+
+export const getTokenURL:string = 'https://staging.webapi.elliman.com/token?username=emil@rechat.com&password=Skiing4-Monetize-Excitable';
 
 export const DEAL = {
   SELLING: "Selling",
@@ -24,9 +34,3 @@ export const BRAND = {
   REGION: "Region",
   OFFICE: "Office",
 }
-
-
-
-module.exports = {
-  makeUrl,
-};

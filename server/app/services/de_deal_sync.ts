@@ -1,28 +1,32 @@
-import { BRAND, DEAL, getContextFromDeal } from "../../util"
+import { BRAND, DEAL, getContextFromDeal, getTokenURL } from "../../util"
 
-import request from 'request-promise-native'
 import moment from 'moment'
+// import request from 'request-promise-native'
 import _ from 'lodash'
 import states from 'us-state-codes';
 
 import db from '../models/database1/index';
+import mockupDeal from './mockup_deal'
+import axios from "axios";
+import { request } from "express";
 
 const getState = async deal => {
-  const row = await db.DeDealModel.findOne({ deal });
+  const rows = await db.DeDealModel.findOne({ deal });
   // const { rows } = await db.executeSql.promise('SELECT * FROM de.deals WHERE deal = $1', [deal])
-  // const [row] = rows
+  const [row] = rows
   return row
+  // return {
+  //   id: "c9f46245-2534-11ea-5635-027d31a17536",
+  //   deal: "c9f46245-2534-11ea-5635-027d31a18632",
+  //   is_finalized: false,
+  //   created_at: new Date(),
+  //   updated_at: new Date(),
+  // }
 }
 
 const getToken = async () => {
-  //   const uri = config.url
-  const uri = "";
-
-  const { token } = await request({
-    uri,
-    json: true
-  })
-
+  const result = await axios.get(getTokenURL);
+  const { token } = result.data;
   return token
 }
 
@@ -76,28 +80,28 @@ const save = async ({ deal, is_finalized = false }) => {
   // ])
 }
 
-const getRegionDetails = async (brand): Promise<any> => {
-  // const { rows } = await db.executeSql.promise('SELECT * FROM de.regions WHERE brand = $1', [brand.id])
-  // return rows[0]
-}
+// const getRegionDetails = async (brand): Promise<any> => {
+// const { rows } = await db.executeSql.promise('SELECT * FROM de.regions WHERE brand = $1', [brand.id])
+// return rows[0]
+// }
 
-const getOfficeDetails = async (brand): Promise<any> => {
-  // const { rows } = await db.executeSql.promise('SELECT * FROM de.offices WHERE brand = $1', [brand.id])
-  // return rows[0]
-}
+// const getOfficeDetails = async (brand): Promise<any> => {
+// const { rows } = await db.executeSql.promise('SELECT * FROM de.offices WHERE brand = $1', [brand.id])
+// return rows[0]
+// }
 
-const getAgentDetails = async (role_ids): Promise<any> => {
-  // const { rows } = await db.executeSql.promise(`SELECT
-  //     deals_roles.id,
-  //     public.users.id as user, 
-  //     de.users.object->>'d365AgentId' as "AgentId", 
-  //     de.users.object->'offices'->0->'businessLocations'->0->>'businessLocation' as "BusinessLocation"
-  //   FROM deals_roles
-  //   LEFT JOIN public.users ON LOWER(deals_roles.email) = LOWER(public.users.email)
-  //   LEFT JOIN de.users ON de.users.user = public.users.id
-  //   WHERE deals_roles.id = ANY($1::uuid[])`, [role_ids])
-  // return rows
-}
+// const getAgentDetails = async (role_ids): Promise<any> => {
+// const { rows } = await db.executeSql.promise(`SELECT
+//     deals_roles.id,
+//     public.users.id as user, 
+//     de.users.object->>'d365AgentId' as "AgentId", 
+//     de.users.object->'offices'->0->'businessLocations'->0->>'businessLocation' as "BusinessLocation"
+//   FROM deals_roles
+//   LEFT JOIN public.users ON LOWER(deals_roles.email) = LOWER(public.users.email)
+//   LEFT JOIN de.users ON de.users.user = public.users.id
+//   WHERE deals_roles.id = ANY($1::uuid[])`, [role_ids])
+// return rows
+// }
 
 const isDoubleEnded = deal => {
   const ender_type = getContextFromDeal(deal, 'ender_type')
@@ -305,18 +309,18 @@ const getSaleAttributes = ({ deal, roles }) => {
   }
 }
 
-const sync = async deal => {
+const sync = async (deal = mockupDeal) => {
   // const sync = async (deal, brand_ids) => {
   // Context.log('Syncing D365 for', deal.id)
+  deal = mockupDeal;
 
   const token = await getToken()
 
   const state = await getState(deal.id)
+  // const brands = deal.brands;
 
-  const brands = deal.brands;
-
-  const region = _.find(brands, { brand_type: BRAND.REGION })
-  const office = _.find(brands, { brand_type: BRAND.OFFICE })
+  // const region = _.find(brands, { brand_type: BRAND.REGION })
+  // const office = _.find(brands, { brand_type: BRAND.OFFICE })
 
   const property_type = deal.property_type;
 
@@ -326,7 +330,8 @@ const sync = async deal => {
   const leased_price = getContextFromDeal(deal, 'leased_price')
 
   const type = property_type.is_lease ? 'rental' : 'sale'
-  const update = state ? '/update' : ''
+  const update = ''
+  // const update = state ? '/update' : ''
   const uri = `https://webapi.elliman.com/api/adc/postdeal/${type}${update}`
   const created_at = state ? state.created_at : new Date()
   const DealDate = moment.utc(created_at).format('YYYY-MM-DD')
@@ -341,6 +346,7 @@ const sync = async deal => {
    * So, in case of Hip Pockets, we don't have Listing Date. Michael asked me to provide the DealDate for those cases.
    * In case of buy-side deals, we don't have listing date. In those cases, James asked me to provide executed date aka contract date.
    */
+  console.log("###############:", getContextFromDeal(deal, 'list_date'));
   const ListingDate = getContextFromDeal(deal, 'list_date')
     ?? (isHippocket ? DealDate : null)
     ?? getContextFromDeal(deal, 'contract_date')
@@ -411,13 +417,15 @@ const sync = async deal => {
 
   const role_ids = _.map(roles, 'id')
 
-  const agent_details = await getAgentDetails(role_ids)
-  const region_details = await getRegionDetails(region)
-  const office_details = await getOfficeDetails(office)
+  // const agent_details = await getAgentDetails(role_ids)
+  const agent_details = []
+  // const region_details = await getRegionDetails(region)
+  // const office_details = await getOfficeDetails(office)
 
   const isInternal = role => {
     const details = _.find(agent_details, { id: role.id })
-    return Boolean(details.AgentId)
+    return true;
+    // return Boolean(details.AgentId)
   }
 
   const getDealSide = role => {
@@ -430,14 +438,14 @@ const sync = async deal => {
     if (!AgentType)
       return
 
-    const details = _.find(agent_details, { id: role.id })
+    // const details = _.find(agent_details, { id: role.id })
 
-    const { AgentId, BusinessLocation } = details
+    // const { AgentId, BusinessLocation } = details
 
     return {
       AgentType,
-      AgentId,
-      BusinessLocation,
+      // AgentId,
+      // BusinessLocation,
       'OfficeGCIAllocation': 100,
       CompanyName: role.company_title,
       DealSide: getDealSide(role),
@@ -462,7 +470,7 @@ const sync = async deal => {
 
   const agents = _.chain(roles)
     .filter(isAgent)
-    .filter(doesNeedCommission)
+    // .filter(doesNeedCommission)
     .map(role => isInternal(role) ? mapInternal(role) : mapExternal(role))
     .value()
 
@@ -472,13 +480,14 @@ const sync = async deal => {
       Street,
       ZipCode,
       PropertyType,
-      ListingDate,
-      ListingPrice,
+      ListingDate: "2022-02-02",
+      ListingPrice: 30000,
       UnitNum,
       City,
       State,
       ListingType: 'Other',
-      BusinessLocation: office_details.business_locations[0]
+      BusinessLocation: "business_location"
+      // BusinessLocation: office_details.business_locations[0]
     },
     deal: {
       Source: 'StudioPro',
@@ -487,46 +496,76 @@ const sync = async deal => {
       'LineOfBusiness': 'Brokerage',
       ClosingDate,
       DealDate,
-      PaidBy: region_details.paid_by,
-
-
+      // PaidBy: region_details.paid_by,
+      PaidBy: "payroll",
+      
       ...leaseAttributes,
       ...saleAttributes,
+      
+      // custom code
+      LeaseStartDate: "2022-01-01",
+      LeaseEndDate: "2022-01-01",
+      MonthlyRent: 30000,
+      ListSideDealValue: 10000,
+      ListSideCommissionRate: 3,
     },
-    agents
+    agents: agents.map(agent => {
+      return { ...agent, AgentID: "test", BusinessLocation: "test", OfficeGCIAllocation: 10 }
+    })
   }
 
   try {
-    const res = await request({
-      uri,
+    console.log('body:', body);
+    const res: any = await axios.post(uri, body, {
       headers: {
         Authorization: `Bearer ${token}`
-      },
-      json: true,
-      method: 'post',
-      body
-    })
-
-    if (res.successful)
-      await save({ deal })
-    console.log('Sync Result', res);
-    // Context.log('Sync Result', res)
+      }
+    });
+    // console.log('request:', request);
+    console.log('res:', res.data);
   } catch (e) {
-
-    /*
-     * When a deal goes goes from their API to D365, it's locked out and we wont be able to amend it there.
-     * When this happens, mark it as finalized and we wont try sending more updates to D365.
-     */
-    if (e.statusCode === 409) {
-      await save({ deal, is_finalized: true })
-      console.log('Sync Finalized');
-      // Context.log('Sync Finalized')
-      return
-    }
-
-    throw e
+    console.log('error:', e.response.data);
   }
 }
+
+//   try {
+//     console.log('body:', body);
+//     // const res = await request({
+//     //   uri,
+//     //   headers: {
+//     //     Authorization: `Bearer ${token}`
+//     //   },
+//     //   json: true,
+//     //   method: 'post',
+//     //   body
+//     // })
+//     const res: any = await axios.post(uri, body, {
+//       headers: {
+//         Authorization: `Bearer ${token}`
+//       }
+//     });
+//     console.log('res:', res);
+//     if (res.successful)
+//       await save({ deal })
+//     console.log('Sync Result', res);
+//     // Context.log('Sync Result', res)
+//   } catch (e) {
+
+//     /*
+//      * When a deal goes goes from their API to D365, it's locked out and we wont be able to amend it there.
+//      * When this happens, mark it as finalized and we wont try sending more updates to D365.
+//      */
+//     console.log('error:', e.message);
+//     if (e.statusCode === 409) {
+//       await save({ deal, is_finalized: true })
+//       console.log('Sync Finalized');
+//       // Context.log('Sync Finalized')
+//       return
+//     }
+
+//     throw e
+//   }
+// }
 
 // const sync = async (deal, brand_ids) => {
 //   const state = await getState(deal.id)
@@ -536,7 +575,9 @@ const sync = async deal => {
 //   await queue(deal, brand_ids)
 // }
 
-export default sync;
+// export default sync;
+// sync();
+console.log(getState("17013336-d079-11ec-a6b2-0271a4acc769"));
 
 // module.exports = {
   // sync
