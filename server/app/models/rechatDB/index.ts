@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 import AdminsOfficeModel from "./admins_office.model";
 import AgentsOfficeModel from "./agents_office.model";
-import DealModel from "./deal.model";
+import DeDealModel from "./de_deal.model";
 import OfficeModel from "./office.model";
 import RegionModel from "./region.model";
 import UserModel from "./user.model";
@@ -31,7 +31,7 @@ interface DB {
   AdminsOfficeModel?: any;
   AgentsOfficeModel?: any;
   ContactModel?: any;
-  DealModel?: any;
+  DeDealModel?: any;
   OfficeModel?: any;
   RegionModel?: any;
   UserModel?: any;
@@ -45,7 +45,7 @@ db.sequelize = sequelize;
 db.AdminsOfficeModel = AdminsOfficeModel(sequelize, Sequelize);
 db.AgentsOfficeModel = AgentsOfficeModel(sequelize, Sequelize);
 db.ContactModel = ContactModel(sequelize, Sequelize);
-db.DealModel = DealModel(sequelize, Sequelize);
+db.DeDealModel = DeDealModel(sequelize, Sequelize);
 db.OfficeModel = OfficeModel(sequelize, Sequelize);
 db.RegionModel = RegionModel(sequelize, Sequelize);
 db.UserModel = UserModel(sequelize, Sequelize);

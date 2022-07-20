@@ -26,4 +26,11 @@ const readDealData = async (deal_id: string, model: any) => {
   return res;
 };
 
-export default {};
+const readAllData = async (model: any) => {
+  const res = await model.findAll();
+  return res;
+};
+
+export default {
+  readAllData,
+};
