@@ -1,5 +1,8 @@
 export default (sequelize, Sequelize) => {
-  const DeDealModel = sequelize.define("de_deal", {
+  const DeDealModel = sequelize.define("deal", {
+    id: {
+      type: Sequelize.UUID,
+    },
     deal: {
       type: Sequelize.UUID,
     },
