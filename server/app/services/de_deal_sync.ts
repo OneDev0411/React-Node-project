@@ -11,8 +11,11 @@ import axios from "axios";
 import { QueryTypes } from "sequelize";
 
 const getState = async (deal) => {
-  const { dataValues } = await rechatDB.DeDealModel.findOne({ deal });
-  return dataValues;
+  const result = await rechatDB.DeDealModel.findOne({ 
+    where: { deal }
+  });
+
+  return result?.dataValues;
 };
 
 const getToken = async () => {
@@ -67,20 +70,25 @@ const save = async ({ deal, is_finalized = false }) => {
 const getRegionDetails = async (brand) => {
   try {
     const { dataValues } = await rechatDB.RegionModel.findOne({
-      brand: brand.id,
+      where: { brand: brand.id, },
     });
     return dataValues;
   } catch (e) {
-    console.log("error:", e.message);
-    // throw e;
+    console.log("ERROR:", e.message);
   }
 };
 
 const getOfficeDetails = async (brand) => {
-  const { dataValues } = await rechatDB.OfficeModel.findOne({
-    brand: brand.id,
-  });
-  return dataValues;
+  try {
+    console.log('###ID:', brand.id);
+    const { dataValues } = await rechatDB.OfficeModel.findOne({
+      where: { brand: brand.id, },
+    });
+    console.log('dataValues:', dataValues);
+    return dataValues;
+  } catch(e) {
+    console.log('ERROR:', e.message);
+  }
 };
 
 // const getAgentDetails = async (role_ids = ["cae39d20-110f-11ea-9c5d-027d31a1f7a0", "cb73df76-833c-11ea-9de1-027d31a1f7a0"], user_ids = ["50f23824-9d26-11eb-beca-027d2d7e1395", undefined]) => {
@@ -352,7 +360,7 @@ const getBrandsFromDeal = (brand, brands) => {
 };
 
 const sync = async (deal = mockupDeal) => {
-  // const sync = async (deal, brand_ids) => {
+  // const sync = async deal => {
   console.log("Syncing D365 for", deal.id);
   deal = mockupDeal;
 
@@ -374,9 +382,9 @@ const sync = async (deal = mockupDeal) => {
   const leased_price = getContextFromDeal(deal, "leased_price");
 
   const type = property_type.is_lease ? "rental" : "sale";
-  const update = "";
-  // const update = state ? '/update' : ''
+  const update = state ? '/update' : ''
   const uri = `https://webapi.elliman.com/api/adc/postdeal/${type}${update}`;
+  console.log('URL:', uri);
   const created_at = state ? state.created_at : new Date();
   const DealDate = moment.utc(created_at).format("YYYY-MM-DD");
 
@@ -541,8 +549,7 @@ const sync = async (deal = mockupDeal) => {
       City,
       State,
       ListingType: "Other",
-      BusinessLocation: "office_details.business_locations",
-      // BusinessLocation: office_details.business_locations[0],
+      BusinessLocation: office_details.business_locations[0],
     },
     deal: {
       Source: "StudioPro",
@@ -551,21 +558,12 @@ const sync = async (deal = mockupDeal) => {
       'LineOfBusiness': 'Brokerage',
       ClosingDate,
       DealDate,
-      // PaidBy: region_details.paid_by,
-      PaidBy: "Escrow",
+      PaidBy: region_details.paid_by,
 
       ...leaseAttributes,
       ...saleAttributes,
 
     },
-    // agents: agents.map((agent) => {
-    //   return {
-    //     ...agent,
-    //     AgentID: "test",
-    //     BusinessLocation: "test",
-    //     OfficeGCIAllocation: 10,
-    //   };
-    // }),
     agents,
   };
 
@@ -578,7 +576,7 @@ const sync = async (deal = mockupDeal) => {
     });
     console.log("res:", res.data);
     if (res.data.successful)  {
-      await save({ deal });
+      await save({ deal: deal.id });
     }
     console.log("Sync Result", res.data);
   } catch (e) {
@@ -599,3 +597,11 @@ const sync = async (deal = mockupDeal) => {
 
 // export default sync;
 sync();
+// async function test() {
+//   try {
+//     await save({ deal: mockupDeal.id });
+//   } catch(e) {
+//     console.log('error:', e.message);
+//   }
+// }
+// test();
