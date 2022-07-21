@@ -52,4 +52,6 @@ db.RegionModel = RegionModel(sequelize, Sequelize);
 removeAttribute(db.RegionModel, ["id", "created_at", "updated_at"]);
 db.UserModel = UserModel(sequelize, Sequelize);
 
+// set foreign key
+
 export default db;

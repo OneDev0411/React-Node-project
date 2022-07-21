@@ -82,7 +82,7 @@ const readCommissionData = async (req: Request, res: Response) => {
 
 const handleUpsertFromWebhook = async (deal: any) => {
   let data = {
-    deal_id: deal.deal.id,
+    deal_id: deal.id,
     payload: JSON.stringify(deal),
   };
   // upsert data to commissionDB/deal

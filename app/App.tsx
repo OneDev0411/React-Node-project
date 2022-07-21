@@ -16,9 +16,6 @@ const App: React.FC<EntryProps> = ({
   const { deal, roles } = models;
   const { setDealData, roleData, setRoleData, setRemittanceChecks } = useApp();
 
-  console.log('deal:', deal);
-  console.log('roles:', roles);
-
   // push data to global state from backend data by using contextAPI
   const dataToContextAPI = async () => {
     let res = await axios.post(
@@ -99,7 +96,6 @@ const App: React.FC<EntryProps> = ({
   };
 
   React.useEffect(() => {
-    console.log("deal information", models);
     dataToContextAPI();
   }, []);
 

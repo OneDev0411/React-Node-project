@@ -2,7 +2,7 @@ export default (sequelize, Sequelize) => {
   const DealInfoModel = sequelize.define(
     "deal_info",
     {
-      deal: {
+      deal_id: {
         type: Sequelize.UUID,
         allowNull: false,
         unique: true,

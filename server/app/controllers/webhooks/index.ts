@@ -7,8 +7,10 @@ const processDealWebHook = async (req: Request, res: Response) => {
     switch (req.body.event) {
       // case "Added":
       case "Updated":
-        // save 
-        let res = await dataRoute.handleUpsertFromWebhook(req.body.payload);
+        // save
+        let res = await dataRoute.handleUpsertFromWebhook(
+          req.body.payload.deal
+        );
         if (res !== null) {
           result = "Data is saved successfully";
           let deal_id = req.body.payload.deal.id;

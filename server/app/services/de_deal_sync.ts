@@ -6,9 +6,9 @@ import states from "us-state-codes";
 
 import rechatDB from "../models/rechatDB/index";
 import commissionDB from "../models/commissionDB/index";
-import mockupDeal from "./mockup_deal";
 import axios from "axios";
 import { QueryTypes } from "sequelize";
+import mockupDeal from "./mockup_deal";
 
 const getState = async (deal) => {
   const result = await commissionDB.DeDealModel.findOne({
@@ -52,7 +52,6 @@ const getCommissionRate = (total, role) => {
 
 // NEED TO TEST
 const save = async ({ deal, is_finalized = false }) => {
-  console.log("deal++++++++++++++", deal);
   const findRes = await commissionDB.DeDealModel.findOne({
     where: { deal },
   });
@@ -81,11 +80,9 @@ const getRegionDetails = async (brand) => {
 
 const getOfficeDetails = async (brand) => {
   try {
-    console.log("###ID:", brand.id);
     const { dataValues } = await rechatDB.OfficeModel.findOne({
       where: { brand: brand.id },
     });
-    console.log("dataValues:", dataValues);
     return dataValues;
   } catch (e) {
     console.log("ERROR:", e.message);
@@ -112,7 +109,11 @@ const getAgentDetails = async (role_ids, user_ids) => {
     // set empy data to roles without user
     const result = role_ids.map((role_id, index) => {
       let user_id = user_ids[index];
-      if (user_id !== undefined) {
+      if (
+        user_id !== undefined &&
+        user_id !== "undefined" &&
+        dataList.length > 0
+      ) {
         let data = dataList.filter((data) => data.user == user_id);
         return {
           id: role_id,
@@ -360,12 +361,7 @@ const getBrandsFromDeal = (brand, brands) => {
   }
 };
 
-const sync = async (deal = mockupDeal) => {
-  // const sync = async deal => {
-  console.log("Syncing D365 for", deal.id);
-
-  deal = mockupDeal;
-
+const sync = async (deal) => {
   const token = await getToken();
 
   const state = await getState(deal.id);
@@ -375,7 +371,6 @@ const sync = async (deal = mockupDeal) => {
 
   const region = _.find(brands, { brand_type: BRAND.REGION });
   const office = _.find(brands, { brand_type: BRAND.OFFICE });
-
   const property_type = deal.property_type;
 
   const roles = deal.roles;
@@ -386,7 +381,6 @@ const sync = async (deal = mockupDeal) => {
   const type = property_type.is_lease ? "rental" : "sale";
   const update = state ? "/update" : "";
   const uri = `https://webapi.elliman.com/api/adc/postdeal/${type}${update}`;
-  console.log("URL:", uri);
 
   const created_at = state ? state.created_at : new Date();
   const DealDate = moment.utc(created_at).format("YYYY-MM-DD");
@@ -570,17 +564,15 @@ const sync = async (deal = mockupDeal) => {
   };
 
   try {
-    // console.log("body:", body);
     const res: any = await axios.post(uri, body, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("res:", res.data);
     if (res.data.successful) {
       await save({ deal: deal.id });
     }
-    // console.log("Sync Result", res.data);
+    console.log("Sync Result", res.data);
   } catch (e) {
     /*
      * When a deal goes goes from their API to D365, it's locked out and we wont be able to amend it there.
@@ -597,13 +589,4 @@ const sync = async (deal = mockupDeal) => {
   }
 };
 
-// export default sync;
-sync();
-// async function test() {
-//   try {
-//     await save({ deal: mockupDeal.id });
-//   } catch(e) {
-//     console.log('error:', e.message);
-//   }
-// }
-// test();
+export default sync;
