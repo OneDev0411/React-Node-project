@@ -38,7 +38,23 @@ db.CommissionDataModel = CommissionDataModel(sequelize, Sequelize);
 db.DealInfoModel = DealInfoModel(sequelize, Sequelize);
 db.DeDealModel = DeDealModel(sequelize, Sequelize);
 
-db.DeDealModel.hasOne(db.DealInfoModel);
-db.DealInfoModel.belongsTo(db.DeDealModel);
+// associations
+db.DeDealModel.hasOne(db.DealInfoModel, {
+  sourceKey: "deal",
+  foreignKey: "deal_id",
+});
+db.DealInfoModel.belongsTo(db.DeDealModel, {
+  foreignKey: "deal_id",
+  targetKey: "deal",
+});
+
+db.DeDealModel.hasOne(db.CommissionDataModel, {
+  sourceKey: "deal",
+  foreignKey: "deal_id",
+});
+db.CommissionDataModel.belongsTo(db.DeDealModel, {
+  foreignKey: "deal_id",
+  targetKey: "deal",
+});
 
 export default db;

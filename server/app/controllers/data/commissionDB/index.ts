@@ -41,7 +41,7 @@ const saveCommissionData = async (req: Request, res: Response) => {
     let totalData = req.body.data;
     let data: IdealData = {
       deal_id: totalData.dealData.deal_id,
-      payload: JSON.stringify(totalData),
+      object: JSON.stringify(totalData),
     };
     await saveData(data, CommissionDataModel);
     await sendDealData(data.deal_id); // send deal information and commission app data to DE company
@@ -64,7 +64,7 @@ const readCommissionData = async (req: Request, res: Response) => {
     let data = await readData(deal_id, CommissionDataModel);
     let totalData;
     if (data !== null) {
-      totalData = JSON.parse(data.payload);
+      totalData = JSON.parse(data.object);
     } else {
       totalData = null;
     }
@@ -84,7 +84,7 @@ const readCommissionData = async (req: Request, res: Response) => {
 const handleUpsertFromWebhook = async (deal: any) => {
   let data = {
     deal_id: deal.id,
-    payload: JSON.stringify(deal),
+    object: JSON.stringify(deal),
   };
   // upsert data to commissionDB/de_deal
   await saveData(data, DealInfoModel);
@@ -97,8 +97,8 @@ const readCombinedData = async (deal_id: string) => {
   let commissionData = await readData(deal_id, CommissionDataModel);
   let dealInfo = await readData(deal_id, DealInfoModel);
   let data: ICombinedData = {
-    commissionData: commissionData?.payload,
-    dealInfo: dealInfo?.payload,
+    commissionData: commissionData?.object,
+    dealInfo: dealInfo?.object,
   };
   return data;
 };

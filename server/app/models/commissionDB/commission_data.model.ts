@@ -3,11 +3,11 @@ export default (sequelize, Sequelize) => {
     "commission_data",
     {
       deal_id: {
-        type: Sequelize.TEXT,
+        type: Sequelize.UUID,
         allowNull: false,
         unique: true,
       },
-      payload: {
+      object: {
         type: Sequelize.JSONB,
         allowNull: false,
       },

@@ -7,7 +7,7 @@ export default (sequelize, Sequelize) => {
         allowNull: false,
         unique: true,
       },
-      payload: {
+      object: {
         type: Sequelize.JSONB,
         allowNull: false,
       },
