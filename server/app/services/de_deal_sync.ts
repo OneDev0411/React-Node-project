@@ -11,8 +11,12 @@ import axios from "axios";
 import { QueryTypes } from "sequelize";
 
 const getState = async (deal) => {
-  const { dataValues } = await rechatDB.DeDealModel.findOne({ deal });
-  return dataValues;
+  const res = await rechatDB.DeDealModel.findOne({
+    where: {
+      deal: deal,
+    },
+  });
+  return res || null;
 };
 
 const getToken = async () => {
@@ -50,15 +54,15 @@ const getCommissionRate = (total, role) => {
 // NEED TO TEST
 const save = async ({ deal, is_finalized = false }) => {
   const findRes = await commissionDB.DeDealModel.findOne({
-    where: { deal },
+    where: { deal: deal.id },
   });
   if (findRes === null) {
-    await commissionDB.DeDealModel.create({ deal, is_finalized });
+    await commissionDB.DeDealModel.create({ deal: deal.id, is_finalized });
   } else {
     await commissionDB.DeDealModel.update(
-      { deal, is_finalized },
+      { deal: deal.id, is_finalized },
       {
-        where: { deal },
+        where: { deal: deal.id },
       }
     );
   }
@@ -354,6 +358,7 @@ const getBrandsFromDeal = (brand, brands) => {
 const sync = async (deal = mockupDeal) => {
   // const sync = async (deal, brand_ids) => {
   console.log("Syncing D365 for", deal.id);
+
   deal = mockupDeal;
 
   const token = await getToken();
@@ -548,7 +553,7 @@ const sync = async (deal = mockupDeal) => {
       Source: "StudioPro",
       DealUniqueRef: `SP${deal.number}`,
       DealSide,
-      'LineOfBusiness': 'Brokerage',
+      LineOfBusiness: "Brokerage",
       ClosingDate,
       DealDate,
       // PaidBy: region_details.paid_by,
@@ -556,7 +561,6 @@ const sync = async (deal = mockupDeal) => {
 
       ...leaseAttributes,
       ...saleAttributes,
-
     },
     // agents: agents.map((agent) => {
     //   return {
@@ -570,17 +574,18 @@ const sync = async (deal = mockupDeal) => {
   };
 
   try {
-    console.log("body:", body);
+    // console.log("body:", body);
     const res: any = await axios.post(uri, body, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("res:", res.data);
-    if (res.data.successful)  {
+    // console.log("res:", res.data);
+    if (!res.data.successful) {
+      console.log("id", deal.id);
       await save({ deal });
     }
-    console.log("Sync Result", res.data);
+    // console.log("Sync Result", res.data);
   } catch (e) {
     /*
      * When a deal goes goes from their API to D365, it's locked out and we wont be able to amend it there.
@@ -588,7 +593,7 @@ const sync = async (deal = mockupDeal) => {
      */
     console.log("error:", e);
     if (e.statusCode === 409) {
-      await save({ deal, is_finalized: true });
+      await save({ deal });
       console.log("Sync Finalized");
       return;
     }

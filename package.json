@@ -52,6 +52,8 @@
     "serve-static": "^1.15.0",
     "throng": "^5.0.0",
     "us-state-codes": "^1.1.2",
+    "uuid": "^8.3.2",
+    "uuidv4": "^6.2.13",
     "webpack-dev-middleware": "^5.3.3"
   },
   "devDependencies": {

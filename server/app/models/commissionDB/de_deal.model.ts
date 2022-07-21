@@ -3,10 +3,10 @@ export default (sequelize, Sequelize) => {
     "de_deal",
     {
       id: {
-        type: Sequelize.UUID,
         allowNull: false,
-        unique: true,
         primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4(),
       },
       deal: {
         type: Sequelize.UUID,
