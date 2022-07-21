@@ -9,6 +9,7 @@ export default (sequelize, Sequelize) => {
       },
       payload: {
         type: Sequelize.JSONB,
+        allowNull: false,
       },
     },
     {

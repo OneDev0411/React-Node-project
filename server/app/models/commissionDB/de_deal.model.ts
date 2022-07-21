@@ -16,6 +16,7 @@ export default (sequelize, Sequelize) => {
       is_finalized: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
+        defaultValue: false,
       },
     },
     {

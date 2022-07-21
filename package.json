@@ -8,8 +8,8 @@
   "license": "",
   "scripts": {
     "develop": "cross-env NODE_ENV=development TS_NODE_PROJECT='server/tsconfig.json' node -r ts-node/register server/main.ts",
-    "test:sync": "ts-node -T -r tsconfig-paths/register ./server/app/services/de_deal_sync.ts",
     "test": "ts-node -T -r tsconfig-paths/register ./server/app/services/test.ts",
+    "deal:sync": "ts-node -T -r tsconfig-paths/register ./server/app/scripts/deal_sync.ts",
     "sync1": "ts-node -T -r tsconfig-paths/register ./server/app/scripts/sync1.ts",
     "bootstraps1": "ts-node -T -r tsconfig-paths/register ./server/app/scripts/bootstraps1.ts",
     "migrate1": "npm run bootstraps1 && ts-node -T -r tsconfig-paths/register ./server/app/scripts/migration1.ts migrate",

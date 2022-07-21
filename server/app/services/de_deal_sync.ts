@@ -10,7 +10,7 @@ import axios from "axios";
 import { QueryTypes } from "sequelize";
 import mockupDeal from "./mockup_deal";
 
-const getState = async (deal) => {
+const getState = async (deal: any) => {
   const result = await commissionDB.DeDealModel.findOne({
     where: { deal },
   });
@@ -69,10 +69,10 @@ const save = async ({ deal, is_finalized = false }) => {
 
 const getRegionDetails = async (brand) => {
   try {
-    const { dataValues } = await rechatDB.RegionModel.findOne({
+    const result = await rechatDB.RegionModel.findOne({
       where: { brand: brand.id },
     });
-    return dataValues;
+    return result?.dataValues;
   } catch (e) {
     console.log("ERROR:", e.message);
   }
@@ -80,10 +80,10 @@ const getRegionDetails = async (brand) => {
 
 const getOfficeDetails = async (brand) => {
   try {
-    const { dataValues } = await rechatDB.OfficeModel.findOne({
+    const result = await rechatDB.OfficeModel.findOne({
       where: { brand: brand.id },
     });
-    return dataValues;
+    return result?.dataValues;
   } catch (e) {
     console.log("ERROR:", e.message);
   }

@@ -3,7 +3,7 @@ import commissionDB from "../models/commissionDB";
 import rechatDBRoute from "../controllers/data/rechatDB";
 import commissionDBRoute from "../controllers/data/commissionDB";
 
-const test = async () => {
+const dealSycn = async () => {
   try {
     const deDealData = await rechatDBRoute.readAllData(rechatDB.DeDealModel);
     await commissionDBRoute.saveAllData(deDealData, commissionDB.DeDealModel);
@@ -11,4 +11,5 @@ const test = async () => {
     console.log("error", error);
   }
 };
-test();
+
+dealSycn();

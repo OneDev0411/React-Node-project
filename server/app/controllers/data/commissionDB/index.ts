@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { IdealData } from "../../../../type";
+import { ICombinedData, IdealData } from "../../../../type";
 import db from "../../../models/commissionDB";
 import sync from "../../../services/de_deal_sync";
+import { JSONB, Model, Sequelize } from "sequelize";
 const { DealInfoModel, CommissionDataModel, DeDealModel } = db;
 
 const saveData = async (data: IdealData, model: any) => {
@@ -38,7 +39,7 @@ const sendDealData = async (deal_id: string) => {
 const saveCommissionData = async (req: Request, res: Response) => {
   try {
     let totalData = req.body.data;
-    let data = {
+    let data: IdealData = {
       deal_id: totalData.dealData.deal_id,
       payload: JSON.stringify(totalData),
     };
@@ -85,7 +86,7 @@ const handleUpsertFromWebhook = async (deal: any) => {
     deal_id: deal.id,
     payload: JSON.stringify(deal),
   };
-  // upsert data to commissionDB/deal
+  // upsert data to commissionDB/de_deal
   await saveData(data, DealInfoModel);
 
   // make de_deal data, sync with DE, upsert data to commissionDB/de_deal
@@ -95,7 +96,7 @@ const handleUpsertFromWebhook = async (deal: any) => {
 const readCombinedData = async (deal_id: string) => {
   let commissionData = await readData(deal_id, CommissionDataModel);
   let dealInfo = await readData(deal_id, DealInfoModel);
-  let data = {
+  let data: ICombinedData = {
     commissionData: commissionData?.payload,
     dealInfo: dealInfo?.payload,
   };
@@ -104,7 +105,17 @@ const readCombinedData = async (deal_id: string) => {
 
 const saveAllData = async (data: any, model: any) => {
   for (let i = 0; i < data.length; i++) {
-    await model.create(data[i].dataValues);
+    let temp = data[i].dataValues;
+    const findRes = await model.findOne({
+      where: { deal: temp.deal },
+    });
+    if (findRes === null) {
+      await model.create(temp);
+    } else {
+      await model.update(temp, {
+        where: { deal: temp.deal },
+      });
+    }
   }
 };
 

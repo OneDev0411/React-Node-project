@@ -3,10 +3,10 @@ export default (sequelize, Sequelize) => {
     "deal",
     {
       id: {
-        type: Sequelize.UUID,
         allowNull: false,
-        unique: true,
         primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4(),
       },
       deal: {
         type: Sequelize.UUID,
@@ -16,6 +16,7 @@ export default (sequelize, Sequelize) => {
       is_finalized: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
+        defaultValue: false,
       },
     },
     {
