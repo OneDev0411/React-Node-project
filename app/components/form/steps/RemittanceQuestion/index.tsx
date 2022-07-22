@@ -25,7 +25,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   const showBuy = showBoth || deal.deal_type === "Buying";
 
   const defaultCheckData: IRemittanceChecks = {
-    deal_id: deal.id,
+    deal: deal.id,
     check_num: 0,
     check_date: new Date(),
     check_receive_date: new Date(),
@@ -108,7 +108,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     if (setRemittanceChecks !== undefined) {
       setRemittanceChecks(
         _remittanceChecks.filter((item) => {
-          return item.amount !== 0 && item.deal_id !== "";
+          return item.amount !== 0 && item.deal !== "";
         })
       );
     }

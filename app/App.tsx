@@ -21,7 +21,7 @@ const App: React.FC<EntryProps> = ({
     let res = await axios.post(
       `http://localhost:8081/rechat-commission-app-data-read`,
       {
-        deal_id: deal.id,
+        deal: deal.id,
       }
     );
     let data = res.data.data;
@@ -42,7 +42,7 @@ const App: React.FC<EntryProps> = ({
         commission_dollar,
       } = agentRole;
       return {
-        deal_id: deal.id,
+        deal: deal.id,
         role_id: id,
         legal_full_name: legal_full_name,
         role: role,
@@ -81,7 +81,8 @@ const App: React.FC<EntryProps> = ({
         }
       } else {
         if (setDealData !== undefined) {
-          setDealData({ ...defaultDealData, deal_id: deal.id });
+          defaultDealData.deal = deal.id;
+          setDealData(defaultDealData);
         }
         if (setRoleData !== undefined) {
           setRoleData(tempAgentRoles);

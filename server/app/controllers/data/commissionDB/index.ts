@@ -1,11 +1,98 @@
 import { Request, Response } from "express";
-import { ICombinedData, ICommissionData, IDealData } from "../../../../type";
-import db from "../../../models/commissionDB";
+import {
+  ICombinedDealData,
+  ICommissionData,
+  IDealData,
+} from "../../../../type";
+import db from "../../../models/commissionAppDB";
 import sync from "../../../services/de_deal_sync";
 import Jsonb from "jsonb-builder";
-const { CommissionDataModel, DealModel } = db;
+const { AppDealModel, AppRoleModel, AppRemittanceCheckModel, DealModel } = db;
+
+const saveAppData = async (data: any, model: any) => {
+  const findRes = await model.findOne({
+    where: { deal: data.deal },
+  });
+  if (findRes === null) {
+    await model.create(data);
+  } else {
+    await model.update(data, {
+      where: { deal: data.deal },
+    });
+  }
+};
 
 const readData = async (deal: string, model: any) => {
+  const res = await model.findAll({
+    where: {
+      deal: deal,
+    },
+    attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+  });
+  return res;
+};
+
+const saveCommissionData = async (req: Request, res: Response) => {
+  try {
+    let allData: ICommissionData = req.body.data;
+    let dealData = allData.dealData;
+    let roleData = allData.roleData;
+    let remittanceChecks = allData.remittanceChecks;
+    // save appDealData
+    await saveAppData(allData.dealData, AppDealModel);
+    // save appRoleData
+    for (let i = 0; i < roleData.length; i++) {
+      await saveAppData(roleData[i], AppRoleModel);
+    }
+    // save appRemittanceCheckData
+    for (let i = 0; i < remittanceChecks.length; i++) {
+      await saveAppData(remittanceChecks[i], AppRemittanceCheckModel);
+    }
+    res.status(200).json({
+      message: "successful",
+      error: "no error",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "error",
+      error: error,
+    });
+    console.log("error", error);
+  }
+};
+
+const readCombinedAppData = async (deal: string) => {
+  let dealData = await readData(deal, AppDealModel);
+  let roleData = await readData(deal, AppRoleModel);
+  let remittanceChecks = await readData(deal, AppRemittanceCheckModel);
+  let allData: any = null;
+  if (dealData.length > 0) {
+    allData = {
+      dealData: dealData[0],
+      roleData: roleData,
+      remittanceChecks: remittanceChecks,
+    };
+  }
+  return allData;
+};
+
+const readCommissionData = async (req: Request, res: Response) => {
+  try {
+    let deal = req.body.deal;
+    let allData = await readCombinedAppData(deal);
+    res.status(200).json({
+      message: "successful",
+      data: allData,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "error",
+      error: error,
+    });
+  }
+};
+
+const readDealData = async (deal: string, model: any) => {
   const res = await model.findOne({
     where: {
       deal: deal,
@@ -21,60 +108,6 @@ const sendDealData = async (deal: string) => {
   // await axios.post("http://DE-API", {
   //   data: data,
   // });
-};
-
-const saveCommissionData = async (req: Request, res: Response) => {
-  try {
-    let totalData = req.body.data;
-    let data: ICommissionData = {
-      deal: totalData.dealData.deal,
-      object: new Jsonb(totalData),
-    };
-    const findRes = await CommissionDataModel.findOne({
-      where: { deal: data.deal },
-    });
-    if (findRes === null) {
-      await CommissionDataModel.create(data);
-    } else {
-      await CommissionDataModel.update(data, {
-        where: { deal: data.deal },
-      });
-    }
-    await sendDealData(data.deal); // send deal information and commission app data to DE company
-    res.status(200).json({
-      message: "successful",
-      error: "no error",
-    });
-  } catch (error) {
-    console.log("error", error);
-    res.status(500).json({
-      message: "error",
-      error: error,
-    });
-  }
-};
-
-const readCommissionData = async (req: Request, res: Response) => {
-  try {
-    const deal: string = req.body.deal;
-    let data = await readData(deal, CommissionDataModel);
-    let totalData;
-    if (data !== null) {
-      totalData = new Jsonb(data.object);
-    } else {
-      totalData = null;
-    }
-    res.status(200).json({
-      message: "successful",
-      data: totalData,
-    });
-  } catch (error) {
-    console.log("error", error);
-    res.status(200).json({
-      message: "error",
-      error: error,
-    });
-  }
 };
 
 const saveDealData = async (deal: any) => {
@@ -107,11 +140,11 @@ const handleUpsertFromWebhook = async (deal: any) => {
 };
 
 const readCombinedData = async (deal: string) => {
-  let commissionData = await readData(deal, CommissionDataModel);
+  let commissionData = await readCombinedAppData(deal);
   let dealData = await readData(deal, DealModel);
-  let data: ICombinedData = {
-    commissionData: commissionData?.object,
-    dealData: dealData?.object,
+  let data: ICombinedDealData = {
+    commissionData: commissionData,
+    dealData: dealData,
   };
   return data;
 };

@@ -136,7 +136,7 @@ export const paymentTypeData: IPaymentData[] = [
 
 export const defaultRemittanceChecks: IRemittanceChecks[] = [
   {
-    deal_id: "",
+    deal: "",
     check_num: 0,
     check_date: new Date(),
     check_receive_date: new Date(),
@@ -145,7 +145,7 @@ export const defaultRemittanceChecks: IRemittanceChecks[] = [
 ];
 
 export const defaultDealData: IDealData = {
-  deal_id: "",
+  deal: null,
   gci_calculate_type: 0,
   gci_de_value: 0,
   gci_reason_select: -1,

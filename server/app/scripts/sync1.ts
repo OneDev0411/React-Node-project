@@ -1,4 +1,4 @@
-import db from "../models/commissionDB/index";
+import db from "../models/commissionAppDB/index";
 
 const sync = async () => {
   try {

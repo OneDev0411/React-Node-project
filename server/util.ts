@@ -1,5 +1,3 @@
-import { IdealData } from "type";
-
 require("dotenv").config();
 
 export const makeUrl = (database_url: string): string => {
@@ -21,29 +19,27 @@ export const makeUrl = (database_url: string): string => {
 // };
 
 export const getContextFromDeal = (deal, key, default_value = null) => {
-  const context = deal.context ? deal.context : {}
+  const context = deal.context ? deal.context : {};
 
-  const { text, number, date, data_type } = context[key] || {}
+  const { text, number, date, data_type } = context[key] || {};
 
-  if (data_type === 'Text')
-    return text
+  if (data_type === "Text") return text;
 
-  if (data_type === 'Date' && date)
-    return new Date(date * 1000)
+  if (data_type === "Date" && date) return new Date(date * 1000);
 
-  if (data_type === 'Number')
-    return parseFloat(number)
+  if (data_type === "Number") return parseFloat(number);
 
-  return default_value
-}
+  return default_value;
+};
 
-export const getTokenURL: string = "https://staging.webapi.elliman.com/token?username=emil@rechat.com&password=Skiing4-Monetize-Excitable";
+export const getTokenURL: string =
+  "https://staging.webapi.elliman.com/token?username=emil@rechat.com&password=Skiing4-Monetize-Excitable";
 
 export const DEAL = {
   SELLING: "Selling",
   BUYING: "Buying",
-  AGENT_DOUBLE_ENDER: 'AgentDoubleEnder',
-  OFFICE_DOUBLE_ENDER: 'OfficeDoubleEnder',
+  AGENT_DOUBLE_ENDER: "AgentDoubleEnder",
+  OFFICE_DOUBLE_ENDER: "OfficeDoubleEnder",
 };
 
 export const BRAND = {

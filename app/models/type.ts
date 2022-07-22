@@ -32,7 +32,7 @@ export interface IGCIInfoItemProps {
 }
 
 export interface IDealData {
-  deal_id: string;
+  deal: string | null;
   gci_calculate_type: number;
   gci_de_value: number;
   gci_reason_select: number;
@@ -53,7 +53,7 @@ export interface IDealData {
 }
 
 export interface IRoleData {
-  deal_id: string;
+  deal: string;
   role_id: IDealRole["id"];
   legal_full_name: IDealRole["legal_full_name"];
   role: IDealRole["role"];
@@ -66,7 +66,7 @@ export interface IRoleData {
 }
 
 export interface IRemittanceChecks {
-  deal_id: string;
+  deal: string;
   check_num: number;
   check_date: Date;
   check_receive_date: Date;

@@ -5,7 +5,7 @@ import _ from "lodash";
 import states from "us-state-codes";
 
 import rechatDB from "../models/rechatDB/index";
-import commissionDB from "../models/commissionDB/index";
+import commissionDB from "../models/commissionAppDB/index";
 import axios from "axios";
 import { QueryTypes } from "sequelize";
 import mockupDeal from "./mockup_deal";

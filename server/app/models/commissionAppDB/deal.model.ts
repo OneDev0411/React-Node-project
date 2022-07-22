@@ -3,9 +3,9 @@ export default (sequelize, Sequelize) => {
     "deal",
     {
       id: {
+        type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4(),
       },
       deal: {

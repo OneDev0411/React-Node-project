@@ -4,10 +4,11 @@ export interface IDealData {
   object: string;
 }
 export interface ICommissionData {
-  deal: string;
-  object: string;
+  dealData: any;
+  roleData: any;
+  remittanceChecks: any;
 }
-export interface ICombinedData {
-  commissionData: string | null;
-  dealData: string | null;
+export interface ICombinedDealData {
+  commissionData: any;
+  dealData: any;
 }
