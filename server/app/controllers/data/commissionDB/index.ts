@@ -1,27 +1,14 @@
 import { Request, Response } from "express";
-import { ICombinedData, IdealData } from "../../../../type";
+import { ICombinedData, ICommissionData, IDealData } from "../../../../type";
 import db from "../../../models/commissionDB";
 import sync from "../../../services/de_deal_sync";
-import { JSONB, Model, Sequelize } from "sequelize";
-const { DealInfoModel, CommissionDataModel, DeDealModel } = db;
+import Jsonb from "jsonb-builder";
+const { CommissionDataModel, DealModel } = db;
 
-const saveData = async (data: IdealData, model: any) => {
-  const findRes = await model.findOne({
-    where: { deal_id: data.deal_id },
-  });
-  if (findRes === null) {
-    await model.create(data);
-  } else {
-    await model.update(data, {
-      where: { deal_id: data.deal_id },
-    });
-  }
-};
-
-const readData = async (deal_id: string, model: any) => {
+const readData = async (deal: string, model: any) => {
   const res = await model.findOne({
     where: {
-      deal_id: deal_id,
+      deal: deal,
     },
     attributes: { exclude: ["id", "createdAt", "updatedAt"] },
   });
@@ -29,8 +16,8 @@ const readData = async (deal_id: string, model: any) => {
 };
 
 // send deal information and commission app data to DE
-const sendDealData = async (deal_id: string) => {
-  let data = await readCombinedData(deal_id);
+const sendDealData = async (deal: string) => {
+  let data = await readCombinedData(deal);
   // await axios.post("http://DE-API", {
   //   data: data,
   // });
@@ -39,12 +26,21 @@ const sendDealData = async (deal_id: string) => {
 const saveCommissionData = async (req: Request, res: Response) => {
   try {
     let totalData = req.body.data;
-    let data: IdealData = {
-      deal_id: totalData.dealData.deal_id,
-      object: JSON.stringify(totalData),
+    let data: ICommissionData = {
+      deal: totalData.dealData.deal,
+      object: new Jsonb(totalData),
     };
-    await saveData(data, CommissionDataModel);
-    await sendDealData(data.deal_id); // send deal information and commission app data to DE company
+    const findRes = await CommissionDataModel.findOne({
+      where: { deal: data.deal },
+    });
+    if (findRes === null) {
+      await CommissionDataModel.create(data);
+    } else {
+      await CommissionDataModel.update(data, {
+        where: { deal: data.deal },
+      });
+    }
+    await sendDealData(data.deal); // send deal information and commission app data to DE company
     res.status(200).json({
       message: "successful",
       error: "no error",
@@ -60,11 +56,11 @@ const saveCommissionData = async (req: Request, res: Response) => {
 
 const readCommissionData = async (req: Request, res: Response) => {
   try {
-    const deal_id: string = req.body.deal_id;
-    let data = await readData(deal_id, CommissionDataModel);
+    const deal: string = req.body.deal;
+    let data = await readData(deal, CommissionDataModel);
     let totalData;
     if (data !== null) {
-      totalData = JSON.parse(data.object);
+      totalData = new Jsonb(data.object);
     } else {
       totalData = null;
     }
@@ -81,41 +77,68 @@ const readCommissionData = async (req: Request, res: Response) => {
   }
 };
 
-const handleUpsertFromWebhook = async (deal: any) => {
-  let data = {
-    deal_id: deal.id,
-    object: JSON.stringify(deal),
-  };
-  // upsert data to commissionDB/de_deal
-  await saveData(data, DealInfoModel);
+const saveDealData = async (deal: any) => {
+  let jsonb = new Jsonb(deal);
 
+  const findRes = await DealModel.findOne({
+    where: { deal: deal.id },
+  });
+  if (findRes === null) {
+    await DealModel.create({
+      deal: deal.id,
+      is_finalized: false,
+      object: jsonb,
+    });
+  } else {
+    await DealModel.update(
+      { object: jsonb },
+      {
+        where: { deal: deal },
+      }
+    );
+  }
+};
+
+const handleUpsertFromWebhook = async (deal: any) => {
+  // upset data to commissionDB/de_deal
+  await saveDealData(deal);
   // make de_deal data, sync with DE, upsert data to commissionDB/de_deal
   await sync(deal);
 };
 
-const readCombinedData = async (deal_id: string) => {
-  let commissionData = await readData(deal_id, CommissionDataModel);
-  let dealInfo = await readData(deal_id, DealInfoModel);
+const readCombinedData = async (deal: string) => {
+  let commissionData = await readData(deal, CommissionDataModel);
+  let dealData = await readData(deal, DealModel);
   let data: ICombinedData = {
     commissionData: commissionData?.object,
-    dealInfo: dealInfo?.object,
+    dealData: dealData?.object,
   };
   return data;
 };
 
-const saveAllData = async (data: any, model: any) => {
-  for (let i = 0; i < data.length; i++) {
-    let temp = data[i].dataValues;
-    const findRes = await model.findOne({
-      where: { deal: temp.deal },
+const pushDealData = async (deal) => {
+  const findRes = await DealModel.findOne({
+    where: { deal: deal.id },
+  });
+  if (findRes === null) {
+    await DealModel.create({
+      deal: deal.id,
+      is_finalized: false,
+      object: null,
     });
-    if (findRes === null) {
-      await model.create(temp);
-    } else {
-      await model.update(temp, {
-        where: { deal: temp.deal },
-      });
-    }
+  } else {
+    await DealModel.update(
+      { deal: deal.id, is_finalized: deal.is_finalized },
+      {
+        where: { deal: deal },
+      }
+    );
+  }
+};
+
+const pushAllDealData = async (data: any) => {
+  for (let i = 0; i < data.length; i++) {
+    await pushDealData(data[i].dataValues);
   }
 };
 
@@ -125,5 +148,5 @@ export default {
   readCommissionData,
   readCombinedData,
   sendDealData,
-  saveAllData,
+  pushAllDealData,
 };

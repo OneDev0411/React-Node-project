@@ -11,7 +11,7 @@ import { QueryTypes } from "sequelize";
 import mockupDeal from "./mockup_deal";
 
 const getState = async (deal: any) => {
-  const result = await commissionDB.DeDealModel.findOne({
+  const result = await commissionDB.DealModel.findOne({
     where: { deal },
   });
 
@@ -52,13 +52,13 @@ const getCommissionRate = (total, role) => {
 
 // NEED TO TEST
 const save = async ({ deal, is_finalized = false }) => {
-  const findRes = await commissionDB.DeDealModel.findOne({
+  const findRes = await commissionDB.DealModel.findOne({
     where: { deal },
   });
   if (findRes === null) {
-    await commissionDB.DeDealModel.create({ deal, is_finalized });
+    await commissionDB.DealModel.create({ deal, is_finalized });
   } else {
-    await commissionDB.DeDealModel.update(
+    await commissionDB.DealModel.update(
       { deal, is_finalized },
       {
         where: { deal },

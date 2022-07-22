@@ -1,6 +1,6 @@
 export default (sequelize, Sequelize) => {
-  const DeDealModel = sequelize.define(
-    "de_deal",
+  const DealModel = sequelize.define(
+    "deal",
     {
       id: {
         allowNull: false,
@@ -18,6 +18,9 @@ export default (sequelize, Sequelize) => {
         allowNull: false,
         defaultValue: false,
       },
+      object: {
+        type: Sequelize.JSONB,
+      },
     },
     {
       timestamps: true,
@@ -25,5 +28,5 @@ export default (sequelize, Sequelize) => {
       updatedAt: "updated_at",
     }
   );
-  return DeDealModel;
+  return DealModel;
 };

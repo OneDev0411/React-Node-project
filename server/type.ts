@@ -1,8 +1,13 @@
-export interface IdealData {
-  deal_id: string;
+export interface IDealData {
+  deal: string;
+  is_finalized: boolean;
+  object: string;
+}
+export interface ICommissionData {
+  deal: string;
   object: string;
 }
 export interface ICombinedData {
   commissionData: string | null;
-  dealInfo: string | null;
+  dealData: string | null;
 }

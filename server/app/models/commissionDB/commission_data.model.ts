@@ -2,7 +2,7 @@ export default (sequelize, Sequelize) => {
   const CommissionDataModel = sequelize.define(
     "commission_data",
     {
-      deal_id: {
+      deal: {
         type: Sequelize.UUID,
         allowNull: false,
         unique: true,

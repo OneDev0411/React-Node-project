@@ -1,7 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import CommissionDataModel from "./commission_data.model";
-import DealInfoModel from "./deal_info.model";
-import DeDealModel from "./de_deal.model";
+import DealModel from "./deal.model";
 import { makeUrl } from "../../../util";
 
 const database_url: string = process.env.DATABASE_URL1 || "";
@@ -25,8 +24,7 @@ interface DB {
   Sequelize?: typeof Sequelize;
   sequelize?: any;
   CommissionDataModel?: any;
-  DealInfoModel?: any;
-  DeDealModel?: any;
+  DealModel?: any;
 }
 
 const db: DB = {};
@@ -35,25 +33,16 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.CommissionDataModel = CommissionDataModel(sequelize, Sequelize);
-db.DealInfoModel = DealInfoModel(sequelize, Sequelize);
-db.DeDealModel = DeDealModel(sequelize, Sequelize);
+db.DealModel = DealModel(sequelize, Sequelize);
 
 // associations
-db.DeDealModel.hasOne(db.DealInfoModel, {
-  sourceKey: "deal",
-  foreignKey: "deal_id",
-});
-db.DealInfoModel.belongsTo(db.DeDealModel, {
-  foreignKey: "deal_id",
-  targetKey: "deal",
-});
 
-db.DeDealModel.hasOne(db.CommissionDataModel, {
+db.DealModel.hasOne(db.CommissionDataModel, {
   sourceKey: "deal",
-  foreignKey: "deal_id",
+  foreignKey: "deal",
 });
-db.CommissionDataModel.belongsTo(db.DeDealModel, {
-  foreignKey: "deal_id",
+db.CommissionDataModel.belongsTo(db.DealModel, {
+  foreignKey: "deal",
   targetKey: "deal",
 });
 

@@ -38,6 +38,7 @@
     "express-sslify": "^1.2.0",
     "fontsource-roboto": "^4.0.0",
     "fs": "^0.0.1-security",
+    "jsonb-builder": "^0.5.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "os-browserify": "^0.3.0",
