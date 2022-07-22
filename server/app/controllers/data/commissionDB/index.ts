@@ -126,7 +126,7 @@ const saveDealData = async (deal: any) => {
     await DealModel.update(
       { object: jsonb },
       {
-        where: { deal: deal },
+        where: { deal: deal.id },
       }
     );
   }

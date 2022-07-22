@@ -9,7 +9,7 @@ const processDealWebHook = async (req: Request, res: Response) => {
       case "Updated":
         // save
         await dataRoute.handleUpsertFromWebhook(deal);
-        dataRoute.sendDealData(deal.id);
+        await dataRoute.sendDealData(deal.id);
         break;
       default:
     }
@@ -17,6 +17,7 @@ const processDealWebHook = async (req: Request, res: Response) => {
       message: "successful",
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "error",
       error: error,
