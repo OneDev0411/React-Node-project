@@ -9,6 +9,7 @@ import commissionDB from "../models/commissionAppDB/index";
 import axios from "axios";
 import { QueryTypes } from "sequelize";
 import mockupDeal from "./mockup_deal";
+import appConfig from "../../config";
 
 const getState = async (deal: any) => {
   const result = await commissionDB.DealModel.findOne({
@@ -380,7 +381,7 @@ const sync = async (deal) => {
 
   const type = property_type.is_lease ? "rental" : "sale";
   const update = state ? "/update" : "";
-  const uri = `https://webapi.elliman.com/api/adc/postdeal/${type}${update}`;
+  const uri = `${appConfig.api_url}/api/adc/postdeal/${type}${update}`;
 
   const created_at = state ? state.created_at : new Date();
   const DealDate = moment.utc(created_at).format("YYYY-MM-DD");

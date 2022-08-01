@@ -1,4 +1,5 @@
 require("dotenv").config();
+import appConfig from './config'
 
 export const makeUrl = (database_url: string): string => {
   let temp: string = database_url || "";
@@ -33,7 +34,7 @@ export const getContextFromDeal = (deal, key, default_value = null) => {
 };
 
 export const getTokenURL: string =
-  "https://staging.webapi.elliman.com/token?username=emil@rechat.com&password=Skiing4-Monetize-Excitable";
+  `${appConfig.api_url}/token?username=${appConfig.username}&password=${appConfig.password}`;
 
 export const DEAL = {
   SELLING: "Selling",
