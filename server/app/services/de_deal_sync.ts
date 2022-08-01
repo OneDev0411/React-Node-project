@@ -381,7 +381,7 @@ const sync = async (deal) => {
 
   const type = property_type.is_lease ? "rental" : "sale";
   const update = state ? "/update" : "";
-  const uri = `${appConfig.api_url}/api/adc/postdeal/${type}${update}`;
+  const uri = `${process.env.API_URL}/api/adc/postdeal/${type}${update}`;
 
   const created_at = state ? state.created_at : new Date();
   const DealDate = moment.utc(created_at).format("YYYY-MM-DD");

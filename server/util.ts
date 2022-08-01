@@ -1,5 +1,4 @@
 require("dotenv").config();
-import appConfig from './config'
 
 export const makeUrl = (database_url: string): string => {
   let temp: string = database_url || "";
@@ -34,7 +33,7 @@ export const getContextFromDeal = (deal, key, default_value = null) => {
 };
 
 export const getTokenURL: string =
-  `${appConfig.api_url}/token?username=${appConfig.username}&password=${appConfig.password}`;
+  `${process.env.API_URL}/token?username=${process.env.USERNAME}&password=${process.env.PASSWORD}`;
 
 export const DEAL = {
   SELLING: "Selling",
