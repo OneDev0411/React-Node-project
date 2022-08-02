@@ -9,7 +9,6 @@ import commissionDB from "../models/commissionAppDB/index";
 import axios from "axios";
 import { QueryTypes } from "sequelize";
 import mockupDeal from "./mockup_deal";
-import appConfig from "../../config";
 
 const getState = async (deal: any) => {
   const result = await commissionDB.DealModel.findOne({
