@@ -33,7 +33,7 @@ export const getContextFromDeal = (deal, key, default_value = null) => {
 };
 
 export const getTokenURL: string =
-  `${process.env.API_URL}/token?username=${process.env.USERNAME}&password=${process.env.PASSWORD}`;
+  `${process.env.API_URL}/token?username=${process.env.T_USERNAME}&password=${process.env.T_PASSWORD}`;
 
 export const DEAL = {
   SELLING: "Selling",
