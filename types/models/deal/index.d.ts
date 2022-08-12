@@ -9,7 +9,7 @@ type IDealAssociations = 'roles' | 'listing' | 'listing_info'
 declare interface IDeal<A extends IDealAssociations = ''>
   extends IModel<'deal'> {
   title: string
-  deal_type: 'Selling' | 'Buying'
+  deal_type: 'Selling' | 'Buying' | 'Both'
   checklists: IDealChecklist[]
   tasks: IDealTask[]
   roles: A extends 'roles' ? IDealRole[] : UUID[]
@@ -55,7 +55,7 @@ declare interface IDealRole {
   created_by: UUID
   deal: UUID
   deleted_at: number | null
-  current_address: string | null
+  current_address: Address | string | null
   email: string
   id: UUID
   legal_first_name: string

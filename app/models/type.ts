@@ -91,7 +91,8 @@ export interface IQuestionProps {
   roleType?: RoleType;
   utils: {
     notify: (data: NotificationData) => void;
-    notifyOffice: (comment: string) => Promise<void>;
+    // notifyOffice: (comment: string) => Promise<void>;
+    isBackOffice: boolean;
   };
 }
 
@@ -105,6 +106,11 @@ export interface IDatePickerProps {
 export interface IPaidByCardProps {
   Ui: typeof Ui;
   saveData: IDataToConText;
+  index: number;
+}
+
+export interface IPaidByInfoCardProps {
+  Ui: typeof Ui;
   index: number;
 }
 

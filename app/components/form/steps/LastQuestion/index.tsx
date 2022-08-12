@@ -6,13 +6,13 @@ import axios from "axios";
 
 const LastQuestion: React.FC<IQuestionProps> = ({
   Wizard,
-  utils: { notifyOffice },
+  api: { notifyOffice },
 }) => {
   const { QuestionSection, QuestionTitle, QuestionForm } = Wizard;
   const { Box, Button } = Ui;
   const total_data: AppContextApi = useApp();
   const handleSubmit = async () => {
-    notifyOffice("Please review the Commission Slip");
+    notifyOffice(true, "Please review the Commission Slip");
     let res = await axios.post(
       "http://localhost:8081/rechat-commission-app-data-save",
       {

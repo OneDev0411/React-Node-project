@@ -1,3 +1,4 @@
+// declare type UUID = string;
 declare type Optional<T> = T | undefined;
 declare interface Window {
   libs: Record<"React" | "MaterialUi", any>;
@@ -25,12 +26,22 @@ declare interface EntryProps {
   };
   utils: {
     notify: (data: NotificationData) => void;
-    notifyOffice: (comment: string) => Promise<void>;
+    // notifyOffice: (comment: string) => Promise<void>;
+    isBackOffice: boolean;
   };
   api: {
     getDealContext: (field: string) => IDealContext;
     updateDealContext: (field: string, value: unknown) => Promise<void>;
     deleteRole: (roleModel: IDealRole) => Promise<void>;
+    notifyOffice: (
+      attentionRequest?: boolean,
+      comment?: string
+    ) => Promise<void>;
+    updateTaskStatus: (
+      status: 'Approved' | 'Declined' | 'Incomplete',
+      attentionRequest: Nullable<boolean>,
+      comment: string
+    ) => Promise<void>;
   };
   hooks: {
     wizard: {

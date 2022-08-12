@@ -42,7 +42,7 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
   return (
     <QuestionSection>
       <QuestionTitle>
-        Please input Outside Douglas Elliman Payments info
+        Please input Outside Douglas Elliman Payments info.
       </QuestionTitle>
       <QuestionForm>
         <PaymentQuestionComponent

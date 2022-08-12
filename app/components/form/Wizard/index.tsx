@@ -10,29 +10,37 @@ import GCISplitQuestion from "../steps/GCISplitQuestion";
 import RemittanceQuestion from "../steps/RemittanceQuestion";
 import PaymentQuestionInside from "../steps/PaymentQuestion/Inside";
 import PaymentQuestionOutside from "../steps/PaymentQuestion/Outside";
+import ReviewQuestion from "../steps/ReviewQuestion";
 import LastQuestion from "../steps/LastQuestion";
 import { IQuestionProps } from "../../../models/type";
 
 export const FormWizard: React.FC<IQuestionProps> = (props) => {
-  const { Wizard, models } = props;
+  const { Wizard, models, utils } = props;
   const ender_type = models.deal.context.ender_type;
+  const isBackOffice = utils.isBackOffice;
+
   return (
     <Wizard.QuestionWizard onFinish={() => console.log("done")}>
-      <StartQuestion {...props} />
-      <ComformRoleQuestion {...props} roleType="Seller" />
-      <ComformRoleQuestion {...props} roleType="Buyer" />
-      <ComformRoleQuestion {...props} roleType="BuyerLawyer" />
-      <ComformRoleQuestion {...props} roleType="SellerLawyer" />
-      <FinanceTransQuestion {...props} />
-      <FinanceProgQuestion {...props} />
-      {/* <ListingInfoQuestion {...props} /> */}
-      <GrossCommissionQuestion {...props} />
-      <GCI2DEQuestion {...props} />
-      <GCISplitQuestion {...props} />
-      <RemittanceQuestion {...props} />
-      {ender_type == undefined && <PaymentQuestionInside {...props} />}
-      <PaymentQuestionOutside {...props} />
-      <LastQuestion {...props} />
+      {!isBackOffice &&
+      <>
+        <StartQuestion {...props} />
+        <ComformRoleQuestion {...props} roleType="Seller" />
+        <ComformRoleQuestion {...props} roleType="Buyer" />
+        <ComformRoleQuestion {...props} roleType="BuyerLawyer" />
+        <ComformRoleQuestion {...props} roleType="SellerLawyer" />
+        <FinanceTransQuestion {...props} />
+        <FinanceProgQuestion {...props} />
+        {/* <ListingInfoQuestion {...props} /> */}
+        <GrossCommissionQuestion {...props} />
+        <GCI2DEQuestion {...props} />
+        <GCISplitQuestion {...props} />
+        <RemittanceQuestion {...props} />
+        {ender_type == undefined && <PaymentQuestionInside {...props} />}
+        <PaymentQuestionOutside {...props} />
+        <LastQuestion {...props} />
+      </>
+      }
+      {isBackOffice && <ReviewQuestion {...props} />}
     </Wizard.QuestionWizard>
   );
 };
