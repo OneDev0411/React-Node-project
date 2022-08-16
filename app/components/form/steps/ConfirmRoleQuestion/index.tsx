@@ -133,7 +133,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
             <QuestionTitle>
                 Please confirm {roleText[roleType]}'s details.
             </QuestionTitle>
-            <QuestionForm>
+            <QuestionForm width='60%'>
                 {status === "Validating" && (
                     <>
                         {matchRoles.slice(0, upsertingIndex + 1).map((roleData: IDealRole, index: number) =>
