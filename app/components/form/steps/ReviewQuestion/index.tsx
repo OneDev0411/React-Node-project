@@ -1,9 +1,10 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
-import { AppContextApi, IQuestionProps, IRemittanceChecks, IRoleData } from "../../../../models/type";
+import { IDealData, IQuestionProps, IRemittanceChecks, IRoleData } from "../../../../models/type";
 import { stylizeNumber } from "../../../../util";
 import useApp from "../../../../hooks/useApp";
 import PaidByInfoCard from "./PaidByInfoCard";
+import axios from "axios";
 
 const ReviewQuestion: React.FC<IQuestionProps> = ({
   Wizard,
@@ -11,26 +12,45 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   api: { getDealContext, updateTaskStatus },
 }) => {
   const { QuestionSection, QuestionTitle } = Wizard;
-  const { Box, Button, Grid } = Ui;
+  const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui;
   const { dealData, roleData, remittanceChecks } = useApp();
-  const total_data: AppContextApi = useApp();
   const deal_type = deal.deal_type;
 
   const sellerInfo = roles.filter((role: IDealRole) => role.role === "Seller")[0];
   const sellerLawyerInfo = roles.filter((role: IDealRole) => role.role === "SellerLawyer")[0];
-  const buyerInfo = roles.filter((role: IDealRole) => role.role == "Buyer")[0];
+  const buyerInfo = roles.filter((role: IDealRole) => role.role === "Buyer")[0];
   const buyerLawyerInfo = roles.filter((role: IDealRole) => role.role === "BuyerLawyer")[0];
 
   const listPrice = getDealContext("list_price")?.number;
   const financing = getDealContext("financing")?.text;
   const financingProgram = getDealContext("financing_program")?.text;
 
-  const handleClickApprove = () => {
+  const [openDeclineMsg, setOpenDeclineMsg] = React.useState<boolean>(false);
+  const [declineMsg, setDeclineMsg] = React.useState<string>("");
+
+  const handleClickApprove = async () => {
     updateTaskStatus('Approved', false, '');
+    let postData: IDealData = { ...dealData };
+    postData.approval_request_date = new Date();
+    await axios.post(
+      "http://localhost:8081/rechat-commission-app-save-approval-date",
+      {
+        data: postData,
+      }
+    );
   };
 
   const handleClickDecline = () => {
-    updateTaskStatus('Declined', false, '');
+    setOpenDeclineMsg(true);
+  };
+  
+  const handleConfirmDecline = () => {
+    updateTaskStatus('Declined', false, declineMsg);
+    setOpenDeclineMsg(false);
+  };
+
+  const handleClose = () => {
+    setOpenDeclineMsg(false);
   };
 
   return (
@@ -40,30 +60,58 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
       </QuestionTitle>
       <div style={{ margin: "0 20px" }}>
         <Grid container style={{ marginTop: "30px" }}>
-          <Grid item xs={12}>
-            <label style={{ fontSize: '17px' }}>Seller's Info</label>
-          </Grid>
-          <Grid item xs={6}>{sellerInfo.legal_full_name}</Grid>
-          <Grid item xs={6}>{sellerLawyerInfo.legal_full_name}</Grid>
-          <Grid item xs={6}>{sellerInfo.email}</Grid>
-          <Grid item xs={6}>{sellerLawyerInfo.email}</Grid>
-          <Grid item xs={6}>{sellerInfo.phone_number}</Grid>
-          <Grid item xs={6}>{sellerLawyerInfo.phone_number}</Grid>
-          <Grid item xs={6}>{sellerInfo.current_address.full}</Grid>
-          <Grid item xs={6}>{sellerLawyerInfo.current_address.full}</Grid>
+          {
+            sellerInfo &&
+            <Grid item xs={6}>
+              <Grid item xs={12}>
+                <label style={{ fontSize: '17px' }}>Seller Info</label>
+              </Grid>
+              <Grid item xs={12}>{sellerInfo.legal_full_name}</Grid>
+              <Grid item xs={12}>{sellerInfo.email}</Grid>
+              <Grid item xs={12}>{sellerInfo.phone_number}</Grid>
+              <Grid item xs={12}>{sellerInfo.current_address.full ? sellerInfo.current_address.full : ""}</Grid>
+            </Grid>
+          }
+          {
+            sellerLawyerInfo &&
+            <Grid item xs={6}>
+              <Grid item xs={12}>
+                <label style={{ fontSize: '17px' }}>Seller's Attorney Info</label>
+              </Grid>
+              <Grid item xs={12}>{sellerLawyerInfo.legal_full_name}</Grid>
+              <Grid item xs={12}>{sellerLawyerInfo.email}</Grid>
+              <Grid item xs={12}>{sellerLawyerInfo.phone_number}</Grid>
+              <Grid item xs={12}>{sellerLawyerInfo.current_address.full ? sellerLawyerInfo.current_address.full : ""}</Grid>
+            </Grid>
+          }
         </Grid>
         <Grid container style={{ marginTop: "30px" }}>
-          <Grid item xs={12}>
-            <label style={{ fontSize: '17px' }}>Buyer's Info</label>
+          {
+            buyerInfo &&
+            <Grid item xs={6}>
+              <Grid item xs={12}>
+                <label style={{ fontSize: '17px' }}>Buyer Info</label>
+              </Grid>
+              <Grid item xs={12}>{buyerInfo.legal_full_name}</Grid>
+              <Grid item xs={12}>{buyerInfo.email}</Grid>
+              <Grid item xs={12}>{buyerInfo.phone_number}</Grid>
+              <Grid item xs={12}>{buyerInfo.current_address.full ? buyerInfo.current_address.full : ""}</Grid>
+            </Grid>
+          }
+          <Grid item xs={6}>
+          {
+            buyerLawyerInfo && 
+            <Grid item xs={6}>
+              <Grid item xs={12}>
+                <label style={{ fontSize: '17px' }}>Buyer's Attorney Info</label>
+              </Grid>
+              <Grid item xs={12}>{buyerLawyerInfo.legal_full_name}</Grid>
+              <Grid item xs={12}>{buyerLawyerInfo.email}</Grid>
+              <Grid item xs={12}>{buyerLawyerInfo.phone_number}</Grid>
+              <Grid item xs={12}>{buyerLawyerInfo.current_address ? buyerLawyerInfo.current_address.full : ""}</Grid>
+            </Grid>
+          }
           </Grid>
-          <Grid item xs={6}>{buyerInfo.legal_full_name}</Grid>
-          <Grid item xs={6}>{buyerLawyerInfo.legal_full_name}</Grid>
-          <Grid item xs={6}>{buyerInfo.email}</Grid>
-          <Grid item xs={6}>{buyerLawyerInfo.email}</Grid>
-          <Grid item xs={6}>{buyerInfo.phone_number}</Grid>
-          <Grid item xs={6}>{buyerLawyerInfo.phone_number}</Grid>
-          <Grid item xs={6}>{buyerInfo.current_address.full}</Grid>
-          <Grid item xs={6}>{buyerLawyerInfo.current_address.full}</Grid>
         </Grid>
         <Grid container style={{ marginTop: "30px" }}>
           <Grid item xs={12}>
@@ -374,6 +422,32 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           </Button>
         </Box>
       </div>
+      <Dialog open={openDeclineMsg} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Decline</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please input the reason for decline.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            value={declineMsg}
+            multiline
+            minRows={5}
+            fullWidth
+            variant="outlined"
+            onChange={e => setDeclineMsg(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDecline} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </QuestionSection>
   );
 };

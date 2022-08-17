@@ -61,6 +61,23 @@ const saveCommissionData = async (req: Request, res: Response) => {
   }
 };
 
+const saveApprovalDate = async (req: Request, res: Response) => {
+  try {
+    let deal = req.body.data;
+    await saveAppData(deal, AppDealModel);
+    res.status(200).json({
+      message: "successful",
+      error: "no error",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "error",
+      error: error,
+    });
+    console.log("error", error);
+  }
+};
+
 const readCombinedAppData = async (deal: string) => {
   let dealData = await readData(deal, AppDealModel);
   let roleData = await readData(deal, AppRoleModel);
@@ -178,6 +195,7 @@ const pushAllDealData = async (data: any) => {
 export default {
   handleUpsertFromWebhook,
   saveCommissionData,
+  saveApprovalDate,
   readCommissionData,
   readCombinedData,
   sendDealData,

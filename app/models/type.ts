@@ -50,6 +50,7 @@ export interface IDealData {
   outside_de_payment_fax: string;
   outside_de_payment_tax_id: string;
   outside_de_payment_mail: string;
+  approval_request_date: Date;
 }
 
 export interface IRoleData {

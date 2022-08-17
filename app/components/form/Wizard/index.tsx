@@ -20,9 +20,9 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
   const isBackOffice = utils.isBackOffice;
 
   return (
-    <Wizard.QuestionWizard onFinish={() => console.log("done")}>
-      {!isBackOffice &&
-      <>
+    <>
+    {!isBackOffice &&
+      <Wizard.QuestionWizard onFinish={() => console.log("done")}>
         <StartQuestion {...props} />
         <ComformRoleQuestion {...props} roleType="Seller" />
         <ComformRoleQuestion {...props} roleType="Buyer" />
@@ -38,9 +38,12 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
         {ender_type == undefined && <PaymentQuestionInside {...props} />}
         <PaymentQuestionOutside {...props} />
         <LastQuestion {...props} />
-      </>
-      }
-      {isBackOffice && <ReviewQuestion {...props} />}
     </Wizard.QuestionWizard>
+    }
+    {isBackOffice && 
+      <Wizard.QuestionWizard onFinish={() => console.log("done")}>
+        <ReviewQuestion {...props} />
+      </Wizard.QuestionWizard>}
+    </>
   );
 };

@@ -61,6 +61,9 @@ export default (sequelize, Sequelize) => {
       outside_de_payment_mail: {
         type: Sequelize.TEXT,
       },
+      approval_request_date: {
+        type: Sequelize.DATE,
+      },
     },
     {
       timestamps: true,

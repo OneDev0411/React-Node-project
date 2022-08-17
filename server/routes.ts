@@ -11,6 +11,7 @@ const router = express.Router();
 router.get("/", homeRoute);
 router.post("/rechat-commission-app-data-save", dataRoute.saveCommissionData);
 router.post("/rechat-commission-app-data-read", dataRoute.readCommissionData);
+router.post("/rechat-commission-app-save-approval-date", dataRoute.saveApprovalDate);
 
 // webhooks
 router.post("/deal-webhooks-endpoint", webhooks.processDealWebHook);

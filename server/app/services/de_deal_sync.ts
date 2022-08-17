@@ -18,6 +18,14 @@ const getState = async (deal: any) => {
   return result?.dataValues;
 };
 
+const getApprovalDate = async (deal: any) => {
+  const result = await commissionDB.AppDealModel.findOne({
+    where: { deal },
+  });
+
+  return result?.approval_request_date;
+};
+
 const getToken = async () => {
   const result = await axios.get(getTokenURL);
   const { token } = result.data;
@@ -437,6 +445,8 @@ const sync = async (deal) => {
   let DealSide = deal.deal_type === DEAL.SELLING ? "List" : "Buy";
 
   if (isDoubleEnded(deal)) DealSide = "Both";
+  
+  const ApprovalRequestDate = await getApprovalDate(deal.id);
 
   const leaseAttributes = property_type.is_lease
     ? getLeaseAttributes({ deal, roles })
@@ -556,6 +566,7 @@ const sync = async (deal) => {
       ClosingDate,
       DealDate,
       PaidBy: region_details.paid_by,
+      ApprovalRequestDate,
 
       ...leaseAttributes,
       ...saleAttributes,

@@ -7,11 +7,22 @@ import axios from "axios";
 const LastQuestion: React.FC<IQuestionProps> = ({
   Wizard,
   api: { notifyOffice },
+  hooks: { useWizardContext },
 }) => {
   const { QuestionSection, QuestionTitle, QuestionForm } = Wizard;
-  const { Box, Button } = Ui;
+  const { Box, Button, Dialog, DialogTitle, DialogActions } = Ui;
   const total_data: AppContextApi = useApp();
+  const wizard = useWizardContext();
+  const [feedback, setFeedback] = React.useState<string>("");
+  const [openFeedback, setOpenFeedback] = React.useState<boolean>(false);
+
   const handleSubmit = async () => {
+    if (total_data.dealData.deal !== null) {
+      setFeedback("Already submitted.");
+      setOpenFeedback(true);
+      return;
+    }
+    wizard.setLoading(true);
     notifyOffice(true, "Please review the Commission Slip");
     let res = await axios.post(
       "http://localhost:8081/rechat-commission-app-data-save",
@@ -19,7 +30,17 @@ const LastQuestion: React.FC<IQuestionProps> = ({
         data: total_data,
       }
     );
+    wizard.setLoading(false);
+    if (res.data.message === "successful")
+      setFeedback("Successfully submitted.");
+    else
+      setFeedback("Submit failed.");
+    setOpenFeedback(true);
   };
+
+  const handleClose = async () => {
+    setOpenFeedback(false);
+  }
 
   return (
     <QuestionSection>
@@ -41,6 +62,14 @@ const LastQuestion: React.FC<IQuestionProps> = ({
           </Button>
         </Box>
       </QuestionForm>
+      <Dialog open={openFeedback} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">{feedback}</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
     </QuestionSection>
   );
 };
