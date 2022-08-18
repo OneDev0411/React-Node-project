@@ -1,7 +1,7 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
 import { IDealData, IQuestionProps, IRemittanceChecks, IRoleData } from "../../../../models/type";
-import { stylizeNumber } from "../../../../util";
+import { stylizeNumber, APP_URL } from "../../../../util";
 import useApp from "../../../../hooks/useApp";
 import PaidByInfoCard from "./PaidByInfoCard";
 import axios from "axios";
@@ -33,7 +33,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
     let postData: IDealData = { ...dealData };
     postData.approval_request_date = new Date();
     await axios.post(
-      "http://localhost:8081/rechat-commission-app-save-approval-date",
+      `${APP_URL}/rechat-commission-app-save-approval-date`,
       {
         data: postData,
       }

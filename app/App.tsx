@@ -3,7 +3,7 @@ import { FormWizard } from "./components/form/Wizard";
 import useApp from "./hooks/useApp";
 import axios from "axios";
 import { IRoleData } from "./models/type";
-import { defaultDealData, defaultRemittanceChecks } from "./util";
+import { defaultDealData, defaultRemittanceChecks, APP_URL } from "./util";
 
 const App: React.FC<EntryProps> = ({
   models,
@@ -19,7 +19,7 @@ const App: React.FC<EntryProps> = ({
   // push data to global state from backend data by using contextAPI
   const dataToContextAPI = async () => {
     let res = await axios.post(
-      `http://localhost:8081/rechat-commission-app-data-read`,
+      `${APP_URL}/rechat-commission-app-data-read`,
       {
         deal: deal.id,
       }

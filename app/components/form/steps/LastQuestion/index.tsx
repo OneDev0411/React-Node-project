@@ -1,6 +1,7 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
 import { AppContextApi, IQuestionProps } from "../../../../models/type";
+import { APP_URL } from "../../../../util";
 import useApp from "../../../../hooks/useApp";
 import axios from "axios";
 
@@ -25,7 +26,7 @@ const LastQuestion: React.FC<IQuestionProps> = ({
     wizard.setLoading(true);
     notifyOffice(true, "Please review the Commission Slip");
     let res = await axios.post(
-      "http://localhost:8081/rechat-commission-app-data-save",
+      `${APP_URL}/rechat-commission-app-data-save`,
       {
         data: total_data,
       }
