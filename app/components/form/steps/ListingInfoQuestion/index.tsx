@@ -3,6 +3,7 @@ import Ui from "@libs/material-ui";
 import { DatePicker } from "../../../DatePicker";
 import { IQuestionProps } from "../../../../models/type";
 import { stylizeNumber } from "../../../../util";
+import useApp from "../../../../hooks/useApp";
 
 const ListingInfoQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -10,10 +11,11 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
   api: { updateDealContext, getDealContext },
   Components: { DatePicker: DayPicker },
 }) => {
-  const { useState } = React;
+  const { useState, useEffect } = React;
   const { Box, TextField, Button, InputAdornment } = Ui;
   const wizard = useWizardContext();
   const { step } = useSectionContext();
+  const { submitted } = useApp();
 
   // context value
   const listPriceContextValue = getDealContext("list_price")?.text;
@@ -31,6 +33,13 @@ const ListingInfoQuestion: React.FC<IQuestionProps> = ({
     !closingDateContextValue ? new Date() : new Date(closingDateContextValue)
   ); // NEED_TO_UPDATE_THIS_CODE
   const [showButton, setShowButton] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (submitted === 1)
+        setShowButton(false);
+    else
+        setShowButton(true);
+  }, []);
 
   const handleClickButton = async () => {
     await updateDealContext(

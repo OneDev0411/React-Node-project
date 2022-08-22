@@ -2,20 +2,29 @@ import React from "@libs/react";
 import Ui from "@libs/material-ui";
 import { IQuestionProps } from "../../../../../models/type";
 import PaymentQuestionComponent from "../component";
+import useApp from "../../../../../hooks/useApp";
 
 const PaymentQuestionInside: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
   models: { deal },
 }) => {
-  const { useState } = React;
+  const { useState, useEffect } = React;
   const { Box, Button } = Ui;
   const wizard = useWizardContext();
   const deal_type = deal.deal_type;
+  const { submitted } = useApp();
 
   // state
   const [next, setNext] = useState<boolean>(false);
   const [showButton, setShowButton] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (submitted === 1)
+        setShowButton(false);
+    else
+        setShowButton(true);
+  }, []);
 
   const handleClickNextButton = () => {
     setNext(true);

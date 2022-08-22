@@ -19,7 +19,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React;
   const { Grid, Button, Box } = Ui;
   const wizard = useWizardContext();
-  const { dealData, roleData, setRoleData } = useApp();
+  const { dealData, roleData, setRoleData, submitted } = useApp();
 
   // state
   const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData);
@@ -110,6 +110,13 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     _setRoleData(temp);
   };
 
+  useEffect(() => {
+    if (submitted === 1)
+        setShowButton(false);
+    else
+        setShowButton(true);
+  }, []);
+  
   useEffect(() => {
     let tempClc = _roleData.reduce((totalPercent: any, data: IRoleData) => {
       return parseFloat(

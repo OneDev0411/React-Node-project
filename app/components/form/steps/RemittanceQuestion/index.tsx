@@ -19,8 +19,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React;
   const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
   const wizard = useWizardContext();
-  const { dealData, setDealData, remittanceChecks, setRemittanceChecks } =
-    useApp();
+  const { dealData, setDealData, remittanceChecks, setRemittanceChecks, submitted } = useApp();
   const showBoth = deal.context.ender_type !== undefined;
   const showBuy = showBoth || deal.deal_type === "Buying";
 
@@ -137,6 +136,13 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     temp[key] = Number(value);
     _setDealData(temp);
   };
+
+  useEffect(() => {
+    if (submitted === 1)
+        setShowButton(false);
+    else
+        setShowButton(true);
+  }, []);
 
   useEffect(() => {
     _setDealData(dealData);

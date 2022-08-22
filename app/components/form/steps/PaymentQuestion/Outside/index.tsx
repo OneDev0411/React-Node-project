@@ -1,6 +1,7 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
 import { IQuestionProps } from "../../../../../models/type";
+import useApp from "../../../../../hooks/useApp";
 
 import PaymentQuestionComponent from "../component";
 
@@ -9,17 +10,26 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
   hooks: { useWizardContext, useSectionContext },
   models: { deal },
 }) => {
-  const { useState } = React;
+  const { useState, useEffect } = React;
   const { Box, Button } = Ui;
   const wizard = useWizardContext();
   const deal_type =
     deal.context.ender_type !== undefined ? "Both" : deal.deal_type;
+  const { submitted } = useApp();
 
   // state
   const [next, setNext] = useState<boolean>(false);
   const [showButton, setShowButton] = useState<boolean>(true);
 
+  useEffect(() => {
+    if (submitted === 1)
+        setShowButton(false);
+    else
+        setShowButton(true);
+  }, []);
+
   const handleClickNextButton = () => {
+    console.log(wizard.currentStep);
     setNext(true);
     gotoNext();
   };

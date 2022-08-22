@@ -50,7 +50,7 @@ export interface IDealData {
   outside_de_payment_fax: string;
   outside_de_payment_tax_id: string;
   outside_de_payment_mail: string;
-  approval_request_date: Date;
+  approval_request_date: string;
 }
 
 export interface IRoleData {
@@ -81,6 +81,8 @@ export interface AppContextApi {
   setRoleData?: (data: IRoleData[]) => void;
   remittanceChecks: IRemittanceChecks[];
   setRemittanceChecks?: (data: IRemittanceChecks[]) => void;
+  submitted: number;
+  setSubmitted?: (data: number) => void;
 }
 
 export interface IQuestionProps {

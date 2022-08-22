@@ -2,6 +2,7 @@ import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { ConfirmRoleStatus, IQuestionProps } from '../../../../models/type'
 import { roleText } from '../../../../util'
+import useApp from "../../../../hooks/useApp";
 
 const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -13,6 +14,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const { useEffect, useState } = React;
     const { Button, Divider, Box } = Ui;
     const wizard = useWizardContext();
+    const { submitted } = useApp();
 
     // state
     const [status, setStatus] = useState<ConfirmRoleStatus>('Validating');
@@ -44,6 +46,10 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
             setStatus("Upserting");
             setUpsertingIndex(-1);
         }
+        if (submitted === 1)
+            setShowButton(false);
+        else
+            setShowButton(true);
     }, []);
 
     const handleNext = () => {

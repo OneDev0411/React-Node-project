@@ -10,10 +10,12 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   Wizard,
   models: { deal, roles },
   api: { getDealContext, updateTaskStatus },
+  hooks: { useWizardContext },
 }) => {
   const { QuestionSection, QuestionTitle } = Wizard;
   const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui;
   const { dealData, roleData, remittanceChecks } = useApp();
+  const wizard = useWizardContext();
   const deal_type = deal.deal_type;
 
   const sellerInfo = roles.filter((role: IDealRole) => role.role === "Seller")[0];
@@ -27,17 +29,27 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
 
   const [openDeclineMsg, setOpenDeclineMsg] = React.useState<boolean>(false);
   const [declineMsg, setDeclineMsg] = React.useState<string>("");
+  const [feedback, setFeedback] = React.useState<string>("");
+  const [openFeedback, setOpenFeedback] = React.useState<boolean>(false);
 
   const handleClickApprove = async () => {
+    wizard.setLoading(true);
     updateTaskStatus('Approved', false, '');
     let postData: IDealData = { ...dealData };
-    postData.approval_request_date = new Date();
-    await axios.post(
+    const curDate = new Date();
+    postData.approval_request_date = curDate.toISOString();
+    const res = await axios.post(
       `${APP_URL}/rechat-commission-app-save-approval-date`,
       {
         data: postData,
       }
     );
+    wizard.setLoading(false);
+    if (res.data.message === "successful")
+      setFeedback("Approved.");
+    else
+      setFeedback("Approve failed.");
+    setOpenFeedback(true);
   };
 
   const handleClickDecline = () => {
@@ -45,13 +57,21 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   };
   
   const handleConfirmDecline = () => {
+    wizard.setLoading(true);
     updateTaskStatus('Declined', false, declineMsg);
+    wizard.setLoading(false);
     setOpenDeclineMsg(false);
+    setFeedback("Declined.");
+    setOpenFeedback(true);
   };
 
   const handleClose = () => {
     setOpenDeclineMsg(false);
   };
+
+  const handleCloseFeedback = async () => {
+    setOpenFeedback(false);
+  }
 
   return (
     <QuestionSection>
@@ -69,7 +89,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
               <Grid item xs={12}>{sellerInfo.legal_full_name}</Grid>
               <Grid item xs={12}>{sellerInfo.email}</Grid>
               <Grid item xs={12}>{sellerInfo.phone_number}</Grid>
-              <Grid item xs={12}>{sellerInfo.current_address.full ? sellerInfo.current_address.full : ""}</Grid>
+              <Grid item xs={12}>{sellerInfo.current_address ? sellerInfo.current_address.full : ""}</Grid>
             </Grid>
           }
           {
@@ -81,7 +101,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
               <Grid item xs={12}>{sellerLawyerInfo.legal_full_name}</Grid>
               <Grid item xs={12}>{sellerLawyerInfo.email}</Grid>
               <Grid item xs={12}>{sellerLawyerInfo.phone_number}</Grid>
-              <Grid item xs={12}>{sellerLawyerInfo.current_address.full ? sellerLawyerInfo.current_address.full : ""}</Grid>
+              <Grid item xs={12}>{sellerLawyerInfo.current_address ? sellerLawyerInfo.current_address.full : ""}</Grid>
             </Grid>
           }
         </Grid>
@@ -95,7 +115,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
               <Grid item xs={12}>{buyerInfo.legal_full_name}</Grid>
               <Grid item xs={12}>{buyerInfo.email}</Grid>
               <Grid item xs={12}>{buyerInfo.phone_number}</Grid>
-              <Grid item xs={12}>{buyerInfo.current_address.full ? buyerInfo.current_address.full : ""}</Grid>
+              <Grid item xs={12}>{buyerInfo.current_address ? buyerInfo.current_address.full : ""}</Grid>
             </Grid>
           }
           <Grid item xs={6}>
@@ -445,6 +465,14 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           </Button>
           <Button onClick={handleConfirmDecline} color="primary">
             Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openFeedback} onClose={handleCloseFeedback} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">{feedback}</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleCloseFeedback} color="primary">
+            Ok
           </Button>
         </DialogActions>
       </Dialog>

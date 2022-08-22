@@ -4,6 +4,7 @@ import useApp from "./hooks/useApp";
 import axios from "axios";
 import { IRoleData } from "./models/type";
 import { defaultDealData, defaultRemittanceChecks, APP_URL } from "./util";
+import Loading from './components/Loading';
 
 const App: React.FC<EntryProps> = ({
   models,
@@ -14,7 +15,7 @@ const App: React.FC<EntryProps> = ({
 }) => {
   const { Wizard } = Components;
   const { deal, roles } = models;
-  const { setDealData, setRoleData, setRemittanceChecks } = useApp();
+  const { setDealData, setRoleData, setRemittanceChecks, submitted, setSubmitted } = useApp();
 
   // push data to global state from backend data by using contextAPI
   const dataToContextAPI = async () => {
@@ -57,6 +58,13 @@ const App: React.FC<EntryProps> = ({
     try {
       if (data !== null) {
         let tempDealData = data.dealData;
+
+        if (setSubmitted !== undefined) {
+          if (tempDealData.deal)
+            setSubmitted(1);
+          else
+            setSubmitted(-1);
+        }
         if (setDealData !== undefined) {
           setDealData(tempDealData);
         }
@@ -90,6 +98,8 @@ const App: React.FC<EntryProps> = ({
         if (setRemittanceChecks !== undefined) {
           setRemittanceChecks(defaultRemittanceChecks);
         }
+        if (setSubmitted !== undefined) 
+          setSubmitted(-1);
       }
     } catch (error) {
       console.log(error);
@@ -100,16 +110,26 @@ const App: React.FC<EntryProps> = ({
     dataToContextAPI();
   }, []);
 
-  return (
-    <FormWizard
-      Wizard={Wizard}
-      hooks={hooks.wizard}
-      utils={utils}
-      models={models}
-      api={api}
-      Components={Components}
-    />
-  );
+  if (submitted === 0) {
+    return (
+      <Loading
+        width={60}
+        fill={'#0945EB'}
+      />
+    )
+  } 
+  else {
+    return (
+      <FormWizard
+        Wizard={Wizard}
+        hooks={hooks.wizard}
+        utils={utils}
+        models={models}
+        api={api}
+        Components={Components}
+      />
+    );
+  }
 };
 
 export default App;

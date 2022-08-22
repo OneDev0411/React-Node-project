@@ -163,7 +163,7 @@ export const defaultDealData: IDealData = {
   outside_de_payment_fax: "",
   outside_de_payment_tax_id: "",
   outside_de_payment_mail: "",
-  approval_request_date: new Date(),
+  approval_request_date: "",
 };
 
 export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";

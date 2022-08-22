@@ -12,7 +12,7 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React;
   const { Box, TextField, Button, InputAdornment, Select, MenuItem } = Ui;
   const wizard = useWizardContext();
-  const { dealData, setDealData, roleData, setRoleData } = useApp();
+  const { dealData, setDealData, roleData, setRoleData, submitted } = useApp();
 
   // state
   const [inputValue, setInputValue] = useState<string | number>("");
@@ -141,6 +141,13 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
   let notFinishCase3 = showReason && _reasonValue === 2 && _reasonNote === ""; // not completed reason note
   let isShowButton =
     showButton && !(notFinishCase1 || notFinishCase2 || notFinishCase3);
+
+  useEffect(() => {
+    if (submitted === 1)
+      setShowButton(false);
+    else
+      setShowButton(true);
+  }, []);
 
   useEffect(() => {
     if (dealData.gci_de_value !== 0) {

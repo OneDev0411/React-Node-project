@@ -10,6 +10,7 @@ const defaultValue: AppContextApi = {
   dealData: defaultDealData,
   roleData: [],
   remittanceChecks: [],
+  submitted: 0,
 };
 
 export const AppContext = createContext<AppContextApi>(defaultValue);
@@ -21,6 +22,7 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   const [remittanceChecks, setRemittanceChecks] = useState<
     AppContextApi["remittanceChecks"]
   >(defaultRemittanceChecks);
+  const [submitted, setSubmitted] = useState<AppContextApi["submitted"]>(0);
 
   return (
     <AppContext.Provider
@@ -31,6 +33,8 @@ export const AppProvider: React.FC<any> = ({ children }) => {
         setRoleData,
         remittanceChecks,
         setRemittanceChecks,
+        submitted,
+        setSubmitted,
       }}
     >
       {children}

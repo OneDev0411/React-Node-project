@@ -1,22 +1,30 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { IQuestionProps } from "../../../../models/type"
+import useApp from "../../../../hooks/useApp";
 
 const FinanceProgQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-    hooks: { useWizardContext, useSectionContext },
+    hooks: { useWizardContext },
     api: { updateDealContext, getDealContext },
 }) => {
-    const { useState } = React;
+    const { useState, useEffect } = React;
     const { TextField, Button, Box } = Ui;
     const wizard = useWizardContext();
-    const { step } = useSectionContext();
+    const { submitted } = useApp();
 
     const financingProgramContextValue = getDealContext('financing_program')?.text;
 
     // state
     const [text, setText] = useState<string>(financingProgramContextValue);
     const [showButton, setShowButton] = useState<boolean>(true);
+
+    useEffect(() => {
+        if (submitted === 1)
+            setShowButton(false);
+        else
+            setShowButton(true);
+    }, []);
 
     const handleClickButton = () => {
         setShowButton(false);
