@@ -11,22 +11,24 @@ const StartQuestion: React.FC<IQuestionProps> = ({
   const wizard = useWizardContext();
   const { submitted } = useApp();
 
+  function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+  
   // mockup loading, need to remove after the backend is implemented
   useEffect(() => {
     if (submitted === -1) {
       wizard.goto(8);
+    }
+    if (submitted === 1) {
+      wizard.goto(14);
     }
   }, []);
 
   return (
     <QuestionSection>
       <QuestionTitle>
-        {
-          submitted && <>Awesome🎉 Submitted.</>
-        }
-        {
-          !submitted && <>Awesome🎉 let's get a few questions answered and get you paid.</>
-        }
+          Awesome🎉 let's get a few questions answered and get you paid.
       </QuestionTitle>
     </QuestionSection>
   );
