@@ -7,13 +7,13 @@ import useApp from "../../../../hooks/useApp";
 const GCI2DEQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext },
-  models: { deal },
+  models: { deal, roles },
 }) => {
   const { useState, useEffect } = React;
   const { Box, TextField, Button, InputAdornment, Select, MenuItem } = Ui;
   const wizard = useWizardContext();
   const { dealData, setDealData, roleData, setRoleData, submitted } = useApp();
-
+  
   // state
   const [inputValue, setInputValue] = useState<string | number>("");
   const [showButton, setShowButton] = useState<boolean>(true);
@@ -147,6 +147,12 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
       setShowButton(false);
     else
       setShowButton(true);
+
+    if (!dealData.gci_de_value) {
+      const sellerAgent = roles.filter((role: IDealRole) => role.role === "SellerAgent")[0];
+      const commissionPercentage = sellerAgent.commission_percentage;
+      setInputValue(Number(commissionPercentage));
+    }
   }, []);
 
   useEffect(() => {
@@ -160,6 +166,17 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
       setInputValue(temp);
       _setReasonNote(dealData.gci_reason);
       _setReasonValue(dealData.gci_reason_select);
+    }
+    if (!dealData.gci_de_value) {
+      let temp: number = 0;
+      const sellerAgent = roles.filter((role: IDealRole) => role.role === "SellerAgent")[0];
+      const commissionPercentage = Number(sellerAgent.commission_percentage);
+      if (dealData.gci_calculate_type == 0) {
+        temp = commissionPercentage;
+      } else {
+        temp = listPrice * commissionPercentage / 100;
+      }
+      setInputValue(temp);
     }
   }, [dealData]);
 
