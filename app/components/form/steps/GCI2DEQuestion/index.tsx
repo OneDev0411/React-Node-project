@@ -46,15 +46,13 @@ const GCI2DEQuestion: React.FC<IQuestionProps> = ({
         temp[index].share_percent =
           item.share_percent == null
             ? parseFloat(
-                ((Number(item.share_value) / Number(GCIValue)) * 100).toFixed(3)
+                ((GCIValue / listPrice) * 100).toFixed(3)
               )
             : item.share_percent;
         temp[index].share_value =
           item.share_value == null
             ? parseFloat(
-                ((Number(GCIValue) * Number(item.share_percent)) / 100).toFixed(
-                  3
-                )
+                GCIValue.toFixed(3)
               )
             : item.share_value;
       });

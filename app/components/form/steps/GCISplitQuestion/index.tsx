@@ -33,6 +33,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
 
   // constants
   const dealType = deal.deal_type;
+  const listPrice = deal.context.list_price?.number;
 
   // this logic is updating
   const handleCloseRoleForm = () => {
@@ -142,7 +143,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               Ui={Ui}
               key={id}
               index={id}
-              GCIValue={dealData.gci_de_value}
+              GCIValue={listPrice}
               saveData={{ next, updateFlag }}
               totalClc={totalClc}
             />
@@ -196,7 +197,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                   <strong>
                     $
                     {stylizeNumber(
-                      (Number(dealData.gci_de_value) / 100) * totalPercent
+                      (listPrice / 100) * totalPercent
                     )}
                   </strong>
                 </label>

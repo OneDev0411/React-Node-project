@@ -37,7 +37,8 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
 
     const handleOnTextFieldChange = (event: any) => {
         setText(event.target.value);
-        setShowButton(true);
+        if (!showButton)
+            setShowButton(true);
     }
 
     if (financing == "Mortgage") {

@@ -39,7 +39,7 @@ const saveCommissionData = async (req: Request, res: Response) => {
     let roleData = allData.roleData;
     let remittanceChecks = allData.remittanceChecks;
     // save appDealData
-    await saveAppData(allData.dealData, AppDealModel);
+    await saveAppData(dealData, AppDealModel);
     // save appRoleData
     for (let i = 0; i < roleData.length; i++) {
       await saveAppData(roleData[i], AppRoleModel);
