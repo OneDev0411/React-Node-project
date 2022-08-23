@@ -3,7 +3,7 @@ import App from "./App";
 import { createComponents } from "./core/utils/create-components";
 import "./index.css";
 import { AppContextApi } from "./models/type";
-import { defaultDealData, defaultRemittanceChecks, defaultRole } from "./util";
+import { defaultDealData, defaultRemittanceChecks } from "./util";
 const { createContext, useState } = React;
 
 const defaultValue: AppContextApi = {
@@ -11,6 +11,7 @@ const defaultValue: AppContextApi = {
   roleData: [],
   remittanceChecks: [],
   submitted: 0,
+  financing: "",
 };
 
 export const AppContext = createContext<AppContextApi>(defaultValue);
@@ -23,6 +24,7 @@ export const AppProvider: React.FC<any> = ({ children }) => {
     AppContextApi["remittanceChecks"]
   >(defaultRemittanceChecks);
   const [submitted, setSubmitted] = useState<AppContextApi["submitted"]>(0);
+  const [financing, setFinancing] = useState<AppContextApi["financing"]>("");
 
   return (
     <AppContext.Provider
@@ -35,6 +37,8 @@ export const AppProvider: React.FC<any> = ({ children }) => {
         setRemittanceChecks,
         submitted,
         setSubmitted,
+        financing,
+        setFinancing,
       }}
     >
       {children}

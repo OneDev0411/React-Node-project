@@ -83,6 +83,8 @@ export interface AppContextApi {
   setRemittanceChecks?: (data: IRemittanceChecks[]) => void;
   submitted: number;
   setSubmitted?: (data: number) => void;
+  financing: string;
+  setFinancing?: (data: string) => void;
 }
 
 export interface IQuestionProps {

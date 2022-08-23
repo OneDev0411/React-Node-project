@@ -15,7 +15,7 @@ const App: React.FC<EntryProps> = ({
 }) => {
   const { Wizard } = Components;
   const { deal, roles } = models;
-  const { setDealData, setRoleData, setRemittanceChecks, submitted, setSubmitted } = useApp();
+  const { setDealData, setRoleData, setRemittanceChecks, submitted, setSubmitted, setFinancing } = useApp();
 
   // push data to global state from backend data by using contextAPI
   const dataToContextAPI = async () => {
@@ -107,6 +107,8 @@ const App: React.FC<EntryProps> = ({
   };
 
   React.useEffect(() => {
+    if (setFinancing !== undefined)
+      setFinancing(deal.context.financing?.text);
     dataToContextAPI();
   }, []);
 

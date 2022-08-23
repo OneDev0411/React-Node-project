@@ -2,6 +2,7 @@ import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import { IQuestionProps, SelectData } from "../../../../models/type"
 import { financeSelectDataList } from '../../../../util'
+import useApp from "../../../../hooks/useApp";
 
 const FinanceTransQuestion: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -12,6 +13,7 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
     const { RadioGroup, FormControlLabel, Radio, Box } = Ui;
     const wizard = useWizardContext();
     const { step } = useSectionContext();
+    const { setFinancing } = useApp();
 
     const financingContextValue = getDealContext('financing')?.text;
 
@@ -23,6 +25,8 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
         setShowBox(false);
         updateDealContext("financing", event.target.value);
         setCurSelect(event.target.value);
+        if (setFinancing !== undefined)
+            setFinancing(event.target.value);
         if (wizard.currentStep < step + 1) {
             setTimeout(() => {
                 wizard.next();
