@@ -3,9 +3,6 @@ import StartQuestion from "../steps/StartQuestion";
 import ComformRoleQuestion from "../steps/ConfirmRoleQuestion";
 import FinanceTransQuestion from "../steps/FinanceTransQuestion";
 import FinanceProgQuestion from "../steps/FinanceProgQuestion";
-// import ListingInfoQuestion from '../steps/ListingInfoQuestion'
-import GrossCommissionQuestion from "../steps/GrossCommissionQuestion";
-import GCI2DEQuestion from "../steps/GCI2DEQuestion";
 import GCISplitQuestion from "../steps/GCISplitQuestion";
 import RemittanceQuestion from "../steps/RemittanceQuestion";
 import PaymentQuestionInside from "../steps/PaymentQuestion/Inside";
