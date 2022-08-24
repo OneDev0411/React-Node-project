@@ -6,7 +6,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   Ui: { Grid, Box, TextField },
   saveData: { next, updateFlag },
   totalClc,
-  GCIValue,
+  listPrice,
   index,
 }) => {
   const { useState, useEffect } = React;
@@ -30,7 +30,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   // this hook push to state variable of component from global state
   useEffect(() => {
     _setRoleData(roleData[index]);
-  }, [roleData, GCIValue]);
+  }, [roleData]);
 
   const handleChangeNumber = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -50,15 +50,15 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
 
     if (key == "share_percent") {
       updateValue["share_value"] = parseFloat(
-        ((Number(GCIValue) / 100) * Number(value)).toFixed(3)
+        ((Number(listPrice) / 100) * Number(value)).toFixed(3)
+      );
+    }
+    if (key == "share_value") {
+      updateValue["share_percent"] = parseFloat(
+        ((Number(value) / Number(listPrice)) * 100).toFixed(3)
       );
     }
 
-    if (key == "share_value") {
-      updateValue["share_percent"] = parseFloat(
-        ((Number(value) / Number(GCIValue)) * 100).toFixed(3)
-      );
-    }
     _setRoleData(updateValue);
     totalClc(index, updateValue, true);
   };

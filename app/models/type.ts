@@ -25,7 +25,7 @@ export interface SelectData {
 export interface IGCIInfoItemProps {
   Ui: typeof Ui;
   // itemData: ItemData
-  GCIValue: Number;
+  listPrice: Number;
   index: number;
   saveData: IDataToConText;
   totalClc: (index: number, data: IRoleData, clcFlag: boolean) => void;

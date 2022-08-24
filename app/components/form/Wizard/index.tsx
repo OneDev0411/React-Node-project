@@ -29,9 +29,6 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
         <ComformRoleQuestion {...props} roleType="SellerLawyer" />
         <FinanceTransQuestion {...props} />
         <FinanceProgQuestion {...props} />
-        {/* <ListingInfoQuestion {...props} /> */}
-        <GrossCommissionQuestion {...props} />
-        <GCI2DEQuestion {...props} />
         <GCISplitQuestion {...props} />
         <RemittanceQuestion {...props} />
         {ender_type == undefined && <PaymentQuestionInside {...props} />}

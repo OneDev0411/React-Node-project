@@ -17,9 +17,9 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   api: { deleteRole },
 }) => {
   const { useState, useEffect } = React;
-  const { Grid, Button, Box } = Ui;
+  const { Grid, Button, Box, TextField, Select, MenuItem } = Ui;
   const wizard = useWizardContext();
-  const { dealData, roleData, setRoleData, submitted } = useApp();
+  const { dealData, setDealData, roleData, setRoleData, submitted } = useApp();
 
   // state
   const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData);
@@ -30,10 +30,32 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const [showButton, setShowButton] = useState<boolean>(true);
   const [next, setNext] = useState<boolean>(false);
   const [totalPercent, setTotalPercent] = useState<number>(0);
+  const [_reasonValue, _setReasonValue] = useState<number>(
+    dealData.gci_reason_select
+  );
+  const [_reasonNote, _setReasonNote] = useState<string>("");
 
   // constants
-  const dealType = deal.deal_type;
   const listPrice = deal.context.list_price?.number;
+  const dealType = deal.deal_type;
+  const bothType = deal.context.ender_type;
+
+  const showReason =
+    bothType == undefined ? totalPercent < 2 : totalPercent < 4;
+
+  const notFinishCase1 = showReason && _reasonValue === -1; // not selected reason
+  const notFinishCase2 = showReason && _reasonValue === 2 && _reasonNote === ""; // not completed reason note
+  const isShowButton = showButton && !(notFinishCase1 || notFinishCase2);
+
+  const handleChangeReasonTextField = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    _setReasonNote(event.target.value);
+  };
+
+  const handleSelectReason = (event: React.ChangeEvent<{ value: unknown }>) => {
+    _setReasonValue(Number(event.target.value));
+  };
 
   // this logic is updating
   const handleCloseRoleForm = () => {
@@ -53,6 +75,29 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
 
   const handleClickNextButton = async () => {
     setShowButton(false);
+    if (setDealData !== undefined) {
+      dealData.gci_de_value = listPrice * totalPercent / 100;
+      console.log(dealData.gci_de_value);
+      let temp = JSON.parse(JSON.stringify(dealData));
+      setDealData(temp);
+    }
+    if (
+      (totalPercent < 2 && bothType == undefined) ||
+      (totalPercent < 4 && bothType !== undefined)
+    ) {
+      dealData.gci_reason_select = _reasonValue;
+      let temp = JSON.parse(JSON.stringify(dealData));
+      if (setDealData !== undefined) {
+        setDealData(temp);
+      }
+      if (_reasonValue === 2) {
+        dealData.gci_reason = _reasonNote;
+        let temp = JSON.parse(JSON.stringify(dealData));
+        if (setDealData !== undefined) {
+          setDealData(temp);
+        }
+      }
+    }
     setNext(true);
     setTimeout(() => {
       wizard.next();
@@ -113,9 +158,20 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
 
   useEffect(() => {
     if (submitted === 1)
-        setShowButton(false);
+      setShowButton(false);
     else
-        setShowButton(true);
+      setShowButton(true);
+      
+    if (setRoleData !== undefined) {
+      let temp: IRoleData[] = JSON.parse(JSON.stringify(roleData));
+      roleData.map((item: IRoleData, index: number) => {
+        temp[index].share_value =
+          item.share_value == null
+            ? parseFloat((Number(listPrice) * Number(item.share_percent) / 100).toFixed(3))
+            : item.share_value;
+      });
+      setRoleData(temp);
+    }
   }, []);
   
   useEffect(() => {
@@ -143,7 +199,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               Ui={Ui}
               key={id}
               index={id}
-              GCIValue={listPrice}
+              listPrice={listPrice}
               saveData={{ next, updateFlag }}
               totalClc={totalClc}
             />
@@ -259,7 +315,40 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
             </Grid>
           </>
         )}
-        {showButton && status === "Listing" && (
+        {showReason && (
+          <>
+            <Box id="select-reason-box">
+              <label style={{ float: "right", marginTop: 40 }}>
+                Please select your reason.
+              </label>
+            </Box>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={_reasonValue}
+              label="Seller"
+              MenuProps={{ autoFocus: false }}
+              onChange={handleSelectReason}
+              style={{ width: "100%" }}
+            >
+              <MenuItem value={-1}>Select...</MenuItem>
+              <MenuItem value={0}>Approved Commission Reduction</MenuItem>
+              <MenuItem value={1}>Co-broke Commission Offered</MenuItem>
+              <MenuItem value={2}>Other</MenuItem>
+            </Select>
+            {_reasonValue == 2 && (
+              <TextField
+                size="small"
+                label="Reason"
+                value={_reasonNote}
+                style={{ width: "100%", marginTop: 10 }}
+                onChange={handleChangeReasonTextField}
+                placeholder="Please type your reason."
+              />
+            )}
+          </>
+        )}
+        {isShowButton && status === "Listing" && (
           <Box style={{ textAlign: "right", marginTop: 10 }}>
             <Button
               variant="contained"
