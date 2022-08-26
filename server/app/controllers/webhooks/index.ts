@@ -5,7 +5,7 @@ const processDealWebHook = async (req: Request, res: Response) => {
   try {
     let deal = req.body.payload.deal;
     switch (req.body.event) {
-      // case "Added":
+      case "Added":
       case "Updated":
         // save
         await dataRoute.handleUpsertFromWebhook(deal);
