@@ -228,13 +228,13 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 Date on check
               </Grid>
               <Grid item xs={6}>
-                <label>{item.check_date.toDateString().slice(4)}</label>
+                <label>{(new Date(item.check_date)).toDateString().slice(4)}</label>
               </Grid>
               <Grid item xs={6}>
                 Date on received
               </Grid>
               <Grid item xs={6}>
-                <label>{item.check_receive_date.toDateString().slice(4)}</label>
+                <label>{(new Date(item.check_receive_date)).toDateString().slice(4)}</label>
               </Grid>
             </>
           )}
