@@ -141,6 +141,7 @@ export const defaultRemittanceChecks: IRemittanceChecks[] = [
     check_date: new Date(),
     check_receive_date: new Date(),
     amount: 0,
+    deal_side: "",
   },
 ];
 
@@ -150,8 +151,10 @@ export const defaultDealData: IDealData = {
   gci_de_value: 0,
   gci_reason_select: -1,
   gci_reason: "",
+  brokerage_commission: 0,
   stage_cost: 0,
-  remittance_bank_wire_amount: 0,
+  remittance_buy_side_bank_wire_amount: 0,
+  remittance_listing_side_bank_wire_amount: 0,
   inside_de_payment_type: "Team Member",
   inside_de_paid_to: "",
   outside_de_payment_type: "Outside Referral Broker",

@@ -256,7 +256,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             Brokerage Commission
           </Grid>
           <Grid item xs={6}>
-            <label>{dealData.remittance_bank_wire_amount}</label>
+            <label>{dealData.brokerage_commission}</label>
           </Grid>
           <Grid item xs={6}>
             Staging Cost
@@ -268,7 +268,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             Total Due at Closing
           </Grid>
           <Grid item xs={6}>
-            <label>{Number(dealData.remittance_bank_wire_amount) + Number(dealData.stage_cost)}</label>
+            <label>{Number(dealData.brokerage_commission) + Number(dealData.stage_cost)}</label>
           </Grid>
         </Grid>
         <Grid container style={{ marginTop: "30px" }}>

@@ -20,10 +20,16 @@ export default (sequelize, Sequelize) => {
       gci_reason: {
         type: Sequelize.TEXT,
       },
+      brokerage_commission: {
+        type: Sequelize.NUMERIC,
+      },
       stage_cost: {
         type: Sequelize.NUMERIC,
       },
-      remittance_bank_wire_amount: {
+      remittance_buy_side_bank_wire_amount: {
+        type: Sequelize.NUMERIC,
+      },
+      remittance_listing_side_bank_wire_amount: {
         type: Sequelize.NUMERIC,
       },
       inside_de_payment_type: {

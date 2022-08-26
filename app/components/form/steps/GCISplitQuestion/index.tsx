@@ -77,7 +77,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     setShowButton(false);
     if (setDealData !== undefined) {
       dealData.gci_de_value = listPrice * totalPercent / 100;
-      console.log(dealData.gci_de_value);
       let temp = JSON.parse(JSON.stringify(dealData));
       setDealData(temp);
     }

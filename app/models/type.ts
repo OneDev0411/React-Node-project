@@ -37,8 +37,10 @@ export interface IDealData {
   gci_de_value: number;
   gci_reason_select: number;
   gci_reason: string;
+  brokerage_commission: number;
   stage_cost: number;
-  remittance_bank_wire_amount: number;
+  remittance_buy_side_bank_wire_amount: number | null;
+  remittance_listing_side_bank_wire_amount: number | null;
   inside_de_payment_type: string;
   inside_de_paid_to: string;
   outside_de_payment_type: string;
@@ -72,6 +74,7 @@ export interface IRemittanceChecks {
   check_date: Date;
   check_receive_date: Date;
   amount: number;
+  deal_side: string;
 }
 
 export interface AppContextApi {

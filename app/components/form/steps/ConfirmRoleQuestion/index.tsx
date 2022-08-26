@@ -6,7 +6,7 @@ import useApp from "../../../../hooks/useApp";
 
 const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-    hooks: { useWizardContext },
+    hooks: { useWizardContext, useSectionContext },
     models: { deal, roles },
     Components: { RoleForm, RoleCard, ContactRoles },
     roleType = "Seller",
@@ -15,6 +15,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const { Button, Divider, Box } = Ui;
     const wizard = useWizardContext();
     const { submitted } = useApp();
+    const { step } = useSectionContext();
 
     // state
     const [status, setStatus] = useState<ConfirmRoleStatus>('Validating');
@@ -53,9 +54,11 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     }, []);
 
     const handleNext = () => {
-        setTimeout(() => {
-            wizard.next();
-        }, 80);
+        if (wizard.currentStep < step + 1) {
+            setTimeout(() => {
+                wizard.next();
+            }, 80);
+        }
     }
 
     const handleClickEditButton = (role: IDealRole) => {
@@ -112,7 +115,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const handleCloseRoleForm = () => {
         // in case of buyer/seller lawyer, click cancel button when no match roles, skip
         if (roleType.indexOf("Lawyer") > 0 && matchRoles.length === 0) {
-            setStatus("Skipped");  
+            setStatus("Skipped");
             handleNext();
         }
         // in case of no match role, ignore cancel action

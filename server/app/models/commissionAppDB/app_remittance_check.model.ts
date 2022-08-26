@@ -21,6 +21,10 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.NUMERIC,
       allowNull: false,
     },
+    deal_side: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   });
 
   return AppRemittanceCheckModel;

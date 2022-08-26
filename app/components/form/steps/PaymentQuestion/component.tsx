@@ -106,74 +106,76 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
           />
         </Grid>
       </Grid>
-      <Grid container spacing={1}>
-        <Grid item xs={3}>
-          <label style={{ marginTop: 5 }}>Paid By</label>
+      {_dealData.outside_de_payment_type !== "Team Member" && (
+        <Grid container spacing={1}>
+          <Grid item xs={3}>
+            <label style={{ marginTop: 5 }}>Paid By</label>
+          </Grid>
+          <Grid item xs={9}>
+            {roleData.map((agent: IRoleData, id: number) => (
+              <>
+                {range == "inside" &&
+                  deal_type == "Selling" &&
+                  (agent.role == "BuyerAgent" ||
+                    agent.role == "CoBuyerAgent") && (
+                    <PaidByCard
+                      key={id}
+                      index={id}
+                      Ui={Ui}
+                      saveData={{ next, updateFlag }}
+                    />
+                  )}
+                {range == "outside" &&
+                  deal_type == "Selling" &&
+                  (agent.role == "SellerAgent" ||
+                    agent.role == "CoSellerAgent") && (
+                    <PaidByCard
+                      key={id}
+                      index={id}
+                      Ui={Ui}
+                      saveData={{ next, updateFlag }}
+                    />
+                  )}
+                {range == "inside" &&
+                  deal_type == "Buying" &&
+                  (agent.role == "SellerAgent" ||
+                    agent.role == "CoSellerAgent") && (
+                    <PaidByCard
+                      key={id}
+                      index={id}
+                      Ui={Ui}
+                      saveData={{ next, updateFlag }}
+                    />
+                  )}
+                {range == "outside" &&
+                  deal_type == "Buying" &&
+                  (agent.role == "BuyerAgent" ||
+                    agent.role == "CoBuyerAgent") && (
+                    <PaidByCard
+                      key={id}
+                      index={id}
+                      Ui={Ui}
+                      saveData={{ next, updateFlag }}
+                    />
+                  )}
+                {range == "outside" &&
+                  deal_type == "Both" &&
+                  (agent.role == "BuyerAgent" ||
+                    agent.role == "CoBuyerAgent" ||
+                    agent.role == "SellerAgent" ||
+                    agent.role == "CoSellerAgent") && (
+                    <PaidByCard
+                      key={id}
+                      index={id}
+                      Ui={Ui}
+                      saveData={{ next, updateFlag }}
+                    />
+                  )}
+              </>
+            ))}
+          </Grid>
         </Grid>
-        <Grid item xs={9}>
-          {roleData.map((agent: IRoleData, id: number) => (
-            <>
-              {range == "inside" &&
-                deal_type == "Selling" &&
-                (agent.role == "BuyerAgent" ||
-                  agent.role == "CoBuyerAgent") && (
-                  <PaidByCard
-                    key={id}
-                    index={id}
-                    Ui={Ui}
-                    saveData={{ next, updateFlag }}
-                  />
-                )}
-              {range == "outside" &&
-                deal_type == "Selling" &&
-                (agent.role == "SellerAgent" ||
-                  agent.role == "CoSellerAgent") && (
-                  <PaidByCard
-                    key={id}
-                    index={id}
-                    Ui={Ui}
-                    saveData={{ next, updateFlag }}
-                  />
-                )}
-              {range == "inside" &&
-                deal_type == "Buying" &&
-                (agent.role == "SellerAgent" ||
-                  agent.role == "CoSellerAgent") && (
-                  <PaidByCard
-                    key={id}
-                    index={id}
-                    Ui={Ui}
-                    saveData={{ next, updateFlag }}
-                  />
-                )}
-              {range == "outside" &&
-                deal_type == "Buying" &&
-                (agent.role == "BuyerAgent" ||
-                  agent.role == "CoBuyerAgent") && (
-                  <PaidByCard
-                    key={id}
-                    index={id}
-                    Ui={Ui}
-                    saveData={{ next, updateFlag }}
-                  />
-                )}
-              {range == "outside" &&
-                deal_type == "Both" &&
-                (agent.role == "BuyerAgent" ||
-                  agent.role == "CoBuyerAgent" ||
-                  agent.role == "SellerAgent" ||
-                  agent.role == "CoSellerAgent") && (
-                  <PaidByCard
-                    key={id}
-                    index={id}
-                    Ui={Ui}
-                    saveData={{ next, updateFlag }}
-                  />
-                )}
-            </>
-          ))}
-        </Grid>
-      </Grid>
+      )}
       {range == "outside" && (
         <Grid container spacing={1}>
           <Grid item xs={12}>
