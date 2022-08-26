@@ -6,7 +6,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   Ui: { Grid, Box, TextField },
   saveData: { next, updateFlag },
   totalClc,
-  listPrice,
+  salesPrice,
   index,
 }) => {
   const { useState, useEffect } = React;
@@ -50,12 +50,12 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
 
     if (key == "share_percent") {
       updateValue["share_value"] = parseFloat(
-        ((Number(listPrice) / 100) * Number(value)).toFixed(3)
+        ((Number(salesPrice) / 100) * Number(value)).toFixed(3)
       );
     }
     if (key == "share_value") {
       updateValue["share_percent"] = parseFloat(
-        ((Number(value) / Number(listPrice)) * 100).toFixed(3)
+        ((Number(value) / Number(salesPrice)) * 100).toFixed(3)
       );
     }
 

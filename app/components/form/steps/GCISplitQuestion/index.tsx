@@ -36,7 +36,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const [_reasonNote, _setReasonNote] = useState<string>("");
 
   // constants
-  const listPrice = deal.context.list_price?.number;
+  const salesPrice = deal.context.sales_price?.number;
   const dealType = deal.deal_type;
   const bothType = deal.context.ender_type;
 
@@ -76,7 +76,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const handleClickNextButton = async () => {
     setShowButton(false);
     if (setDealData !== undefined) {
-      dealData.gci_de_value = listPrice * totalPercent / 100;
+      dealData.gci_de_value = salesPrice * totalPercent / 100;
       let temp = JSON.parse(JSON.stringify(dealData));
       setDealData(temp);
     }
@@ -166,7 +166,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       roleData.map((item: IRoleData, index: number) => {
         temp[index].share_value =
           item.share_value == null
-            ? parseFloat((Number(listPrice) * Number(item.share_percent) / 100).toFixed(3))
+            ? parseFloat((Number(salesPrice) * Number(item.share_percent) / 100).toFixed(3))
             : item.share_value;
       });
       setRoleData(temp);
@@ -198,7 +198,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               Ui={Ui}
               key={id}
               index={id}
-              listPrice={listPrice}
+              salesPrice={salesPrice}
               saveData={{ next, updateFlag }}
               totalClc={totalClc}
             />
@@ -252,7 +252,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                   <strong>
                     $
                     {stylizeNumber(
-                      (listPrice / 100) * totalPercent
+                      (salesPrice / 100) * totalPercent
                     )}
                   </strong>
                 </label>
