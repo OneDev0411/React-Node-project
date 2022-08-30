@@ -137,7 +137,7 @@ export interface IPaymentData {
 
 export interface IPaymentQuestionData {
   range: string;
-  deal_type: string;
+  dealType: string;
   saveData: IDataToConText;
 }
 

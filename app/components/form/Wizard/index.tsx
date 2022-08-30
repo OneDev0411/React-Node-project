@@ -12,8 +12,7 @@ import LastQuestion from "../steps/LastQuestion";
 import { IQuestionProps } from "../../../models/type";
 
 export const FormWizard: React.FC<IQuestionProps> = (props) => {
-  const { Wizard, models, utils } = props;
-  const ender_type = models.deal.context.ender_type;
+  const { Wizard, utils } = props;
   const isBackOffice = utils.isBackOffice;
 
   if (!isBackOffice) {
@@ -28,7 +27,7 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
         <FinanceProgQuestion {...props} />
         <GCISplitQuestion {...props} />
         <RemittanceQuestion {...props} />
-        {ender_type == undefined && <PaymentQuestionInside {...props} />}
+        <PaymentQuestionInside {...props} />
         <PaymentQuestionOutside {...props} />
         <LastQuestion {...props} />
       </Wizard.QuestionWizard> 

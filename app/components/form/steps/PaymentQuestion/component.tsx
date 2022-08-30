@@ -9,7 +9,7 @@ import useApp from "../../../../hooks/useApp";
 const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   saveData: { next, updateFlag },
   range,
-  deal_type,
+  dealType,
 }) => {
   const { useState, useEffect } = React;
   const { Grid, Select, MenuItem, ListSubheader, TextField } = Ui;
@@ -17,8 +17,8 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   const { dealData, setDealData, roleData } = useApp();
   const [_dealData, _setDealData] = useState<IDealData>(dealData);
   let showCompanyInfo = 
-    paymentTypeData[1].member.indexOf(_dealData.outside_de_payment_type) >= 0 ||
-    paymentTypeData[2].member.indexOf(_dealData.outside_de_payment_type) >= 0 ? true : false;
+    (paymentTypeData[1].member.indexOf(_dealData.outside_de_payment_type) >= 0 ||
+      paymentTypeData[2].member.indexOf(_dealData.outside_de_payment_type) >= 0) ? true : false;
 
   // this make content of select tag
   const displayData = paymentTypeData.reduce(
@@ -122,21 +122,10 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
           <Grid item xs={9}>
             {roleData.map((agent: IRoleData, id: number) => (
               <>
-                {range == "inside" &&
-                  deal_type == "Selling" &&
-                  (agent.role == "BuyerAgent" ||
-                    agent.role == "CoBuyerAgent") && (
-                    <PaidByCard
-                      key={id}
-                      index={id}
-                      Ui={Ui}
-                      saveData={{ next, updateFlag }}
-                    />
-                  )}
-                {range == "outside" &&
-                  deal_type == "Selling" &&
+                {(dealType == "Selling" || dealType == "Both") &&
                   (agent.role == "SellerAgent" ||
-                    agent.role == "CoSellerAgent") && (
+                    agent.role == "CoSellerAgent" ||
+                    agent.role == "SellerReferral") && (
                     <PaidByCard
                       key={id}
                       index={id}
@@ -144,34 +133,10 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                       saveData={{ next, updateFlag }}
                     />
                   )}
-                {range == "inside" &&
-                  deal_type == "Buying" &&
-                  (agent.role == "SellerAgent" ||
-                    agent.role == "CoSellerAgent") && (
-                    <PaidByCard
-                      key={id}
-                      index={id}
-                      Ui={Ui}
-                      saveData={{ next, updateFlag }}
-                    />
-                  )}
-                {range == "outside" &&
-                  deal_type == "Buying" &&
-                  (agent.role == "BuyerAgent" ||
-                    agent.role == "CoBuyerAgent") && (
-                    <PaidByCard
-                      key={id}
-                      index={id}
-                      Ui={Ui}
-                      saveData={{ next, updateFlag }}
-                    />
-                  )}
-                {range == "outside" &&
-                  deal_type == "Both" &&
+                {(dealType == "Buying" || dealType == "Both") &&
                   (agent.role == "BuyerAgent" ||
                     agent.role == "CoBuyerAgent" ||
-                    agent.role == "SellerAgent" ||
-                    agent.role == "CoSellerAgent") && (
+                    agent.role == "BuyerReferral") && (
                     <PaidByCard
                       key={id}
                       index={id}

@@ -12,7 +12,8 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React;
   const { Box, Button } = Ui;
   const wizard = useWizardContext();
-  const deal_type = deal.deal_type;
+  const enderType = deal.context.ender_type?.text;
+  const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
   const { submitted } = useApp();
 
   // state
@@ -54,7 +55,7 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
       <QuestionForm>
         <PaymentQuestionComponent
           range="inside"
-          deal_type={deal_type}
+          dealType={dealType}
           saveData={{ next, updateFlag }}
         />
         {showButton && (

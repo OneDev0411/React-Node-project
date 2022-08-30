@@ -30,6 +30,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const [showButton, setShowButton] = useState<boolean>(true);
   const [next, setNext] = useState<boolean>(false);
   const [totalPercent, setTotalPercent] = useState<number>(0);
+  const [totalValue, setTotalValue] = useState<number>(0);
   const [_reasonValue, _setReasonValue] = useState<number>(
     dealData.gci_reason_select
   );
@@ -152,6 +153,12 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         );
       }, 0);
       setTotalPercent(tempValue);
+      tempValue = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: number, data: IRoleData) => {
+        return parseFloat(
+          (Number(totalValue) + Number(data.share_value)).toFixed(3)
+        );
+      }, 0);
+      setTotalValue(tempValue);
     }
     _setRoleData(temp);
   };
@@ -170,6 +177,12 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       );
     }, 0);
     setTotalPercent(tempClc);
+    tempClc = _roleData.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
+      return parseFloat(
+        (Number(totalValue) + Number(data.share_value)).toFixed(3)
+      );
+    }, 0);
+    setTotalValue(tempClc);
   }, [_roleData]);
 
   useEffect(() => {
@@ -184,7 +197,10 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       <QuestionForm>
         {_roleData.map((item: IRoleData, id: number) => (
           <>
-            {(dealType === "Buying" || bothType) && (item.role.indexOf("Buyer") >= 0) && <>
+            {(dealType === "Buying" || bothType) && 
+              (item.role == "BuyerAgent" ||
+                item.role == "CoBuyerAgent" ||
+                item.role == "BuyerReferral") && <>
               <GCIInfoItem
                 Ui={Ui}
                 key={id}
@@ -211,7 +227,10 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 Remove one
               </Button>
             </>}
-            {(dealType === "Selling" || bothType) && (item.role.indexOf("Seller") >= 0) && <>
+            {(dealType == "Selling" || bothType) && 
+              (item.role == "SellerAgent" ||
+                item.role == "CoSellerAgent" ||
+                item.role == "SellerReferral") && <>
               <GCIInfoItem
                 Ui={Ui}
                 key={id}
@@ -267,13 +286,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               </Grid>
               <Grid item xs={4} style={{ paddingLeft: 0 }}>
                 <label style={{ fontWeight: 300 }}>
-                  Total:{" "}
-                  <strong>
-                    $
-                    {stylizeNumber(
-                      (salesPrice / 100) * totalPercent
-                    )}
-                  </strong>
+                  Total: <strong>${totalValue}</strong>
                 </label>
               </Grid>
             </Grid>
@@ -321,13 +334,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               </Grid>
               <Grid item xs={4} style={{ paddingLeft: 0 }}>
                 <label style={{ fontWeight: 300 }}>
-                  Total:{" "}
-                  <strong>
-                    $
-                    {stylizeNumber(
-                      (Number(dealData.gci_de_value) / 100) * totalPercent
-                    )}
-                  </strong>
+                  Total: <strong>${totalValue}</strong>
                 </label>
               </Grid>
             </Grid>

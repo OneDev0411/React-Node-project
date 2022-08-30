@@ -1,7 +1,7 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
 import { IDealData, IQuestionProps, IRemittanceChecks, IRoleData } from "../../../../models/type";
-import { stylizeNumber, APP_URL } from "../../../../util";
+import { paymentTypeData, stylizeNumber, APP_URL } from "../../../../util";
 import useApp from "../../../../hooks/useApp";
 import PaidByInfoCard from "./PaidByInfoCard";
 import axios from "axios";
@@ -16,14 +16,15 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui;
   const { dealData, roleData, remittanceChecks } = useApp();
   const wizard = useWizardContext();
-  const deal_type = deal.deal_type;
+  const enderType = deal.context.ender_type?.text;
+  const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
 
   const sellerInfo = roles.filter((role: IDealRole) => role.role === "Seller")[0];
   const sellerLawyerInfo = roles.filter((role: IDealRole) => role.role === "SellerLawyer")[0];
   const buyerInfo = roles.filter((role: IDealRole) => role.role === "Buyer")[0];
   const buyerLawyerInfo = roles.filter((role: IDealRole) => role.role === "BuyerLawyer")[0];
 
-  const listPrice = getDealContext("list_price")?.number;
+  const salesPrice = getDealContext("sales_price")?.number;
   const financing = getDealContext("financing")?.text;
   const financingProgram = getDealContext("financing_program")?.text;
 
@@ -31,6 +32,11 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const [declineMsg, setDeclineMsg] = React.useState<string>("");
   const [feedback, setFeedback] = React.useState<string>("");
   const [openFeedback, setOpenFeedback] = React.useState<boolean>(false);
+
+  const gciDeValue = dealData.gci_calculate_type == 0 ? (dealData.gci_de_value / salesPrice * 100) : (dealData.gci_de_value);
+  const showCompanyInfo = 
+    (paymentTypeData[1].member.indexOf(dealData.outside_de_payment_type) >= 0 ||
+      paymentTypeData[2].member.indexOf(dealData.outside_de_payment_type) >= 0) ? true : false;
 
   const handleClickApprove = async () => {
     wizard.setLoading(true);
@@ -154,14 +160,14 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <label style={{ fontSize: '17px' }}>GCI to Douglas Elliman</label>
           </Grid>
           <Grid item xs={12}>
-            {dealData.gci_calculate_type == 0 ? dealData.gci_de_value / listPrice * 100 : dealData.gci_de_value}
+            {gciDeValue}
             {dealData.gci_calculate_type == 0 ? "%" : "$"}
             {dealData.gci_calculate_type == 0 && (
             <Box>
-              <strong>{"$" + stylizeNumber(listPrice)}</strong>
-              {`(Listing Price) * ${dealData.gci_calculate_type == 0 ? dealData.gci_de_value / listPrice * 100 : dealData.gci_de_value}% (GCI) = `}
+              <strong>{"$" + stylizeNumber(salesPrice)}</strong>
+              {` (Sales Price) * ${gciDeValue}% (GCI) = `}
               <strong>
-                ${stylizeNumber((listPrice * Number(dealData.gci_calculate_type == 0 ? dealData.gci_de_value / listPrice * 100 : dealData.gci_de_value)) / 100)}
+                ${stylizeNumber(salesPrice * Number(gciDeValue) / 100)}
               </strong>
             </Box>
             )}
@@ -174,7 +180,11 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           <Grid item xs={12}>
             <label style={{ fontSize: '17px' }}>GCI Split</label>
           </Grid>
-          {roleData.map(role => 
+          {roleData.filter((role: IRoleData) => 
+            (dealType == "Buying" || dealType == "Both") ? 
+              (role.role == "BuyerAgent" || role.role == "CoBuyerAgent" || role.role == "BuyerReferral") : 
+              (role.role == "SellerAgent" || role.role == "CoSellerAgent" || role.role == "SellerReferral"))
+            .map(role => 
             <>
               <Grid item xs={12}>
                 <label>{role.role}</label>
@@ -183,10 +193,10 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 {role.legal_full_name}
               </Grid>
               <Grid item xs={12}>
-                Share: {role.share_percent}
+                Share: {role.share_percent == null ? parseFloat((Number(role.share_value) / Number(salesPrice) * 100).toFixed(3)) : role.share_percent}
               </Grid>
               <Grid item xs={12}>
-                Dollar: {role.share_value}
+                Dollar: {role.share_value == null ? parseFloat((Number(salesPrice) * Number(role.share_percent) / 100).toFixed(3)) : role.share_value}
               </Grid>
               <Grid item xs={12}>
                 {role.note}
@@ -293,18 +303,20 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           <Grid item xs={12}>
             {roleData.map((agent: IRoleData, id: number) => (
               <>
-                {deal_type == "Selling" &&
-                  (agent.role == "BuyerAgent" ||
-                    agent.role == "CoBuyerAgent") && (
+                {(dealType == "Selling" || dealType == "Both") &&
+                  (agent.role == "SellerAgent" ||
+                    agent.role == "CoSellerAgent" ||
+                    agent.role == "SellerReferral") && (
                     <PaidByInfoCard
                       key={id}
                       index={id}
                       Ui={Ui}
                     />
                   )}
-                {deal_type == "Buying" &&
-                  (agent.role == "SellerAgent" ||
-                    agent.role == "CoSellerAgent") && (
+                {(dealType == "Buying" || dealType == "Both") &&
+                  (agent.role == "BuyerAgent" ||
+                    agent.role == "CoBuyerAgent" ||
+                    agent.role == "BuyerReferral") && (
                     <PaidByInfoCard
                       key={id}
                       index={id}
@@ -337,29 +349,20 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           <Grid item xs={12}>
             {roleData.map((agent: IRoleData, id: number) => (
               <>
-                {deal_type == "Selling" &&
+                {(dealType == "Selling" || dealType == "Both") &&
                   (agent.role == "SellerAgent" ||
-                    agent.role == "CoSellerAgent") && (
+                    agent.role == "CoSellerAgent" ||
+                    agent.role == "SellerReferral") && (
                     <PaidByInfoCard
                       key={id}
                       index={id}
                       Ui={Ui}
                     />
                   )}
-                {deal_type == "Buying" &&
-                  (agent.role == "BuyerAgent" ||
-                    agent.role == "CoBuyerAgent") && (
-                    <PaidByInfoCard
-                      key={id}
-                      index={id}
-                      Ui={Ui}
-                    />
-                  )}
-                {deal_type == "Both" &&
+                {(dealType == "Buying" || dealType == "Both") &&
                   (agent.role == "BuyerAgent" ||
                     agent.role == "CoBuyerAgent" ||
-                    agent.role == "SellerAgent" ||
-                    agent.role == "CoSellerAgent") && (
+                    agent.role == "BuyerReferral") && (
                     <PaidByInfoCard
                       key={id}
                       index={id}
@@ -370,50 +373,52 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             ))}
           </Grid>
         </Grid>
-        <Grid container style={{ marginTop: "15px" }}>
-          <Grid item xs={6}>
-            Company
+        {showCompanyInfo &&
+          <Grid container style={{ marginTop: "15px" }}>
+            <Grid item xs={6}>
+              Company
+            </Grid>
+            <Grid item xs={6}>
+              <label>{dealData.outside_de_payment_company}</label>
+            </Grid>
+            <Grid item xs={6}>
+              Company Address
+            </Grid>
+            <Grid item xs={6}>
+              <label>{dealData.outside_de_payment_company_address}</label>
+            </Grid>
+            <Grid item xs={6}>
+              Office Number
+            </Grid>
+            <Grid item xs={6}>
+              <label>{dealData.outside_de_payment_office}</label>
+            </Grid>
+            <Grid item xs={6}>
+              Cell Number
+            </Grid>
+            <Grid item xs={6}>
+              <label>{dealData.outside_de_payment_cell}</label>
+            </Grid>
+            <Grid item xs={6}>
+              Fax Number
+            </Grid>
+            <Grid item xs={6}>
+              <label>{dealData.outside_de_payment_fax}</label>
+            </Grid>
+            <Grid item xs={6}>
+              Tax ID
+            </Grid>
+            <Grid item xs={6}>
+              <label>{dealData.outside_de_payment_tax_id}</label>
+            </Grid>
+            <Grid item xs={6}>
+              Email
+            </Grid>
+            <Grid item xs={6}>
+              <label>{dealData.outside_de_payment_mail}</label>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.outside_de_payment_company}</label>
-          </Grid>
-          <Grid item xs={6}>
-            Company Address
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.outside_de_payment_company_address}</label>
-          </Grid>
-          <Grid item xs={6}>
-            Office Number
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.outside_de_payment_office}</label>
-          </Grid>
-          <Grid item xs={6}>
-            Cell Number
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.outside_de_payment_cell}</label>
-          </Grid>
-          <Grid item xs={6}>
-            Fax Number
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.outside_de_payment_fax}</label>
-          </Grid>
-          <Grid item xs={6}>
-            Tax ID
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.outside_de_payment_tax_id}</label>
-          </Grid>
-          <Grid item xs={6}>
-            Email
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.outside_de_payment_mail}</label>
-          </Grid>
-        </Grid>
+        }
         <Box
           style={{
             textAlign: "right",

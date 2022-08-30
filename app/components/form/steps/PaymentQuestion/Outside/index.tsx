@@ -13,8 +13,8 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React;
   const { Box, Button } = Ui;
   const wizard = useWizardContext();
-  const deal_type =
-    deal.context.ender_type !== undefined ? "Both" : deal.deal_type;
+  const enderType = deal.context.ender_type?.text;
+  const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
   const { submitted } = useApp();
 
   // state
@@ -57,7 +57,7 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
       <QuestionForm>
         <PaymentQuestionComponent
           range="outside"
-          deal_type={deal_type}
+          dealType={dealType}
           saveData={{ next, updateFlag }}
         />
         {showButton && (

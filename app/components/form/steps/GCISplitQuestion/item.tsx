@@ -34,6 +34,10 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           temp.share_value == null
             ? parseFloat((Number(salesPrice) * Number(temp.share_percent) / 100).toFixed(3))
             : temp.share_value;
+    temp.share_percent =
+          temp.share_percent == null
+            ? parseFloat((Number(temp.share_value) / Number(salesPrice) * 100).toFixed(3))
+            : temp.share_percent;
     _setRoleData(temp);
   }, [roleData]);
 
