@@ -35,6 +35,14 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       allowNull: false,
     },
+    payment_calculated_from: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
+    payment_note: {
+      type: Sequelize.TEXT,
+      allowNull: false,
+    },
   });
 
   return AppRoleModel;

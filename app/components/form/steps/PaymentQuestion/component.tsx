@@ -16,6 +16,9 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
 
   const { dealData, setDealData, roleData } = useApp();
   const [_dealData, _setDealData] = useState<IDealData>(dealData);
+  let showCompanyInfo = 
+    paymentTypeData[1].member.indexOf(_dealData.outside_de_payment_type) >= 0 ||
+    paymentTypeData[2].member.indexOf(_dealData.outside_de_payment_type) >= 0 ? true : false;
 
   // this make content of select tag
   const displayData = paymentTypeData.reduce(
@@ -34,6 +37,11 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     key: keyof IDealData
   ) => {
     updateFlag(true); // for Next button enable
+    if (key === "outside_de_payment_type") {
+      showCompanyInfo = 
+        paymentTypeData[1].member.indexOf(_dealData.outside_de_payment_type) >= 0 ||
+        paymentTypeData[2].member.indexOf(_dealData.outside_de_payment_type) >= 0 ? true : false;
+    }
     let temp = JSON.parse(JSON.stringify(_dealData));
     temp[key] = e.target.value;
     _setDealData(temp);
@@ -176,7 +184,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
           </Grid>
         </Grid>
       )}
-      {range == "outside" && (
+      {range == "outside" && showCompanyInfo && (
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <TextField

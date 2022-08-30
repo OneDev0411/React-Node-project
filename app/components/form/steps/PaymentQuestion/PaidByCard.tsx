@@ -38,14 +38,19 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
       return;
     }
     let updateValue = JSON.parse(JSON.stringify(_roleData));
-    if (value !== "") {
-      updateValue[key] = parseFloat(value);
-    } else {
-      updateValue[key] = 0;
+    if (key !== "payment_note") {
+      if (value !== "") {
+        updateValue[key] = parseFloat(value);
+      } else {
+        updateValue[key] = 0;
+      }
+    }
+    if (key == "payment_note") {
+      updateValue[key] = value;
     }
 
     if (key == "payment_unit_type") {
-      updateValue["payment_value"] = "";
+      updateValue["payment_value"] = 0;
     }
     _setRoleData(updateValue);
   };
@@ -59,6 +64,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
       payment_unit_type: 0,
       payment_value: 0,
       payment_calculated_from: 0,
+      payment_note: "",
     });
   };
 
@@ -216,10 +222,25 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           </RadioGroup>
         </Grid>
       </Grid>
-      <Box style={{ padding: 10, paddingTop: 0 }}>
-        <label style={{ marginRight: "5px" }}>Notes:</label>
-        <span style={{ color: "inherit", marginTop: 2 }}>{_roleData.note}</span>
-      </Box>
+      <Grid container spacing={1} style={{ padding: 10, paddingTop: 0 }}>
+        <Grid item xs={2}>
+          <label>Notes:</label>
+        </Grid>
+        <Grid item xs={10}>
+          <TextField
+            variant="standard"
+            style={{ color: "inherit", width: "100%" }}
+            disabled={!checkedAgent}
+            value={_roleData.payment_note}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChangeValue(
+                e,
+                "payment_note"
+              )
+            }
+          />
+        </Grid>
+      </Grid>
     </Box>
   );
 };

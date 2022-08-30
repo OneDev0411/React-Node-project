@@ -38,10 +38,11 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   // constants
   const salesPrice = deal.context.sales_price?.number;
   const dealType = deal.deal_type;
-  const bothType = deal.context.ender_type;
+  const enderType = deal.context.ender_type?.text;
+  const bothType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? true : false;
 
   const showReason =
-    bothType == undefined ? totalPercent < 2 : totalPercent < 4;
+    bothType ? totalPercent < 4 : totalPercent < 2;
 
   const notFinishCase1 = showReason && _reasonValue === -1; // not selected reason
   const notFinishCase2 = showReason && _reasonValue === 2 && _reasonNote === ""; // not completed reason note
@@ -81,8 +82,8 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       setDealData(temp);
     }
     if (
-      (totalPercent < 2 && bothType == undefined) ||
-      (totalPercent < 4 && bothType !== undefined)
+      (totalPercent < 2 && !bothType) ||
+      (totalPercent < 4 && bothType)
     ) {
       dealData.gci_reason_select = _reasonValue;
       let temp = JSON.parse(JSON.stringify(dealData));
@@ -145,7 +146,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     let temp = JSON.parse(JSON.stringify(_roleData));
     temp[index] = data;
     if (clcFlag) {
-      let tempValue = temp.reduce((totalPercent: number, data: IRoleData) => {
+      let tempValue = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: number, data: IRoleData) => {
         return parseFloat(
           (Number(totalPercent) + Number(data.share_percent)).toFixed(3)
         );
@@ -160,21 +161,10 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       setShowButton(false);
     else
       setShowButton(true);
-      
-    if (setRoleData !== undefined) {
-      let temp: IRoleData[] = JSON.parse(JSON.stringify(roleData));
-      roleData.map((item: IRoleData, index: number) => {
-        temp[index].share_value =
-          item.share_value == null
-            ? parseFloat((Number(salesPrice) * Number(item.share_percent) / 100).toFixed(3))
-            : item.share_value;
-      });
-      setRoleData(temp);
-    }
   }, []);
   
   useEffect(() => {
-    let tempClc = _roleData.reduce((totalPercent: any, data: IRoleData) => {
+    let tempClc = _roleData.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
       return parseFloat(
         (Number(totalPercent) + Number(data.share_percent)).toFixed(3)
       );
@@ -194,31 +184,60 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       <QuestionForm>
         {_roleData.map((item: IRoleData, id: number) => (
           <>
-            <GCIInfoItem
-              Ui={Ui}
-              key={id}
-              index={id}
-              salesPrice={salesPrice}
-              saveData={{ next, updateFlag }}
-              totalClc={totalClc}
-            />
-            <Button
-              key={id}
-              variant="outlined"
-              onClick={() => handleClickRemoveButton(item, id)}
-              style={{
-                color: "black !important",
-                borderColor: "#dbdbdb !important",
-                paddingBottom: 2,
-                paddingTop: 2,
-                marginLeft: 10,
-                marginBottom: 20,
-                marginTop: -20,
-                float: "right",
-              }}
-            >
-              Remove one
-            </Button>
+            {(dealType === "Buying" || bothType) && (item.role.indexOf("Buyer") >= 0) && <>
+              <GCIInfoItem
+                Ui={Ui}
+                key={id}
+                index={id}
+                salesPrice={salesPrice}
+                saveData={{ next, updateFlag }}
+                totalClc={totalClc}
+              />
+              <Button
+                key={id}
+                variant="outlined"
+                onClick={() => handleClickRemoveButton(item, id)}
+                style={{
+                  color: "black !important",
+                  borderColor: "#dbdbdb !important",
+                  paddingBottom: 2,
+                  paddingTop: 2,
+                  marginLeft: 10,
+                  marginBottom: 20,
+                  marginTop: -20,
+                  float: "right",
+                }}
+              >
+                Remove one
+              </Button>
+            </>}
+            {(dealType === "Selling" || bothType) && (item.role.indexOf("Seller") >= 0) && <>
+              <GCIInfoItem
+                Ui={Ui}
+                key={id}
+                index={id}
+                salesPrice={salesPrice}
+                saveData={{ next, updateFlag }}
+                totalClc={totalClc}
+              />
+              <Button
+                key={id}
+                variant="outlined"
+                onClick={() => handleClickRemoveButton(item, id)}
+                style={{
+                  color: "black !important",
+                  borderColor: "#dbdbdb !important",
+                  paddingBottom: 2,
+                  paddingTop: 2,
+                  marginLeft: 10,
+                  marginBottom: 20,
+                  marginTop: -20,
+                  float: "right",
+                }}
+              >
+                Remove one
+              </Button>
+            </>}
           </>
         ))}
         {status === "Listing" && (

@@ -29,7 +29,12 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
 
   // this hook push to state variable of component from global state
   useEffect(() => {
-    _setRoleData(roleData[index]);
+    const temp = roleData[index];
+    temp.share_value =
+          temp.share_value == null
+            ? parseFloat((Number(salesPrice) * Number(temp.share_percent) / 100).toFixed(3))
+            : temp.share_value;
+    _setRoleData(temp);
   }, [roleData]);
 
   const handleChangeNumber = (

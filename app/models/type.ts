@@ -66,6 +66,7 @@ export interface IRoleData {
   payment_unit_type?: number;
   payment_value?: number;
   payment_calculated_from?: number;
+  payment_note?: string;
 }
 
 export interface IRemittanceChecks {

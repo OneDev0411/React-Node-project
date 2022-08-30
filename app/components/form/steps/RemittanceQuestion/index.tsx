@@ -20,7 +20,8 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
   const wizard = useWizardContext();
   const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted } = useApp();
-  const showBoth = deal.context.ender_type !== undefined;
+  const enderType = deal.context.ender_type?.text;
+  const showBoth = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? true : false;
   const showBuy = showBoth || deal.deal_type === "Buying";
   const showSell = showBoth || deal.deal_type === "Selling";
 
@@ -46,16 +47,18 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   const [showButton, setShowButton] = useState<boolean>(true);
 
   const handleBuySideSelectChange = (event: any) => {
-    setSelectValueBuySide(event.target.value);
-    if (selectValueBuySide !== -1 && selectValueListingSide !== -1) 
+    const value: number = event.target.value;
+    setSelectValueBuySide(value);
+    if (value !== -1 && selectValueListingSide !== -1)
       setShowButton(true);
     else
       setShowButton(false);
   };
 
   const handleListingSideSelectChange = (event: any) => {
-    setSelectValueListingSide(event.target.value);
-    if (selectValueBuySide !== -1 && selectValueListingSide !== -1) 
+    const value: number = event.target.value;
+    setSelectValueListingSide(value);
+    if (selectValueBuySide !== -1 && value !== -1) 
       setShowButton(true);
     else
       setShowButton(false);
@@ -201,7 +204,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     <QuestionSection>
       <QuestionTitle>Please input remittance info.</QuestionTitle>
       <QuestionForm>
-        {(_dealData.stage_cost !== 0) && (
+        {(Number(_dealData.stage_cost) !== 0) && (
           <>
             <Box style={{ marginBottom: 10, marginTop: 20 }}>
               <TextField
@@ -257,7 +260,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
           </>
         )}
         {(showBuy || showBoth) && (
-          <>
+          <Box style={{ marginTop: 40 }}>
             <Grid container spacing={2} style={{ marginBottom: 10 }}>
               <Grid item xs={4}>
                 <label>Form of Remittance</label>
@@ -443,7 +446,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
               </Grid>
             </Box>
             )}
-          </>
+          </Box>
         )}
         {(showSell || showBoth) && (
           <Box style={{ marginTop: 40 }}>
