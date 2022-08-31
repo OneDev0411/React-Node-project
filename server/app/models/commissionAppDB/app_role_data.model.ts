@@ -1,9 +1,8 @@
 export default (sequelize, Sequelize) => {
   const AppRoleModel = sequelize.define("app_role", {
     deal: {
-      type: Sequelize.UUID,
+      type: Sequelize.TEXT,
       allowNull: false,
-      unique: true,
     },
     role_id: {
       type: Sequelize.UUID,

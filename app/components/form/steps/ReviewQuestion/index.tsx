@@ -33,7 +33,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const [feedback, setFeedback] = React.useState<string>("");
   const [openFeedback, setOpenFeedback] = React.useState<boolean>(false);
 
-  const gciDeValue = dealData.gci_calculate_type == 0 ? (dealData.gci_de_value / salesPrice * 100) : (dealData.gci_de_value);
+  const gciDeValue = dealData.gci_de_value;
   const showCompanyInfo = 
     (paymentTypeData[1].member.indexOf(dealData.outside_de_payment_type) >= 0 ||
       paymentTypeData[2].member.indexOf(dealData.outside_de_payment_type) >= 0) ? true : false;
@@ -160,9 +160,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <label style={{ fontSize: '17px' }}>GCI to Douglas Elliman</label>
           </Grid>
           <Grid item xs={12}>
-            {gciDeValue}
-            {dealData.gci_calculate_type == 0 ? "%" : "$"}
-            {dealData.gci_calculate_type == 0 && (
+            {gciDeValue}%
             <Box>
               <strong>{"$" + stylizeNumber(salesPrice)}</strong>
               {` (Sales Price) * ${gciDeValue}% (GCI) = `}
@@ -170,7 +168,6 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 ${stylizeNumber(salesPrice * Number(gciDeValue) / 100)}
               </strong>
             </Box>
-            )}
           </Grid>
           <Grid item xs={12}>
             {dealData.gci_reason}

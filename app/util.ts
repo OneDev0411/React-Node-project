@@ -147,7 +147,6 @@ export const defaultRemittanceChecks: IRemittanceChecks[] = [
 
 export const defaultDealData: IDealData = {
   deal: null,
-  gci_calculate_type: 0,
   gci_de_value: 0,
   gci_reason_select: -1,
   gci_reason: "",

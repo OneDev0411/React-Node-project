@@ -19,7 +19,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React;
   const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
   const wizard = useWizardContext();
-  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted } = useApp();
+  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, setSubmitted } = useApp();
   const enderType = deal.context.ender_type?.text;
   const showBoth = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? true : false;
   const showBuy = showBoth || deal.deal_type === "Buying";
@@ -128,6 +128,8 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     setTimeout(() => {
       wizard.next();
     }, 80);
+    if (submitted === 1 && setSubmitted !== undefined)
+      setSubmitted(-1);
   };
 
   // this save data before next wizard

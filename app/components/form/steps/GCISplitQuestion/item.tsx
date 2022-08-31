@@ -13,7 +13,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   const { roleData, setRoleData } = useApp();
   const [_roleData, _setRoleData] = useState<IRoleData>(roleData[index]);
 
-  // this hook is save data to global state.
+  // this hook save data to global state.
   useEffect(() => {
     if (next) {
       let dataIndex = roleData.findIndex((item) => {
@@ -27,7 +27,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     }
   }, [next]);
 
-  // this hook push to state variable of component from global state
+  // this hook pull data from global state to state variable of component
   useEffect(() => {
     const temp = roleData[index];
     temp.share_value =
@@ -45,8 +45,6 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IRoleData
   ) => {
-    updateFlag(true);
-
     let value: string = e.target.value;
     if (Number(value) + "" === "NaN" || (value + "").length > 16) {
       return;
@@ -54,6 +52,10 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     if (key == "share_percent" && Number(value) > 100) {
       return;
     }
+    if (value !== roleData[index][key])
+      updateFlag(true);
+    else
+      updateFlag(false);
     let updateValue = JSON.parse(JSON.stringify(_roleData));
     updateValue[key] = Number(value);
 
@@ -76,8 +78,11 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IRoleData
   ) => {
-    updateFlag(true);
     let value: string = e.target.value;
+    if (value !== roleData[index][key])
+      updateFlag(true);
+    else
+      updateFlag(false);
     let updateValue = JSON.parse(JSON.stringify(_roleData));
     updateValue[key] = value;
     _setRoleData(updateValue);
@@ -101,7 +106,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
       <Grid item xs={4}>
         <TextField
           size="small"
-          type="text"
+          type="number"
           label="Share(%)"
           defaultValue={5}
           value={Number(_roleData.share_percent)}
@@ -114,7 +119,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
       <Grid item xs={4}>
         <TextField
           size="small"
-          type="text"
+          type="number"
           label="Share($)"
           value={Number(_roleData.share_value)}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

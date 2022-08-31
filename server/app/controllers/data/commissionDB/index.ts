@@ -10,9 +10,19 @@ import Jsonb from "jsonb-builder";
 const { AppDealModel, AppRoleModel, AppRemittanceCheckModel, DealModel } = db;
 
 const saveAppData = async (data: any, model: any) => {
-  const findRes = await model.findOne({
+  let findRes = await model.findOne({
     where: { deal: data.deal },
   });
+  if (model == AppRoleModel) {
+    findRes = await model.findOne({
+      where: { role_id: data.role_id },
+    });
+  }
+  if (model == AppRemittanceCheckModel) {
+    findRes = await model.findOne({
+      where: { deal: data.deal, check_num: data.check_num },
+    });
+  }
   if (findRes === null) {
     await model.create(data);
   } else {

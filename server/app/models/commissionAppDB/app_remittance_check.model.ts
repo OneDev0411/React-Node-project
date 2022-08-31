@@ -1,9 +1,8 @@
 export default (sequelize, Sequelize) => {
   const AppRemittanceCheckModel = sequelize.define("app_remittance_check", {
     deal: {
-      type: Sequelize.UUID,
+      type: Sequelize.TEXT,
       allowNull: false,
-      unique: true,
     },
     check_num: {
       type: Sequelize.INTEGER,

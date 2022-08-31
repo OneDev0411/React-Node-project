@@ -33,7 +33,6 @@ export interface IGCIInfoItemProps {
 
 export interface IDealData {
   deal: string | null;
-  gci_calculate_type: number;
   gci_de_value: number;
   gci_reason_select: number;
   gci_reason: string;

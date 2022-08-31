@@ -7,9 +7,6 @@ export default (sequelize, Sequelize) => {
         allowNull: false,
         unique: true,
       },
-      gci_calculate_type: {
-        type: Sequelize.INTEGER,
-      },
       gci_de_value: {
         type: Sequelize.NUMERIC,
         allowNull: false,
@@ -68,7 +65,7 @@ export default (sequelize, Sequelize) => {
         type: Sequelize.TEXT,
       },
       approval_request_date: {
-        type: Sequelize.DATE,
+        type: Sequelize.TEXT,
       },
     },
     {

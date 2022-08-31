@@ -14,7 +14,7 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
   const wizard = useWizardContext();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
-  const { submitted } = useApp();
+  const { submitted, setSubmitted } = useApp();
 
   // state
   const [next, setNext] = useState<boolean>(false);
@@ -30,6 +30,8 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
   const handleClickNextButton = () => {
     setNext(true);
     gotoNext();
+    if (submitted === 1 && setSubmitted !== undefined)
+      setSubmitted(-1);
   };
 
   const gotoNext = () => {

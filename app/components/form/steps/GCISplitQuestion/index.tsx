@@ -19,7 +19,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React;
   const { Grid, Button, Box, TextField, Select, MenuItem } = Ui;
   const wizard = useWizardContext();
-  const { dealData, setDealData, roleData, setRoleData, submitted } = useApp();
+  const { dealData, setDealData, roleData, setRoleData, submitted, setSubmitted } = useApp();
 
   // state
   const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData);
@@ -99,11 +99,28 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         }
       }
     }
+    const _roleData = roleData.filter((item: IRoleData) => {
+      if (bothType) {
+        return item.role != null;
+      }
+      if (dealType == "Buying") {
+        return (item.role == "BuyerAgent" ||
+                  item.role == "CoBuyerAgent" ||
+                  item.role == "BuyerReferral");
+      }
+      return (item.role == "SellerAgent" ||
+                item.role == "CoSellerAgent" ||
+                item.role == "SellerReferral");
+    });
+    if (setRoleData !== undefined)
+      setRoleData(_roleData);
     setNext(true);
     setTimeout(() => {
       wizard.next();
       setNext(false);
     }, 80);
+    if (submitted === 1 && setSubmitted !== undefined)
+      setSubmitted(-1);
   };
 
   const handleClickCancelAddButton = () => {
@@ -138,9 +155,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   };
 
   const updateFlag = (flag: boolean) => {
-    if (!showButton) {
-      setShowButton(flag);
-    }
+    setShowButton(flag);
   };
 
   const totalClc = (index: number, data: IRoleData, clcFlag: boolean) => {
