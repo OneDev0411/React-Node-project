@@ -41,7 +41,7 @@ export default (sequelize, Sequelize) => {
     },
     payment_note: {
       type: Sequelize.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
   });
 

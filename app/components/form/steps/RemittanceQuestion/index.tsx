@@ -170,14 +170,6 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   useEffect(() => {
     if (submitted === 1) {
       setShowButton(false);
-      if (buySideChecks.length && !_dealData.remittance_buy_side_bank_wire_amount)
-        setSelectValueBuySide(0);
-      if (!buySideChecks.length && _dealData.remittance_buy_side_bank_wire_amount)
-        setSelectValueBuySide(1);
-      if (listingSideChecks.length && !_dealData.remittance_listing_side_bank_wire_amount)
-        setSelectValueListingSide(0);
-      if (!listingSideChecks.length && _dealData.remittance_listing_side_bank_wire_amount)
-        setSelectValueListingSide(1);
     }
     else {
       setShowButton(true);
@@ -187,9 +179,20 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
         );
       }, 0);
     }
-    if (selectValueBuySide === -1)
+    if (selectValueBuySide === -1 || selectValueListingSide === -1)
       setShowButton(false);
   }, []);
+
+  useEffect(() => {
+    if (buySideChecks[0].deal != "" && !_dealData.remittance_buy_side_bank_wire_amount)
+      setSelectValueBuySide(0);
+    if (buySideChecks[0].deal == "" && _dealData.remittance_buy_side_bank_wire_amount)
+      setSelectValueBuySide(1);
+    if (listingSideChecks[0].deal != "" && !_dealData.remittance_listing_side_bank_wire_amount)
+      setSelectValueListingSide(0);
+    if (listingSideChecks[0].deal == "" && _dealData.remittance_listing_side_bank_wire_amount)
+      setSelectValueListingSide(1);
+  }, [_dealData]);
 
   useEffect(() => {
     _setDealData(dealData);
