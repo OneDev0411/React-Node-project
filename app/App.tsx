@@ -16,6 +16,8 @@ const App: React.FC<EntryProps> = ({
   const { Wizard } = Components;
   const { deal, roles } = models;
   const { setDealData, setRoleData, setRemittanceChecks, submitted, setSubmitted, setFinancing } = useApp();
+  const enderType = deal.context.ender_type?.text;
+  const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
 
   // push data to global state from backend data by using contextAPI
   const dataToContextAPI = async () => {
@@ -50,9 +52,10 @@ const App: React.FC<EntryProps> = ({
         share_percent: commission_percentage,
         share_value: commission_dollar,
         note: "",
-        payment_unit_type: 0,
-        payment_value: 0,
-        payment_calculated_from: 0,
+        payment_unit_type: null,
+        payment_value: null,
+        payment_calculated_from: null,
+        payment_note: "",
       };
     });
     try {
@@ -80,7 +83,20 @@ const App: React.FC<EntryProps> = ({
           temp.map((item: IRoleData) => {
             tempRoleData.push(item);
           });
-          setRoleData(tempRoleData);
+          const _roleData = tempRoleData.filter((item: IRoleData) => {
+            if (dealType == "Both") {
+              return item.role != null;
+            }
+            if (dealType == "Buying") {
+              return (item.role == "BuyerAgent" ||
+                        item.role == "CoBuyerAgent" ||
+                        item.role == "BuyerReferral");
+            }
+            return (item.role == "SellerAgent" ||
+                      item.role == "CoSellerAgent" ||
+                      item.role == "SellerReferral");
+          });
+          setRoleData(_roleData);
         }
 
         let tempRemittanceChecks = data.remittanceChecks;

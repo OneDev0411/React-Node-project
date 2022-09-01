@@ -24,6 +24,9 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const buyerInfo = roles.filter((role: IDealRole) => role.role === "Buyer")[0];
   const buyerLawyerInfo = roles.filter((role: IDealRole) => role.role === "BuyerLawyer")[0];
 
+  const buySideChecks = remittanceChecks.filter(item => item.deal_side === "BuySide");
+  const listingSideChecks = remittanceChecks.filter(item => item.deal_side === "ListingSide");
+
   const salesPrice = getDealContext("sales_price")?.number;
   const financing = getDealContext("financing")?.text;
   const financingProgram = getDealContext("financing_program")?.text;
@@ -34,6 +37,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const [openFeedback, setOpenFeedback] = React.useState<boolean>(false);
 
   const gciDeValue = dealData.gci_de_value;
+  const gciDePercent = parseFloat((gciDeValue / salesPrice * 100).toFixed(3));
   const showCompanyInfo = 
     (paymentTypeData[1].member.indexOf(dealData.outside_de_payment_type) >= 0 ||
       paymentTypeData[2].member.indexOf(dealData.outside_de_payment_type) >= 0) ? true : false;
@@ -160,12 +164,12 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <label style={{ fontSize: '17px' }}>GCI to Douglas Elliman</label>
           </Grid>
           <Grid item xs={12}>
-            {gciDeValue}%
+            {gciDePercent}%
             <Box>
               <strong>{"$" + stylizeNumber(salesPrice)}</strong>
-              {` (Sales Price) * ${gciDeValue}% (GCI) = `}
+              {` (Sales Price) * ${gciDePercent}% (GCI) = `}
               <strong>
-                ${stylizeNumber(salesPrice * Number(gciDeValue) / 100)}
+                ${stylizeNumber(salesPrice * Number(gciDePercent) / 100)}
               </strong>
             </Box>
           </Grid>
@@ -201,83 +205,151 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             </>
           )}
         </Grid>
-        <Grid container style={{ marginTop: "30px" }}>
-          <Grid item xs={6}>
-            <label style={{ fontSize: '17px' }}>Remmittance </label>
+        {Number(dealData.stage_cost) !== 0 &&
+          <Grid container style={{ marginTop: "30px" }}>
+            <Grid item xs={12}>
+              <label>Remittance Info</label>
+            </Grid>
+            <Grid item xs={6}>
+              Brokerage Commission
+            </Grid>
+            <Grid item xs={6}>
+              <label>{dealData.brokerage_commission}</label>
+            </Grid>
+            <Grid item xs={6}>
+              Staging Cost
+            </Grid>
+            <Grid item xs={6}>
+              <label>{dealData.stage_cost}</label>
+            </Grid>
+            <Grid item xs={6}>
+              Total Due at Closing
+            </Grid>
+            <Grid item xs={6}>
+              <label>{Number(dealData.brokerage_commission) + Number(dealData.stage_cost)}</label>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <label style={{ fontSize: '17px' }}>Buy Side</label>
-          </Grid>
-          <Grid item xs={6}>
-            Form of Remittance
-          </Grid>
-          <Grid item xs={6}>
-            <label>Checks</label>
-          </Grid>
-          {remittanceChecks.map((item: IRemittanceChecks, index: number) => 
-            <>
-              <Grid item xs={12}>
-                <label>Check{index+1}</label>
-              </Grid>
+        }
+        {(dealType == "Both" || dealType == "Buying") &&
+          <Grid container style={{ marginTop: "30px" }}>
+            <Grid item xs={6}>
+              <label style={{ fontSize: '17px' }}>Remmittance </label>
+            </Grid>
+            <Grid item xs={6}>
+              <label style={{ fontSize: '17px' }}>Buy Side</label>
+            </Grid>
+            <Grid item xs={6}>
+              Form of Remittance
+            </Grid>
+            {buySideChecks.length > 0 && <>
               <Grid item xs={6}>
-                Check number
+                <label>Checks</label>
               </Grid>
+              {buySideChecks.map((item: IRemittanceChecks, index: number) => 
+                <>
+                  <Grid item xs={12}>
+                    <label>Check{index+1}</label>
+                  </Grid>
+                  <Grid item xs={6}>
+                    Check number
+                  </Grid>
+                  <Grid item xs={6}>
+                    <label>{item.check_num}</label>
+                  </Grid>
+                  <Grid item xs={6}>
+                    Amount
+                  </Grid>
+                  <Grid item xs={6}>
+                    <label>{item.amount}</label>
+                  </Grid>
+                  <Grid item xs={6}>
+                    Date on check
+                  </Grid>
+                  <Grid item xs={6}>
+                    <label>{(new Date(item.check_date)).toDateString().slice(4)}</label>
+                  </Grid>
+                  <Grid item xs={6}>
+                    Date on received
+                  </Grid>
+                  <Grid item xs={6}>
+                    <label>{(new Date(item.check_receive_date)).toDateString().slice(4)}</label>
+                  </Grid>
+                </>
+              )}
+            </>}
+            {Number(dealData.remittance_buy_side_bank_wire_amount) > 0 && <>
               <Grid item xs={6}>
-                <label>{item.check_num}</label>
+                <label>Bank Wire</label>
               </Grid>
               <Grid item xs={6}>
                 Amount
               </Grid>
               <Grid item xs={6}>
-                <label>{item.amount}</label>
+                <label>{dealData.remittance_buy_side_bank_wire_amount}</label>
+              </Grid>
+            </>}
+          </Grid>
+        }
+        {(dealType == "Both" || dealType == "Selling") &&
+          <Grid container style={{ marginTop: "30px" }}>
+            <Grid item xs={6}>
+              <label style={{ fontSize: '17px' }}>Remmittance </label>
+            </Grid>
+            <Grid item xs={6}>
+              <label style={{ fontSize: '17px' }}>Listing Side</label>
+            </Grid>
+            <Grid item xs={6}>
+              Form of Remittance
+            </Grid>
+            {listingSideChecks.length > 0 && <>
+              <Grid item xs={6}>
+                <label>Checks</label>
+              </Grid>
+              {listingSideChecks.map((item: IRemittanceChecks, index: number) => 
+                <>
+                  <Grid item xs={12}>
+                    <label>Check{index+1}</label>
+                  </Grid>
+                  <Grid item xs={6}>
+                    Check number
+                  </Grid>
+                  <Grid item xs={6}>
+                    <label>{item.check_num}</label>
+                  </Grid>
+                  <Grid item xs={6}>
+                    Amount
+                  </Grid>
+                  <Grid item xs={6}>
+                    <label>{item.amount}</label>
+                  </Grid>
+                  <Grid item xs={6}>
+                    Date on check
+                  </Grid>
+                  <Grid item xs={6}>
+                    <label>{(new Date(item.check_date)).toDateString().slice(4)}</label>
+                  </Grid>
+                  <Grid item xs={6}>
+                    Date on received
+                  </Grid>
+                  <Grid item xs={6}>
+                    <label>{(new Date(item.check_receive_date)).toDateString().slice(4)}</label>
+                  </Grid>
+                </>
+              )}
+            </>}
+            {Number(dealData.remittance_listing_side_bank_wire_amount) > 0 && <>
+              <Grid item xs={6}>
+                <label>Bank Wire</label>
               </Grid>
               <Grid item xs={6}>
-                Date on check
+                Amount
               </Grid>
               <Grid item xs={6}>
-                <label>{(new Date(item.check_date)).toDateString().slice(4)}</label>
+                <label>{dealData.remittance_listing_side_bank_wire_amount}</label>
               </Grid>
-              <Grid item xs={6}>
-                Date on received
-              </Grid>
-              <Grid item xs={6}>
-                <label>{(new Date(item.check_receive_date)).toDateString().slice(4)}</label>
-              </Grid>
-            </>
-          )}
-        </Grid>
-        <Grid container style={{ marginTop: "30px" }}>
-          <Grid item xs={6}>
-            <label style={{ fontSize: '17px' }}>Remmittance </label>
+            </>}
           </Grid>
-          <Grid item xs={6}>
-            <label style={{ fontSize: '17px' }}>Listing Side</label>
-          </Grid>
-          <Grid item xs={6}>
-            Form of Remittance
-          </Grid>
-          <Grid item xs={6}>
-            <label>Bank Wire</label>
-          </Grid>
-          <Grid item xs={6}>
-            Brokerage Commission
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.brokerage_commission}</label>
-          </Grid>
-          <Grid item xs={6}>
-            Staging Cost
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.stage_cost}</label>
-          </Grid>
-          <Grid item xs={6}>
-            Total Due at Closing
-          </Grid>
-          <Grid item xs={6}>
-            <label>{Number(dealData.brokerage_commission) + Number(dealData.stage_cost)}</label>
-          </Grid>
-        </Grid>
+        }
         <Grid container style={{ marginTop: "30px" }}>
           <Grid item xs={12}>
             <label style={{ fontSize: '17px' }}>Inside Douglas Elliman Payments Info </label>
@@ -299,7 +371,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           </Grid>
           <Grid item xs={12}>
             {roleData.map((agent: IRoleData, id: number) => (
-              <>
+              agent.inside_payment_unit_type != null && dealData.inside_de_payment_type != "Team Member" && <>
                 {(dealType == "Selling" || dealType == "Both") &&
                   (agent.role == "SellerAgent" ||
                     agent.role == "CoSellerAgent" ||
@@ -308,6 +380,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                       key={id}
                       index={id}
                       Ui={Ui}
+                      range="inside"
                     />
                   )}
                 {(dealType == "Buying" || dealType == "Both") &&
@@ -318,6 +391,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                       key={id}
                       index={id}
                       Ui={Ui}
+                      range="inside"
                     />
                   )}
               </>
@@ -345,7 +419,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           </Grid>
           <Grid item xs={12}>
             {roleData.map((agent: IRoleData, id: number) => (
-              <>
+              agent.outside_payment_unit_type != null && dealData.outside_de_payment_type != "Team Member" && <>
                 {(dealType == "Selling" || dealType == "Both") &&
                   (agent.role == "SellerAgent" ||
                     agent.role == "CoSellerAgent" ||
@@ -354,6 +428,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                       key={id}
                       index={id}
                       Ui={Ui}
+                      range="outside"
                     />
                   )}
                 {(dealType == "Buying" || dealType == "Both") &&
@@ -364,6 +439,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                       key={id}
                       index={id}
                       Ui={Ui}
+                      range="outside"
                     />
                   )}
               </>

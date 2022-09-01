@@ -62,10 +62,14 @@ export interface IRoleData {
   share_percent: IDealRole["commission_percentage"];
   share_value: IDealRole["commission_dollar"];
   note: string;
-  payment_unit_type?: number;
-  payment_value?: number;
-  payment_calculated_from?: number;
-  payment_note?: string;
+  inside_payment_unit_type?: number | null;
+  inside_payment_value?: number | null;
+  inside_payment_calculated_from?: number | null;
+  inside_payment_note?: string;
+  outside_payment_unit_type?: number | null;
+  outside_payment_value?: number | null;
+  outside_payment_calculated_from?: number | null;
+  outside_payment_note?: string;
 }
 
 export interface IRemittanceChecks {
@@ -115,11 +119,13 @@ export interface IPaidByCardProps {
   Ui: typeof Ui;
   saveData: IDataToConText;
   index: number;
+  range: string;
 }
 
 export interface IPaidByInfoCardProps {
   Ui: typeof Ui;
   index: number;
+  range: string;
 }
 
 export interface CheckData {

@@ -26,21 +26,29 @@ export default (sequelize, Sequelize) => {
     note: {
       type: Sequelize.TEXT,
     },
-    payment_unit_type: {
+    inside_payment_unit_type: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
-    payment_value: {
+    inside_payment_value: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
-    payment_calculated_from: {
+    inside_payment_calculated_from: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
-    payment_note: {
+    inside_payment_note: {
       type: Sequelize.TEXT,
-      allowNull: true,
+    },
+    outside_payment_unit_type: {
+      type: Sequelize.INTEGER,
+    },
+    outside_payment_value: {
+      type: Sequelize.INTEGER,
+    },
+    outside_payment_calculated_from: {
+      type: Sequelize.INTEGER,
+    },
+    outside_payment_note: {
+      type: Sequelize.TEXT,
     },
   });
 

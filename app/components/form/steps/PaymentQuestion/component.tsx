@@ -114,7 +114,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
           />
         </Grid>
       </Grid>
-      {_dealData.outside_de_payment_type !== "Team Member" && (
+      {(range == "inside" ? (_dealData.inside_de_payment_type !== "Team Member") : (_dealData.outside_de_payment_type !== "Team Member")) && (
         <Grid container spacing={1}>
           <Grid item xs={3}>
             <label style={{ marginTop: 5 }}>Paid By</label>
@@ -131,6 +131,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                       index={id}
                       Ui={Ui}
                       saveData={{ next, updateFlag }}
+                      range={range}
                     />
                   )}
                 {(dealType == "Buying" || dealType == "Both") &&
@@ -142,6 +143,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                       index={id}
                       Ui={Ui}
                       saveData={{ next, updateFlag }}
+                      range={range}
                     />
                   )}
               </>

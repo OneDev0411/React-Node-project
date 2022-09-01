@@ -7,6 +7,7 @@ const PaidByInfoCard: React.FC<IPaidByInfoCardProps> = ({
     Grid,
   },
   index,
+  range,
 }) => {
   const { roleData } = useApp();
   // state
@@ -18,10 +19,14 @@ const PaidByInfoCard: React.FC<IPaidByInfoCardProps> = ({
         {_roleData.legal_full_name}
       </Grid>
       <Grid item xs={12}>
-        {_roleData.payment_unit_type == 0 ? `${_roleData.payment_value}%` : `$${_roleData.payment_value}`}
+        {
+          range == "inside" ? 
+            (_roleData.inside_payment_unit_type == 0 ? `${_roleData.inside_payment_value}%` : `$${_roleData.inside_payment_value}`) :
+            (_roleData.outside_payment_unit_type == 0 ? `${_roleData.outside_payment_value}%` : `$${_roleData.outside_payment_value}`)
+        }
       </Grid>
       <Grid item xs={12}>
-        Calculated from: <label>{_roleData.payment_calculated_from ? "My GCI" : "My NET"}</label>
+        Calculated from: <label>{range == "inside" ? (_roleData.inside_payment_calculated_from == 0 ? "My GCI" : "My NET") : (_roleData.inside_payment_calculated_from == 0 ? "My GCI" : "My NET")}</label>
       </Grid>
       <Grid item xs={12}>
         {_roleData.note}

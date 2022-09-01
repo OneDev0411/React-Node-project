@@ -12,6 +12,7 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React;
   const { Box, Button } = Ui;
   const wizard = useWizardContext();
+  const { step } = useSectionContext();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
   const { submitted, setSubmitted } = useApp();
@@ -36,10 +37,12 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
 
   const gotoNext = () => {
     setShowButton(false);
-    setTimeout(() => {
-      wizard.next();
-      setNext(false);
-    }, 80);
+    if (wizard.currentStep < step + 1) {
+      setTimeout(() => {
+        wizard.next();
+        setNext(false);
+      }, 80);
+    }
   };
 
   // this function enable Next button.

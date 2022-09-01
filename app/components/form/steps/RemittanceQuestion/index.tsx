@@ -37,7 +37,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   // state
   const [buySideChecks, setBuySideChecks] = useState<
     IRemittanceChecks[]
-  >(remittanceChecks.filter(item => item.deal_side === "BuyingSide").length > 0 ? remittanceChecks.filter(item => item.deal_side === "BuyingSide") : defaultRemittanceChecks);
+  >(remittanceChecks.filter(item => item.deal_side === "BuySide").length > 0 ? remittanceChecks.filter(item => item.deal_side === "BuySide") : defaultRemittanceChecks);
   const [listingSideChecks, setListingSideChecks] = useState<
     IRemittanceChecks[]
   >(remittanceChecks.filter(item => item.deal_side === "ListingSide").length > 0 ? remittanceChecks.filter(item => item.deal_side === "ListingSide") : defaultRemittanceChecks);
@@ -142,7 +142,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
         return item.amount !== 0 && item.deal !== ""})];
       setRemittanceChecks(remittanceChecks);
     }
-    if (setDealData !== undefined) {
+    if (setDealData !== undefined && _dealData.stage_cost !== 0) {
       dealData.brokerage_commission = _dealData.brokerage_commission;
       dealData.stage_cost = _dealData.stage_cost;
       dealData.remittance_buy_side_bank_wire_amount = _dealData.remittance_buy_side_bank_wire_amount;
@@ -175,11 +175,11 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     }
     else {
       setShowButton(true);
-      _dealData.brokerage_commission = roleData.reduce((total: any, data: IRoleData) => {
+      _dealData.brokerage_commission = _dealData.brokerage_commission == 0 ? roleData.reduce((total: any, data: IRoleData) => {
         return parseFloat(
           (Number(total) + Number(data.share_value)).toFixed(3)
         );
-      }, 0);
+      }, 0) : _dealData.brokerage_commission;
     }
     if (selectValueBuySide === -1 || selectValueListingSide === -1)
       setShowButton(false);
@@ -201,7 +201,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   }, [dealData]);
 
   // useEffect(() => {
-  //   setBuySideChecks(remittanceChecks.filter(item => item.deal_side === "BuyingSide"));
+  //   setBuySideChecks(remittanceChecks.filter(item => item.deal_side === "BuySide"));
   //   setListingSideChecks(remittanceChecks.filter(item => item.deal_side === "ListingSide"));
   // }, [remittanceChecks]);
 

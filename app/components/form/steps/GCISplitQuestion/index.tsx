@@ -99,21 +99,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         }
       }
     }
-    const _roleData = roleData.filter((item: IRoleData) => {
-      if (bothType) {
-        return item.role != null;
-      }
-      if (dealType == "Buying") {
-        return (item.role == "BuyerAgent" ||
-                  item.role == "CoBuyerAgent" ||
-                  item.role == "BuyerReferral");
-      }
-      return (item.role == "SellerAgent" ||
-                item.role == "CoSellerAgent" ||
-                item.role == "SellerReferral");
-    });
-    if (setRoleData !== undefined)
-      setRoleData(_roleData);
     setNext(true);
     setTimeout(() => {
       wizard.next();
