@@ -136,6 +136,7 @@ export const paymentTypeData: IPaymentData[] = [
 
 export const defaultRemittanceChecks: IRemittanceChecks[] = [
   {
+    id: null,
     deal: "",
     check_num: 0,
     check_date: new Date(),

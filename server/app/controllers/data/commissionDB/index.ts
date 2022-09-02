@@ -20,15 +20,23 @@ const saveAppData = async (data: any, model: any) => {
   }
   if (model == AppRemittanceCheckModel) {
     findRes = await model.findOne({
-      where: { deal: data.deal, check_num: data.check_num },
+      where: { deal: data.deal, id: data.id },
     });
   }
   if (findRes === null) {
     await model.create(data);
   } else {
-    await model.update(data, {
-      where: { deal: data.deal },
-    });
+    if (model == AppRemittanceCheckModel) {
+      const id = data.id;
+      delete data.id;
+      await model.update(data, {
+        where: { id: id },
+      });
+    }
+    else
+      await model.update(data, {
+        where: { deal: data.deal },
+      });
   }
 };
 
@@ -37,9 +45,20 @@ const readData = async (deal: string, model: any) => {
     where: {
       deal: deal,
     },
-    attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+    attributes: { exclude: ["createdAt", "updatedAt"] },
   });
   return res;
+};
+
+const deleteData = async (data: any, model: any) => {
+  if (model == AppRemittanceCheckModel) {
+    await model.destroy({
+      where: {
+        id: data.id
+      },
+    });
+    console.log(data);
+  }
 };
 
 const saveCommissionData = async (req: Request, res: Response) => {
@@ -55,6 +74,13 @@ const saveCommissionData = async (req: Request, res: Response) => {
       await saveAppData(roleData[i], AppRoleModel);
     }
     // save appRemittanceCheckData
+    const dbRemittanceChecks = await readData(dealData.deal, AppRemittanceCheckModel);
+    for (let k = 0; k < dbRemittanceChecks.length; k++) {
+      const isExist = remittanceChecks.filter(item => item.id && item.id == dbRemittanceChecks[k].id);
+      if (!isExist.length) {
+        await deleteData(dbRemittanceChecks[k], AppRemittanceCheckModel);
+      }
+    }
     for (let i = 0; i < remittanceChecks.length; i++) {
       await saveAppData(remittanceChecks[i], AppRemittanceCheckModel);
     }

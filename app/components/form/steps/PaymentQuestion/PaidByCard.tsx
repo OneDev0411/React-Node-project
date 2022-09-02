@@ -220,7 +220,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
             size="small"
             type="text"
             value={
-              range == "inside" ? (_roleData.inside_payment_unit_type == 1 ? _roleData.inside_payment_value : "") : (_roleData.outside_payment_unit_type == 1 ? _roleData.outside_payment_unit_type : "")
+              range == "inside" ? (_roleData.inside_payment_unit_type == 1 ? _roleData.inside_payment_value : "") : (_roleData.outside_payment_unit_type == 1 ? _roleData.outside_payment_value : "")
             }
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeValue(e, range == "inside" ? "inside_payment_value" : "outside_payment_value")
@@ -274,7 +274,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
                 <Radio
                   size="small"
                   style={{ marginBottom: 3 }}
-                  disabled={!checkedAgent || (range == "outside" ? _roleData.inside_payment_unit_type == 1 : _roleData.outside_payment_unit_type == 1)}
+                  disabled={!checkedAgent || (range == "inside" ? _roleData.inside_payment_unit_type == 1 : _roleData.outside_payment_unit_type == 1)}
                 />
               }
               label="My NET"

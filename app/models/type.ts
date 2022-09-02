@@ -73,6 +73,7 @@ export interface IRoleData {
 }
 
 export interface IRemittanceChecks {
+  id: number | null;
   deal: string;
   check_num: number;
   check_date: Date;

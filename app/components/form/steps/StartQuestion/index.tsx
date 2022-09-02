@@ -32,7 +32,7 @@ const StartQuestion: React.FC<IQuestionProps> = ({
         wizard.goto(8);
       }
       if (submitted === 1) {
-        wizard.goto(14);
+        wizard.goto(12);
       }
     }
   }, []);
