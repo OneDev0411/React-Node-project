@@ -167,6 +167,8 @@ export const defaultDealData: IDealData = {
   outside_de_payment_tax_id: "",
   outside_de_payment_mail: "",
   approval_request_date: "",
+  submitted: 0,
+  current_step: 8,
 };
 
 export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";
