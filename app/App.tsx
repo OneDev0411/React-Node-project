@@ -1,8 +1,8 @@
 import React from "@libs/react";
 import { FormWizard } from "./components/form/Wizard";
-import useApp from "./hooks/useApp";
 import axios from "axios";
-import { IRoleData } from "./models/type";
+import { AppContextApi, IRoleData } from "./models/type";
+import useApp from "./hooks/useApp";
 import { defaultDealData, defaultRemittanceChecks, APP_URL } from "./util";
 import Loading from './components/Loading';
 
@@ -13,9 +13,11 @@ const App: React.FC<EntryProps> = ({
   utils,
   hooks,
 }) => {
+  const { useEffect } = React;
   const { Wizard } = Components;
   const { deal, roles } = models;
-  const { setDealData, setRoleData, setRemittanceChecks, submitted, setSubmitted, setFinancing } = useApp();
+  const total_data: AppContextApi = useApp();
+  const { dealData, setDealData, roleData, setRoleData, remittanceChecks, setRemittanceChecks, submitted, setSubmitted, setFinancing, updating, setUpdating, currentStep, setCurrentStep } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
 
@@ -59,17 +61,23 @@ const App: React.FC<EntryProps> = ({
       };
     });
     try {
+      if (setUpdating !== undefined) {
+        setUpdating(true);
+      }
       if (data !== null) {
         let tempDealData = data.dealData;
 
         if (setSubmitted !== undefined) {
-          if (tempDealData.deal)
+          if (tempDealData.deal && tempDealData.submitted == 1)
             setSubmitted(1);
           else
             setSubmitted(-1);
         }
         if (setDealData !== undefined) {
           setDealData(tempDealData);
+        }
+        if (setCurrentStep !== undefined) {
+          setCurrentStep(tempDealData.current_step);
         }
         let tempRoleData = data.roleData;
         if (setRoleData !== undefined) {
@@ -108,6 +116,9 @@ const App: React.FC<EntryProps> = ({
           defaultDealData.deal = deal.id;
           setDealData(defaultDealData);
         }
+        if (setCurrentStep !== undefined) {
+          setCurrentStep(defaultDealData.current_step);
+        }
         if (setRoleData !== undefined) {
           setRoleData(tempAgentRoles);
         }
@@ -117,12 +128,34 @@ const App: React.FC<EntryProps> = ({
         if (setSubmitted !== undefined) 
           setSubmitted(-1);
       }
+      setTimeout(() => {
+        if (setUpdating !== undefined) {
+          setUpdating(false);
+        }
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (submitted != 0 && !updating) {
+      const saveData = async () => {
+        await axios.post(
+          `${APP_URL}/rechat-commission-app-data-save`,
+          {
+            data: total_data,
+          }
+        );
+      };
+      return () => {
+        saveData();
+      } 
+    }
+    else return;
+  }, [submitted, updating, dealData, roleData, remittanceChecks]);
+  
+  useEffect(() => {
     if (setFinancing !== undefined)
       setFinancing(deal.context.financing?.text);
     dataToContextAPI();
@@ -136,7 +169,7 @@ const App: React.FC<EntryProps> = ({
       />
     )
   } 
-  else {
+  else if (currentStep != 1) {
     return (
       <FormWizard
         Wizard={Wizard}
@@ -147,6 +180,14 @@ const App: React.FC<EntryProps> = ({
         Components={Components}
       />
     );
+  }
+  else {
+    return (
+      <Loading
+        width={60}
+        fill={'#0945EB'}
+      />
+    )
   }
 };
 

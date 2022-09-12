@@ -122,10 +122,10 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
         if (matchRoles.length === 0) {
             return;
         }
-        // regular cancel action
+        // click save or save & add to my contacts button
         else {
-            setStatus("Listing");
             setCurrentObject(null);
+            setStatus("Listing");
         }
     }
 

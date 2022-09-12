@@ -64,7 +64,7 @@ const deleteData = async (data: any, model: any) => {
 const saveCommissionData = async (req: Request, res: Response) => {
   try {
     let allData: ICommissionData = req.body.data;
-    let dealData = allData.dealData;
+    let dealData = { ...allData.dealData, submitted: allData.submitted };
     let roleData = allData.roleData;
     let remittanceChecks = allData.remittanceChecks;
     // save appDealData

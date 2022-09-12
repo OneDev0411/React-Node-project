@@ -10,7 +10,7 @@ const StartQuestion: React.FC<IQuestionProps> = ({
   const { useEffect } = React;
   const { QuestionSection, QuestionTitle } = Wizard;
   const wizard = useWizardContext();
-  const { submitted } = useApp();
+  const { currentStep, submitted } = useApp();
   
   const seller = roles.filter((role: IDealRole) => role.role === "Seller");
   const buyer = roles.filter((role: IDealRole) => role.role === "Buyer");
@@ -29,7 +29,7 @@ const StartQuestion: React.FC<IQuestionProps> = ({
       wizard.goto(5);
     else {
       if (submitted === -1) {
-        wizard.goto(8);
+        wizard.goto(currentStep);
       }
       if (submitted === 1) {
         wizard.goto(12);

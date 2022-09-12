@@ -11,7 +11,7 @@ import { stylizeNumber } from "../../../../util";
 
 const GCISplitQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-  hooks: { useWizardContext },
+  hooks: { useWizardContext, useSectionContext },
   models: { deal, roles },
   Components: { RoleForm, ContactRoles },
   api: { deleteRole },
@@ -19,8 +19,9 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React;
   const { Grid, Button, Box, TextField, Select, MenuItem } = Ui;
   const wizard = useWizardContext();
-  const { dealData, setDealData, roleData, setRoleData, submitted, setSubmitted } = useApp();
-
+  const { step } = useSectionContext();
+  const { dealData, setDealData, roleData, setRoleData, submitted, setUpdating, currentStep } = useApp();
+  
   // state
   const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData);
   const [status, setStatus] = useState<GCISplitStatus>("Listing");
@@ -77,35 +78,32 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
 
   const handleClickNextButton = async () => {
     setShowButton(false);
-    if (setDealData !== undefined) {
-      dealData.gci_de_value = salesPrice * totalPercent / 100;
-      let temp = JSON.parse(JSON.stringify(dealData));
-      setDealData(temp);
+    if (setUpdating !== undefined) {
+      setUpdating(true);
     }
+    dealData.current_step = step;
+    dealData.gci_de_value = salesPrice * totalPercent / 100;
     if (
       (totalPercent < 2 && !bothType) ||
       (totalPercent < 4 && bothType)
     ) {
       dealData.gci_reason_select = _reasonValue;
-      let temp = JSON.parse(JSON.stringify(dealData));
-      if (setDealData !== undefined) {
-        setDealData(temp);
-      }
       if (_reasonValue === 2) {
         dealData.gci_reason = _reasonNote;
-        let temp = JSON.parse(JSON.stringify(dealData));
-        if (setDealData !== undefined) {
-          setDealData(temp);
-        }
       }
+    }
+    let temp = JSON.parse(JSON.stringify(dealData));
+    if (setDealData !== undefined) {
+      setDealData(temp);
     }
     setNext(true);
     setTimeout(() => {
       wizard.next();
       setNext(false);
+      if (setUpdating !== undefined) {
+        setUpdating(false);
+      }
     }, 80);
-    if (submitted === 1 && setSubmitted !== undefined)
-      setSubmitted(-1);
   };
 
   const handleClickCancelAddButton = () => {
@@ -134,9 +132,17 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     // for display deleting result
     let temp: IRoleData[] = _roleData.slice();
     temp.splice(index, 1);
+    if (setUpdating !== undefined) {
+      setUpdating(true);
+    }
     if (setRoleData !== undefined) {
       setRoleData(temp);
     }
+    setTimeout(() => {
+      if (setUpdating !== undefined) {
+        setUpdating(false);
+      }
+    },);
   };
 
   const updateFlag = (flag: boolean) => {
@@ -164,7 +170,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   };
 
   useEffect(() => {
-    if (submitted === 1)
+    if (submitted === 1 || currentStep > step)
       setShowButton(false);
     else
       setShowButton(true);

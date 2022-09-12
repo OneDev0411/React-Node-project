@@ -12,14 +12,15 @@ import { defaultRemittanceChecks } from "../../../../util";
 
 const RemittanceQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-  hooks: { useWizardContext },
+  hooks: { useWizardContext, useSectionContext },
   models: { deal },
   Components: { DatePicker: DayPicker },
 }) => {
   const { useState, useEffect } = React;
   const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
   const wizard = useWizardContext();
-  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, setSubmitted } = useApp();
+  const { step } = useSectionContext();
+  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, setUpdating, currentStep } = useApp();
   const enderType = deal.context.ender_type?.text;
   const showBoth = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? true : false;
   const showBuy = showBoth || deal.deal_type === "Buying";
@@ -62,36 +63,24 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   };
 
   const handleClickBuySideAddAnotherCheckButton = (event: any) => {
-    if (!showButton) {
-      setShowButton(true);
-    }
     let temp = buySideChecks.slice();
     temp.push(defaultCheckData);
     setBuySideChecks(temp);
   };
 
   const handleClickBuySideRemoveCheckButton = (event: any) => {
-    if (!showButton) {
-      setShowButton(true);
-    }
     let temp = buySideChecks.slice();
     temp.pop();
     setBuySideChecks(temp);
   };
   
   const handleClickListingSideAddAnotherCheckButton = (event: any) => {
-    if (!showButton) {
-      setShowButton(true);
-    }
     let temp = listingSideChecks.slice();
     temp.push(defaultCheckData);
     setListingSideChecks(temp);
   };
 
   const handleClickListingSideRemoveCheckButton = (event: any) => {
-    if (!showButton) {
-      setShowButton(true);
-    }
     let temp = listingSideChecks.slice();
     temp.pop();
     setListingSideChecks(temp);
@@ -103,9 +92,6 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     value: IRemittanceChecks[typeof key],
     dealSide: string,
   ) => {
-    if (!showButton) {
-      setShowButton(true);
-    }
     if (dealSide === "BuySide") {
       let temp = buySideChecks.slice();
       temp[index] = { ...temp[index], [key]: value, deal_side: dealSide, deal: deal.id };
@@ -125,18 +111,20 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     setTimeout(() => {
       wizard.next();
     }, 80);
-    if (submitted === 1 && setSubmitted !== undefined)
-      setSubmitted(-1);
   };
 
   // this save data before next wizard
   const saveData = () => {
+    if (setUpdating !== undefined) {
+      setUpdating(true);
+    }
     if (setRemittanceChecks !== undefined) {
       let remittanceChecks = buySideChecks.filter((item) => item.deal !== "");
       remittanceChecks = [ ...remittanceChecks, ...listingSideChecks.filter((item) => item.deal !== "")];
       setRemittanceChecks(remittanceChecks);
     }
     if (setDealData !== undefined) {
+      dealData.current_step = step;
       if (_dealData.stage_cost !== 0) {
         dealData.brokerage_commission = _dealData.brokerage_commission;
         dealData.stage_cost = _dealData.stage_cost;
@@ -146,15 +134,17 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
       let temp = JSON.parse(JSON.stringify(dealData));
       setDealData(temp);
     }
+    setTimeout(() => {
+      if (setUpdating !== undefined) {
+        setUpdating(false);
+      }
+    },);
   };
 
   const handleChangeValue = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IDealData
   ) => {
-    if (!showButton) {
-      setShowButton(true);
-    }
     let value: string = e.target.value;
     if (Number(value) + "" === "NaN" || (value + "").length > 16) {
       return;
@@ -166,7 +156,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   };
 
   useEffect(() => {
-    if (submitted === 1) {
+    if (submitted === 1 || currentStep > step) {
       setShowButton(false);
     }
     else {
@@ -177,8 +167,6 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
         );
       }, 0) : _dealData.brokerage_commission;
     }
-    if (selectValueBuySide === -1 || selectValueListingSide === -1)
-      setShowButton(false);
   }, []);
 
   useEffect(() => {
@@ -194,6 +182,10 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
       setSelectValueListingSide(0);
     if (listingSideChecks[0].deal == "" && _dealData.remittance_listing_side_bank_wire_amount != null)
       setSelectValueListingSide(1);
+    // if ((showBuy && selectValueBuySide === -1) || (showSell && selectValueListingSide === -1))
+    //   setShowButton(false);
+    // if ((showBuy && selectValueBuySide !== -1) || (showSell && selectValueListingSide !== -1))
+    //   setShowButton(true);
   }, [_dealData, buySideChecks, listingSideChecks]);
 
   useEffect(() => {

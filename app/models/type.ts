@@ -52,6 +52,8 @@ export interface IDealData {
   outside_de_payment_tax_id: string;
   outside_de_payment_mail: string;
   approval_request_date: string;
+  submitted: number;
+  current_step: number;
 }
 
 export interface IRoleData {
@@ -93,6 +95,10 @@ export interface AppContextApi {
   setSubmitted?: (data: number) => void;
   financing: string;
   setFinancing?: (data: string) => void;
+  updating: boolean;
+  setUpdating?: (data: boolean) => void;
+  currentStep: number;
+  setCurrentStep?: (data: number) => void;
 }
 
 export interface IQuestionProps {

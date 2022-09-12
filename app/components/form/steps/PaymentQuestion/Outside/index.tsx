@@ -13,31 +13,41 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React;
   const { Box, Button } = Ui;
   const wizard = useWizardContext();
+  const { step } = useSectionContext();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
-  const { submitted, setSubmitted } = useApp();
+  const { dealData, setDealData, submitted, setUpdating, currentStep } = useApp();
 
   // state
   const [next, setNext] = useState<boolean>(false);
   const [showButton, setShowButton] = useState<boolean>(true);
 
   useEffect(() => {
-    if (submitted === 1)
+    if (submitted === 1 || currentStep > step)
         setShowButton(false);
     else
         setShowButton(true);
   }, []);
 
   const handleClickNextButton = () => {
-    console.log(wizard.currentStep);
     setNext(true);
     gotoNext();
-    if (submitted === 1 && setSubmitted !== undefined)
-      setSubmitted(-1);
   };
 
   const gotoNext = () => {
     setShowButton(false);
+    if (setUpdating !== undefined) {
+      setUpdating(true);
+    }
+    dealData.current_step = step;
+    let temp = JSON.parse(JSON.stringify(dealData));
+    if (setDealData !== undefined)
+      setDealData(temp);
+    setTimeout(() => {
+      if (setUpdating !== undefined) {
+        setUpdating(false);
+      }
+    },);
     setTimeout(() => {
       wizard.next();
       setNext(false);

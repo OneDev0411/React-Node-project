@@ -7,6 +7,7 @@ export interface ICommissionData {
   dealData: any;
   roleData: any;
   remittanceChecks: any;
+  submitted: number;
 }
 export interface ICombinedDealData {
   commissionData: any;

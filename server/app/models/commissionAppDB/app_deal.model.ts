@@ -67,6 +67,12 @@ export default (sequelize, Sequelize) => {
       approval_request_date: {
         type: Sequelize.TEXT,
       },
+      submitted: {
+        type: Sequelize.NUMERIC,
+      },
+      current_step: {
+        type: Sequelize.NUMERIC,
+      }
     },
     {
       timestamps: true,

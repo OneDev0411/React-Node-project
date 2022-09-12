@@ -10,7 +10,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   index,
 }) => {
   const { useState, useEffect } = React;
-  const { roleData, setRoleData } = useApp();
+  const { roleData, setRoleData, setUpdating } = useApp();
   const [_roleData, _setRoleData] = useState<IRoleData>(roleData[index]);
 
   // this hook save data to global state.
@@ -21,9 +21,17 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
       });
       roleData[dataIndex] = _roleData;
       let temp = JSON.parse(JSON.stringify(roleData));
+      if (setUpdating !== undefined) {
+        setUpdating(true);
+      }
       if (setRoleData !== undefined) {
         setRoleData(temp);
       }
+      setTimeout(() => {
+        if (setUpdating !== undefined) {
+          setUpdating(false);
+        }
+      },);
     }
   }, [next]);
 
@@ -52,10 +60,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     if (key == "share_percent" && Number(value) > 100) {
       return;
     }
-    if (value !== roleData[index][key])
-      updateFlag(true);
-    else
-      updateFlag(false);
+    updateFlag(true);
     let updateValue = JSON.parse(JSON.stringify(_roleData));
     updateValue[key] = Number(value);
 
@@ -79,10 +84,6 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     key: keyof IRoleData
   ) => {
     let value: string = e.target.value;
-    if (value !== roleData[index][key])
-      updateFlag(true);
-    else
-      updateFlag(false);
     let updateValue = JSON.parse(JSON.stringify(_roleData));
     updateValue[key] = value;
     _setRoleData(updateValue);
