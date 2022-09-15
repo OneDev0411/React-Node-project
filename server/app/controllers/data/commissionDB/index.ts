@@ -33,10 +33,15 @@ const saveAppData = async (data: any, model: any) => {
         where: { id: id },
       });
     }
-    else
+    else if (model == AppRoleModel) {
+      await model.update(data, {
+        where: { role_id: data.role_id },
+      });
+    } else {
       await model.update(data, {
         where: { deal: data.deal },
       });
+    }
   }
 };
 

@@ -28,7 +28,7 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   const [submitted, setSubmitted] = useState<AppContextApi["submitted"]>(0);
   const [financing, setFinancing] = useState<AppContextApi["financing"]>("");
   const [updating, setUpdating] = useState<AppContextApi["updating"]>(false);
-  const [currentStep, setCurrentStep] = useState<AppContextApi["currentStep"]>(1);
+  const [currentStep, setCurrentStep] = useState<AppContextApi["currentStep"]>(8);
 
   return (
     <AppContext.Provider

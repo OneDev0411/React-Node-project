@@ -166,7 +166,7 @@ const getLeaseAttributes = ({ deal, roles }) => {
   const leased_price = getContextFromDeal(deal, "leased_price");
   const sum = (s, n) => s + n;
 
-  if (deal.deal_type === DEAL.SELLING) {
+  if (deal.deal_type === DEAL.SELLING || isDoubleEnded(deal)) {
     ListSideSalesPrice = leased_price;
 
     ListSideDealValue = _.chain(roles)
@@ -276,7 +276,7 @@ const getSaleAttributes = ({ deal, roles }) => {
   const sales_price = getContextFromDeal(deal, "sales_price");
   const sum = (s, n) => s + n;
 
-  if (deal.deal_type === DEAL.SELLING) {
+  if (deal.deal_type === DEAL.SELLING || isDoubleEnded(deal)) {
     ListSideSalesPrice = sales_price;
     ListSideDealValue = _.chain(roles)
       .filter(isSellside)
@@ -388,7 +388,7 @@ const sync = async (deal) => {
 
   const type = property_type.is_lease ? "rental" : "sale";
   const update = state ? "/update" : "";
-  const uri = `${process.env.API_URL}/api/adc/postdeal/${type}${update}`;
+  const uri = `${process.env.API_URL}/api/v2/dynamics/postdeal/${type}${update}`;
 
   const created_at = state ? state.created_at : new Date();
   const DealDate = moment.utc(created_at).format("YYYY-MM-DD");
@@ -454,6 +454,9 @@ const sync = async (deal) => {
   const saleAttributes = !property_type.is_lease
     ? getSaleAttributes({ deal, roles })
     : {};
+
+  const gciDeValue = getContextFromDeal(deal, "gci_de_value");
+  const GrossCommissionPercent = Number(gciDeValue) / Number(sales_price) * 100;
 
   const isAgent = (role) => {
     return [
@@ -552,6 +555,7 @@ const sync = async (deal) => {
       PropertyType,
       ListingDate,
       ListingPrice,
+      OriginalListingPrice: ListingPrice,
       UnitNum,
       City,
       State,
@@ -567,12 +571,18 @@ const sync = async (deal) => {
       DealDate,
       PaidBy: region_details.paid_by,
       ApprovalRequestDate,
+      Status: "Pending",
+      DealCreatedBy: "N/A",
+      ProjectedClosingDate: DealDate,
+      GrossCommissionPercent,
 
       ...leaseAttributes,
       ...saleAttributes,
     },
     agents,
   };
+  console.log("uri: ", uri);
+  console.log("body: ", body);
 
   try {
     const res: any = await axios.post(uri, body, {
@@ -590,6 +600,7 @@ const sync = async (deal) => {
      * When this happens, mark it as finalized and we wont try sending more updates to D365.
      */
     console.log("error:", e);
+    console.log("error:", e.response.data.errors);
     if (e.statusCode === 409) {
       await save({ deal });
       console.log("Sync Finalized");
