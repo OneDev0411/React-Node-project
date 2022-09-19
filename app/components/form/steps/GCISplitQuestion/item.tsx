@@ -10,7 +10,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   index,
 }) => {
   const { useState, useEffect } = React;
-  const { roleData, setRoleData, setUpdating } = useApp();
+  const { roleData, setRoleData } = useApp();
   const [_roleData, _setRoleData] = useState<IRoleData>(roleData[index]);
 
   // this hook save data to global state.
@@ -21,32 +21,26 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
       });
       roleData[dataIndex] = _roleData;
       let temp = JSON.parse(JSON.stringify(roleData));
-      if (setUpdating !== undefined) {
-        setUpdating(true);
-      }
       if (setRoleData !== undefined) {
         setRoleData(temp);
       }
-      setTimeout(() => {
-        if (setUpdating !== undefined) {
-          setUpdating(false);
-        }
-      },);
     }
   }, [next]);
 
   // this hook pull data from global state to state variable of component
   useEffect(() => {
     const temp = roleData[index];
-    temp.share_value =
-          temp.share_value == null
-            ? parseFloat((Number(salesPrice) * Number(temp.share_percent) / 100).toFixed(3))
-            : temp.share_value;
-    temp.share_percent =
-          temp.share_percent == null
-            ? parseFloat((Number(temp.share_value) / Number(salesPrice) * 100).toFixed(3))
-            : temp.share_percent;
-    _setRoleData(temp);
+    if (temp) {
+      temp.share_value =
+            temp.share_value == null
+              ? parseFloat((Number(salesPrice) * Number(temp.share_percent) / 100).toFixed(3))
+              : temp.share_value;
+      temp.share_percent =
+            temp.share_percent == null
+              ? parseFloat((Number(temp.share_value) / Number(salesPrice) * 100).toFixed(3))
+              : temp.share_percent;
+      _setRoleData(temp);
+    }
   }, [roleData]);
 
   const handleChangeNumber = (

@@ -5,6 +5,7 @@ import useApp from "../../../../hooks/useApp";
 const StartQuestion: React.FC<IQuestionProps> = ({
   Wizard,
   hooks: { useWizardContext },
+  api: { getDealContext },
   models: { roles },
 }) => {
   const { useEffect } = React;
@@ -16,6 +17,8 @@ const StartQuestion: React.FC<IQuestionProps> = ({
   const buyer = roles.filter((role: IDealRole) => role.role === "Buyer");
   const buyerLawyer = roles.filter((role: IDealRole) => role.role === "BuyerLawyer");
   const sellerLawyer = roles.filter((role: IDealRole) => role.role === "SellerLawyer");
+  const financingContextValue = getDealContext('financing')?.text;
+  const financingProgramContextValue = getDealContext('financing_program')?.text;
 
   // mockup loading, need to remove after the backend is implemented
   useEffect(() => {
@@ -27,6 +30,10 @@ const StartQuestion: React.FC<IQuestionProps> = ({
       wizard.goto(4);
     else if (!sellerLawyer.length)
       wizard.goto(5);
+    else if (financingContextValue == undefined)
+      wizard.goto(6);
+    else if (financingProgramContextValue == undefined)
+      wizard.goto(7);
     else {
       if (submitted === -1) {
         wizard.goto(currentStep);

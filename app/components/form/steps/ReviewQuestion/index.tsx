@@ -151,14 +151,16 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             {financing}
           </Grid>
         </Grid>
-        <Grid container style={{ marginTop: "30px" }}>
-          <Grid item xs={12}>
-            <label style={{ fontSize: '17px' }}>Financing Program</label>
+        {financing != "Cash Deal" && 
+          <Grid container style={{ marginTop: "30px" }}>
+            <Grid item xs={12}>
+              <label style={{ fontSize: '17px' }}>Financing Program</label>
+            </Grid>
+            <Grid item xs={12}>
+              {financingProgram}
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            {financingProgram}
-          </Grid>
-        </Grid>
+        }
         <Grid container style={{ marginTop: "30px" }}>
           <Grid item xs={12}>
             <label style={{ fontSize: '17px' }}>GCI to Douglas Elliman</label>

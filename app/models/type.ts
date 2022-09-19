@@ -95,8 +95,6 @@ export interface AppContextApi {
   setSubmitted?: (data: number) => void;
   financing: string;
   setFinancing?: (data: string) => void;
-  updating: boolean;
-  setUpdating?: (data: boolean) => void;
   currentStep: number;
   setCurrentStep?: (data: number) => void;
 }

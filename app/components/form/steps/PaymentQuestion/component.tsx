@@ -14,7 +14,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   const { useState, useEffect } = React;
   const { Grid, Select, MenuItem, ListSubheader, TextField } = Ui;
 
-  const { dealData, setDealData, roleData, setUpdating } = useApp();
+  const { dealData, setDealData, roleData } = useApp();
   const [_dealData, _setDealData] = useState<IDealData>(dealData);
   let showCompanyInfo = 
     (paymentTypeData[1].member.indexOf(_dealData.outside_de_payment_type) >= 0 ||
@@ -51,17 +51,9 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   useEffect(() => {
     // save data
     if (next) {
-      if (setUpdating !== undefined) {
-        setUpdating(true);
-      }
       if (setDealData !== undefined) {
         setDealData(_dealData);
       }
-      setTimeout(() => {
-        if (setUpdating !== undefined) {
-          setUpdating(false);
-        }
-      });
     }
   }, [next]);
 

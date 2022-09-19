@@ -17,7 +17,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
   index,
   range,
 }) => {
-  const { roleData, setRoleData, setUpdating } = useApp();
+  const { roleData, setRoleData } = useApp();
   // state
   const [_roleData, _setRoleData] = React.useState<IRoleData>(roleData[index]);
   const [checkedAgent, setCheckedAgent] = React.useState<boolean>(false);
@@ -143,17 +143,9 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
       });
       roleData[dataIndex] = _roleData;
       let temp = JSON.parse(JSON.stringify(roleData));
-      if (setUpdating !== undefined) {
-        setUpdating(true);
-      }
       if (setRoleData !== undefined) {
         setRoleData(temp);
       }
-      setTimeout(() => {
-        if (setUpdating !== undefined) {
-          setUpdating(false);
-        }
-      },);
     }
   }, [next]);
 

@@ -17,7 +17,7 @@ const App: React.FC<EntryProps> = ({
   const { Wizard } = Components;
   const { deal, roles } = models;
   const total_data: AppContextApi = useApp();
-  const { dealData, setDealData, roleData, setRoleData, remittanceChecks, setRemittanceChecks, submitted, setSubmitted, setFinancing, updating, setUpdating, currentStep, setCurrentStep } = useApp();
+  const { dealData, setDealData, roleData, setRoleData, remittanceChecks, setRemittanceChecks, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
 
@@ -54,16 +54,9 @@ const App: React.FC<EntryProps> = ({
         share_percent: commission_percentage,
         share_value: commission_dollar,
         note: "",
-        payment_unit_type: null,
-        payment_value: null,
-        payment_calculated_from: null,
-        payment_note: "",
       };
     });
     try {
-      if (setUpdating !== undefined) {
-        setUpdating(true);
-      }
       if (data !== null) {
         let tempDealData = data.dealData;
 
@@ -128,40 +121,18 @@ const App: React.FC<EntryProps> = ({
         if (setSubmitted !== undefined) 
           setSubmitted(-1);
       }
-      setTimeout(() => {
-        if (setUpdating !== undefined) {
-          setUpdating(false);
-        }
-      });
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if (submitted != 0 && !updating) {
-      const saveData = async () => {
-        await axios.post(
-          `${APP_URL}/rechat-commission-app-data-save`,
-          {
-            data: total_data,
-          }
-        );
-      };
-      return () => {
-        saveData();
-      } 
-    }
-    else return;
-  }, [submitted, updating, dealData, roleData, remittanceChecks]);
-  
-  useEffect(() => {
     if (setFinancing !== undefined)
       setFinancing(deal.context.financing?.text);
     dataToContextAPI();
   }, []);
 
-  if (submitted === 0) {
+  if (submitted === 0 || currentStep === 0) {
     return (
       <Loading
         width={60}
@@ -169,7 +140,7 @@ const App: React.FC<EntryProps> = ({
       />
     )
   } 
-  else if (currentStep != 1) {
+  else {
     return (
       <FormWizard
         Wizard={Wizard}
@@ -178,14 +149,6 @@ const App: React.FC<EntryProps> = ({
         models={models}
         api={api}
         Components={Components}
-      />
-    );
-  }
-  else {
-    return (
-      <Loading
-        width={60}
-        fill={'#0945EB'}
       />
     )
   }

@@ -1,13 +1,13 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
 import {
+  AppContextApi,
   GCISplitStatus,
   IQuestionProps,
   IRoleData,
 } from "../../../../models/type";
 import GCIInfoItem from "./item";
 import useApp from "../../../../hooks/useApp";
-import { stylizeNumber } from "../../../../util";
 
 const GCISplitQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -20,7 +20,8 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const { Grid, Button, Box, TextField, Select, MenuItem } = Ui;
   const wizard = useWizardContext();
   const { step } = useSectionContext();
-  const { dealData, setDealData, roleData, setRoleData, submitted, setUpdating, currentStep } = useApp();
+  const { dealData, setDealData, roleData, setRoleData, submitted, currentStep } = useApp();
+  const total_data: AppContextApi = useApp();
   
   // state
   const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData);
@@ -60,6 +61,22 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     _setReasonValue(Number(event.target.value));
   };
 
+  const handleUpsertRole = (agentRole: IDealRole) => {
+    const { id, legal_full_name, role, commission_percentage, commission_dollar } = agentRole;
+    const roleDt: IRoleData = {
+      deal: deal.id,
+      role_id: id,
+      legal_full_name: legal_full_name,
+      role: role,
+      share_percent: commission_percentage,
+      share_value: commission_dollar,
+      note: "",
+    };
+    const _role = _roleData;
+    _role.push(roleDt);
+    _setRoleData(_role);
+  }
+
   // this logic is updating
   const handleCloseRoleForm = () => {
     // in case of no match role, ignore cancel action
@@ -78,9 +95,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
 
   const handleClickNextButton = async () => {
     setShowButton(false);
-    if (setUpdating !== undefined) {
-      setUpdating(true);
-    }
     dealData.current_step = step;
     dealData.gci_de_value = salesPrice * totalPercent / 100;
     if (
@@ -100,10 +114,9 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     setTimeout(() => {
       wizard.next();
       setNext(false);
-      if (setUpdating !== undefined) {
-        setUpdating(false);
-      }
     }, 80);
+
+    console.log(total_data);
   };
 
   const handleClickCancelAddButton = () => {
@@ -118,10 +131,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   };
 
   const handleClickRemoveButton = async (data: IRoleData, index: number) => {
-    let isPrimary = isPrimaryAgent(data.role);
-    if (isPrimary) {
-      return;
-    }
     let roleModel = roles.find((role: IDealRole) => {
       return data.role_id == role.id;
     });
@@ -132,17 +141,9 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     // for display deleting result
     let temp: IRoleData[] = _roleData.slice();
     temp.splice(index, 1);
-    if (setUpdating !== undefined) {
-      setUpdating(true);
-    }
     if (setRoleData !== undefined) {
       setRoleData(temp);
     }
-    setTimeout(() => {
-      if (setUpdating !== undefined) {
-        setUpdating(false);
-      }
-    },);
   };
 
   const updateFlag = (flag: boolean) => {
@@ -215,23 +216,25 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 saveData={{ next, updateFlag }}
                 totalClc={totalClc}
               />
-              <Button
-                key={id}
-                variant="outlined"
-                onClick={() => handleClickRemoveButton(item, id)}
-                style={{
-                  color: "black !important",
-                  borderColor: "#dbdbdb !important",
-                  paddingBottom: 2,
-                  paddingTop: 2,
-                  marginLeft: 10,
-                  marginBottom: 20,
-                  marginTop: -20,
-                  float: "right",
-                }}
-              >
-                Remove one
-              </Button>
+              {_roleData.length > 1 && isPrimaryAgent(item.role) != true &&
+                <Button
+                  key={id}
+                  variant="outlined"
+                  onClick={() => handleClickRemoveButton(item, id)}
+                  style={{
+                    color: "black !important",
+                    borderColor: "#dbdbdb !important",
+                    paddingBottom: 2,
+                    paddingTop: 2,
+                    marginLeft: 10,
+                    marginBottom: 20,
+                    marginTop: -20,
+                    float: "right",
+                  }}
+                >
+                  Remove one
+                </Button>
+              }
             </>}
             {(dealType == "Selling" || bothType) && 
               (item.role == "SellerAgent" ||
@@ -245,23 +248,25 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 saveData={{ next, updateFlag }}
                 totalClc={totalClc}
               />
-              <Button
-                key={id}
-                variant="outlined"
-                onClick={() => handleClickRemoveButton(item, id)}
-                style={{
-                  color: "black !important",
-                  borderColor: "#dbdbdb !important",
-                  paddingBottom: 2,
-                  paddingTop: 2,
-                  marginLeft: 10,
-                  marginBottom: 20,
-                  marginTop: -20,
-                  float: "right",
-                }}
-              >
-                Remove one
-              </Button>
+              {_roleData.length > 1 && isPrimaryAgent(item.role) != true &&
+                <Button
+                  key={id}
+                  variant="outlined"
+                  onClick={() => handleClickRemoveButton(item, id)}
+                  style={{
+                    color: "black !important",
+                    borderColor: "#dbdbdb !important",
+                    paddingBottom: 2,
+                    paddingTop: 2,
+                    marginLeft: 10,
+                    marginBottom: 20,
+                    marginTop: -20,
+                    float: "right",
+                  }}
+                >
+                  Remove one
+                </Button>
+              }
             </>}
           </>
         ))}
@@ -303,6 +308,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
             <RoleForm
               isOpen
               deal={deal}
+              onUpsertRole={handleUpsertRole}
               onClose={handleCloseRoleForm}
               title=" "
               form={

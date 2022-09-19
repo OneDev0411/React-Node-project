@@ -12,8 +12,7 @@ const defaultValue: AppContextApi = {
   remittanceChecks: [],
   submitted: 0,
   financing: "",
-  updating: false,
-  currentStep: 1,
+  currentStep: 0,
 };
 
 export const AppContext = createContext<AppContextApi>(defaultValue);
@@ -27,8 +26,7 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   >(defaultRemittanceChecks);
   const [submitted, setSubmitted] = useState<AppContextApi["submitted"]>(0);
   const [financing, setFinancing] = useState<AppContextApi["financing"]>("");
-  const [updating, setUpdating] = useState<AppContextApi["updating"]>(false);
-  const [currentStep, setCurrentStep] = useState<AppContextApi["currentStep"]>(8);
+  const [currentStep, setCurrentStep] = useState<AppContextApi["currentStep"]>(0);
 
   return (
     <AppContext.Provider
@@ -43,8 +41,6 @@ export const AppProvider: React.FC<any> = ({ children }) => {
         setSubmitted,
         financing,
         setFinancing,
-        updating,
-        setUpdating,
         currentStep,
         setCurrentStep,
       }}

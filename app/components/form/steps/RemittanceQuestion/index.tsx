@@ -20,7 +20,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
   const wizard = useWizardContext();
   const { step } = useSectionContext();
-  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, setUpdating, currentStep } = useApp();
+  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, currentStep } = useApp();
   const enderType = deal.context.ender_type?.text;
   const showBoth = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? true : false;
   const showBuy = showBoth || deal.deal_type === "Buying";
@@ -115,9 +115,6 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
 
   // this save data before next wizard
   const saveData = () => {
-    if (setUpdating !== undefined) {
-      setUpdating(true);
-    }
     if (setRemittanceChecks !== undefined) {
       let remittanceChecks = buySideChecks.filter((item) => item.deal !== "");
       remittanceChecks = [ ...remittanceChecks, ...listingSideChecks.filter((item) => item.deal !== "")];
@@ -134,11 +131,6 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
       let temp = JSON.parse(JSON.stringify(dealData));
       setDealData(temp);
     }
-    setTimeout(() => {
-      if (setUpdating !== undefined) {
-        setUpdating(false);
-      }
-    },);
   };
 
   const handleChangeValue = (
