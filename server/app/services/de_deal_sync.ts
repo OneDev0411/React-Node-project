@@ -388,6 +388,7 @@ const sync = async (deal) => {
 
   const type = property_type.is_lease ? "rental" : "sale";
   const update = state ? "/update" : "";
+  console.log("hello: ", state);
   const uri = `${process.env.API_URL}/api/v2/dynamics/postdeal/${type}${update}`;
 
   const created_at = state ? state.created_at : new Date();
@@ -422,7 +423,7 @@ const sync = async (deal) => {
   const state_code = states.sanitizeStateCode(
     getContextFromDeal(deal, "state_code")
   );
-  const state_name = getContextFromDeal(deal, "state").trim();
+  const state_name = getContextFromDeal(deal, "state")?.trim();
   let State = state_code;
 
   if (!State) State = states.sanitizeStateCode(state_name); //Maybe we've put state_code in state_name like state_name: TX

@@ -115,8 +115,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       wizard.next();
       setNext(false);
     }, 80);
-
-    console.log(total_data);
   };
 
   const handleClickCancelAddButton = () => {

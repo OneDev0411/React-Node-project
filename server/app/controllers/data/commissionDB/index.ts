@@ -169,32 +169,32 @@ const sendDealData = async (deal: string) => {
 };
 
 const saveDealData = async (deal: any) => {
-  let jsonb = new Jsonb(deal);
+  // let jsonb = new Jsonb(deal);
 
-  const findRes = await DealModel.findOne({
-    where: { deal: deal.id },
-  });
-  if (findRes === null) {
-    await DealModel.create({
-      deal: deal.id,
-      is_finalized: false,
-      object: jsonb,
-    });
-  } else {
-    await DealModel.update(
-      { object: jsonb },
-      {
-        where: { deal: deal.id },
-      }
-    );
-  }
+  // const findRes = await DealModel.findOne({
+  //   where: { deal: deal.id },
+  // });
+  // if (findRes === null) {
+  //   await DealModel.create({
+  //     deal: deal.id,
+  //     is_finalized: false,
+  //     object: jsonb,
+  //   });
+  // } else {
+  //   await DealModel.update(
+  //     { object: jsonb },
+  //     {
+  //       where: { deal: deal.id },
+  //     }
+  //   );
+  // }
 };
 
 const handleUpsertFromWebhook = async (deal: any) => {
-  // upset data to commissionDB/de_deal
-  await saveDealData(deal);
   // make de_deal data, sync with DE, upsert data to commissionDB/de_deal
   await sync(deal);
+  // upsert data to commissionDB/de_deal
+  await saveDealData(deal);
 };
 
 const readCombinedData = async (deal: string) => {
@@ -208,23 +208,23 @@ const readCombinedData = async (deal: string) => {
 };
 
 const pushDealData = async (deal) => {
-  const findRes = await DealModel.findOne({
-    where: { deal: deal.id },
-  });
-  if (findRes === null) {
-    await DealModel.create({
-      deal: deal.id,
-      is_finalized: false,
-      object: null,
-    });
-  } else {
-    await DealModel.update(
-      { deal: deal.id, is_finalized: deal.is_finalized },
-      {
-        where: { deal: deal },
-      }
-    );
-  }
+  // const findRes = await DealModel.findOne({
+  //   where: { deal: deal.id },
+  // });
+  // if (findRes === null) {
+  //   await DealModel.create({
+  //     deal: deal.id,
+  //     is_finalized: false,
+  //     object: null,
+  //   });
+  // } else {
+  //   await DealModel.update(
+  //     { deal: deal.id, is_finalized: deal.is_finalized },
+  //     {
+  //       where: { deal: deal },
+  //     }
+  //   );
+  // }
 };
 
 const pushAllDealData = async (data: any) => {
