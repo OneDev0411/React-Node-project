@@ -169,32 +169,37 @@ const sendDealData = async (deal: string) => {
 };
 
 const saveDealData = async (deal: any) => {
-  // let jsonb = new Jsonb(deal);
+  let jsonb = new Jsonb(deal);
 
-  // const findRes = await DealModel.findOne({
-  //   where: { deal: deal.id },
-  // });
-  // if (findRes === null) {
-  //   await DealModel.create({
-  //     deal: deal.id,
-  //     is_finalized: false,
-  //     object: jsonb,
-  //   });
-  // } else {
-  //   await DealModel.update(
-  //     { object: jsonb },
-  //     {
-  //       where: { deal: deal.id },
-  //     }
-  //   );
-  // }
+  try {
+    const findRes = await AppDealModel.findOne({
+      where: { deal: deal.id },
+    });
+    if (findRes === null) {
+      await AppDealModel.create({
+        deal: deal.id,
+        is_finalized: false,
+        object: jsonb,
+      });
+    } else {
+      await AppDealModel.update(
+        { object: jsonb },
+        {
+          where: { deal: deal.id },
+        }
+      );
+    }
+    console.log("succeed");
+  } catch(err) {
+    console.log("error: ", err);
+  }
 };
 
 const handleUpsertFromWebhook = async (deal: any) => {
-  // make de_deal data, sync with DE, upsert data to commissionDB/de_deal
-  await sync(deal);
   // upsert data to commissionDB/de_deal
   await saveDealData(deal);
+  // make de_deal data, sync with DE, upsert data to commissionDB/de_deal
+  await sync(deal);
 };
 
 const readCombinedData = async (deal: string) => {
@@ -239,6 +244,7 @@ export default {
   saveApprovalDate,
   readCommissionData,
   readCombinedData,
+  readDealData,
   sendDealData,
   pushAllDealData,
 };

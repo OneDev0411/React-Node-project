@@ -72,7 +72,10 @@ export default (sequelize, Sequelize) => {
       },
       current_step: {
         type: Sequelize.NUMERIC,
-      }
+      },
+      object: {
+        type: Sequelize.JSONB,
+      },
     },
     {
       timestamps: true,

@@ -254,6 +254,11 @@ const getLeaseAttributes = ({ deal, roles }) => {
     BuySideCommissionRate,
 
     DealType: "Rentals",
+
+    CoBrokeName: 'N/A',
+    CoBrokeDealSide: 'N/A',
+    CoBrokeAgency: 'N/A',
+    CoBrokeCommission: deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate,
   };
 };
 
@@ -358,6 +363,11 @@ const getSaleAttributes = ({ deal, roles }) => {
     EscrowOfficerEmail,
 
     DealType: "Sales",
+
+    CoBrokeName: 'N/A',
+    CoBrokeDealSide: 'N/A',
+    CoBrokeAgency: 'N/A',
+    CoBrokeCommission: deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate,
   };
 };
 
