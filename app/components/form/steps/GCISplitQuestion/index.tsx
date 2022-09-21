@@ -20,7 +20,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const { Grid, Button, Box, TextField, Select, MenuItem } = Ui;
   const wizard = useWizardContext();
   const { step } = useSectionContext();
-  const { dealData, setDealData, roleData, setRoleData, submitted, currentStep } = useApp();
+  const { dealData, setDealData, roleData, setRoleData, submitted, currentStep, setCurrentStep } = useApp();
   const total_data: AppContextApi = useApp();
   
   // state
@@ -112,7 +112,12 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     }
     setNext(true);
     setTimeout(() => {
-      wizard.next();
+      if (wizard.currentStep < step + 1) {
+        wizard.next();
+        if (setCurrentStep !== undefined) {
+          setCurrentStep(step);
+        }
+      }
       setNext(false);
     }, 80);
   };

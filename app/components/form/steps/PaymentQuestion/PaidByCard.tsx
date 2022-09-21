@@ -126,10 +126,14 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
     if (range == "inside") {
       if (roleData[index].inside_payment_value != undefined && roleData[index].inside_payment_value !== null) {
         setCheckedAgent(true);
+      } else {
+        setCheckedAgent(false);
       }
     } else {
       if (roleData[index].outside_payment_value != undefined && roleData[index].outside_payment_value !== null) {
         setCheckedAgent(true);
+      } else {
+        setCheckedAgent(false);
       }
     }
     _setRoleData(roleData[index]);

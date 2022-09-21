@@ -14,7 +14,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   const { useState, useEffect } = React;
   const { Grid, Select, MenuItem, ListSubheader, TextField } = Ui;
 
-  const { dealData, setDealData, roleData } = useApp();
+  const { dealData, setDealData, roleData, setRoleData } = useApp();
   const [_dealData, _setDealData] = useState<IDealData>(dealData);
   let showCompanyInfo = 
     (paymentTypeData[1].member.indexOf(_dealData.outside_de_payment_type) >= 0 ||
@@ -37,6 +37,26 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     key: keyof IDealData
   ) => {
     updateFlag(true); // for Next button enable
+    if (key === "inside_de_paid_to") {
+      if (setRoleData !== undefined) {
+        let temp = JSON.parse(JSON.stringify(roleData));
+        if (e.target.value !== "")
+          temp[0]["inside_payment_value"] = 0;
+        else
+          temp[0]["inside_payment_value"] = null;
+        setRoleData(temp);
+      }
+    }
+    if (key === "outside_de_paid_to") {
+      if (setRoleData !== undefined) {
+        let temp = JSON.parse(JSON.stringify(roleData));
+        if (e.target.value !== "")
+          temp[0]["outside_payment_value"] = 0;
+        else
+          temp[0]["outside_payment_value"] = null;
+        setRoleData(temp);
+      }
+    }
     if (key === "outside_de_payment_type") {
       showCompanyInfo = 
         paymentTypeData[1].member.indexOf(_dealData.outside_de_payment_type) >= 0 ||

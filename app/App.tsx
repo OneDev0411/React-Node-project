@@ -69,9 +69,6 @@ const App: React.FC<EntryProps> = ({
         if (setDealData !== undefined) {
           setDealData(tempDealData);
         }
-        if (setCurrentStep !== undefined) {
-          setCurrentStep(tempDealData.current_step);
-        }
         let tempRoleData = data.roleData;
         if (setRoleData !== undefined) {
           let temp: IRoleData[] = tempAgentRoles.filter((item: IRoleData) => {
@@ -104,19 +101,22 @@ const App: React.FC<EntryProps> = ({
         if (setRemittanceChecks !== undefined) {
           setRemittanceChecks(tempRemittanceChecks);
         }
+        if (setCurrentStep !== undefined) {
+          setCurrentStep(tempDealData.current_step);
+        }
       } else {
         if (setDealData !== undefined) {
           defaultDealData.deal = deal.id;
           setDealData(defaultDealData);
-        }
-        if (setCurrentStep !== undefined) {
-          setCurrentStep(defaultDealData.current_step);
         }
         if (setRoleData !== undefined) {
           setRoleData(tempAgentRoles);
         }
         if (setRemittanceChecks !== undefined) {
           setRemittanceChecks(defaultRemittanceChecks);
+        }
+        if (setCurrentStep !== undefined) {
+          setCurrentStep(defaultDealData.current_step);
         }
         if (setSubmitted !== undefined) 
           setSubmitted(-1);
@@ -131,6 +131,20 @@ const App: React.FC<EntryProps> = ({
       setFinancing(deal.context.financing?.text);
     dataToContextAPI();
   }, []);
+
+  useEffect(() => {
+    if (currentStep !== 0 && submitted !== 0) {
+      const saveData = async () => {
+        await axios.post(
+          `${APP_URL}/rechat-commission-app-data-save`,
+          {
+            data: total_data,
+          }
+        );
+      }
+      saveData();
+    }
+  }, [submitted, currentStep]);
 
   if (submitted === 0 || currentStep === 0) {
     return (

@@ -16,7 +16,7 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
   const { step } = useSectionContext();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
-  const { dealData, setDealData, submitted, currentStep } = useApp();
+  const { dealData, setDealData, submitted, currentStep, setCurrentStep } = useApp();
 
   // state
   const [next, setNext] = useState<boolean>(false);
@@ -41,7 +41,12 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
     if (setDealData !== undefined)
       setDealData(temp);
     setTimeout(() => {
-      wizard.next();
+      if (wizard.currentStep < step + 1) {
+        wizard.next();
+        if (setCurrentStep !== undefined) {
+          setCurrentStep(step);
+        }
+      }
       setNext(false);
     }, 80);
   };

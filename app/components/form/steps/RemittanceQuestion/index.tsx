@@ -20,7 +20,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
   const wizard = useWizardContext();
   const { step } = useSectionContext();
-  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, currentStep } = useApp();
+  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, currentStep, setCurrentStep } = useApp();
   const enderType = deal.context.ender_type?.text;
   const showBoth = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? true : false;
   const showBuy = showBoth || deal.deal_type === "Buying";
@@ -35,10 +35,12 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     amount: 0,
     deal_side: "",
   };
+  let defaultChecksData: IRemittanceChecks[] = defaultRemittanceChecks;
+  defaultChecksData[0].deal = deal.id;
 
   // state
-  const [buySideChecks, setBuySideChecks] = useState<IRemittanceChecks[]>(defaultRemittanceChecks);
-  const [listingSideChecks, setListingSideChecks] = useState<IRemittanceChecks[]>(defaultRemittanceChecks);
+  const [buySideChecks, setBuySideChecks] = useState<IRemittanceChecks[]>(defaultChecksData);
+  const [listingSideChecks, setListingSideChecks] = useState<IRemittanceChecks[]>(defaultChecksData);
   const [selectValueBuySide, setSelectValueBuySide] = useState<number>(-1);
   const [selectValueListingSide, setSelectValueListingSide] = useState<number>(-1);
   const [_dealData, _setDealData] = useState<IDealData>(dealData);
@@ -108,17 +110,25 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     saveData();
     setShowButton(false);
 
-    setTimeout(() => {
-      wizard.next();
-    }, 80);
+    if (wizard.currentStep < step + 1) {
+      setTimeout(() => {
+          wizard.next();
+          if (setCurrentStep !== undefined) {
+            setCurrentStep(step);
+          }
+      }, 80);
+    }
   };
 
   // this save data before next wizard
   const saveData = () => {
     if (setRemittanceChecks !== undefined) {
-      let remittanceChecks = buySideChecks.filter((item) => item.deal !== "");
-      remittanceChecks = [ ...remittanceChecks, ...listingSideChecks.filter((item) => item.deal !== "")];
-      setRemittanceChecks(remittanceChecks);
+      const _buySideChecks = buySideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0);
+      setBuySideChecks(_buySideChecks);
+      const _listingSideChecks = listingSideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0);
+      const _remittanceChecks = [ ..._buySideChecks, ..._listingSideChecks];
+      setListingSideChecks(_listingSideChecks)
+      setRemittanceChecks(_remittanceChecks);
     }
     if (setDealData !== undefined) {
       dealData.current_step = step;
@@ -126,8 +136,8 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
         dealData.brokerage_commission = _dealData.brokerage_commission;
         dealData.stage_cost = _dealData.stage_cost;
       }
-      dealData.remittance_buy_side_bank_wire_amount = selectValueBuySide == 0 ? null : _dealData.remittance_buy_side_bank_wire_amount;
-      dealData.remittance_listing_side_bank_wire_amount = selectValueListingSide == 0 ? null : _dealData.remittance_listing_side_bank_wire_amount;
+      dealData.remittance_buy_side_bank_wire_amount = selectValueBuySide == 0 ? null : (_dealData.remittance_buy_side_bank_wire_amount == 0 ? null : _dealData.remittance_buy_side_bank_wire_amount);
+      dealData.remittance_listing_side_bank_wire_amount = selectValueListingSide == 0 ? null : (_dealData.remittance_listing_side_bank_wire_amount == 0 ? null : _dealData.remittance_listing_side_bank_wire_amount);
       let temp = JSON.parse(JSON.stringify(dealData));
       setDealData(temp);
     }
@@ -162,22 +172,18 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   }, []);
 
   useEffect(() => {
-    if (buySideChecks[0].deal == "" && _dealData.remittance_buy_side_bank_wire_amount == null)
+    if (buySideChecks.length == 1 && buySideChecks[0].check_num == 0 && buySideChecks[0].amount == 0 && _dealData.remittance_buy_side_bank_wire_amount == null)
       setSelectValueBuySide(-1);
-    if (buySideChecks[0].deal != "" && _dealData.remittance_buy_side_bank_wire_amount == null)
+    if (buySideChecks.length == 1 && (buySideChecks[0].check_num != 0 || buySideChecks[0].amount != 0) && _dealData.remittance_buy_side_bank_wire_amount == null)
       setSelectValueBuySide(0);
-    if (buySideChecks[0].deal == "" && _dealData.remittance_buy_side_bank_wire_amount != null)
+    if (buySideChecks.length == 1 && buySideChecks[0].check_num == 0 && buySideChecks[0].amount == 0 && _dealData.remittance_buy_side_bank_wire_amount != null)
       setSelectValueBuySide(1);
-    if (listingSideChecks[0].deal == "" && _dealData.remittance_listing_side_bank_wire_amount == null)
+    if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && _dealData.remittance_listing_side_bank_wire_amount == null)
       setSelectValueListingSide(-1);
-    if (listingSideChecks[0].deal != "" && _dealData.remittance_listing_side_bank_wire_amount == null)
+    if (listingSideChecks.length == 1 && listingSideChecks[0].check_num != 0 && listingSideChecks[0].amount == 0 && _dealData.remittance_listing_side_bank_wire_amount == null)
       setSelectValueListingSide(0);
-    if (listingSideChecks[0].deal == "" && _dealData.remittance_listing_side_bank_wire_amount != null)
+    if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && _dealData.remittance_listing_side_bank_wire_amount != null)
       setSelectValueListingSide(1);
-    // if ((showBuy && selectValueBuySide === -1) || (showSell && selectValueListingSide === -1))
-    //   setShowButton(false);
-    // if ((showBuy && selectValueBuySide !== -1) || (showSell && selectValueListingSide !== -1))
-    //   setShowButton(true);
   }, [_dealData, buySideChecks, listingSideChecks]);
 
   useEffect(() => {
