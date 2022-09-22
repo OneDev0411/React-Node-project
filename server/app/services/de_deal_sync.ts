@@ -232,6 +232,8 @@ const getLeaseAttributes = ({ deal, roles }) => {
 
   const BuySideAgency = _.find(roles, isBuyside).company_title;
   const ListSideAgency = _.find(roles, isSellside).company_title;
+  const BuyerAgent = _.find(roles, isBuyside).legal_full_name;
+  const SellerAgent = _.find(roles, isSellside).legal_full_name;
 
   return {
     ContractDate,
@@ -255,7 +257,7 @@ const getLeaseAttributes = ({ deal, roles }) => {
     DealType: "Rentals",
 
     GrossCommissionPercent: deal.deal_type === DEAL.SELLING ? ListSideCommissionRate : BuySideCommissionRate,
-    CoBrokeName: deal.deal_type === DEAL.SELLING ? LandlordName : RenterName,
+    CoBrokeName: deal.deal_type === DEAL.SELLING ? BuyerAgent : SellerAgent,
     CoBrokeDealSide: deal.deal_type === DEAL.SELLING ? 'Buy' : 'List',
     CoBrokeAgency: deal.deal_type === DEAL.SELLING ? BuySideAgency : ListSideAgency,
     CoBrokeCommission: deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate,
@@ -345,6 +347,8 @@ const getSaleAttributes = ({ deal, roles }) => {
 
   const BuySideAgency = _.find(roles, isBuyside).company_title;
   const ListSideAgency = _.find(roles, isSellside).company_title;
+  const BuyerAgent = _.find(roles, isBuyside).legal_full_name;
+  const SellerAgent = _.find(roles, isSellside).legal_full_name;
   
   return {
     ContractDate,
@@ -364,7 +368,7 @@ const getSaleAttributes = ({ deal, roles }) => {
     DealType: "Sales",
 
     GrossCommissionPercent: deal.deal_type === DEAL.SELLING ? ListSideCommissionRate : BuySideCommissionRate,
-    CoBrokeName: deal.deal_type === DEAL.SELLING ? BuyerName : SellerName,
+    CoBrokeName: deal.deal_type === DEAL.SELLING ? BuyerAgent : SellerAgent,
     CoBrokeDealSide: deal.deal_type === DEAL.SELLING ? 'Buy' : 'List',
     CoBrokeAgency: deal.deal_type === DEAL.SELLING ? BuySideAgency : ListSideAgency,
     CoBrokeCommission: deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate,
