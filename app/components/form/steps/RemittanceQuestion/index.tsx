@@ -1,5 +1,6 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
+// import Icons from "@libs/material-ui-icons";
 import { DatePicker } from "../../../DatePicker";
 import {
   IDealData,
@@ -17,7 +18,8 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   Components: { DatePicker: DayPicker },
 }) => {
   const { useState, useEffect } = React;
-  const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button } = Ui;
+  const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button, IconButton } = Ui;
+  // const { Close } = Icons;
   const wizard = useWizardContext();
   const { step } = useSectionContext();
   const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, currentStep, setCurrentStep } = useApp();
@@ -69,6 +71,18 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     temp.push(defaultCheckData);
     setBuySideChecks(temp);
   };
+
+  const removeBuySideCheck = (index: number) => {
+    let temp = buySideChecks.slice();
+    temp.splice(index, 1);
+    setBuySideChecks(temp);
+  }
+  
+  const removeListingSideCheck = (index: number) => {
+    let temp = listingSideChecks.slice();
+    temp.splice(index, 1);
+    setListingSideChecks(temp);
+  }
 
   const handleClickBuySideRemoveCheckButton = (event: any) => {
     let temp = buySideChecks.slice();
@@ -180,7 +194,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
       setSelectValueBuySide(1);
     if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && _dealData.remittance_listing_side_bank_wire_amount == null)
       setSelectValueListingSide(-1);
-    if (listingSideChecks.length == 1 && listingSideChecks[0].check_num != 0 && listingSideChecks[0].amount == 0 && _dealData.remittance_listing_side_bank_wire_amount == null)
+    if (listingSideChecks.length == 1 && listingSideChecks[0].check_num != 0 && listingSideChecks[0].amount != 0 && _dealData.remittance_listing_side_bank_wire_amount == null)
       setSelectValueListingSide(0);
     if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && _dealData.remittance_listing_side_bank_wire_amount != null)
       setSelectValueListingSide(1);
@@ -294,7 +308,10 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
               <>
                 {buySideChecks.map(
                   (checkData: IRemittanceChecks, index: number) => (
-                    <Box style={{ marginTop: 20 }}>
+                    <Box style={{ marginBottom: 20, paddingTop: 15, display: 'inline-block', position: 'relative' }}>
+                      {index != 0 && <IconButton size="small" style={{ position: 'absolute', top: 0, right: 0, width: 7, height: 5 }} onClick={() => removeBuySideCheck(index)}>
+                        {/* <Close /> */}x
+                      </IconButton>}
                       <Grid container spacing={2}>
                         <Grid item xs={4}>
                           <label>{`Check - ${index + 1}`}</label>
@@ -483,7 +500,10 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
               <>
                 {listingSideChecks.map(
                   (checkData: IRemittanceChecks, index: number) => (
-                    <Box style={{ marginTop: 20 }}>
+                    <Box style={{ marginBottom: 20, paddingTop: 15, paddingRight: 10, display: 'inline-block', position: 'relative' }}>
+                      {index != 0 && <IconButton size="small" style={{ position: 'absolute', top: 0, right: 0, width: 7, height: 5 }} onClick={() => removeListingSideCheck(index)}>
+                        {/* <Close /> */}x
+                      </IconButton>}
                       <Grid container spacing={2}>
                         <Grid item xs={4}>
                           <label>{`Check - ${index + 1}`}</label>

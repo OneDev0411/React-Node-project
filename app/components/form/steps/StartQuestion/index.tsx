@@ -32,7 +32,7 @@ const StartQuestion: React.FC<IQuestionProps> = ({
       wizard.goto(5);
     else if (financingContextValue == undefined)
       wizard.goto(6);
-    else if (financingProgramContextValue == undefined)
+    else if (financingContextValue == "Mortgage" && financingProgramContextValue == undefined)
       wizard.goto(7);
     else {
       if (submitted === -1) {

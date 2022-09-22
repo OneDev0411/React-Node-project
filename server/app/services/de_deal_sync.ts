@@ -402,7 +402,6 @@ const sync = async (deal) => {
 
   const type = property_type.is_lease ? "rental" : "sale";
   const update = state ? "/update" : "";
-  console.log("hello: ", state);
   const uri = `${process.env.API_URL}/api/v2/dynamics/postdeal/${type}${update}`;
 
   const created_at = state ? state.created_at : new Date();
@@ -601,7 +600,7 @@ const sync = async (deal) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (res.data.successful) {
+    if (res.status == 200) {
       await save({ deal: deal.id });
     }
     console.log("Sync Result", res.data);
