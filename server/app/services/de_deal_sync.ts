@@ -166,37 +166,33 @@ const getLeaseAttributes = ({ deal, roles }) => {
   const leased_price = getContextFromDeal(deal, "leased_price");
   const sum = (s, n) => s + n;
 
-  if (deal.deal_type === DEAL.SELLING || isDoubleEnded(deal)) {
-    ListSideSalesPrice = leased_price;
+  ListSideSalesPrice = leased_price;
 
-    ListSideDealValue = _.chain(roles)
-      .filter(isSellside)
-      .map((r) => getCommissionValue(leased_price, r))
-      .reduce(sum)
-      .value();
+  ListSideDealValue = _.chain(roles)
+    .filter(isSellside)
+    .map((r) => getCommissionValue(leased_price, r))
+    .reduce(sum)
+    .value();
 
-    ListSideCommissionRate = _.chain(roles)
-      .filter(isSellside)
-      .map((r) => getCommissionRate(leased_price, r))
-      .reduce(sum)
-      .value();
-  }
+  ListSideCommissionRate = _.chain(roles)
+    .filter(isSellside)
+    .map((r) => getCommissionRate(leased_price, r))
+    .reduce(sum)
+    .value();
 
-  if (deal.deal_type === DEAL.BUYING || isDoubleEnded(deal)) {
-    BuySideSalesPrice = leased_price;
+  BuySideSalesPrice = leased_price;
 
-    BuySideDealValue = _.chain(roles)
-      .filter(isBuyside)
-      .map((r) => getCommissionValue(leased_price, r))
-      .reduce(sum)
-      .value();
+  BuySideDealValue = _.chain(roles)
+    .filter(isBuyside)
+    .map((r) => getCommissionValue(leased_price, r))
+    .reduce(sum)
+    .value();
 
-    BuySideCommissionRate = _.chain(roles)
-      .filter(isBuyside)
-      .map((r) => getCommissionRate(leased_price, r))
-      .reduce(sum)
-      .value();
-  }
+  BuySideCommissionRate = _.chain(roles)
+    .filter(isBuyside)
+    .map((r) => getCommissionRate(leased_price, r))
+    .reduce(sum)
+    .value();
 
   const lease_begin = getContextFromDeal(deal, "lease_begin");
   const lease_end = getContextFromDeal(deal, "lease_end");
@@ -234,6 +230,9 @@ const getLeaseAttributes = ({ deal, roles }) => {
     .join(" & ")
     .slice(0, 60);
 
+  const BuySideAgency = _.find(roles, isBuyside).company_title;
+  const ListSideAgency = _.find(roles, isSellside).company_title;
+
   return {
     ContractDate,
 
@@ -255,9 +254,10 @@ const getLeaseAttributes = ({ deal, roles }) => {
 
     DealType: "Rentals",
 
-    CoBrokeName: 'N/A',
-    CoBrokeDealSide: 'N/A',
-    CoBrokeAgency: 'N/A',
+    GrossCommissionPercent: deal.deal_type === DEAL.SELLING ? ListSideCommissionRate : BuySideCommissionRate,
+    CoBrokeName: deal.deal_type === DEAL.SELLING ? LandlordName : RenterName,
+    CoBrokeDealSide: deal.deal_type === DEAL.SELLING ? 'Buy' : 'List',
+    CoBrokeAgency: deal.deal_type === DEAL.SELLING ? BuySideAgency : ListSideAgency,
     CoBrokeCommission: deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate,
   };
 };
@@ -281,36 +281,32 @@ const getSaleAttributes = ({ deal, roles }) => {
   const sales_price = getContextFromDeal(deal, "sales_price");
   const sum = (s, n) => s + n;
 
-  if (deal.deal_type === DEAL.SELLING || isDoubleEnded(deal)) {
-    ListSideSalesPrice = sales_price;
-    ListSideDealValue = _.chain(roles)
-      .filter(isSellside)
-      .map((r) => getCommissionValue(sales_price, r))
-      .reduce(sum)
-      .value();
+  ListSideSalesPrice = sales_price;
+  ListSideDealValue = _.chain(roles)
+    .filter(isSellside)
+    .map((r) => getCommissionValue(sales_price, r))
+    .reduce(sum)
+    .value();
 
-    ListSideCommissionRate = _.chain(roles)
-      .filter(isSellside)
-      .map((r) => getCommissionRate(sales_price, r))
-      .reduce(sum)
-      .value();
-  }
+  ListSideCommissionRate = _.chain(roles)
+    .filter(isSellside)
+    .map((r) => getCommissionRate(sales_price, r))
+    .reduce(sum)
+    .value();
 
-  if (deal.deal_type === DEAL.BUYING || isDoubleEnded(deal)) {
-    BuySideSalesPrice = sales_price;
+  BuySideSalesPrice = sales_price;
 
-    BuySideDealValue = _.chain(roles)
-      .filter(isBuyside)
-      .map((r) => getCommissionValue(sales_price, r))
-      .reduce(sum)
-      .value();
+  BuySideDealValue = _.chain(roles)
+    .filter(isBuyside)
+    .map((r) => getCommissionValue(sales_price, r))
+    .reduce(sum)
+    .value();
 
-    BuySideCommissionRate = _.chain(roles)
-      .filter(isBuyside)
-      .map((r) => getCommissionRate(sales_price, r))
-      .reduce(sum)
-      .value();
-  }
+  BuySideCommissionRate = _.chain(roles)
+    .filter(isBuyside)
+    .map((r) => getCommissionRate(sales_price, r))
+    .reduce(sum)
+    .value();
 
   const BuyerName = _.chain(roles)
     .filter({
@@ -347,6 +343,9 @@ const getSaleAttributes = ({ deal, roles }) => {
     .first()
     .value();
 
+  const BuySideAgency = _.find(roles, isBuyside).company_title;
+  const ListSideAgency = _.find(roles, isSellside).company_title;
+  
   return {
     ContractDate,
 
@@ -364,9 +363,10 @@ const getSaleAttributes = ({ deal, roles }) => {
 
     DealType: "Sales",
 
-    CoBrokeName: 'N/A',
-    CoBrokeDealSide: 'N/A',
-    CoBrokeAgency: 'N/A',
+    GrossCommissionPercent: deal.deal_type === DEAL.SELLING ? ListSideCommissionRate : BuySideCommissionRate,
+    CoBrokeName: deal.deal_type === DEAL.SELLING ? BuyerName : SellerName,
+    CoBrokeDealSide: deal.deal_type === DEAL.SELLING ? 'Buy' : 'List',
+    CoBrokeAgency: deal.deal_type === DEAL.SELLING ? BuySideAgency : ListSideAgency,
     CoBrokeCommission: deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate,
   };
 };
@@ -465,9 +465,6 @@ const sync = async (deal) => {
   const saleAttributes = !property_type.is_lease
     ? getSaleAttributes({ deal, roles })
     : {};
-
-  const gciDeValue = getContextFromDeal(deal, "gci_de_value");
-  const GrossCommissionPercent = Number(gciDeValue) / Number(sales_price) * 100;
 
   const isAgent = (role) => {
     return [
@@ -585,7 +582,6 @@ const sync = async (deal) => {
       Status: "Pending",
       DealCreatedBy: "N/A",
       ProjectedClosingDate: DealDate,
-      GrossCommissionPercent,
 
       ...leaseAttributes,
       ...saleAttributes,

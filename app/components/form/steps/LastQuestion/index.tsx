@@ -21,14 +21,14 @@ const LastQuestion: React.FC<IQuestionProps> = ({
   const handleSubmit = async () => {
     wizard.setLoading(true);
     notifyOffice(true, "Please review the Commission Slip");
-    if (setSubmitted !== undefined)
-      setSubmitted(1);
     const res = await axios.post(
       `${APP_URL}/rechat-commission-app-data-save`,
       {
         data: total_data,
       }
     );
+    if (setSubmitted !== undefined)
+      setSubmitted(1);
     wizard.setLoading(false);
     if (res.data.message === "successful")
       setFeedback("Successfully submitted.");
