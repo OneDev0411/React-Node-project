@@ -261,6 +261,8 @@ const getLeaseAttributes = ({ deal, roles }) => {
     CoBrokeDealSide: deal.deal_type === DEAL.SELLING ? 'Buy' : 'List',
     CoBrokeAgency: deal.deal_type === DEAL.SELLING ? BuySideAgency : ListSideAgency,
     CoBrokeCommission: deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate,
+    TenantFee: 0,
+    OwnerPays: 0
   };
 };
 
@@ -372,6 +374,8 @@ const getSaleAttributes = ({ deal, roles }) => {
     CoBrokeDealSide: deal.deal_type === DEAL.SELLING ? 'Buy' : 'List',
     CoBrokeAgency: deal.deal_type === DEAL.SELLING ? BuySideAgency : ListSideAgency,
     CoBrokeCommission: deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate,
+    TenantFee: 0,
+    OwnerPays: 0
   };
 };
 
@@ -408,8 +412,7 @@ const sync = async (deal) => {
   const DealDate = moment.utc(created_at).format("YYYY-MM-DD");
 
   const isHippocket = !deal.listing;
-  const ListingId =
-    getContextFromDeal(deal, "mls_number") ?? `Hippocket-${deal.number}`;
+  const ListingId = getContextFromDeal(deal, 'deal_number') ?? getContextFromDeal(deal, 'mls_number') ?? `Hippocket-${deal.number}`
   const Street = getContextFromDeal(deal, "street_address");
   const ZipCode = getContextFromDeal(deal, "postal_code");
   const PropertyType = property_type.label;
@@ -582,7 +585,7 @@ const sync = async (deal) => {
       DealDate,
       PaidBy: region_details.paid_by,
       ApprovalRequestDate,
-      Status: "Pending",
+      Status: region_details.status,
       DealCreatedBy: "N/A",
       ProjectedClosingDate: DealDate,
 
