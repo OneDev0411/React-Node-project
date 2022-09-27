@@ -138,7 +138,7 @@ const App: React.FC<EntryProps> = ({
   }, []);
 
   useEffect(() => {
-    if (submitted !== 0)
+    if (submitted !== 0 && !utils.isBackOffice)
       return () => {
         const saveData = async () => {
           await axios.post(

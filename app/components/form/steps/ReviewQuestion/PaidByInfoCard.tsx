@@ -1,35 +1,24 @@
-import React from "@libs/react";
-import { IPaidByInfoCardProps, IRoleData } from "../../../../models/type";
-import useApp from "../../../../hooks/useApp";
+import { IPaidByInfoCardProps } from "../../../../models/type";
 
 const PaidByInfoCard: React.FC<IPaidByInfoCardProps> = ({
   Ui: {
     Grid,
   },
-  index,
-  range,
+  paidByData,
 }) => {
-  const { roleData } = useApp();
-  // state
-  const _roleData: IRoleData = roleData[index];
-
   return (
     <Grid container style={{ marginTop: "15px" }}>
       <Grid item xs={12}>
-        {_roleData.legal_full_name}
+        {paidByData.payment_by_name}
       </Grid>
       <Grid item xs={12}>
-        {
-          range == "inside" ? 
-            (_roleData.inside_payment_unit_type == 0 ? `${_roleData.inside_payment_value}%` : `$${_roleData.inside_payment_value}`) :
-            (_roleData.outside_payment_unit_type == 0 ? `${_roleData.outside_payment_value}%` : `$${_roleData.outside_payment_value}`)
-        }
+        {paidByData.payment_unit_type == 0 ? `${paidByData.payment_value}%` : `$${paidByData.payment_value}`}
       </Grid>
       <Grid item xs={12}>
-        Calculated from: <label>{range == "inside" ? (_roleData.inside_payment_calculated_from == 0 ? "My GCI" : "My NET") : (_roleData.inside_payment_calculated_from == 0 ? "My GCI" : "My NET")}</label>
+        Calculated from: <label>{paidByData.payment_calculated_from == 0 ? "My GCI" : "My NET"}</label>
       </Grid>
       <Grid item xs={12}>
-        {_roleData.note}
+        {paidByData.payment_note}
       </Grid>
     </Grid>
   );

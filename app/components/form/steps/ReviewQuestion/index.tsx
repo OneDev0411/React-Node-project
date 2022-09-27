@@ -1,6 +1,6 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
-import { IDealData, IQuestionProps, IRemittanceChecks, IRoleData } from "../../../../models/type";
+import { IDealData, IPaidByData, IQuestionProps, IRemittanceChecks, IRoleData, IPayment } from "../../../../models/type";
 import { paymentTypeData, stylizeNumber, APP_URL } from "../../../../util";
 import useApp from "../../../../hooks/useApp";
 import PaidByInfoCard from "./PaidByInfoCard";
@@ -14,7 +14,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
 }) => {
   const { QuestionSection, QuestionTitle } = Wizard;
   const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui;
-  const { dealData, roleData, remittanceChecks } = useApp();
+  const { dealData, roleData, remittanceChecks, payments } = useApp();
   const wizard = useWizardContext();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
@@ -353,147 +353,158 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           </Grid>
         }
         <Grid container style={{ marginTop: "30px" }}>
-          <Grid item xs={12}>
-            <label style={{ fontSize: '17px' }}>Inside Douglas Elliman Payments Info </label>
-          </Grid>
-          <Grid item xs={6}>
-            Payment Type
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.inside_de_payment_type}</label>
-          </Grid>
-          <Grid item xs={6}>
-            Paid To
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.inside_de_paid_to}</label>
-          </Grid>
-          <Grid item xs={12} style={{ marginTop: "15px" }}>
-            <label>Paid By</label>
-          </Grid>
-          <Grid item xs={12}>
-            {roleData.map((agent: IRoleData, id: number) => (
-              agent.inside_payment_unit_type != null && dealData.inside_de_payment_type != "Team Member" && <>
-                {(dealType == "Selling" || dealType == "Both") &&
-                  (agent.role == "SellerAgent" ||
-                    agent.role == "CoSellerAgent" ||
-                    agent.role == "SellerReferral") && (
-                    <PaidByInfoCard
-                      key={id}
-                      index={id}
-                      Ui={Ui}
-                      range="inside"
-                    />
-                  )}
-                {(dealType == "Buying" || dealType == "Both") &&
-                  (agent.role == "BuyerAgent" ||
-                    agent.role == "CoBuyerAgent" ||
-                    agent.role == "BuyerReferral") && (
-                    <PaidByInfoCard
-                      key={id}
-                      index={id}
-                      Ui={Ui}
-                      range="inside"
-                    />
-                  )}
+          <>
+            <Grid item xs={12}>
+              <label style={{ fontSize: '17px' }}>Inside Douglas Elliman Payments Info </label>
+            </Grid>
+            {payments.map((item: IPayment) => 
+              <>
+                <Grid item xs={6}>
+                  Payment Type
+                </Grid>
+                <Grid item xs={6}>
+                  <label>{item.inside_de_payment_type}</label>
+                </Grid>
+                <Grid item xs={6}>
+                  Paid To
+                </Grid>
+                <Grid item xs={6}>
+                  <label>{item.inside_de_paid_to}</label>
+                </Grid>
+                <Grid item xs={12} style={{ marginTop: "15px" }}>
+                  <label>Paid By</label>
+                </Grid>
+                <Grid item xs={12}>
+                  {item.inside_de_paid_by.map((paidByItem: IPaidByData, id: number) => (
+                    paidByItem.payment_unit_type != null &&
+                    <>
+                      {(dealType == "Selling" || dealType == "Both") &&
+                        (paidByItem.role == "SellerAgent" ||
+                          paidByItem.role == "CoSellerAgent" ||
+                          paidByItem.role == "SellerReferral") && (
+                          <PaidByInfoCard
+                            key={id}
+                            Ui={Ui}
+                            paidByData={paidByItem}
+                          />
+                        )}
+                      {(dealType == "Buying" || dealType == "Both") &&
+                        (paidByItem.role == "BuyerAgent" ||
+                          paidByItem.role == "CoBuyerAgent" ||
+                          paidByItem.role == "BuyerReferral") && (
+                          <PaidByInfoCard
+                            key={id}
+                            Ui={Ui}
+                            paidByData={paidByItem}
+                          />
+                        )}
+                    </>
+                  ))}
+                </Grid>
               </>
-            ))}
-          </Grid>
+            )}
+          </>
         </Grid>
+        
         <Grid container style={{ marginTop: "30px" }}>
-          <Grid item xs={12}>
-            <label style={{ fontSize: '17px' }}>Outside Douglas Elliman Payments Info </label>
-          </Grid>
-          <Grid item xs={6}>
-            Payment Type
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.outside_de_payment_type}</label>
-          </Grid>
-          <Grid item xs={6}>
-            Paid To
-          </Grid>
-          <Grid item xs={6}>
-            <label>{dealData.outside_de_paid_to}</label>
-          </Grid>
-          <Grid item xs={12} style={{ marginTop: "15px" }}>
-            <label>Paid By</label>
-          </Grid>
-          <Grid item xs={12}>
-            {roleData.map((agent: IRoleData, id: number) => (
-              agent.outside_payment_unit_type != null && dealData.outside_de_payment_type != "Team Member" && <>
-                {(dealType == "Selling" || dealType == "Both") &&
-                  (agent.role == "SellerAgent" ||
-                    agent.role == "CoSellerAgent" ||
-                    agent.role == "SellerReferral") && (
-                    <PaidByInfoCard
-                      key={id}
-                      index={id}
-                      Ui={Ui}
-                      range="outside"
-                    />
-                  )}
-                {(dealType == "Buying" || dealType == "Both") &&
-                  (agent.role == "BuyerAgent" ||
-                    agent.role == "CoBuyerAgent" ||
-                    agent.role == "BuyerReferral") && (
-                    <PaidByInfoCard
-                      key={id}
-                      index={id}
-                      Ui={Ui}
-                      range="outside"
-                    />
-                  )}
+          <>
+            <Grid item xs={12}>
+              <label style={{ fontSize: '17px' }}>Outside Douglas Elliman Payments Info </label>
+            </Grid>
+            {payments.map((item: IPayment) => 
+              <>
+                <Grid item xs={6}>
+                  Payment Type
+                </Grid>
+                <Grid item xs={6}>
+                  <label>{item.outside_de_payment_type}</label>
+                </Grid>
+                <Grid item xs={6}>
+                  Paid To
+                </Grid>
+                <Grid item xs={6}>
+                  <label>{item.outside_de_paid_to}</label>
+                </Grid>
+                <Grid item xs={12} style={{ marginTop: "15px" }}>
+                  <label>Paid By</label>
+                </Grid>
+                <Grid item xs={12}>
+                  {item.outside_de_paid_by.map((paidByItem: IPaidByData, id: number) => (
+                    paidByItem.payment_unit_type != null && <>
+                      {(dealType == "Selling" || dealType == "Both") &&
+                        (paidByItem.role == "SellerAgent" ||
+                          paidByItem.role == "CoSellerAgent" ||
+                          paidByItem.role == "SellerReferral") && (
+                          <PaidByInfoCard
+                            key={id}
+                            Ui={Ui}
+                            paidByData={paidByItem}
+                          />
+                        )}
+                      {(dealType == "Buying" || dealType == "Both") &&
+                        (paidByItem.role == "BuyerAgent" ||
+                          paidByItem.role == "CoBuyerAgent" ||
+                          paidByItem.role == "BuyerReferral") && (
+                          <PaidByInfoCard
+                            key={id}
+                            Ui={Ui}
+                            paidByData={paidByItem}
+                          />
+                        )}
+                    </>
+                  ))}
+                </Grid>
+                {(paymentTypeData[1].member.indexOf(item.outside_de_payment_type) >= 0 || 
+                  paymentTypeData[2].member.indexOf(item.outside_de_payment_type) >= 0) &&
+                  <Grid container style={{ marginTop: "15px" }}>
+                    <Grid item xs={6}>
+                      Company
+                    </Grid>
+                    <Grid item xs={6}>
+                      <label>{dealData.outside_de_payment_company}</label>
+                    </Grid>
+                    <Grid item xs={6}>
+                      Company Address
+                    </Grid>
+                    <Grid item xs={6}>
+                      <label>{dealData.outside_de_payment_company_address}</label>
+                    </Grid>
+                    <Grid item xs={6}>
+                      Office Number
+                    </Grid>
+                    <Grid item xs={6}>
+                      <label>{dealData.outside_de_payment_office}</label>
+                    </Grid>
+                    <Grid item xs={6}>
+                      Cell Number
+                    </Grid>
+                    <Grid item xs={6}>
+                      <label>{dealData.outside_de_payment_cell}</label>
+                    </Grid>
+                    <Grid item xs={6}>
+                      Fax Number
+                    </Grid>
+                    <Grid item xs={6}>
+                      <label>{dealData.outside_de_payment_fax}</label>
+                    </Grid>
+                    <Grid item xs={6}>
+                      Tax ID
+                    </Grid>
+                    <Grid item xs={6}>
+                      <label>{dealData.outside_de_payment_tax_id}</label>
+                    </Grid>
+                    <Grid item xs={6}>
+                      Email
+                    </Grid>
+                    <Grid item xs={6}>
+                      <label>{dealData.outside_de_payment_mail}</label>
+                    </Grid>
+                  </Grid>
+                }
               </>
-            ))}
-          </Grid>
+            )}
+          </>
         </Grid>
-        {showCompanyInfo &&
-          <Grid container style={{ marginTop: "15px" }}>
-            <Grid item xs={6}>
-              Company
-            </Grid>
-            <Grid item xs={6}>
-              <label>{dealData.outside_de_payment_company}</label>
-            </Grid>
-            <Grid item xs={6}>
-              Company Address
-            </Grid>
-            <Grid item xs={6}>
-              <label>{dealData.outside_de_payment_company_address}</label>
-            </Grid>
-            <Grid item xs={6}>
-              Office Number
-            </Grid>
-            <Grid item xs={6}>
-              <label>{dealData.outside_de_payment_office}</label>
-            </Grid>
-            <Grid item xs={6}>
-              Cell Number
-            </Grid>
-            <Grid item xs={6}>
-              <label>{dealData.outside_de_payment_cell}</label>
-            </Grid>
-            <Grid item xs={6}>
-              Fax Number
-            </Grid>
-            <Grid item xs={6}>
-              <label>{dealData.outside_de_payment_fax}</label>
-            </Grid>
-            <Grid item xs={6}>
-              Tax ID
-            </Grid>
-            <Grid item xs={6}>
-              <label>{dealData.outside_de_payment_tax_id}</label>
-            </Grid>
-            <Grid item xs={6}>
-              Email
-            </Grid>
-            <Grid item xs={6}>
-              <label>{dealData.outside_de_payment_mail}</label>
-            </Grid>
-          </Grid>
-        }
         <Box
           style={{
             textAlign: "right",

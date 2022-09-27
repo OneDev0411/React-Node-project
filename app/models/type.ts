@@ -161,8 +161,7 @@ export interface IPaidByCardProps {
 
 export interface IPaidByInfoCardProps {
   Ui: typeof Ui;
-  index: number;
-  range: string;
+  paidByData: IPaidByData;
 }
 
 export interface CheckData {
