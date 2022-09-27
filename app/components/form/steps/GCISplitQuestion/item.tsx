@@ -4,44 +4,14 @@ import { IGCIInfoItemProps, IRoleData } from "../../../../models/type";
 
 const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   Ui: { Grid, Box, TextField },
-  saveData: { next, updateFlag },
+  saveData: { updateFlag },
   totalClc,
   salesPrice,
   index,
 }) => {
-  const { useState, useEffect } = React;
-  const { roleData, setRoleData } = useApp();
+  const { useState } = React;
+  const { roleData, submitted } = useApp();
   const [_roleData, _setRoleData] = useState<IRoleData>(roleData[index]);
-
-  // this hook save data to global state.
-  useEffect(() => {
-    if (next) {
-      let dataIndex = roleData.findIndex((item) => {
-        return item.role_id == _roleData.role_id;
-      });
-      roleData[dataIndex] = _roleData;
-      let temp = JSON.parse(JSON.stringify(roleData));
-      if (setRoleData !== undefined) {
-        setRoleData(temp);
-      }
-    }
-  }, [next]);
-
-  // this hook pull data from global state to state variable of component
-  useEffect(() => {
-    const temp = roleData[index];
-    if (temp) {
-      temp.share_value =
-            temp.share_value == null
-              ? parseFloat((Number(salesPrice) * Number(temp.share_percent) / 100).toFixed(3))
-              : temp.share_value;
-      temp.share_percent =
-            temp.share_percent == null
-              ? parseFloat((Number(temp.share_value) / Number(salesPrice) * 100).toFixed(3))
-              : temp.share_percent;
-      _setRoleData(temp);
-    }
-  }, [roleData]);
 
   const handleChangeNumber = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -54,7 +24,8 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     if (key == "share_percent" && Number(value) > 100) {
       return;
     }
-    updateFlag(true);
+    if (submitted !== 1)
+      updateFlag(true);
     let updateValue = JSON.parse(JSON.stringify(_roleData));
     updateValue[key] = Number(value);
 

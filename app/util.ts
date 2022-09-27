@@ -3,6 +3,7 @@ import {
   IPaymentData,
   IDealData,
   IRemittanceChecks,
+  IPayment,
 } from "./models/type";
 
 export const defaultUser: IUser = {
@@ -146,6 +147,24 @@ export const defaultRemittanceChecks: IRemittanceChecks[] = [
   },
 ];
 
+export const defaultPaymentsData: IPayment[] = [{
+  id: null,
+  deal: "",
+  inside_de_payment_type: "Team Member",
+  inside_de_paid_to: "",
+  inside_de_paid_by: [],
+  outside_de_payment_type: "Outside Referral Broker",
+  outside_de_paid_to: "",
+  outside_de_paid_by: [],
+  outside_de_payment_company: "",
+  outside_de_payment_company_address: "",
+  outside_de_payment_office: "",
+  outside_de_payment_cell: "",
+  outside_de_payment_fax: "",
+  outside_de_payment_tax_id: "",
+  outside_de_payment_mail: "",
+}];
+
 export const defaultDealData: IDealData = {
   deal: null,
   gci_de_value: 0,
@@ -171,4 +190,5 @@ export const defaultDealData: IDealData = {
   current_step: 8,
 };
 
-export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";
+// export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";
+export const APP_URL = "http://localhost:8081";

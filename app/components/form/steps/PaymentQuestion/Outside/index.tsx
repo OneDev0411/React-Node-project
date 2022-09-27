@@ -19,35 +19,28 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
   const { dealData, setDealData, submitted, currentStep, setCurrentStep } = useApp();
 
   // state
-  const [next, setNext] = useState<boolean>(false);
   const [showButton, setShowButton] = useState<boolean>(true);
 
   useEffect(() => {
     if (submitted === 1 || currentStep > step)
-        setShowButton(false);
+      setShowButton(false);
     else
-        setShowButton(true);
+      setShowButton(true);
   }, []);
 
   const handleClickNextButton = () => {
-    setNext(true);
-    gotoNext();
-  };
-
-  const gotoNext = () => {
     setShowButton(false);
-    dealData.current_step = step;
     let temp = JSON.parse(JSON.stringify(dealData));
+    temp.current_step = step + 1;
     if (setDealData !== undefined)
       setDealData(temp);
     setTimeout(() => {
       if (wizard.currentStep < step + 1) {
         wizard.next();
         if (setCurrentStep !== undefined) {
-          setCurrentStep(step);
+          setCurrentStep(step+1);
         }
       }
-      setNext(false);
     }, 80);
   };
 
@@ -67,7 +60,8 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
         <PaymentQuestionComponent
           range="outside"
           dealType={dealType}
-          saveData={{ next, updateFlag }}
+          dealId={deal.id}
+          saveData={{ updateFlag }}
         />
         {showButton && (
           <Box

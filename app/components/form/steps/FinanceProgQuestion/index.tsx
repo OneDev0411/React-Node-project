@@ -1,5 +1,5 @@
 import React from '@libs/react'
-// import { useDebounce } from 'react-use';
+import ReactUse from '@libs/react-use';
 import Ui from '@libs/material-ui'
 import { IQuestionProps } from "../../../../models/type"
 import useApp from "../../../../hooks/useApp";
@@ -10,6 +10,7 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
   api: { updateDealContext, getDealContext },
 }) => {
   const { useState, useEffect } = React;
+  const { useDebounce } = ReactUse;
   const { TextField, Button, Box } = Ui;
   const wizard = useWizardContext();
   const { financing } = useApp();
@@ -21,15 +22,14 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
   const [text, setText] = useState<string>(financingProgramContextValue);
   const [showButton, setShowButton] = useState<boolean>(true);
 
-  // useDebounce(
-  //   () => {
-  //     // if (text != "")
-  //     //     updateDealContext("financing_program", text);
-  //     console.log("value");
-  //   },
-  //   500,
-  //   [text]
-  // );
+  useDebounce(
+    () => {
+      if (text != "")
+        updateDealContext("financing_program", text);
+    },
+    500,
+    [text]
+  );
 
   useEffect(() => {
     if (text !== undefined)

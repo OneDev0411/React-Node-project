@@ -17,8 +17,6 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
   const { dealData, setDealData, submitted, currentStep, setCurrentStep } = useApp();
 
-  // state
-  const [next, setNext] = useState<boolean>(false);
   const [showButton, setShowButton] = useState<boolean>(true);
 
   useEffect(() => {
@@ -29,30 +27,24 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
   }, []);
 
   const handleClickNextButton = () => {
-    setNext(true);
-    gotoNext();
-  };
-
-  const gotoNext = () => {
     setShowButton(false);
-    dealData.current_step = step;
     let temp = JSON.parse(JSON.stringify(dealData));
+    temp.current_step = step + 1;
     if (setDealData !== undefined)
       setDealData(temp);
     setTimeout(() => {
       if (wizard.currentStep < step + 1) {
         wizard.next();
         if (setCurrentStep !== undefined) {
-          setCurrentStep(step);
+          setCurrentStep(step+1);
         }
       }
-      setNext(false);
     }, 80);
   };
 
-  // this function enable Next button.
+  // enable "Looks good, Next" button
   const updateFlag = (flag: boolean) => {
-    if (!showButton) {
+    if (submitted !== 1 && !showButton) {
       setShowButton(flag);
     }
   };
@@ -66,7 +58,8 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
         <PaymentQuestionComponent
           range="inside"
           dealType={dealType}
-          saveData={{ next, updateFlag }}
+          dealId={deal.id}
+          saveData={{ updateFlag }}
         />
         {showButton && (
           <Box

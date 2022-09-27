@@ -7,7 +7,7 @@ import {
 import db from "../../../models/commissionAppDB";
 import sync from "../../../services/de_deal_sync";
 import Jsonb from "jsonb-builder";
-const { AppDealModel, AppRoleModel, AppRemittanceCheckModel, DealModel } = db;
+const { AppDealModel, AppRoleModel, AppRemittanceCheckModel, AppPaymentModel, DealModel } = db;
 
 const saveAppData = async (data: any, model: any) => {
   let findRes = await model.findOne({
@@ -23,10 +23,22 @@ const saveAppData = async (data: any, model: any) => {
       where: { deal: data.deal, id: data.id },
     });
   }
+  if (model == AppPaymentModel) {
+    findRes = await model.findOne({
+      where: { deal: data.deal, id: data.id },
+    });
+  }
   if (findRes === null) {
     await model.create(data);
   } else {
     if (model == AppRemittanceCheckModel) {
+      const id = data.id;
+      delete data.id;
+      await model.update(data, {
+        where: { id: id },
+      });
+    }
+    else if (model == AppPaymentModel) {
       const id = data.id;
       delete data.id;
       await model.update(data, {
@@ -72,6 +84,7 @@ const saveCommissionData = async (req: Request, res: Response) => {
     let dealData = { ...allData.dealData, submitted: allData.submitted };
     let roleData = allData.roleData;
     let remittanceChecks = allData.remittanceChecks;
+    let payments = allData.payments;
     // save appDealData
     await saveAppData(dealData, AppDealModel);
     // save appRoleData
@@ -88,6 +101,9 @@ const saveCommissionData = async (req: Request, res: Response) => {
     }
     for (let i = 0; i < remittanceChecks.length; i++) {
       await saveAppData(remittanceChecks[i], AppRemittanceCheckModel);
+    }
+    for (let i = 0; i < payments.length; i++) {
+      await saveAppData(payments[i], AppPaymentModel);
     }
     res.status(200).json({
       message: "successful",
@@ -123,12 +139,14 @@ const readCombinedAppData = async (deal: string) => {
   let dealData = await readData(deal, AppDealModel);
   let roleData = await readData(deal, AppRoleModel);
   let remittanceChecks = await readData(deal, AppRemittanceCheckModel);
+  let payments = await readData(deal, AppPaymentModel);
   let allData: any = null;
   if (dealData.length > 0) {
     allData = {
       dealData: dealData[0],
       roleData: roleData,
       remittanceChecks: remittanceChecks,
+      payments: payments,
     };
   }
   return allData;

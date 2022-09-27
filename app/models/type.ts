@@ -84,6 +84,33 @@ export interface IRemittanceChecks {
   deal_side: string;
 }
 
+export interface IPaidByData {
+  role: string,
+  payment_by_name: string;
+  payment_unit_type?: number | null;
+  payment_value?: number | null;
+  payment_calculated_from?: number | null;
+  payment_note?: string;
+}
+
+export interface IPayment {
+  id: number | null;
+  deal: string;
+  inside_de_payment_type: string;
+  inside_de_paid_to: string;
+  inside_de_paid_by: IPaidByData[];
+  outside_de_payment_type: string;
+  outside_de_paid_to: string;
+  outside_de_paid_by: IPaidByData[];
+  outside_de_payment_company: string;
+  outside_de_payment_company_address: string;
+  outside_de_payment_office: string;
+  outside_de_payment_cell: string;
+  outside_de_payment_fax: string;
+  outside_de_payment_tax_id: string;
+  outside_de_payment_mail: string;
+}
+
 export interface AppContextApi {
   dealData: IDealData;
   setDealData?: (data: IDealData) => void;
@@ -91,6 +118,8 @@ export interface AppContextApi {
   setRoleData?: (data: IRoleData[]) => void;
   remittanceChecks: IRemittanceChecks[];
   setRemittanceChecks?: (data: IRemittanceChecks[]) => void;
+  payments: IPayment[];
+  setPayments?: (data: IPayment[]) => void;
   submitted: number;
   setSubmitted?: (data: number) => void;
   financing: string;
@@ -123,6 +152,9 @@ export interface IDatePickerProps {
 export interface IPaidByCardProps {
   Ui: typeof Ui;
   saveData: IDataToConText;
+  payment: IPayment;
+  paymentIndex: number;
+  updatePayment: (payment: IPayment, index: number) => void;
   index: number;
   range: string;
 }
@@ -148,10 +180,10 @@ export interface IPaymentData {
 export interface IPaymentQuestionData {
   range: string;
   dealType: string;
+  dealId: string;
   saveData: IDataToConText;
 }
 
 export interface IDataToConText {
-  next: boolean;
   updateFlag: (flag: boolean) => void;
 }

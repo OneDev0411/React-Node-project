@@ -13,11 +13,12 @@ const App: React.FC<EntryProps> = ({
   utils,
   hooks,
 }) => {
-  const { useEffect } = React;
+  const { useEffect, useRef } = React;
   const { Wizard } = Components;
   const { deal, roles } = models;
   const total_data: AppContextApi = useApp();
-  const { dealData, setDealData, roleData, setRoleData, remittanceChecks, setRemittanceChecks, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep } = useApp();
+  const _totalData = useRef(total_data);
+  const { setDealData, setRoleData, setRemittanceChecks, setPayments, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
 
@@ -101,6 +102,10 @@ const App: React.FC<EntryProps> = ({
         if (setRemittanceChecks !== undefined) {
           setRemittanceChecks(tempRemittanceChecks);
         }
+        let tempPayments = data.payments;
+        if (setPayments !== undefined) {
+          setPayments(tempPayments);
+        }
         if (setCurrentStep !== undefined) {
           setCurrentStep(tempDealData.current_step);
         }
@@ -133,18 +138,27 @@ const App: React.FC<EntryProps> = ({
   }, []);
 
   useEffect(() => {
-    if (currentStep !== 0 && submitted !== 0) {
-      const saveData = async () => {
-        await axios.post(
-          `${APP_URL}/rechat-commission-app-data-save`,
-          {
-            data: total_data,
-          }
-        );
+    if (submitted !== 0)
+      return () => {
+        const saveData = async () => {
+          await axios.post(
+            `${APP_URL}/rechat-commission-app-data-save`,
+            {
+              data: _totalData.current,
+            }
+          );
+        }
+        saveData();
       }
-      saveData();
+    else
+      return;
+  }, [submitted]);
+
+  useEffect(() => {
+    if (submitted !== 0 && currentStep !== 0) {
+      _totalData.current = total_data;
     }
-  }, [submitted, currentStep]);
+  }, [total_data, submitted, currentStep]);
 
   if (submitted === 0 || currentStep === 0) {
     return (

@@ -1,7 +1,7 @@
 import React from "@libs/react";
+import ReactUse from "@libs/react-use";
 import Ui from "@libs/material-ui";
 import {
-  AppContextApi,
   GCISplitStatus,
   IQuestionProps,
   IRoleData,
@@ -17,11 +17,11 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   api: { deleteRole },
 }) => {
   const { useState, useEffect } = React;
+  const { useDebounce } = ReactUse;
   const { Grid, Button, Box, TextField, Select, MenuItem } = Ui;
   const wizard = useWizardContext();
   const { step } = useSectionContext();
   const { dealData, setDealData, roleData, setRoleData, submitted, currentStep, setCurrentStep } = useApp();
-  const total_data: AppContextApi = useApp();
   
   // state
   const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData);
@@ -30,7 +30,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     Partial<IDealFormRole> | IDealRole | null
   >(null); // data from dropdown select, can be IDealRole object or nameObject
   const [showButton, setShowButton] = useState<boolean>(true);
-  const [next, setNext] = useState<boolean>(false);
   const [totalPercent, setTotalPercent] = useState<number>(0);
   const [totalValue, setTotalValue] = useState<number>(0);
   const [_reasonValue, _setReasonValue] = useState<number>(
@@ -95,30 +94,17 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
 
   const handleClickNextButton = async () => {
     setShowButton(false);
-    dealData.current_step = step;
-    dealData.gci_de_value = salesPrice * totalPercent / 100;
-    if (
-      (totalPercent < 2 && !bothType) ||
-      (totalPercent < 4 && bothType)
-    ) {
-      dealData.gci_reason_select = _reasonValue;
-      if (_reasonValue === 2) {
-        dealData.gci_reason = _reasonNote;
-      }
-    }
     let temp = JSON.parse(JSON.stringify(dealData));
-    if (setDealData !== undefined) {
+    temp.current_step = step + 1;
+    if (setDealData !== undefined)
       setDealData(temp);
-    }
-    setNext(true);
     setTimeout(() => {
       if (wizard.currentStep < step + 1) {
         wizard.next();
         if (setCurrentStep !== undefined) {
-          setCurrentStep(step);
+          setCurrentStep(step+1);
         }
       }
-      setNext(false);
     }, 80);
   };
 
@@ -150,9 +136,12 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   };
 
   const updateFlag = (flag: boolean) => {
-    setShowButton(flag);
+    if (wizard.currentStep < step + 1) {
+      setShowButton(flag);
+    }
   };
 
+  // calculate total percent and value when roleData is changed
   const totalClc = (index: number, data: IRoleData, clcFlag: boolean) => {
     let temp = JSON.parse(JSON.stringify(_roleData));
     temp[index] = data;
@@ -178,9 +167,8 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       setShowButton(false);
     else
       setShowButton(true);
-  }, []);
-  
-  useEffect(() => {
+
+    // calculate total percent and value when mounted
     let tempClc = _roleData.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
       return parseFloat(
         (Number(totalPercent) + Number(data.share_percent)).toFixed(3)
@@ -193,11 +181,32 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       );
     }, 0);
     setTotalValue(tempClc);
-  }, [_roleData]);
-
-  useEffect(() => {
-    _setRoleData(roleData);
-  }, [roleData]);
+  }, []);
+  
+  // save data to global state 0.5s after data is inputed
+  useDebounce(
+    () => {
+      let temp = JSON.parse(JSON.stringify(dealData));
+      temp.gci_de_value = salesPrice * totalPercent / 100;
+      if (
+        (totalPercent < 2 && !bothType) ||
+        (totalPercent < 4 && bothType)
+      ) {
+        temp.gci_reason_select = _reasonValue;
+        if (_reasonValue === 2) {
+          temp.gci_reason = _reasonNote;
+        }
+      }
+      if (setDealData !== undefined) {
+        setDealData(temp);
+      }
+      if (setRoleData !== undefined) {
+        setRoleData(_roleData);
+      }
+    },
+    500,
+    [_roleData]
+  );
 
   return (
     <QuestionSection>
@@ -216,7 +225,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 key={id}
                 index={id}
                 salesPrice={salesPrice}
-                saveData={{ next, updateFlag }}
+                saveData={{ updateFlag }}
                 totalClc={totalClc}
               />
               {_roleData.length > 1 && isPrimaryAgent(item.role) != true &&
@@ -248,7 +257,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 key={id}
                 index={id}
                 salesPrice={salesPrice}
-                saveData={{ next, updateFlag }}
+                saveData={{ updateFlag }}
                 totalClc={totalClc}
               />
               {_roleData.length > 1 && isPrimaryAgent(item.role) != true &&

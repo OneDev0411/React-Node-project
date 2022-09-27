@@ -1,7 +1,7 @@
 // declare type UUID = string;
 declare type Optional<T> = T | undefined;
 declare interface Window {
-  libs: Record<"React" | "MaterialUi", any>;
+  libs: Record<"React" | "ReactUse" | "MaterialUi", any>;
 }
 declare interface CoreComponents {
   Logo: React.FC<LogoProps>;

@@ -1,6 +1,5 @@
 import React from "@libs/react";
-import { IPaidByCardProps, IRoleData } from "../../../../models/type";
-import useApp from "../../../../hooks/useApp";
+import { IPaidByCardProps, IPaidByData, IPayment } from "../../../../models/type";
 
 const PaidByCard: React.FC<IPaidByCardProps> = ({
   Ui: {
@@ -13,145 +12,92 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
     RadioGroup,
     Radio,
   },
-  saveData: { next, updateFlag },
+  saveData: { updateFlag },
+  payment,
+  paymentIndex,
+  updatePayment,
   index,
   range,
 }) => {
-  const { roleData, setRoleData } = useApp();
+  const { useState, useEffect } = React;
   // state
-  const [_roleData, _setRoleData] = React.useState<IRoleData>(roleData[index]);
-  const [checkedAgent, setCheckedAgent] = React.useState<boolean>(false);
+  const [_paidBy, _setPaidBy] = useState<IPaidByData>(range == "inside" ? payment.inside_de_paid_by[index] : payment.outside_de_paid_by[index]);
+  const [checkedAgent, setCheckedAgent] = useState<boolean>((_paidBy.payment_value != undefined && _paidBy.payment_value !== null) ? true : false);
+    // if () {
+    //   setCheckedAgent(true);
+    // } else {
+    //   setCheckedAgent(false);
+    // });
 
   const handleChangeValue = (
     e: React.ChangeEvent<HTMLInputElement>,
-    key: keyof IRoleData
+    key: keyof IPaidByData
   ) => {
     updateFlag(true);
     let value: string = e.target.value;
     if (value == "NaN" || (value + "").length > 16) {
       return;
     }
-    if (range == "inside") {
-      if (
-        key == "inside_payment_value" &&
-        _roleData.inside_payment_unit_type == 0 &&
-        Number(value) > 100
-      ) {
-        return;
-      }
-    } else {
-      if (
-        key == "outside_payment_value" &&
-        _roleData.outside_payment_unit_type == 0 &&
-        Number(value) > 100
-      ) {
-        return;
+    if (
+      key == "payment_value" &&
+      _paidBy.payment_unit_type == 0 &&
+      Number(value) > 100
+    ) {
+      return;
+    }
+    let updateValue = JSON.parse(JSON.stringify(_paidBy));
+    if (key !== "payment_note") {
+      if (value !== "") {
+        updateValue[key] = parseFloat(value);
+      } else {
+        updateValue[key] = 0;
       }
     }
-    let updateValue = JSON.parse(JSON.stringify(_roleData));
-    if (range == "inside") {
-      if (key !== "inside_payment_note") {
-        if (value !== "") {
-          updateValue[key] = parseFloat(value);
-        } else {
-          updateValue[key] = 0;
-        }
-      }
-      if (key == "inside_payment_note") {
-        updateValue[key] = value;
-      }
-      if (key == "inside_payment_unit_type") {
-        updateValue["inside_payment_value"] = 0;
-      }
-    } else {
-      if (key !== "outside_payment_note") {
-        if (value !== "") {
-          updateValue[key] = parseFloat(value);
-        } else {
-          updateValue[key] = 0;
-        }
-      }
-      if (key == "outside_payment_note") {
-        updateValue[key] = value;
-      }
-      if (key == "outside_payment_unit_type") {
-        updateValue["outside_payment_value"] = 0;
-      }
+    if (key == "payment_note") {
+      updateValue[key] = value;
     }
-    _setRoleData(updateValue);
+    if (key == "payment_unit_type") {
+      updateValue["payment_value"] = 0;
+    }
+    _setPaidBy(updateValue);
   };
 
   const handleCheckedValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateFlag(true);
     let value = e.target.checked;
     setCheckedAgent(value);
-    if (range == "inside") {
-      if (value)
-        _setRoleData({
-          ..._roleData,
-          inside_payment_unit_type: 0,
-          inside_payment_value: 0,
-          inside_payment_calculated_from: 0,
-          inside_payment_note: "",
-        });
-      else
-        _setRoleData({
-          ..._roleData,
-          inside_payment_unit_type: null,
-          inside_payment_value: null,
-          inside_payment_calculated_from: null,
-          inside_payment_note: "",
-        });
-    } else {
-      if (value)
-        _setRoleData({
-          ..._roleData,
-          outside_payment_unit_type: 0,
-          outside_payment_value: 0,
-          outside_payment_calculated_from: 0,
-          outside_payment_note: "",
-        });
-      else
-        _setRoleData({
-          ..._roleData,
-          outside_payment_unit_type: null,
-          outside_payment_value: null,
-          outside_payment_calculated_from: null,
-          outside_payment_note: "",
-        });
-    }
   };
 
-  React.useEffect(() => {
-    if (range == "inside") {
-      if (roleData[index].inside_payment_value != undefined && roleData[index].inside_payment_value !== null) {
-        setCheckedAgent(true);
-      } else {
-        setCheckedAgent(false);
-      }
-    } else {
-      if (roleData[index].outside_payment_value != undefined && roleData[index].outside_payment_value !== null) {
-        setCheckedAgent(true);
-      } else {
-        setCheckedAgent(false);
-      }
+  useEffect(() => {
+    if (checkedAgent) {
+      if (_paidBy.payment_value == null)
+        _setPaidBy({
+          ..._paidBy,
+          payment_unit_type: 0,
+          payment_value: 0,
+          payment_calculated_from: 0,
+          payment_note: "",
+        });
     }
-    _setRoleData(roleData[index]);
-  }, [roleData]);
-
-  // this hook save data before next wizard
-  React.useEffect(() => {
-    if (next) {
-      let dataIndex = roleData.findIndex((item) => {
-        return item.role_id == _roleData.role_id;
+    else {
+      _setPaidBy({
+        ..._paidBy,
+        payment_unit_type: null,
+        payment_value: null,
+        payment_calculated_from: null,
+        payment_note: "",
       });
-      roleData[dataIndex] = _roleData;
-      let temp = JSON.parse(JSON.stringify(roleData));
-      if (setRoleData !== undefined) {
-        setRoleData(temp);
-      }
     }
-  }, [next]);
+  }, [checkedAgent])
+
+  useEffect(() => {
+    let updateValue = JSON.parse(JSON.stringify(payment));
+    if (range == "inside")
+      updateValue.inside_de_paid_by[index] = _paidBy;
+    else
+      updateValue.outside_de_paid_by[index] = _paidBy;
+    updatePayment(updateValue, paymentIndex);
+  }, [_paidBy]);
 
   return (
     <Box
@@ -170,14 +116,14 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           checked={checkedAgent}
           onChange={handleCheckedValue}
         />
-        <label>{_roleData.legal_full_name}</label>
+        <label>{_paidBy.payment_by_name}</label>
       </Box>
       <Grid container spacing={1} style={{ padding: 0 }}>
         <Grid item xs={5} style={{ display: "inherit", marginRight: 10 }}>
           <Radio
-            checked={range == "inside" ? _roleData.inside_payment_unit_type == 0 : _roleData.outside_payment_unit_type == 0}
+            checked={_paidBy.payment_unit_type == 0}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleChangeValue(e, range == "inside" ? "inside_payment_unit_type" : "outside_payment_unit_type")
+              handleChangeValue(e, "payment_unit_type")
             }
             value={0}
             name="radio-buttons"
@@ -188,11 +134,9 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           <TextField
             size="small"
             type="text"
-            value={
-              range == "inside" ? (_roleData.inside_payment_unit_type == 0 ? _roleData.inside_payment_value : "") : (_roleData.outside_payment_unit_type == 0 ? _roleData.outside_payment_value : "")
-            }
+            value={_paidBy.payment_unit_type == 0 ? _paidBy.payment_value : ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleChangeValue(e, range == "inside" ? "inside_payment_value" : "outside_payment_value")
+              handleChangeValue(e, "payment_value")
             }
             style={{ paddingTop: 3 }}
             InputProps={{
@@ -201,7 +145,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
               ),
             }}
             disabled={
-              checkedAgent && (range == "inside" ? (_roleData.inside_payment_unit_type == 0 ? false : true) : (_roleData.outside_payment_unit_type == 0 ? false : true))
+              checkedAgent && (_paidBy.payment_unit_type == 0 ? false : true)
             }
           />
         </Grid>
@@ -210,9 +154,9 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
         </Grid>
         <Grid item xs={5} style={{ display: "inherit" }}>
           <Radio
-            checked={range == "inside" ? _roleData.inside_payment_unit_type == 1 : _roleData.outside_payment_unit_type == 1}
+            checked={_paidBy.payment_unit_type == 1}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleChangeValue(e, range == "inside" ? "inside_payment_unit_type" : "outside_payment_unit_type")
+              handleChangeValue(e, "payment_unit_type")
             }
             value={1}
             name="radio-buttons"
@@ -224,10 +168,10 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
             size="small"
             type="text"
             value={
-              range == "inside" ? (_roleData.inside_payment_unit_type == 1 ? _roleData.inside_payment_value : "") : (_roleData.outside_payment_unit_type == 1 ? _roleData.outside_payment_value : "")
+              (_paidBy.payment_unit_type == 1 ? _paidBy.payment_value : "")
             }
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleChangeValue(e, range == "inside" ? "inside_payment_value" : "outside_payment_value")
+              handleChangeValue(e, "payment_value")
             }
             style={{ paddingTop: 3 }}
             InputProps={{
@@ -236,7 +180,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
               ),
             }}
             disabled={
-              checkedAgent && (range == "inside" ? (_roleData.inside_payment_unit_type == 1 ? false : true) : (_roleData.outside_payment_unit_type == 1 ? false : true))
+              checkedAgent && (_paidBy.payment_unit_type == 1 ? false : true)
             }
           />
         </Grid>
@@ -254,9 +198,9 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            value={range == "inside" ? _roleData.inside_payment_calculated_from : _roleData.outside_payment_calculated_from}
+            value={_paidBy.payment_calculated_from}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleChangeValue(e, range == "inside" ? "inside_payment_calculated_from" : "outside_payment_calculated_from")
+              handleChangeValue(e, "payment_calculated_from")
             }
           >
             <FormControlLabel
@@ -266,7 +210,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
                 <Radio
                   size="small"
                   style={{ marginBottom: 3 }}
-                  disabled={!checkedAgent || (range == "inside" ? _roleData.inside_payment_unit_type == 1 : _roleData.outside_payment_unit_type == 1)}
+                  disabled={!checkedAgent || _paidBy.payment_unit_type == 1}
                 />
               }
               label="My GCI"
@@ -278,7 +222,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
                 <Radio
                   size="small"
                   style={{ marginBottom: 3 }}
-                  disabled={!checkedAgent || (range == "inside" ? _roleData.inside_payment_unit_type == 1 : _roleData.outside_payment_unit_type == 1)}
+                  disabled={!checkedAgent || _paidBy.payment_unit_type == 1}
                 />
               }
               label="My NET"
@@ -295,11 +239,11 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
             variant="standard"
             style={{ color: "inherit", width: "100%" }}
             disabled={!checkedAgent}
-            value={range == "inside" ? _roleData.inside_payment_note : _roleData.outside_payment_note}
+            value={_paidBy.payment_note}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeValue(
                 e,
-                range == "inside" ? "inside_payment_note" : "outside_payment_note"
+                "payment_note"
               )
             }
           />
