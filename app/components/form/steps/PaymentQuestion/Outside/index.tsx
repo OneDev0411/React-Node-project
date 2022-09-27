@@ -46,7 +46,7 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
 
   // this enable Next button
   const updateFlag = (flag: boolean) => {
-    if (!showButton) {
+    if (submitted != 1 && wizard.currentStep < step + 1) {
       setShowButton(flag);
     }
   };
@@ -56,7 +56,7 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
       <QuestionTitle>
         Please input Outside Douglas Elliman Payments info.
       </QuestionTitle>
-      <QuestionForm>
+      <QuestionForm width="60%">
         <PaymentQuestionComponent
           range="outside"
           dealType={dealType}

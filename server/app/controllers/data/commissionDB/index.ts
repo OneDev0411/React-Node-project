@@ -102,6 +102,14 @@ const saveCommissionData = async (req: Request, res: Response) => {
     for (let i = 0; i < remittanceChecks.length; i++) {
       await saveAppData(remittanceChecks[i], AppRemittanceCheckModel);
     }
+    // save appPaymentData
+    const dbPayments = await readData(dealData.deal, AppPaymentModel);
+    for (let k = 0; k < dbPayments.length; k++) {
+      const isExist = payments.filter(item => item.id && item.id == dbPayments[k].id);
+      if (!isExist.length) {
+        await deleteData(dbPayments[k], AppPaymentModel);
+      }
+    }
     for (let i = 0; i < payments.length; i++) {
       await saveAppData(payments[i], AppPaymentModel);
     }

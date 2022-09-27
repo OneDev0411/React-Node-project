@@ -136,7 +136,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   };
 
   const updateFlag = (flag: boolean) => {
-    if (wizard.currentStep < step + 1) {
+    if (submitted != 1 && wizard.currentStep < step + 1) {
       setShowButton(flag);
     }
   };

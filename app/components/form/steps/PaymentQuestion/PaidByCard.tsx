@@ -1,5 +1,5 @@
 import React from "@libs/react";
-import { IPaidByCardProps, IPaidByData, IPayment } from "../../../../models/type";
+import { IPaidByCardProps, IPaidByData } from "../../../../models/type";
 
 const PaidByCard: React.FC<IPaidByCardProps> = ({
   Ui: {
@@ -22,12 +22,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
   const { useState, useEffect } = React;
   // state
   const [_paidBy, _setPaidBy] = useState<IPaidByData>(range == "inside" ? payment.inside_de_paid_by[index] : payment.outside_de_paid_by[index]);
-  const [checkedAgent, setCheckedAgent] = useState<boolean>((_paidBy.payment_value != undefined && _paidBy.payment_value !== null) ? true : false);
-    // if () {
-    //   setCheckedAgent(true);
-    // } else {
-    //   setCheckedAgent(false);
-    // });
+  const [checkedAgent, setCheckedAgent] = useState<boolean>(false);
 
   const handleChangeValue = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -35,7 +30,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
   ) => {
     updateFlag(true);
     let value: string = e.target.value;
-    if (value == "NaN" || (value + "").length > 16) {
+    if (key != "payment_note" && (value == "NaN" || (value + "").length > 16)) {
       return;
     }
     if (
@@ -70,14 +65,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
 
   useEffect(() => {
     if (checkedAgent) {
-      if (_paidBy.payment_value == null)
-        _setPaidBy({
-          ..._paidBy,
-          payment_unit_type: 0,
-          payment_value: 0,
-          payment_calculated_from: 0,
-          payment_note: "",
-        });
+      _setPaidBy(range == "inside" ? payment.inside_de_paid_by[index] : payment.outside_de_paid_by[index]);
     }
     else {
       _setPaidBy({
@@ -89,6 +77,22 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
       });
     }
   }, [checkedAgent])
+  
+  useEffect(() => {
+    if (index == 0) {
+      if (range == "inside") {
+        if (payment.inside_de_paid_by[index].payment_value != null)
+          setCheckedAgent(true);
+        else
+          setCheckedAgent(false);
+      } else {
+        if (payment.outside_de_paid_by[index].payment_value != null)
+          setCheckedAgent(true);
+        else
+          setCheckedAgent(false);
+      }
+    }
+  }, [payment.inside_de_paid_to, payment.outside_de_paid_to]);
 
   useEffect(() => {
     let updateValue = JSON.parse(JSON.stringify(payment));
@@ -102,7 +106,6 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
   return (
     <Box
       style={{
-        marginBottom: 20,
         marginTop: 0,
         border: "1px solid rgba(0, 0, 0, 0.12)",
         borderRadius: 4,

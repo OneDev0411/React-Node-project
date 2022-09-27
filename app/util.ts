@@ -150,10 +150,10 @@ export const defaultRemittanceChecks: IRemittanceChecks[] = [
 export const defaultPaymentsData: IPayment[] = [{
   id: null,
   deal: "",
-  inside_de_payment_type: "Team Member",
+  inside_de_payment_type: "",
   inside_de_paid_to: "",
   inside_de_paid_by: [],
-  outside_de_payment_type: "Outside Referral Broker",
+  outside_de_payment_type: "",
   outside_de_paid_to: "",
   outside_de_paid_by: [],
   outside_de_payment_company: "",
@@ -190,5 +190,5 @@ export const defaultDealData: IDealData = {
   current_step: 8,
 };
 
-// export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";
-export const APP_URL = "http://localhost:8081";
+export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";
+// export const APP_URL = "http://localhost:8081";

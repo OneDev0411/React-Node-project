@@ -44,7 +44,7 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
 
   // enable "Looks good, Next" button
   const updateFlag = (flag: boolean) => {
-    if (submitted !== 1 && !showButton) {
+    if (submitted !== 1 && wizard.currentStep < step + 1) {
       setShowButton(flag);
     }
   };
@@ -54,7 +54,7 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
       <QuestionTitle>
         Please input Inside Douglas Elliman Payments info.
       </QuestionTitle>
-      <QuestionForm>
+      <QuestionForm width="60%">
         <PaymentQuestionComponent
           range="inside"
           dealType={dealType}

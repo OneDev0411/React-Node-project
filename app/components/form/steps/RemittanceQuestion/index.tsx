@@ -87,29 +87,17 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     setBuySideChecks(temp);
   }
   
-  const removeListingSideCheck = (index: number) => {
-    let temp = listingSideChecks.slice();
-    temp.splice(index, 1);
-    setListingSideChecks(temp);
-  }
-
-  const handleClickBuySideRemoveCheckButton = (event: any) => {
-    let temp = buySideChecks.slice();
-    temp.pop();
-    setBuySideChecks(temp);
-  };
-  
   const handleClickListingSideAddAnotherCheckButton = (event: any) => {
     let temp = listingSideChecks.slice();
     temp.push(defaultCheckData);
     setListingSideChecks(temp);
   };
 
-  const handleClickListingSideRemoveCheckButton = (event: any) => {
+  const removeListingSideCheck = (index: number) => {
     let temp = listingSideChecks.slice();
-    temp.pop();
+    temp.splice(index, 1);
     setListingSideChecks(temp);
-  };
+  }
 
   const updateCheckDataList = (
     index: number,
@@ -313,8 +301,17 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
               <>
                 {buySideChecks.map(
                   (checkData: IRemittanceChecks, index: number) => (
-                    <Box style={{ marginBottom: 20, paddingTop: 15, display: 'inline-block', position: 'relative' }}>
-                      {index != 0 && <IconButton size="small" style={{ position: 'absolute', top: 0, right: 0, width: 7, height: 5 }} onClick={() => removeBuySideCheck(index)}>
+                    <Box style={{
+                      marginBottom: 20,
+                      padding: 15,
+                      paddingTop: 15,
+                      paddingRight: 10,
+                      display: 'inline-block',
+                      position: 'relative', 
+                      border: "1px solid rgba(0, 0, 0, 0.12)",
+                      borderRadius: 4
+                    }}>
+                      {buySideChecks.length > 1 && <IconButton size="small" style={{ position: 'absolute', top: 10, right: 10, width: 7, height: 5 }} onClick={() => removeBuySideCheck(index)}>
                         x
                       </IconButton>}
                       <Grid container spacing={2}>
@@ -423,21 +420,6 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                   >
                     + Add another check
                   </Button>
-                  {buySideChecks.length > 1 && (
-                    <Button
-                      variant="outlined"
-                      onClick={handleClickBuySideRemoveCheckButton}
-                      style={{
-                        color: "black !important",
-                        borderColor: "#dbdbdb !important",
-                        paddingBottom: 2,
-                        paddingTop: 2,
-                        marginLeft: 10,
-                      }}
-                    >
-                      Remove one
-                    </Button>
-                  )}
                 </Box>
               </>
             )}
@@ -505,15 +487,24 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
               <>
                 {listingSideChecks.map(
                   (checkData: IRemittanceChecks, index: number) => (
-                    <Box style={{ marginBottom: 20, paddingTop: 15, paddingRight: 10, display: 'inline-block', position: 'relative' }}>
-                      {index != 0 && <IconButton size="small" style={{ position: 'absolute', top: 0, right: 0, width: 7, height: 5 }} onClick={() => removeListingSideCheck(index)}>
+                    <Box style={{
+                      marginBottom: 20,
+                      padding: 15,
+                      paddingTop: 15,
+                      paddingRight: 10,
+                      display: 'inline-block',
+                      position: 'relative', 
+                      border: "1px solid rgba(0, 0, 0, 0.12)",
+                      borderRadius: 4
+                    }}>
+                      {listingSideChecks.length > 1 && <IconButton size="small" style={{ position: 'absolute', top: 5, right: 5, width: 7, height: 5 }} onClick={() => removeListingSideCheck(index)}>
                         x
                       </IconButton>}
                       <Grid container spacing={2}>
-                        <Grid item xs={4}>
+                        <Grid item xs={3}>
                           <label>{`Check - ${index + 1}`}</label>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={9}>
                           <Grid container spacing={2}>
                             <Grid item xs={6}>
                               <TextField
@@ -618,21 +609,6 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                   >
                     + Add another check
                   </Button>
-                  {listingSideChecks.length > 1 && (
-                    <Button
-                      variant="outlined"
-                      onClick={handleClickListingSideRemoveCheckButton}
-                      style={{
-                        color: "black !important",
-                        borderColor: "#dbdbdb !important",
-                        paddingBottom: 2,
-                        paddingTop: 2,
-                        marginLeft: 10,
-                      }}
-                    >
-                      Remove one
-                    </Button>
-                  )}
                 </Box>
               </>
             )}

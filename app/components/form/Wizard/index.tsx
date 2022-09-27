@@ -1,4 +1,3 @@
-import React from "@libs/react";
 import StartQuestion from "../steps/StartQuestion";
 import ComformRoleQuestion from "../steps/ConfirmRoleQuestion";
 import FinanceTransQuestion from "../steps/FinanceTransQuestion";
