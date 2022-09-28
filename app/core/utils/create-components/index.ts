@@ -6,6 +6,9 @@ export function createComponents(Components: CoreComponents): CoreComponents {
     RoleForm: Components.RoleForm,
     DatePicker: Components.DatePicker,
     RoleCard: memo((props: RoleCardProps) => Components.RoleCard(props)),
+    AgentsPicker: memo((props: AgentsPickerProps) =>
+      Components.AgentsPicker(props)
+    ),
     ContactRoles: memo((props: ContactRolesProps) =>
       Components.ContactRoles(props)
     ),

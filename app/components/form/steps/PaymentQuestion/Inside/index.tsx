@@ -8,6 +8,7 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
   models: { deal },
+  Components,
 }) => {
   const { useState, useEffect } = React;
   const { Box, Button } = Ui;
@@ -60,6 +61,7 @@ const PaymentQuestionInside: React.FC<IQuestionProps> = ({
           dealType={dealType}
           dealId={deal.id}
           saveData={{ updateFlag }}
+          components={Components}
         />
         {showButton && (
           <Box

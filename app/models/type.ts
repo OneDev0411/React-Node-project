@@ -181,6 +181,7 @@ export interface IPaymentQuestionData {
   dealType: string;
   dealId: string;
   saveData: IDataToConText;
+  components: EntryProps["Components"];
 }
 
 export interface IDataToConText {

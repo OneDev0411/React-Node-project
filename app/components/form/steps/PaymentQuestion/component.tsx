@@ -1,7 +1,7 @@
 import React from "@libs/react";
 import ReactUse from "@libs/react-use";
 import Ui from "@libs/material-ui";
-import { IPayment, IPaymentQuestionData, IPaymentData, IPaidByData, IRoleData } from "../../../../models/type";
+import { GCISplitStatus, IPayment, IPaymentQuestionData, IPaymentData, IPaidByData, IRoleData } from "../../../../models/type";
 import { paymentTypeData, defaultPaymentsData } from "../../../../util";
 import PaidByCard from "./PaidByCard";
 import useApp from "../../../../hooks/useApp";
@@ -10,7 +10,8 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   saveData: { updateFlag },
   range,
   dealType,
-  dealId
+  dealId,
+  components: { AgentsPicker },
 }) => {
   const { useState, useEffect } = React;
   const { useDebounce } = ReactUse;
@@ -21,6 +22,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   let defaultPayments: IPayment[] = defaultPaymentsData;
   defaultPayments[0].deal = dealId;
   const [_payments, _setPayments] = useState<IPayment[]>(payments.length ? payments : defaultPayments);
+  const [status, setStatus] = useState<GCISplitStatus[]>([]);
 
   // this make content of select tag
   const displayData = paymentTypeData.reduce(
@@ -34,6 +36,8 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     []
   );
 
+  const activePayments = range == "inside" ? _payments.filter(item => item.inside_de_payment_type != "") : _payments.filter(item => item.outside_de_payment_type != "");
+
   const handleChangeValue = (
     e: React.ChangeEvent<{ value: unknown }>,
     key: keyof IPayment,
@@ -41,47 +45,26 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   ) => {
     updateFlag(true); // for Next button enable
     let temp = JSON.parse(JSON.stringify(_payments));
-    if (key === "inside_de_paid_to") {
-      if (e.target.value !== "") {
-        if (temp[index].inside_de_paid_by[0]["payment_value"] == null) {
-          temp[index].inside_de_paid_by[0]["payment_unit_type"] = 0;
-          temp[index].inside_de_paid_by[0]["payment_value"] = 0;
-          temp[index].inside_de_paid_by[0]["payment_calculated_from"] = 0;
-        }
-      }
-      else {
-        temp[index].inside_de_paid_by[0]["payment_unit_type"] = null;
-        temp[index].inside_de_paid_by[0]["payment_value"] = null;
-        temp[index].inside_de_paid_by[0]["payment_calculated_from"] = null;
-      }
-    }
-    if (key === "outside_de_paid_to") {
-      if (e.target.value !== "") {
-        if (temp[index].outside_de_paid_by[0]["payment_value"] == null) {
-          temp[index].outside_de_paid_by[0]["payment_unit_type"] = 0;
-          temp[index].outside_de_paid_by[0]["payment_value"] = 0;
-          temp[index].outside_de_paid_by[0]["payment_calculated_from"] = 0;
-        }
-      }
-      else {
-        temp[index].outside_de_paid_by[0]["payment_unit_type"] = null;
-        temp[index].outside_de_paid_by[0]["payment_value"] = null;
-        temp[index].outside_de_paid_by[0]["payment_calculated_from"] = null;
-      }
+    if ((key === "inside_de_payment_type" || key == "outside_de_payment_type") && e.target.value == "Team Member") {
+      const _status = JSON.parse(JSON.stringify(status));
+      _status[index] = "Selecting";
+      setStatus(_status);
     }
     temp[index][key] = e.target.value;
     _setPayments(temp);
   };
 
-  const handleClickAddAnotherPayment = (event: any) => {
+  const handleClickAddAnotherPayment = () => {
     let temp = _payments.slice();
     if (range == "inside")
       defaultPayments[0].inside_de_payment_type = "Team Member";
     else
       defaultPayments[0].outside_de_payment_type = "Outside Referral Broker";
     temp.push(defaultPayments[0]);
-    console.log(temp);
     _setPayments(temp);
+    const _status = JSON.parse(JSON.stringify(status));
+    _status.push("Selecting");
+    setStatus(_status);
   };
 
   const handleClickRemovePayment = (index: number) => {
@@ -96,13 +79,66 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
         temp.splice(index, 1);
     }
     _setPayments(temp);
-  }
+  };
 
   const updatePayment = (payment: IPayment, index: number) => {
     let temp = JSON.parse(JSON.stringify(_payments));
     temp[index] = payment;
     _setPayments(temp);
-  }
+  };
+  
+  const handleClickCancelAddButton = (index: number) => {
+    const _status = JSON.parse(JSON.stringify(status));
+    _status[index] = "Listing";
+    setStatus(_status);
+  };
+
+  const handleSelectAgent = ((agent: BrandedUser, index: number, item: IPayment) => {
+    const _status = JSON.parse(JSON.stringify(status));
+    _status[index] = "Listing";
+    setStatus(_status);
+    let temp = JSON.parse(JSON.stringify(_payments));
+    const indexInPayments = _payments.indexOf(item);
+    if (range == "inside") {
+      temp[indexInPayments].inside_de_paid_to = agent.display_name || '';
+    } else {
+      temp[indexInPayments].outside_de_paid_to = agent.display_name || '';
+    }
+    if (range == "inside") {
+      if (agent.display_name !== "") {
+        if (temp[indexInPayments].inside_de_paid_by[0]["payment_value"] == null) {
+          temp[indexInPayments].inside_de_paid_by[0]["payment_unit_type"] = 0;
+          temp[indexInPayments].inside_de_paid_by[0]["payment_value"] = 0;
+          temp[indexInPayments].inside_de_paid_by[0]["payment_calculated_from"] = 0;
+        }
+      }
+      else {
+        temp[indexInPayments].inside_de_paid_by[0]["payment_unit_type"] = null;
+        temp[indexInPayments].inside_de_paid_by[0]["payment_value"] = null;
+        temp[indexInPayments].inside_de_paid_by[0]["payment_calculated_from"] = null;
+      }
+    } else {
+      if (agent.display_name !== "") {
+        if (temp[indexInPayments].outside_de_paid_by[0]["payment_value"] == null) {
+          temp[indexInPayments].outside_de_paid_by[0]["payment_unit_type"] = 0;
+          temp[indexInPayments].outside_de_paid_by[0]["payment_value"] = 0;
+          temp[indexInPayments].outside_de_paid_by[0]["payment_calculated_from"] = 0;
+        }
+      }
+      else {
+        temp[indexInPayments].outside_de_paid_by[0]["payment_unit_type"] = null;
+        temp[indexInPayments].outside_de_paid_by[0]["payment_value"] = null;
+        temp[indexInPayments].outside_de_paid_by[0]["payment_calculated_from"] = null;
+      }
+    }
+    _setPayments(temp);
+  });
+  
+  const handleEditPaidTo = (index: number) => {
+    const _status = JSON.parse(JSON.stringify(status));
+    _status[index] = "Selecting";
+    setStatus(_status);
+  };
 
   useEffect(() => {
     roleData.map((item: IRoleData) => {
@@ -133,18 +169,31 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
         }
       }
     });
-    if (_payments.length == 1) {
-      if (_payments[0].inside_de_payment_type == "") {
-        let temp = JSON.parse(JSON.stringify(_payments));
+    if (activePayments.length === 0) {
+      let temp = JSON.parse(JSON.stringify(_payments));
+      if (range == "inside") {
         temp[0].inside_de_payment_type = "Team Member";
-        _setPayments(temp);
       }
-      if (_payments[0].outside_de_payment_type == "") {
-        let temp = JSON.parse(JSON.stringify(_payments));
+      if (range == "outside") {
         temp[0].outside_de_payment_type = "Outside Referral Broker";
-        _setPayments(temp);
       }
+      _setPayments(temp);
     }
+    const _status = status;
+    activePayments.map((item) => {
+      if (range == "inside") {
+        if (item.inside_de_paid_to)
+          _status.push("Listing");
+        else
+          _status.push("Selecting");
+      } else {
+        if (item.outside_de_paid_to)
+          _status.push("Listing");
+        else
+          _status.push("Selecting");
+      }
+    });
+    setStatus(_status);
   }, []);
 
   useDebounce(
@@ -165,12 +214,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
 
   return (
     <>
-      {_payments.filter(item => {
-        if (range == "inside")
-          return item.inside_de_payment_type != ""
-        else
-          return item.outside_de_payment_type != ""
-      }).map((item, index) => 
+      {activePayments.map((item, index) => 
         <Box style={{
           marginBottom: 20,
           padding: 30,
@@ -181,12 +225,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
           border: "1px solid rgba(0, 0, 0, 0.12)",
           borderRadius: 4
         }}>
-          {_payments.filter(item => {
-              if (range == "inside")
-                return item.inside_de_payment_type != ""
-              else
-                return item.outside_de_payment_type != ""
-            }).length > 1 && <IconButton size="small" style={{ position: 'absolute', top: 10, right: 10, width: 7, height: 5 }} onClick={() => handleClickRemovePayment(_payments.indexOf(item))}>
+          {activePayments.length > 1 && <IconButton size="small" style={{ position: 'absolute', top: 10, right: 10, width: 7, height: 5 }} onClick={() => handleClickRemovePayment(_payments.indexOf(item))}>
             x
           </IconButton>}
           <Grid container spacing={2} style={{ marginBottom: 10 }}>
@@ -218,61 +257,150 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
               </Select>
             </Grid>
           </Grid>
-          <Grid container spacing={2} style={{ marginBottom: 10 }}>
-            <Grid item xs={3}>
-              <label>Paid To</label>
+          {range == "inside" && item.inside_de_payment_type == "Team Member" &&
+            <>
+              <Grid container spacing={2} style={{ marginBottom: 10 }}>
+                <Grid item xs={3}>
+                  <label>Paid To</label>
+                </Grid>
+                <Grid item xs={9}>
+                  {status[index] === "Listing" && (
+                    <Box style={{ display: "flex" }}>
+                      <label>{item.inside_de_paid_to}</label>
+                      <Button
+                        onClick={() => handleEditPaidTo(index)}
+                        style={{
+                          marginLeft: "auto",
+                          color: "black !important",
+                          border: "solid #dbdbdb 1px",
+                          borderRadius: 5,
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    </Box>
+                  )}
+                  {status[index] === "Selecting" && (
+                    <Box>
+                      <AgentsPicker
+                        flattenTeams={true}
+                        isPrimaryAgent={false}
+                        useTeamBrandId={false}
+                        onSelectAgent={(agent: BrandedUser) =>
+                          handleSelectAgent(agent, index, item)
+                        }
+                      />
+                      <Box style={{ marginTop: 5, textAlign: "right" }}>
+                        <Button
+                          onClick={() => handleClickCancelAddButton(index)}
+                          style={{
+                            color: "black !important",
+                            border: "solid #dbdbdb 1px",
+                            borderRadius: 5,
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </Box>
+                    </Box>
+                  )}
+                </Grid>
+              </Grid>
+            </>
+          }
+          {range == "inside" &&
+            <Grid container spacing={1}>
+              <Grid item xs={3}>
+                <label style={{ marginTop: 5 }}>Paid By</label>
+              </Grid>
+              <Grid item xs={9}>
+                {item.inside_de_paid_by.map((paidByItem: IPaidByData, id: number) => (
+                  <PaidByCard
+                    key={id}
+                    payment={item}
+                    paymentIndex={index}
+                    updatePayment={updatePayment}
+                    index={id}
+                    Ui={Ui}
+                    saveData={{ updateFlag }}
+                    range={range}
+                  />
+                ))}
+              </Grid>
             </Grid>
-            <Grid item xs={9}>
-              <TextField
-                variant="standard"
-                style={{ width: "100%" }}
-                defaultValue="Preston Maguire (575 Madison Ave)"
-                value={
-                  range == "inside"
-                    ? item.inside_de_paid_to
-                    : item.outside_de_paid_to
-                }
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleChangeValue(
-                    e,
-                    range == "inside" ? "inside_de_paid_to" : "outside_de_paid_to",
-                    _payments.indexOf(item)
-                  )
-                }
-              />
+          }
+          {range == "outside" && item.outside_de_payment_type == "Team Member" &&
+            <>
+              <Grid container spacing={2} style={{ marginBottom: 10 }}>
+                <Grid item xs={3}>
+                  <label>Paid To</label>
+                </Grid>
+                <Grid item xs={9}>
+                  {status[index] === "Listing" && (
+                    <Box style={{ display: "flex" }}>
+                      <label>{item.outside_de_paid_to}</label>
+                      <Button
+                        onClick={() => handleEditPaidTo(index)}
+                        style={{
+                          marginLeft: "auto",
+                          color: "black !important",
+                          border: "solid #dbdbdb 1px",
+                          borderRadius: 5,
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    </Box>
+                  )}
+                  {status[index] === "Selecting" && (
+                    <Box>
+                      <AgentsPicker
+                        flattenTeams={true}
+                        isPrimaryAgent={false}
+                        useTeamBrandId={false}
+                        onSelectAgent={(agent: BrandedUser) =>
+                          handleSelectAgent(agent, index, item)
+                        }
+                      />
+                      <Box style={{ marginTop: 5, textAlign: "right" }}>
+                        <Button
+                          onClick={() => handleClickCancelAddButton(index)}
+                          style={{
+                            color: "black !important",
+                            border: "solid #dbdbdb 1px",
+                            borderRadius: 5,
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </Box>
+                    </Box>
+                  )}
+                </Grid>
+              </Grid>
+            </>
+          }
+          {range == "outside" &&
+            <Grid container spacing={1}>
+              <Grid item xs={3}>
+                <label style={{ marginTop: 5 }}>Paid By</label>
+              </Grid>
+              <Grid item xs={9}>
+                {item.outside_de_paid_by.map((paidByItem: IPaidByData, id: number) => (
+                  <PaidByCard
+                    key={id}
+                    payment={item}
+                    paymentIndex={index}
+                    updatePayment={updatePayment}
+                    index={id}
+                    Ui={Ui}
+                    saveData={{ updateFlag }}
+                    range={range}
+                  />
+                ))}
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item xs={3}>
-              <label style={{ marginTop: 5 }}>Paid By</label>
-            </Grid>
-            <Grid item xs={9}>
-              {range == "inside" && item.inside_de_paid_by.map((paidByItem: IPaidByData, id: number) => (
-                <PaidByCard
-                  key={id}
-                  payment={item}
-                  paymentIndex={index}
-                  updatePayment={updatePayment}
-                  index={id}
-                  Ui={Ui}
-                  saveData={{ updateFlag }}
-                  range={range}
-                />
-              ))}
-              {range == "outside" && item.outside_de_paid_by.map((paidByItem: IPaidByData, id: number) => (
-                <PaidByCard
-                  key={id}
-                  payment={item}
-                  paymentIndex={index}
-                  updatePayment={updatePayment}
-                  index={id}
-                  Ui={Ui}
-                  saveData={{ updateFlag }}
-                  range={range}
-                />
-              ))}
-            </Grid>
-          </Grid>
+          }
           {range == "outside" && 
             (paymentTypeData[1].member.indexOf(item.outside_de_payment_type) >= 0 || 
               paymentTypeData[2].member.indexOf(item.outside_de_payment_type) >= 0) && (
