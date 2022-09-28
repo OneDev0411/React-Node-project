@@ -26,30 +26,6 @@ export default (sequelize, Sequelize) => {
     note: {
       type: Sequelize.TEXT,
     },
-    inside_payment_unit_type: {
-      type: Sequelize.INTEGER,
-    },
-    inside_payment_value: {
-      type: Sequelize.INTEGER,
-    },
-    inside_payment_calculated_from: {
-      type: Sequelize.INTEGER,
-    },
-    inside_payment_note: {
-      type: Sequelize.TEXT,
-    },
-    outside_payment_unit_type: {
-      type: Sequelize.INTEGER,
-    },
-    outside_payment_value: {
-      type: Sequelize.INTEGER,
-    },
-    outside_payment_calculated_from: {
-      type: Sequelize.INTEGER,
-    },
-    outside_payment_note: {
-      type: Sequelize.TEXT,
-    },
   });
 
   return AppRoleModel;

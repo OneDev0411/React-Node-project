@@ -40,17 +40,6 @@ export interface IDealData {
   stage_cost: number;
   remittance_buy_side_bank_wire_amount: number | null;
   remittance_listing_side_bank_wire_amount: number | null;
-  inside_de_payment_type: string;
-  inside_de_paid_to: string;
-  outside_de_payment_type: string;
-  outside_de_paid_to: string;
-  outside_de_payment_company: string;
-  outside_de_payment_company_address: string;
-  outside_de_payment_office: string;
-  outside_de_payment_cell: string;
-  outside_de_payment_fax: string;
-  outside_de_payment_tax_id: string;
-  outside_de_payment_mail: string;
   approval_request_date: string;
   submitted: number;
   current_step: number;
@@ -64,14 +53,6 @@ export interface IRoleData {
   share_percent: IDealRole["commission_percentage"];
   share_value: IDealRole["commission_dollar"];
   note: string;
-  inside_payment_unit_type?: number | null;
-  inside_payment_value?: number | null;
-  inside_payment_calculated_from?: number | null;
-  inside_payment_note?: string;
-  outside_payment_unit_type?: number | null;
-  outside_payment_value?: number | null;
-  outside_payment_calculated_from?: number | null;
-  outside_payment_note?: string;
 }
 
 export interface IRemittanceChecks {
