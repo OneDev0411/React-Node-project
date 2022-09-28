@@ -38,9 +38,6 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
 
   const gciDeValue = dealData.gci_de_value;
   const gciDePercent = parseFloat((gciDeValue / salesPrice * 100).toFixed(3));
-  const showCompanyInfo = 
-    (paymentTypeData[1].member.indexOf(dealData.outside_de_payment_type) >= 0 ||
-      paymentTypeData[2].member.indexOf(dealData.outside_de_payment_type) >= 0) ? true : false;
 
   const handleClickApprove = async () => {
     wizard.setLoading(true);
@@ -248,35 +245,38 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 <label>Checks</label>
               </Grid>
               {buySideChecks.map((item: IRemittanceChecks, index: number) => 
-                <>
-                  <Grid item xs={12}>
+                <Grid container style={{
+                  padding: "10px 0",
+                  marginBottom: 10,
+                }}>
+                  <Grid item xs={12} style={{ marginBottom: 5 }}>
                     <label>Check{index+1}</label>
                   </Grid>
                   <Grid item xs={6}>
                     Check number
                   </Grid>
                   <Grid item xs={6}>
-                    <label>{item.check_num}</label>
+                    <label style={{ margin: 0 }}>{item.check_num}</label>
                   </Grid>
                   <Grid item xs={6}>
                     Amount
                   </Grid>
                   <Grid item xs={6}>
-                    <label>{item.amount}</label>
+                    <label style={{ margin: 0 }}>{item.amount}</label>
                   </Grid>
                   <Grid item xs={6}>
                     Date on check
                   </Grid>
                   <Grid item xs={6}>
-                    <label>{(new Date(item.check_date)).toDateString().slice(4)}</label>
+                    <label style={{ margin: 0 }}>{(new Date(item.check_date)).toDateString().slice(4)}</label>
                   </Grid>
                   <Grid item xs={6}>
                     Date on received
                   </Grid>
                   <Grid item xs={6}>
-                    <label>{(new Date(item.check_receive_date)).toDateString().slice(4)}</label>
+                    <label style={{ margin: 0 }}>{(new Date(item.check_receive_date)).toDateString().slice(4)}</label>
                   </Grid>
-                </>
+                </Grid>
               )}
             </>}
             {Number(dealData.remittance_buy_side_bank_wire_amount) > 0 && <>
@@ -308,35 +308,38 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 <label>Checks</label>
               </Grid>
               {listingSideChecks.map((item: IRemittanceChecks, index: number) => 
-                <>
-                  <Grid item xs={12}>
+                <Grid container style={{
+                  padding: "10px 0",
+                  marginBottom: 10,
+                }}>
+                  <Grid item xs={12} style={{ marginBottom: 5 }}>
                     <label>Check{index+1}</label>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} style={{ padding: 0 }}>
                     Check number
                   </Grid>
-                  <Grid item xs={6}>
-                    <label>{item.check_num}</label>
+                  <Grid item xs={6} style={{ margin: 0 }}>
+                    <label style={{ margin: 0 }}>{item.check_num}</label>
                   </Grid>
                   <Grid item xs={6}>
                     Amount
                   </Grid>
                   <Grid item xs={6}>
-                    <label>{item.amount}</label>
+                    <label style={{ margin: 0 }}>{item.amount}</label>
                   </Grid>
                   <Grid item xs={6}>
                     Date on check
                   </Grid>
                   <Grid item xs={6}>
-                    <label>{(new Date(item.check_date)).toDateString().slice(4)}</label>
+                    <label style={{ margin: 0 }}>{(new Date(item.check_date)).toDateString().slice(4)}</label>
                   </Grid>
                   <Grid item xs={6}>
                     Date on received
                   </Grid>
                   <Grid item xs={6}>
-                    <label>{(new Date(item.check_receive_date)).toDateString().slice(4)}</label>
+                    <label style={{ margin: 0 }}>{(new Date(item.check_receive_date)).toDateString().slice(4)}</label>
                   </Grid>
-                </>
+                </Grid>
               )}
             </>}
             {Number(dealData.remittance_listing_side_bank_wire_amount) > 0 && <>
@@ -352,25 +355,35 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             </>}
           </Grid>
         }
-        <Grid container style={{ marginTop: "30px" }}>
+        <Grid container style={{ marginTop: "15px" }}>
           <>
             <Grid item xs={12}>
-              <label style={{ fontSize: '17px' }}>Inside Douglas Elliman Payments Info </label>
+              <label style={{ fontSize: '17px', marginBottom: 10 }}>Inside Douglas Elliman Payments Info </label>
             </Grid>
             {payments.map((item: IPayment) => 
-              <>
-                <Grid item xs={6}>
+              item.inside_de_payment_type && 
+              <Grid container style={{
+                padding: 20,
+                marginBottom: 10,
+                border: "1px solid rgba(0, 0, 0, 0.12)",
+                borderRadius: 4
+              }}>
+                <Grid item xs={6} style={{ marginTop: "5px" }}>
                   Payment Type
                 </Grid>
                 <Grid item xs={6}>
                   <label>{item.inside_de_payment_type}</label>
                 </Grid>
-                <Grid item xs={6}>
-                  Paid To
-                </Grid>
-                <Grid item xs={6}>
-                  <label>{item.inside_de_paid_to}</label>
-                </Grid>
+                {item.inside_de_payment_type == "Team Member" &&
+                  <>
+                    <Grid item xs={6}>
+                      Paid To
+                    </Grid>
+                    <Grid item xs={6}>
+                      <label>{item.inside_de_paid_to}</label>
+                    </Grid>
+                  </>
+                }
                 <Grid item xs={12} style={{ marginTop: "15px" }}>
                   <label>Paid By</label>
                 </Grid>
@@ -401,7 +414,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     </>
                   ))}
                 </Grid>
-              </>
+              </Grid>
             )}
           </>
         </Grid>
@@ -409,22 +422,32 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
         <Grid container style={{ marginTop: "30px" }}>
           <>
             <Grid item xs={12}>
-              <label style={{ fontSize: '17px' }}>Outside Douglas Elliman Payments Info </label>
+              <label style={{ fontSize: '17px', marginBottom: 10 }}>Outside Douglas Elliman Payments Info </label>
             </Grid>
             {payments.map((item: IPayment) => 
-              <>
-                <Grid item xs={6}>
+              item.outside_de_payment_type && 
+              <Grid container style={{
+                padding: 20,
+                marginBottom: 10,
+                border: "1px solid rgba(0, 0, 0, 0.12)",
+                borderRadius: 4
+              }}>
+                <Grid item xs={6} style={{ marginTop: "5px" }}>
                   Payment Type
                 </Grid>
                 <Grid item xs={6}>
                   <label>{item.outside_de_payment_type}</label>
                 </Grid>
-                <Grid item xs={6}>
-                  Paid To
-                </Grid>
-                <Grid item xs={6}>
-                  <label>{item.outside_de_paid_to}</label>
-                </Grid>
+                {item.outside_de_payment_type == "Team Member" &&
+                  <>
+                    <Grid item xs={6}>
+                      Paid To
+                    </Grid>
+                    <Grid item xs={6}>
+                      <label>{item.outside_de_paid_to}</label>
+                    </Grid>
+                  </>
+                }
                 <Grid item xs={12} style={{ marginTop: "15px" }}>
                   <label>Paid By</label>
                 </Grid>
@@ -453,55 +476,55 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                         )}
                     </>
                   ))}
+                  {(paymentTypeData[1].member.indexOf(item.outside_de_payment_type) >= 0 || 
+                    paymentTypeData[2].member.indexOf(item.outside_de_payment_type) >= 0) &&
+                    <Grid container style={{ marginTop: "15px" }}>
+                      <Grid item xs={6}>
+                        Company
+                      </Grid>
+                      <Grid item xs={6}>
+                        <label>{item.outside_de_payment_company}</label>
+                      </Grid>
+                      <Grid item xs={6}>
+                        Company Address
+                      </Grid>
+                      <Grid item xs={6}>
+                        <label>{item.outside_de_payment_company_address}</label>
+                      </Grid>
+                      <Grid item xs={6}>
+                        Office Number
+                      </Grid>
+                      <Grid item xs={6}>
+                        <label>{item.outside_de_payment_office}</label>
+                      </Grid>
+                      <Grid item xs={6}>
+                        Cell Number
+                      </Grid>
+                      <Grid item xs={6}>
+                        <label>{item.outside_de_payment_cell}</label>
+                      </Grid>
+                      <Grid item xs={6}>
+                        Fax Number
+                      </Grid>
+                      <Grid item xs={6}>
+                        <label>{item.outside_de_payment_fax}</label>
+                      </Grid>
+                      <Grid item xs={6}>
+                        Tax ID
+                      </Grid>
+                      <Grid item xs={6}>
+                        <label>{item.outside_de_payment_tax_id}</label>
+                      </Grid>
+                      <Grid item xs={6}>
+                        Email
+                      </Grid>
+                      <Grid item xs={6}>
+                        <label>{item.outside_de_payment_mail}</label>
+                      </Grid>
+                    </Grid>
+                  }
                 </Grid>
-                {(paymentTypeData[1].member.indexOf(item.outside_de_payment_type) >= 0 || 
-                  paymentTypeData[2].member.indexOf(item.outside_de_payment_type) >= 0) &&
-                  <Grid container style={{ marginTop: "15px" }}>
-                    <Grid item xs={6}>
-                      Company
-                    </Grid>
-                    <Grid item xs={6}>
-                      <label>{dealData.outside_de_payment_company}</label>
-                    </Grid>
-                    <Grid item xs={6}>
-                      Company Address
-                    </Grid>
-                    <Grid item xs={6}>
-                      <label>{dealData.outside_de_payment_company_address}</label>
-                    </Grid>
-                    <Grid item xs={6}>
-                      Office Number
-                    </Grid>
-                    <Grid item xs={6}>
-                      <label>{dealData.outside_de_payment_office}</label>
-                    </Grid>
-                    <Grid item xs={6}>
-                      Cell Number
-                    </Grid>
-                    <Grid item xs={6}>
-                      <label>{dealData.outside_de_payment_cell}</label>
-                    </Grid>
-                    <Grid item xs={6}>
-                      Fax Number
-                    </Grid>
-                    <Grid item xs={6}>
-                      <label>{dealData.outside_de_payment_fax}</label>
-                    </Grid>
-                    <Grid item xs={6}>
-                      Tax ID
-                    </Grid>
-                    <Grid item xs={6}>
-                      <label>{dealData.outside_de_payment_tax_id}</label>
-                    </Grid>
-                    <Grid item xs={6}>
-                      Email
-                    </Grid>
-                    <Grid item xs={6}>
-                      <label>{dealData.outside_de_payment_mail}</label>
-                    </Grid>
-                  </Grid>
-                }
-              </>
+              </Grid>
             )}
           </>
         </Grid>

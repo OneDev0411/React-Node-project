@@ -7,7 +7,7 @@ const PaidByInfoCard: React.FC<IPaidByInfoCardProps> = ({
   paidByData,
 }) => {
   return (
-    <Grid container style={{ marginTop: "15px" }}>
+    <Grid container style={{ marginTop: "5px" }}>
       <Grid item xs={12}>
         {paidByData.payment_by_name}
       </Grid>
