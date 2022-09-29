@@ -22,22 +22,22 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const [upsertingIndex, setUpsertingIndex] = useState<number>(0); // last upserting role index
     const [currentRole, setCurrentObject] = useState<Partial<IDealFormRole> | IDealRole | null>(null); // data from dropdown select, can be IDealRole object or nameObject
     const [showButton, setShowButton] = useState<boolean>(true);
-    const [isUpserting, setIsUpserting] = useState<boolean>(false);
 
     // component variables
-    const matchRoles = roles.filter((role: IDealRole) => role.role === roleType);
+    const _matchRoles = roles.filter((role: IDealRole) => role.role === roleType);
+    const [matchRoles, setMatchRoles] = useState<IDealRole[]>(_matchRoles);
 
-    const matchRoleElements = matchRoles.map((role: IDealRole, index: number) => {
+    const _matchRoleElements = matchRoles.map((role: IDealRole, index: number) => {
         return (
             <RoleCard
                 role={role}
                 key={index}
                 readonly
                 onClickEdit={() => handleClickEditButton(role)}
-                // onClickRemove={handleClickEraseButton}
             />
         )
     });
+    const [matchRoleElements, setMatchRoleElements] = useState(_matchRoleElements);
 
     // mockup loading
     useEffect(() => {
@@ -45,7 +45,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
             setStatus('Validating');
         } else {
             setStatus("Upserting");
-            setUpsertingIndex(-1);
+            setUpsertingIndex(0);
         }
         if (submitted === 1)
             setShowButton(false);
@@ -68,7 +68,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
 
     const handleClickAddAnotherButton = () => {
         setStatus('Selecting');
-        setUpsertingIndex(-1);
+        setUpsertingIndex(matchRoles.length);
     }
 
     const handleClickNextButton = () => {
@@ -91,49 +91,36 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
         setStatus("Listing");
     }
 
-    // this logic is updating 
-    const handleUpsertValidatingRole = (upsertingRole: IDealRole) => {
-        setIsUpserting(true);
+    const handleCloseValidatingRoleForm = () => {
+        setStatus("Listing");
+    }
 
-        // in case of showing match role for validating
-        if (upsertingRole.id === matchRoles[upsertingIndex].id) {  
-            // in case of save button of role form which is shown not last is clicked
-            if (upsertingIndex < matchRoles.length - 1) {  
-                setUpsertingIndex(upsertingIndex + 1);
-            }
-            // in case of last shown role form's save button is clicked
-            else {
-                setStatus('Listing');
-            }
-        }
-
-        // in case of showing match role for inserting or updating
-        // ...
+    const handleUpsertRoleForm = (agentRole: IDealRole) => {
+        let temp = JSON.parse(JSON.stringify(matchRoles));
+        temp.push(agentRole);
+        setMatchRoles(temp);
+        temp = matchRoleElements;
+        temp.push(
+            <RoleCard
+                role={agentRole}
+                key={matchRoles.length}
+                readonly
+                onClickEdit={() => handleClickEditButton(agentRole)}
+            />
+        );
+        setMatchRoleElements(temp);
     }
 
     // this logic is updating 
     const handleCloseRoleForm = () => {
-        // in case of buyer/seller lawyer, click cancel button when no match roles, skip
-        if (roleType.indexOf("Lawyer") > 0 && matchRoles.length === 0) {
-            setStatus("Skipped");
-            handleNext();
-        }
         // in case of no match role, ignore cancel action
         if (matchRoles.length === 0) {
             return;
         }
         // click save or save & add to my contacts button
-        else {
+        else { 
+            setStatus("Listing");
             setCurrentObject(null);
-            setStatus("Listing");
-        }
-    }
-
-    const handleCloseValidatingRoleForm = () => {
-        if (!isUpserting) {
-            setStatus("Listing");
-        } else {
-            setIsUpserting(false);
         }
     }
 
@@ -145,11 +132,10 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
             <QuestionForm width='60%'>
                 {status === "Validating" && (
                     <>
-                        {matchRoles.slice(0, upsertingIndex + 1).map((roleData: IDealRole, index: number) =>
+                        {matchRoles.map((roleData: IDealRole, index: number) =>
                             <RoleForm
                                 isOpen
                                 deal={deal}
-                                onUpsertRole={handleUpsertValidatingRole}
                                 onClose={handleCloseValidatingRoleForm}
                                 title=" "
                                 form={{ ...roleData, role: roleType }}
@@ -169,6 +155,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
                         <RoleForm
                             isOpen
                             deal={deal}
+                            onUpsertRole={handleUpsertRoleForm}
                             onClose={handleCloseRoleForm}
                             title=" "
                             form={currentRole === null ? (upsertingIndex >= 0 ? { ...matchRoles[upsertingIndex], role: roleType } : { role: roleType })

@@ -180,4 +180,3 @@ export const defaultDealData: IDealData = {
 };
 
 export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";
-// export const APP_URL = "http://localhost:8081";
