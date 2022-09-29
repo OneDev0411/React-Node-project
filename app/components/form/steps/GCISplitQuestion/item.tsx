@@ -8,10 +8,11 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   totalClc,
   salesPrice,
   index,
+  role,
 }) => {
   const { useState } = React;
-  const { roleData, submitted } = useApp();
-  const [_roleData, _setRoleData] = useState<IRoleData>(roleData[index]);
+  const { submitted } = useApp();
+  const [_roleData, _setRoleData] = useState<IRoleData>(role);
 
   const handleChangeNumber = (
     e: React.ChangeEvent<HTMLInputElement>,

@@ -67,13 +67,14 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       role_id: id,
       legal_full_name: legal_full_name,
       role: role,
-      share_percent: commission_percentage,
-      share_value: commission_dollar,
+      share_percent: commission_percentage ? commission_percentage : parseFloat(((Number(commission_dollar) / salesPrice) * 100).toFixed(3)),
+      share_value: commission_dollar ? commission_dollar : parseFloat(((salesPrice / 100) * Number(commission_percentage)).toFixed(3)),
       note: "",
     };
-    const _role = _roleData;
+    const _role = JSON.parse(JSON.stringify(_roleData));
     _role.push(roleDt);
     _setRoleData(_role);
+    totalClc(_role.length, roleDt, true);
   }
 
   // this logic is updating
@@ -227,6 +228,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 salesPrice={salesPrice}
                 saveData={{ updateFlag }}
                 totalClc={totalClc}
+                role={item}
               />
               {_roleData.length > 1 && isPrimaryAgent(item.role) != true &&
                 <Button
@@ -259,6 +261,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 salesPrice={salesPrice}
                 saveData={{ updateFlag }}
                 totalClc={totalClc}
+                role={item}
               />
               {_roleData.length > 1 && isPrimaryAgent(item.role) != true &&
                 <Button
@@ -325,8 +328,8 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               title=" "
               form={
                 currentRole === null
-                  ? { role: "BuyerAgent" }
-                  : { ...currentRole, role: "BuyerAgent" }
+                  ? (dealType == "Selling" ? { role: "SellerAgent" } : { role: "BuyerAgent" })
+                  : (dealType == "Selling" ? { ...currentRole, role: "SellerAgent" } : { ...currentRole, role: "BuyerAgent" })
               }
             />
           </Box>

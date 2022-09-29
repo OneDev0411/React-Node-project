@@ -29,6 +29,7 @@ export interface IGCIInfoItemProps {
   index: number;
   saveData: IDataToConText;
   totalClc: (index: number, data: IRoleData, clcFlag: boolean) => void;
+  role: IRoleData;
 }
 
 export interface IDealData {
