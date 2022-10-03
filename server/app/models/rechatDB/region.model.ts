@@ -17,6 +17,9 @@ export default (sequelize, Sequelize) => {
       paid_by: {
         type: Sequelize.TEXT,
       },
+      status: {
+        type: Sequelize.TEXT,
+      },
     },
     {
       timestamps: true,

@@ -318,7 +318,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   <PaidByCard
                     key={id}
                     payment={item}
-                    paymentIndex={index}
+                    paymentIndex={_payments.indexOf(item)}
                     updatePayment={updatePayment}
                     index={id}
                     Ui={Ui}
@@ -390,7 +390,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   <PaidByCard
                     key={id}
                     payment={item}
-                    paymentIndex={index}
+                    paymentIndex={_payments.indexOf(item)}
                     updatePayment={updatePayment}
                     index={id}
                     Ui={Ui}

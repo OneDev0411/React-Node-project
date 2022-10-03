@@ -65,7 +65,16 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
 
   useEffect(() => {
     if (checkedAgent) {
-      _setPaidBy(range == "inside" ? payment.inside_de_paid_by[index] : payment.outside_de_paid_by[index]);
+      if (range == "inside" ? payment.inside_de_paid_by[index].payment_unit_type != null : payment.outside_de_paid_by[index].payment_unit_type != null)
+        _setPaidBy(range == "inside" ? payment.inside_de_paid_by[index] : payment.outside_de_paid_by[index]);
+      else
+        _setPaidBy({
+          ..._paidBy,
+          payment_unit_type: 0,
+          payment_value: 0,
+          payment_calculated_from: 0,
+          payment_note: "",
+        });
     }
     else {
       _setPaidBy({
