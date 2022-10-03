@@ -148,7 +148,7 @@ const App: React.FC<EntryProps> = ({
             }
           );
         }
-        saveData();
+        setTimeout(() => saveData(), 1000);
       }
     else
       return;

@@ -68,7 +68,7 @@ const readData = async (deal: string, model: any) => {
 };
 
 const deleteData = async (data: any, model: any) => {
-  if (model == AppRemittanceCheckModel) {
+  if (model == AppRemittanceCheckModel || model == AppPaymentModel) {
     await model.destroy({
       where: {
         id: data.id

@@ -76,7 +76,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           type="number"
           label="Share(%)"
           defaultValue={5}
-          value={Number(_roleData.share_percent)}
+          value={_roleData.share_percent ? Number(_roleData.share_percent) : parseFloat(((Number(_roleData.share_value) / Number(salesPrice)) * 100).toFixed(3))}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChangeNumber(e, "share_percent")
           }
@@ -88,7 +88,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           size="small"
           type="number"
           label="Share($)"
-          value={Number(_roleData.share_value)}
+          value={_roleData.share_value ? Number(_roleData.share_value) : parseFloat(((Number(_roleData.share_percent) / 100) * Number(salesPrice)).toFixed(3))}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChangeNumber(e, "share_value")
           }
