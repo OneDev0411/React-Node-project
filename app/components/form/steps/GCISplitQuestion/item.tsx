@@ -57,7 +57,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   };
 
   return (
-    <Grid container spacing={2} style={{ paddingBottom: 10 }}>
+    <Grid container spacing={2} style={{ paddingTop: 10, paddingBottom: 10 }}>
       <Grid item xs={4}>
         <Box>
           <label style={{ fontSize: 13, marginTop: 11 }}>
@@ -104,7 +104,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChangeText(e, "note")
           }
-          style={{ width: "100%", marginTop: -15, marginBottom: 20 }}
+          style={{ width: "100%", marginTop: -15 }}
         />
       </Grid>
     </Grid>

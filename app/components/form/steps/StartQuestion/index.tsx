@@ -15,8 +15,6 @@ const StartQuestion: React.FC<IQuestionProps> = ({
   
   const seller = roles.filter((role: IDealRole) => role.role === "Seller");
   const buyer = roles.filter((role: IDealRole) => role.role === "Buyer");
-  const buyerLawyer = roles.filter((role: IDealRole) => role.role === "BuyerLawyer");
-  const sellerLawyer = roles.filter((role: IDealRole) => role.role === "SellerLawyer");
   const financingContextValue = getDealContext('financing')?.text;
   const financingProgramContextValue = getDealContext('financing_program')?.text;
 
@@ -26,10 +24,6 @@ const StartQuestion: React.FC<IQuestionProps> = ({
       wizard.goto(2);
     else if (!buyer.length)
       wizard.goto(3);
-    else if (!buyerLawyer.length)
-      wizard.goto(4);
-    else if (!sellerLawyer.length)
-      wizard.goto(5);
     else if (financingContextValue == undefined)
       wizard.goto(6);
     else if (financingContextValue == "Mortgage" && financingProgramContextValue == undefined)

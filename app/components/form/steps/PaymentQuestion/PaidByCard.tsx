@@ -88,6 +88,20 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
   }, [checkedAgent])
   
   useEffect(() => {
+    if (range == "inside") {
+      if (payment.inside_de_paid_by[index].payment_value != null)
+        setCheckedAgent(true);
+      else
+        setCheckedAgent(false);
+    } else {
+      if (payment.outside_de_paid_by[index].payment_value != null)
+        setCheckedAgent(true);
+      else
+        setCheckedAgent(false);
+    }
+  }, []);
+  
+  useEffect(() => {
     if (index == 0) {
       if (range == "inside") {
         if (payment.inside_de_paid_by[index].payment_value != null)
@@ -116,6 +130,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
     <Box
       style={{
         marginTop: 0,
+        marginBottom: 10,
         border: "1px solid rgba(0, 0, 0, 0.12)",
         borderRadius: 4,
         padding: 10,

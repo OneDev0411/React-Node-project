@@ -18,7 +18,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
 }) => {
   const { useState, useEffect } = React;
   const { useDebounce } = ReactUse;
-  const { Grid, Button, Box, TextField, Select, MenuItem } = Ui;
+  const { Grid, Button, Box, IconButton, TextField, Select, MenuItem } = Ui;
   const wizard = useWizardContext();
   const { step } = useSectionContext();
   const { dealData, setDealData, roleData, setRoleData, submitted, currentStep, setCurrentStep } = useApp();
@@ -74,7 +74,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     const _role = JSON.parse(JSON.stringify(_roleData));
     _role.push(roleDt);
     _setRoleData(_role);
-    totalClc(_role.length, roleDt, true);
+    totalClc(_role.length-1, roleDt, true);
   }
 
   // this logic is updating
@@ -121,19 +121,29 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   };
 
   const handleClickRemoveButton = async (data: IRoleData, index: number) => {
-    let roleModel = roles.find((role: IDealRole) => {
-      return data.role_id == role.id;
-    });
+    const roleModel = roles.find((role: IDealRole) => role.id == data.role_id);
     if (roleModel !== undefined) {
       await deleteRole(roleModel);
     }
 
     // for display deleting result
-    let temp: IRoleData[] = _roleData.slice();
+    let temp = JSON.parse(JSON.stringify(_roleData));
     temp.splice(index, 1);
-    if (setRoleData !== undefined) {
-      setRoleData(temp);
-    }
+    _setRoleData(temp);
+
+    // calculate total percent and value when mounted
+    let tempClc = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
+      return parseFloat(
+        (Number(totalPercent) + Number(data.share_percent)).toFixed(3)
+      );
+    }, 0);
+    setTotalPercent(tempClc);
+    tempClc = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
+      return parseFloat(
+        (Number(totalValue) + Number(data.share_value)).toFixed(3)
+      );
+    }, 0);
+    setTotalValue(tempClc);
   };
 
   const updateFlag = (flag: boolean) => {
@@ -220,69 +230,83 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
             {(dealType === "Buying" || bothType) && 
               (item.role == "BuyerAgent" ||
                 item.role == "CoBuyerAgent" ||
-                item.role == "BuyerReferral") && <>
-              <GCIInfoItem
-                Ui={Ui}
-                key={id}
-                index={id}
-                salesPrice={salesPrice}
-                saveData={{ updateFlag }}
-                totalClc={totalClc}
-                role={item}
-              />
-              {_roleData.length > 1 && isPrimaryAgent(item.role) != true &&
-                <Button
+                item.role == "BuyerReferral") &&
+              <Box style={{
+                marginBottom: 20,
+                padding: 15,
+                paddingTop: 15,
+                paddingRight: 10,
+                display: 'inline-block',
+                position: 'relative', 
+                border: "1px solid rgba(0, 0, 0, 0.12)",
+                borderRadius: 4
+              }}>
+                {_roleData.length > 1 && isPrimaryAgent(item.role) != true &&
+                  <IconButton
+                    size="small"
+                    style={{ 
+                      position: 'absolute',
+                      top: 10,
+                      right: 10,
+                      width: 7,
+                      height: 5 
+                    }} 
+                    onClick={() => handleClickRemoveButton(item, id)}
+                  >
+                    x
+                  </IconButton>
+                }
+                <GCIInfoItem
+                  Ui={Ui}
                   key={id}
-                  variant="outlined"
-                  onClick={() => handleClickRemoveButton(item, id)}
-                  style={{
-                    color: "black !important",
-                    borderColor: "#dbdbdb !important",
-                    paddingBottom: 2,
-                    paddingTop: 2,
-                    marginLeft: 10,
-                    marginBottom: 20,
-                    marginTop: -20,
-                    float: "right",
-                  }}
-                >
-                  Remove one
-                </Button>
-              }
-            </>}
+                  index={id}
+                  salesPrice={salesPrice}
+                  saveData={{ updateFlag }}
+                  totalClc={totalClc}
+                  role={item}
+                />
+              </Box>
+            }
             {(dealType == "Selling" || bothType) && 
               (item.role == "SellerAgent" ||
                 item.role == "CoSellerAgent" ||
-                item.role == "SellerReferral") && <>
-              <GCIInfoItem
-                Ui={Ui}
-                key={id}
-                index={id}
-                salesPrice={salesPrice}
-                saveData={{ updateFlag }}
-                totalClc={totalClc}
-                role={item}
-              />
-              {_roleData.length > 1 && isPrimaryAgent(item.role) != true &&
-                <Button
+                item.role == "SellerReferral") && 
+              <Box style={{
+                marginBottom: 20,
+                padding: 15,
+                paddingTop: 15,
+                paddingRight: 10,
+                display: 'inline-block',
+                position: 'relative', 
+                border: "1px solid rgba(0, 0, 0, 0.12)",
+                borderRadius: 4
+              }}>
+                {_roleData.length > 1 && isPrimaryAgent(item.role) != true &&
+                  <IconButton
+                    size="small"
+                    style={{ 
+                      position: 'absolute',
+                      top: 10,
+                      right: 10,
+                      width: 7,
+                      height: 5 
+                    }} 
+                    onClick={() => handleClickRemoveButton(item, id)}
+                  >
+                    x
+                  </IconButton>
+                }
+                <GCIInfoItem
+                  Ui={Ui}
                   key={id}
-                  variant="outlined"
-                  onClick={() => handleClickRemoveButton(item, id)}
-                  style={{
-                    color: "black !important",
-                    borderColor: "#dbdbdb !important",
-                    paddingBottom: 2,
-                    paddingTop: 2,
-                    marginLeft: 10,
-                    marginBottom: 20,
-                    marginTop: -20,
-                    float: "right",
-                  }}
-                >
-                  Remove one
-                </Button>
-              }
-            </>}
+                  index={id}
+                  salesPrice={salesPrice}
+                  saveData={{ updateFlag }}
+                  totalClc={totalClc}
+                  role={item}
+                />
+              </Box>
+            }
           </>
         ))}
         {status === "Listing" && (
@@ -295,7 +319,6 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 borderColor: "#dbdbdb !important",
                 paddingBottom: 2,
                 paddingTop: 2,
-                marginLeft: -10,
                 marginTop: 20,
                 marginBottom: 10,
               }}

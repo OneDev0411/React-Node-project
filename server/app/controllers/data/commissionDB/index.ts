@@ -68,14 +68,11 @@ const readData = async (deal: string, model: any) => {
 };
 
 const deleteData = async (data: any, model: any) => {
-  if (model == AppRemittanceCheckModel || model == AppPaymentModel) {
-    await model.destroy({
-      where: {
-        id: data.id
-      },
-    });
-    console.log(data);
-  }
+  await model.destroy({
+    where: {
+      id: data.id
+    },
+  });
 };
 
 const saveCommissionData = async (req: Request, res: Response) => {
@@ -88,6 +85,13 @@ const saveCommissionData = async (req: Request, res: Response) => {
     // save appDealData
     await saveAppData(dealData, AppDealModel);
     // save appRoleData
+    const dbRoleData = await readData(dealData.deal, AppRoleModel);
+    for (let k = 0; k < dbRoleData.length; k++) {
+      const isExist = roleData.filter(item => item.id && item.id == dbRoleData[k].id);
+      if (!isExist.length) {
+        await deleteData(dbRoleData[k], AppRoleModel);
+      }
+    }
     for (let i = 0; i < roleData.length; i++) {
       await saveAppData(roleData[i], AppRoleModel);
     }

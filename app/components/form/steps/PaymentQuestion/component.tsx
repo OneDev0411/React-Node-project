@@ -36,7 +36,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     []
   );
 
-  const activePayments = range == "inside" ? _payments.filter(item => item.inside_de_payment_type != "") : _payments.filter(item => item.outside_de_payment_type != "");
+  let activePayments = range == "inside" ? _payments.filter(item => item.inside_de_payment_type != "") : _payments.filter(item => item.outside_de_payment_type != "");
 
   const handleChangeValue = (
     e: React.ChangeEvent<{ value: unknown }>,
@@ -178,16 +178,18 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
         temp[0].outside_de_payment_type = "Outside Referral Broker";
       }
       _setPayments(temp);
+      activePayments = range == "inside" ? temp.filter((item: IPayment) => item.inside_de_payment_type != "") : temp.filter((item: IPayment) => item.outside_de_payment_type != "");
     }
     const _status = status;
     activePayments.map((item) => {
-      if (range == "inside") {
-        if (item.inside_de_paid_to)
+      if (range == "inside" && item.inside_de_payment_type == "Team Member") {
+        if (item.inside_de_paid_to !== "")
           _status.push("Listing");
         else
           _status.push("Selecting");
-      } else {
-        if (item.outside_de_paid_to)
+      }
+      if (range == "outside" && item.outside_de_payment_type == "Outside Referral Broker") {
+        if (item.outside_de_paid_to !== "")
           _status.push("Listing");
         else
           _status.push("Selecting");
