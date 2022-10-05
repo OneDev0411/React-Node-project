@@ -62,7 +62,10 @@ const readData = async (deal: string, model: any) => {
     where: {
       deal: deal,
     },
-    attributes: { exclude: ["createdAt", "updatedAt"] },
+    order: [
+      ["created_at", "ASC"]
+    ],
+    attributes: { exclude: ["created_at", "updated_at"] },
   });
   return res;
 };
@@ -185,7 +188,7 @@ const readDealData = async (deal: string, model: any) => {
     where: {
       deal: deal,
     },
-    attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+    attributes: { exclude: ["id", "created_at", "updated_at"] },
   });
   return res;
 };

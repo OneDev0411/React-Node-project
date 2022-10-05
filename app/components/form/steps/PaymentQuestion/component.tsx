@@ -55,20 +55,22 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   };
 
   const handleClickAddAnotherPayment = () => {
-    let temp = _payments.slice();
+    let temp = JSON.parse(JSON.stringify(_payments));
     if (range == "inside")
       defaultPayments[0].inside_de_payment_type = "Team Member";
     else
       defaultPayments[0].outside_de_payment_type = "Outside Referral Broker";
     temp.push(defaultPayments[0]);
     _setPayments(temp);
-    const _status = JSON.parse(JSON.stringify(status));
-    _status.push("Selecting");
-    setStatus(_status);
+    if (range == "inside") {
+      const _status = JSON.parse(JSON.stringify(status));
+      _status.push("Selecting");
+      setStatus(_status);
+    }
   };
 
   const handleClickRemovePayment = (index: number) => {
-    let temp = _payments.slice();
+    let temp = JSON.parse(JSON.stringify(_payments));
     if (range == "inside") {
       temp[index].inside_de_payment_type = "";
       if (temp[index].outside_de_payment_type == "")
@@ -149,26 +151,29 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
             (item.role == "BuyerAgent" || item.role == "CoBuyerAgent" || item.role == "BuyerReferral"))) {
         if (range == "inside") {
           defaultPayments[0].inside_de_paid_by.push({
+            roleId: item.role_id,
             role: item.role,
             payment_by_name: item.legal_full_name,
             payment_unit_type: null,
             payment_value: null,
             payment_calculated_from: null,
             payment_note: "",
-          })
+          });
         }
         else {
           defaultPayments[0].outside_de_paid_by.push({
+            roleId: item.role_id,
             role: item.role,
             payment_by_name: item.legal_full_name,
             payment_unit_type: null,
             payment_value: null,
             payment_calculated_from: null,
             payment_note: "",
-          })
+          });
         }
       }
     });
+
     if (activePayments.length === 0) {
       let temp = JSON.parse(JSON.stringify(_payments));
       if (range == "inside") {
@@ -180,6 +185,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
       _setPayments(temp);
       activePayments = range == "inside" ? temp.filter((item: IPayment) => item.inside_de_payment_type != "") : temp.filter((item: IPayment) => item.outside_de_payment_type != "");
     }
+
     const _status = status;
     activePayments.map((item) => {
       if (range == "inside" && item.inside_de_payment_type == "Team Member") {
@@ -188,7 +194,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
         else
           _status.push("Selecting");
       }
-      if (range == "outside" && item.outside_de_payment_type == "Outside Referral Broker") {
+      if (range == "outside" && item.outside_de_payment_type == "Team Member") {
         if (item.outside_de_paid_to !== "")
           _status.push("Listing");
         else
@@ -197,6 +203,85 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     });
     setStatus(_status);
   }, []);
+
+  useEffect(() => {
+    if ((_payments[0].inside_de_paid_by.length != 0 && _payments[0].inside_de_paid_by.length == roleData.length - 1) || (_payments[0].outside_de_paid_by.length != 0 && _payments[0].outside_de_paid_by.length == roleData.length - 1)) {
+      defaultPayments[0].inside_de_paid_by = [];
+      defaultPayments[0].outside_de_paid_by = [];
+      roleData.map((item: IRoleData) => {
+        if (((dealType == "Selling" || dealType == "Both") &&
+              (item.role == "SellerAgent" || item.role == "CoSellerAgent" || item.role == "SellerReferral")) 
+            || 
+            ((dealType == "Buying" || dealType == "Both") &&
+              (item.role == "BuyerAgent" || item.role == "CoBuyerAgent" || item.role == "BuyerReferral"))) {
+          defaultPayments[0].inside_de_paid_by.push({
+            roleId: item.role_id,
+            role: item.role,
+            payment_by_name: item.legal_full_name,
+            payment_unit_type: null,
+            payment_value: null,
+            payment_calculated_from: null,
+            payment_note: "",
+          });
+          defaultPayments[0].outside_de_paid_by.push({
+            roleId: item.role_id,
+            role: item.role,
+            payment_by_name: item.legal_full_name,
+            payment_unit_type: null,
+            payment_value: null,
+            payment_calculated_from: null,
+            payment_note: "",
+          });
+          if (payments.length > 0) {
+            let temp = JSON.parse(JSON.stringify(_payments));
+            _payments.map((payment: IPayment, index: number) => {
+              if (payment.inside_de_paid_by.find((paidByItem: IPaidByData) => paidByItem.roleId == item.role_id) == undefined) {
+                temp[index].inside_de_paid_by.push({
+                  roleId: item.role_id,
+                  role: item.role,
+                  payment_by_name: item.legal_full_name,
+                  payment_unit_type: null,
+                  payment_value: null,
+                  payment_calculated_from: null,
+                  payment_note: "",
+                });
+              }
+              if (payment.outside_de_paid_by.find((paidByItem: IPaidByData) => paidByItem.roleId == item.role_id) == undefined) {
+                temp[index].outside_de_paid_by.push({
+                  roleId: item.role_id,
+                  role: item.role,
+                  payment_by_name: item.legal_full_name,
+                  payment_unit_type: null,
+                  payment_value: null,
+                  payment_calculated_from: null,
+                  payment_note: "",
+                });
+              }
+            });
+            _setPayments(temp);
+            activePayments = range == "inside" ? temp.filter((item: IPayment) => item.inside_de_payment_type != "") : temp.filter((item: IPayment) => item.outside_de_payment_type != "");
+          }
+        }
+      });
+
+      const _status = status;
+      activePayments.map((item) => {
+        if (range == "inside" && item.inside_de_payment_type == "Team Member") {
+          if (item.inside_de_paid_to !== "")
+            _status.push("Listing");
+          else
+            _status.push("Selecting");
+        }
+        if (range == "outside" && item.outside_de_payment_type == "Team Member") {
+          if (item.outside_de_paid_to !== "")
+            _status.push("Listing");
+          else
+            _status.push("Selecting");
+        }
+      });
+      setStatus(_status);
+    }
+  }, [roleData]);
 
   useDebounce(
     () => {

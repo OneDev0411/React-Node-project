@@ -88,7 +88,10 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     }
 
     const handleClickCancelAddButton = () => {
-        setStatus("Listing");
+        if (matchRoles.length === 0)
+            setStatus("Skipped");
+        else
+            setStatus("Listing");
     }
 
     const handleCloseValidatingRoleForm = () => {
@@ -115,6 +118,8 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const handleCloseRoleForm = () => {
         // in case of no match role, ignore cancel action
         if (matchRoles.length === 0) {
+            setStatus("Skipped");
+            handleNext();
             return;
         }
         // click save or save & add to my contacts button

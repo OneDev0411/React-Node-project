@@ -67,6 +67,7 @@ export interface IRemittanceChecks {
 }
 
 export interface IPaidByData {
+  roleId: IDealRole["id"],
   role: string,
   payment_by_name: string;
   payment_unit_type?: number | null;
