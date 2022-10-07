@@ -17,7 +17,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   const { useDebounce } = ReactUse;
   const { Grid, Box, Button, IconButton, Select, MenuItem, ListSubheader, TextField } = Ui;
 
-  const { insidePayments, setInsidePayments, outsidePayments, setOutsidePayments, roleData } = useApp();
+  const { insidePayments, setInsidePayments, outsidePayments, setOutsidePayments, roleData, submitted, setSubmitted } = useApp();
   
   const [defaultPayments, setDefaultPayments] = useState<IPayment[]>(defaultPayment);
   const [_payments, _setPayments] = useState<IPayment[]>([]);
@@ -209,6 +209,11 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
       } else {
         if (setOutsidePayments !== undefined) {
           setOutsidePayments(temp);
+        }
+      }
+      if (submitted === 1) {
+        if (setSubmitted !== undefined) {
+          setSubmitted(2);
         }
       }
     },

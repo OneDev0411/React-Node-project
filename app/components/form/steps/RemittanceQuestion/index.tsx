@@ -22,7 +22,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button, IconButton } = Ui;
   const wizard = useWizardContext();
   const { step } = useSectionContext();
-  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, currentStep, setCurrentStep } = useApp();
+  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, setSubmitted, currentStep, setCurrentStep } = useApp();
   const enderType = deal.context.ender_type?.text;
   const showBoth = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? true : false;
   const showBuy = showBoth || deal.deal_type === "Buying";
@@ -200,6 +200,11 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
         temp.remittance_buy_side_bank_wire_amount = selectValueBuySide == 0 ? null : (_dealData.remittance_buy_side_bank_wire_amount == 0 ? null : _dealData.remittance_buy_side_bank_wire_amount);
         temp.remittance_listing_side_bank_wire_amount = selectValueListingSide == 0 ? null : (_dealData.remittance_listing_side_bank_wire_amount == 0 ? null : _dealData.remittance_listing_side_bank_wire_amount);
         setDealData(temp);
+      }
+      if (submitted === 1) {
+        if (setSubmitted !== undefined) {
+          setSubmitted(2);
+        }
       }
     },
     500,

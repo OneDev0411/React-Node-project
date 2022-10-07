@@ -62,8 +62,8 @@ const App: React.FC<EntryProps> = ({
         let tempDealData = data.dealData;
 
         if (setSubmitted !== undefined) {
-          if (tempDealData.deal && tempDealData.submitted == 1)
-            setSubmitted(1);
+          if (tempDealData.deal && tempDealData.submitted !== null)
+            setSubmitted(Number(tempDealData.submitted));
           else
             setSubmitted(-1);
         }

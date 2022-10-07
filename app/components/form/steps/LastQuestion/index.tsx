@@ -47,23 +47,40 @@ const LastQuestion: React.FC<IQuestionProps> = ({
   return (
     <QuestionSection>
       <QuestionTitle>
-        {submitted === -1 ? <>Awesome! Let's submit this for the review, and get you paid!</> : <>Awesome! Submitted!</>}
+        {submitted !== 1 ? <>Awesome! Let's submit this for the review, and get you paid!</> : <>Awesome! Submitted!</>}
       </QuestionTitle>
-      {submitted === -1 && <QuestionForm>
-        <Box style={{ textAlign: "right" }}>
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            style={{
-              marginBottom: 20,
-              backgroundColor: "#0fb78d",
-              color: "white",
-            }}
-          >
-            Submit for Review
-          </Button>
-        </Box>
-      </QuestionForm>}
+      <QuestionForm>
+        {submitted === -1 && 
+          <Box style={{ textAlign: "right" }}>
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              style={{
+                marginBottom: 20,
+                backgroundColor: "#0fb78d",
+                color: "white",
+              }}
+            >
+              Submit for Review
+            </Button>
+          </Box>
+        }
+        {submitted === 2 &&
+          <Box style={{ textAlign: "right" }}>
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              style={{
+                marginBottom: 20,
+                backgroundColor: "#0fb78d",
+                color: "white",
+              }}
+            >
+              Submit again for Review
+            </Button>
+          </Box>
+        }
+      </QuestionForm>
       <Dialog open={openFeedback} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">{feedback}</DialogTitle>
         <DialogActions>

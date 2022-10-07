@@ -21,7 +21,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const { Grid, Button, Box, IconButton, TextField, Select, MenuItem } = Ui;
   const wizard = useWizardContext();
   const { step } = useSectionContext();
-  const { dealData, setDealData, roleData, setRoleData, submitted, currentStep, setCurrentStep } = useApp();
+  const { dealData, setDealData, roleData, setRoleData, submitted, setSubmitted, currentStep, setCurrentStep } = useApp();
   
   // state
   const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData);
@@ -194,7 +194,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     setTotalValue(tempClc);
   }, []);
   
-  // save data to global state 0.5s after data is inputed
+  // save data to global state 0.5s after data is changed
   useDebounce(
     () => {
       let temp = JSON.parse(JSON.stringify(dealData));
@@ -213,6 +213,11 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       }
       if (setRoleData !== undefined) {
         setRoleData(_roleData);
+      }
+      if (submitted === 1) {
+        if (setSubmitted !== undefined) {
+          setSubmitted(2);
+        }
       }
     },
     500,
