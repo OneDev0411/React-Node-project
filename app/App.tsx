@@ -1,7 +1,7 @@
 import React from "@libs/react";
 import { FormWizard } from "./components/form/Wizard";
 import axios from "axios";
-import { AppContextApi, IRoleData } from "./models/type";
+import { AppContextApi, IRoleData, IPayment } from "./models/type";
 import useApp from "./hooks/useApp";
 import { defaultDealData, defaultRemittanceChecks, APP_URL } from "./util";
 import Loading from './components/Loading';
@@ -18,7 +18,7 @@ const App: React.FC<EntryProps> = ({
   const { deal, roles } = models;
   const total_data: AppContextApi = useApp();
   const _totalData = useRef(total_data);
-  const { setDealData, setRoleData, setRemittanceChecks, setPayments, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep } = useApp();
+  const { setDealData, setRoleData, setRemittanceChecks, setInsidePayments, setOutsidePayments, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
 
@@ -102,9 +102,13 @@ const App: React.FC<EntryProps> = ({
         if (setRemittanceChecks !== undefined) {
           setRemittanceChecks(tempRemittanceChecks);
         }
-        let tempPayments = data.payments;
-        if (setPayments !== undefined) {
-          setPayments(tempPayments);
+        let tempInsidePayments = data.payments.filter((item: IPayment) => item.payment_side === "inside");
+        let tempOutsidePayments = data.payments.filter((item: IPayment) => item.payment_side === "outside");
+        if (setInsidePayments !== undefined) {
+          setInsidePayments(tempInsidePayments);
+        }
+        if (setOutsidePayments !== undefined) {
+          setOutsidePayments(tempOutsidePayments);
         }
         if (setCurrentStep !== undefined) {
           setCurrentStep(tempDealData.current_step);

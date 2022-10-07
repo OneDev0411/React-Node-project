@@ -17,11 +17,10 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
   paymentIndex,
   updatePayment,
   index,
-  range,
 }) => {
   const { useState, useEffect } = React;
   // state
-  const [_paidBy, _setPaidBy] = useState<IPaidByData>(range == "inside" ? payment.inside_de_paid_by[index] : payment.outside_de_paid_by[index]);
+  const [_paidBy, _setPaidBy] = useState<IPaidByData>(payment.de_paid_by[index]);
   const [checkedAgent, setCheckedAgent] = useState<boolean>(false);
 
   const handleChangeValue = (
@@ -65,8 +64,8 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
 
   useEffect(() => {
     if (checkedAgent) {
-      if (range == "inside" ? payment.inside_de_paid_by[index].payment_unit_type != null : payment.outside_de_paid_by[index].payment_unit_type != null)
-        _setPaidBy(range == "inside" ? payment.inside_de_paid_by[index] : payment.outside_de_paid_by[index]);
+      if (payment.de_paid_by[index].payment_unit_type !== null)
+        _setPaidBy(payment.de_paid_by[index]);
       else
         _setPaidBy({
           ..._paidBy,
@@ -88,41 +87,24 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
   }, [checkedAgent])
   
   useEffect(() => {
-    if (range == "inside") {
-      if (payment.inside_de_paid_by[index].payment_value != null)
-        setCheckedAgent(true);
-      else
-        setCheckedAgent(false);
-    } else {
-      if (payment.outside_de_paid_by[index].payment_value != null)
-        setCheckedAgent(true);
-      else
-        setCheckedAgent(false);
-    }
+    if (payment.de_paid_by[index].payment_value != null)
+      setCheckedAgent(true);
+    else
+      setCheckedAgent(false);
   }, []);
   
   useEffect(() => {
     if (index == 0) {
-      if (range == "inside") {
-        if (payment.inside_de_paid_by[index].payment_value != null)
-          setCheckedAgent(true);
-        else
-          setCheckedAgent(false);
-      } else {
-        if (payment.outside_de_paid_by[index].payment_value != null)
-          setCheckedAgent(true);
-        else
-          setCheckedAgent(false);
-      }
+      if (payment.de_paid_by[index].payment_value != null)
+        setCheckedAgent(true);
+      else
+        setCheckedAgent(false);
     }
-  }, [payment.inside_de_paid_to, payment.outside_de_paid_to]);
+  }, [payment.de_paid_to]);
 
   useEffect(() => {
     let updateValue = JSON.parse(JSON.stringify(payment));
-    if (range == "inside")
-      updateValue.inside_de_paid_by[index] = _paidBy;
-    else
-      updateValue.outside_de_paid_by[index] = _paidBy;
+    updateValue.de_paid_by[index] = _paidBy;
     updatePayment(updateValue, paymentIndex);
   }, [_paidBy]);
 

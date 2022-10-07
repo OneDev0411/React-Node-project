@@ -147,22 +147,20 @@ export const defaultRemittanceChecks: IRemittanceChecks[] = [
   },
 ];
 
-export const defaultPaymentsData: IPayment[] = [{
+export const defaultPayment: IPayment[] = [{
   id: null,
   deal: "",
-  inside_de_payment_type: "",
-  inside_de_paid_to: "",
-  inside_de_paid_by: [],
-  outside_de_payment_type: "",
-  outside_de_paid_to: "",
-  outside_de_paid_by: [],
-  outside_de_payment_company: "",
-  outside_de_payment_company_address: "",
-  outside_de_payment_office: "",
-  outside_de_payment_cell: "",
-  outside_de_payment_fax: "",
-  outside_de_payment_tax_id: "",
-  outside_de_payment_mail: "",
+  de_payment_type: "",
+  de_paid_to: "",
+  de_paid_by: [],
+  de_payment_company: "",
+  de_payment_company_address: "",
+  de_payment_office: "",
+  de_payment_cell: "",
+  de_payment_fax: "",
+  de_payment_tax_id: "",
+  de_payment_mail: "",
+  payment_side: "",
 }];
 
 export const defaultDealData: IDealData = {

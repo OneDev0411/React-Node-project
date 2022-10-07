@@ -10,7 +10,8 @@ const defaultValue: AppContextApi = {
   dealData: defaultDealData,
   roleData: [],
   remittanceChecks: [],
-  payments: [],
+  insidePayments: [],
+  outsidePayments: [],
   submitted: 0,
   financing: "",
   currentStep: 0,
@@ -25,7 +26,8 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   const [remittanceChecks, setRemittanceChecks] = useState<
     AppContextApi["remittanceChecks"]
   >(defaultRemittanceChecks);
-  const [payments, setPayments] = useState<AppContextApi["payments"]>([]);
+  const [insidePayments, setInsidePayments] = useState<AppContextApi["insidePayments"]>([]);
+  const [outsidePayments, setOutsidePayments] = useState<AppContextApi["outsidePayments"]>([]);
   const [submitted, setSubmitted] = useState<AppContextApi["submitted"]>(0);
   const [financing, setFinancing] = useState<AppContextApi["financing"]>("");
   const [currentStep, setCurrentStep] = useState<AppContextApi["currentStep"]>(0);
@@ -39,8 +41,10 @@ export const AppProvider: React.FC<any> = ({ children }) => {
         setRoleData,
         remittanceChecks,
         setRemittanceChecks,
-        payments,
-        setPayments,
+        insidePayments,
+        setInsidePayments,
+        outsidePayments,
+        setOutsidePayments,
         submitted,
         setSubmitted,
         financing,

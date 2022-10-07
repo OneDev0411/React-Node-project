@@ -14,7 +14,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
 }) => {
   const { QuestionSection, QuestionTitle } = Wizard;
   const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui;
-  const { dealData, roleData, remittanceChecks, payments } = useApp();
+  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments } = useApp();
   const wizard = useWizardContext();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
@@ -360,8 +360,8 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <Grid item xs={12}>
               <label style={{ fontSize: '17px', marginBottom: 10 }}>Inside Douglas Elliman Payments Info </label>
             </Grid>
-            {payments.map((item: IPayment) => 
-              item.inside_de_payment_type && 
+            {insidePayments.map((item: IPayment) => 
+              item.de_payment_type && 
               <Grid container style={{
                 padding: 20,
                 marginBottom: 10,
@@ -372,15 +372,15 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                   Payment Type
                 </Grid>
                 <Grid item xs={6}>
-                  <label>{item.inside_de_payment_type}</label>
+                  <label>{item.de_payment_type}</label>
                 </Grid>
-                {item.inside_de_payment_type == "Team Member" &&
+                {item.de_payment_type === "Team Member" &&
                   <>
                     <Grid item xs={6}>
                       Paid To
                     </Grid>
                     <Grid item xs={6}>
-                      <label>{item.inside_de_paid_to}</label>
+                      <label>{item.de_paid_to}</label>
                     </Grid>
                   </>
                 }
@@ -388,7 +388,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                   <label>Paid By</label>
                 </Grid>
                 <Grid item xs={12}>
-                  {item.inside_de_paid_by.map((paidByItem: IPaidByData, id: number) => (
+                  {item.de_paid_by.map((paidByItem: IPaidByData, id: number) => (
                     paidByItem.payment_unit_type != null &&
                     <>
                       {(dealType == "Selling" || dealType == "Both") &&
@@ -424,8 +424,8 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <Grid item xs={12}>
               <label style={{ fontSize: '17px', marginBottom: 10 }}>Outside Douglas Elliman Payments Info </label>
             </Grid>
-            {payments.map((item: IPayment) => 
-              item.outside_de_payment_type && 
+            {outsidePayments.map((item: IPayment) => 
+              item.de_payment_type && 
               <Grid container style={{
                 padding: 20,
                 marginBottom: 10,
@@ -436,15 +436,15 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                   Payment Type
                 </Grid>
                 <Grid item xs={6}>
-                  <label>{item.outside_de_payment_type}</label>
+                  <label>{item.de_payment_type}</label>
                 </Grid>
-                {item.outside_de_payment_type == "Team Member" &&
+                {item.de_payment_type === "Team Member" &&
                   <>
                     <Grid item xs={6}>
                       Paid To
                     </Grid>
                     <Grid item xs={6}>
-                      <label>{item.outside_de_paid_to}</label>
+                      <label>{item.de_paid_to}</label>
                     </Grid>
                   </>
                 }
@@ -452,7 +452,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                   <label>Paid By</label>
                 </Grid>
                 <Grid item xs={12}>
-                  {item.outside_de_paid_by.map((paidByItem: IPaidByData, id: number) => (
+                  {item.de_paid_by.map((paidByItem: IPaidByData, id: number) => (
                     paidByItem.payment_unit_type != null && <>
                       {(dealType == "Selling" || dealType == "Both") &&
                         (paidByItem.role == "SellerAgent" ||
@@ -476,50 +476,50 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                         )}
                     </>
                   ))}
-                  {(paymentTypeData[1].member.indexOf(item.outside_de_payment_type) >= 0 || 
-                    paymentTypeData[2].member.indexOf(item.outside_de_payment_type) >= 0) &&
+                  {(paymentTypeData[1].member.indexOf(item.de_payment_type) >= 0 || 
+                    paymentTypeData[2].member.indexOf(item.de_payment_type) >= 0) &&
                     <Grid container style={{ marginTop: "15px" }}>
                       <Grid item xs={6}>
                         Company
                       </Grid>
                       <Grid item xs={6}>
-                        <label>{item.outside_de_payment_company}</label>
+                        <label>{item.de_payment_company}</label>
                       </Grid>
                       <Grid item xs={6}>
                         Company Address
                       </Grid>
                       <Grid item xs={6}>
-                        <label>{item.outside_de_payment_company_address}</label>
+                        <label>{item.de_payment_company_address}</label>
                       </Grid>
                       <Grid item xs={6}>
                         Office Number
                       </Grid>
                       <Grid item xs={6}>
-                        <label>{item.outside_de_payment_office}</label>
+                        <label>{item.de_payment_office}</label>
                       </Grid>
                       <Grid item xs={6}>
                         Cell Number
                       </Grid>
                       <Grid item xs={6}>
-                        <label>{item.outside_de_payment_cell}</label>
+                        <label>{item.de_payment_cell}</label>
                       </Grid>
                       <Grid item xs={6}>
                         Fax Number
                       </Grid>
                       <Grid item xs={6}>
-                        <label>{item.outside_de_payment_fax}</label>
+                        <label>{item.de_payment_fax}</label>
                       </Grid>
                       <Grid item xs={6}>
                         Tax ID
                       </Grid>
                       <Grid item xs={6}>
-                        <label>{item.outside_de_payment_tax_id}</label>
+                        <label>{item.de_payment_tax_id}</label>
                       </Grid>
                       <Grid item xs={6}>
                         Email
                       </Grid>
                       <Grid item xs={6}>
-                        <label>{item.outside_de_payment_mail}</label>
+                        <label>{item.de_payment_mail}</label>
                       </Grid>
                     </Grid>
                   }

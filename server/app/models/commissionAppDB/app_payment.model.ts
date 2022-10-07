@@ -6,48 +6,41 @@ export default (sequelize, Sequelize) => {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      inside_de_payment_type: {
+      de_payment_type: {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      inside_de_paid_to: {
+      de_paid_to: {
         type: Sequelize.TEXT,
       },
-      inside_de_paid_by: {
+      de_paid_by: {
         type: Sequelize.JSONB,
         allowNull: false,
       },
-      outside_de_payment_type: {
+      de_payment_company: {
+        type: Sequelize.TEXT,
+      },
+      de_payment_company_address: {
+        type: Sequelize.TEXT,
+      },
+      de_payment_office: {
+        type: Sequelize.TEXT,
+      },
+      de_payment_cell: {
+        type: Sequelize.TEXT,
+      },
+      de_payment_fax: {
+        type: Sequelize.TEXT,
+      },
+      de_payment_tax_id: {
+        type: Sequelize.TEXT,
+      },
+      de_payment_mail: {
+        type: Sequelize.TEXT,
+      },
+      payment_side: {
         type: Sequelize.TEXT,
         allowNull: false,
-      },
-      outside_de_paid_to: {
-        type: Sequelize.TEXT,
-      },
-      outside_de_paid_by: {
-        type: Sequelize.JSONB,
-        allowNull: false,
-      },
-      outside_de_payment_company: {
-        type: Sequelize.TEXT,
-      },
-      outside_de_payment_company_address: {
-        type: Sequelize.TEXT,
-      },
-      outside_de_payment_office: {
-        type: Sequelize.TEXT,
-      },
-      outside_de_payment_cell: {
-        type: Sequelize.TEXT,
-      },
-      outside_de_payment_fax: {
-        type: Sequelize.TEXT,
-      },
-      outside_de_payment_tax_id: {
-        type: Sequelize.TEXT,
-      },
-      outside_de_payment_mail: {
-        type: Sequelize.TEXT,
       },
     },
     {

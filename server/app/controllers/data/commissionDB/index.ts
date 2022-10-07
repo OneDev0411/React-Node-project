@@ -84,7 +84,7 @@ const saveCommissionData = async (req: Request, res: Response) => {
     let dealData = { ...allData.dealData, submitted: allData.submitted };
     let roleData = allData.roleData;
     let remittanceChecks = allData.remittanceChecks;
-    let payments = allData.payments;
+    let payments = [...allData.insidePayments, ... allData.outsidePayments];
     // save appDealData
     await saveAppData(dealData, AppDealModel);
     // save appRoleData

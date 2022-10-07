@@ -7,7 +7,8 @@ export interface ICommissionData {
   dealData: any;
   roleData: any;
   remittanceChecks: any;
-  payments: any;
+  insidePayments: any;
+  outsidePayments: any;
   submitted: number;
 }
 export interface ICombinedDealData {

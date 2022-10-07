@@ -79,19 +79,17 @@ export interface IPaidByData {
 export interface IPayment {
   id: number | null;
   deal: string;
-  inside_de_payment_type: string;
-  inside_de_paid_to: string;
-  inside_de_paid_by: IPaidByData[];
-  outside_de_payment_type: string;
-  outside_de_paid_to: string;
-  outside_de_paid_by: IPaidByData[];
-  outside_de_payment_company: string;
-  outside_de_payment_company_address: string;
-  outside_de_payment_office: string;
-  outside_de_payment_cell: string;
-  outside_de_payment_fax: string;
-  outside_de_payment_tax_id: string;
-  outside_de_payment_mail: string;
+  de_payment_type: string;
+  de_paid_to: string;
+  de_paid_by: IPaidByData[];
+  de_payment_company: string;
+  de_payment_company_address: string;
+  de_payment_office: string;
+  de_payment_cell: string;
+  de_payment_fax: string;
+  de_payment_tax_id: string;
+  de_payment_mail: string;
+  payment_side: string;
 }
 
 export interface AppContextApi {
@@ -101,8 +99,10 @@ export interface AppContextApi {
   setRoleData?: (data: IRoleData[]) => void;
   remittanceChecks: IRemittanceChecks[];
   setRemittanceChecks?: (data: IRemittanceChecks[]) => void;
-  payments: IPayment[];
-  setPayments?: (data: IPayment[]) => void;
+  insidePayments: IPayment[];
+  setInsidePayments?: (data: IPayment[]) => void;
+  outsidePayments: IPayment[];
+  setOutsidePayments?: (data: IPayment[]) => void;
   submitted: number;
   setSubmitted?: (data: number) => void;
   financing: string;
@@ -139,7 +139,6 @@ export interface IPaidByCardProps {
   paymentIndex: number;
   updatePayment: (payment: IPayment, index: number) => void;
   index: number;
-  range: string;
 }
 
 export interface IPaidByInfoCardProps {
