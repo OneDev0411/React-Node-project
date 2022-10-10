@@ -22,6 +22,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   const [defaultPayments, setDefaultPayments] = useState<IPayment[]>(defaultPayment);
   const [_payments, _setPayments] = useState<IPayment[]>([]);
   const [status, setStatus] = useState<GCISplitStatus[]>([]);
+  const [tmpDePaidTo, setTmpDePaidTo] = useState<string>("");
 
   // this make content of select tag
   const paymentTypeElement = paymentTypeData.reduce(
@@ -41,12 +42,11 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     index: number
   ) => {
     updateFlag(true); // for Next button enable
-    let temp = JSON.parse(JSON.stringify(_payments));
-    if (key === "de_payment_type" && e.target.value === "Team Member") {
-      const _status = JSON.parse(JSON.stringify(status));
-      _status[index] = "Selecting";
-      setStatus(_status);
+    if (key === "de_paid_to") {
+      setTmpDePaidTo(String(e.target.value));
+      return;
     }
+    let temp = JSON.parse(JSON.stringify(_payments));
     temp[index][key] = e.target.value;
     _setPayments(temp);
   };
@@ -55,17 +55,18 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     let temp = JSON.parse(JSON.stringify(_payments));
     temp.push(defaultPayments[0]);
     _setPayments(temp);
-    if (range === "inside") {
-      const _status = JSON.parse(JSON.stringify(status));
-      _status.push("Selecting");
-      setStatus(_status);
-    }
+    const _status = JSON.parse(JSON.stringify(status));
+    _status.push("Selecting");
+    setStatus(_status);
   };
 
   const handleClickRemovePayment = (index: number) => {
     let temp = JSON.parse(JSON.stringify(_payments));
     temp.splice(index, 1);
     _setPayments(temp);
+    const _status = JSON.parse(JSON.stringify(status));
+    _status.splice(index, 1);
+    setStatus(_status);
   };
 
   const updatePayment = (payment: IPayment, index: number) => {
@@ -74,7 +75,18 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     _setPayments(temp);
   };
   
-  const handleClickCancelAddButton = (index: number) => {
+  const handleClickSaveEditButton = (index: number) => {
+    let temp = JSON.parse(JSON.stringify(_payments));
+    temp[index]["de_paid_to"] = tmpDePaidTo;
+    _setPayments(temp);
+    setTmpDePaidTo("");
+    const _status = JSON.parse(JSON.stringify(status));
+    _status[index] = "Listing";
+    setStatus(_status);
+  };
+  
+  const handleClickCancelEditButton = (index: number) => {
+    setTmpDePaidTo("");
     const _status = JSON.parse(JSON.stringify(status));
     _status[index] = "Listing";
     setStatus(_status);
@@ -102,6 +114,9 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   });
   
   const handleEditPaidTo = (index: number) => {
+    if (_payments[index]["de_paid_to"]) {
+      setTmpDePaidTo(_payments[index]["de_paid_to"]);
+    }
     const _status = JSON.parse(JSON.stringify(status));
     _status[index] = "Selecting";
     setStatus(_status);
@@ -137,12 +152,10 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
 
     const _status = status;
     payments.map((item) => {
-      if (item.de_payment_type === "Team Member") {
-        if (item.de_paid_to !== "")
-          _status.push("Listing");
-        else
-          _status.push("Selecting");
-      }
+      if (item.de_paid_to !== "")
+        _status.push("Listing");
+      else
+        _status.push("Selecting");
     });
     setStatus(_status);
   }, []);
@@ -188,12 +201,10 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
 
       const _status = status;
       _payments.map((item) => {
-        if (item.de_payment_type === "Team Member") {
-          if (item.de_paid_to !== "")
-            _status.push("Listing");
-          else
-            _status.push("Selecting");
-        }
+        if (item.de_paid_to !== "")
+          _status.push("Listing");
+        else
+          _status.push("Selecting");
       });
       setStatus(_status);
     }
@@ -268,7 +279,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   handleChangeValue(
                     e,
                     "de_payment_type",
-                    _payments.indexOf(item)
+                    index
                   )
                 }
               >
@@ -276,29 +287,30 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
               </Select>
             </Grid>
           </Grid>
-          {item.de_payment_type === "Team Member" &&
-            <Grid container spacing={2} style={{ marginBottom: 10 }}>
-              <Grid item xs={3}>
-                <label>Paid To</label>
-              </Grid>
-              <Grid item xs={9}>
-                {status[index] === "Listing" && (
-                  <Box style={{ display: "flex" }}>
-                    <label>{item.de_paid_to}</label>
-                    <Button
-                      onClick={() => handleEditPaidTo(index)}
-                      style={{
-                        marginLeft: "auto",
-                        color: "black !important",
-                        border: "solid #dbdbdb 1px",
-                        borderRadius: 5,
-                      }}
-                    >
-                      Edit
-                    </Button>
-                  </Box>
-                )}
-                {status[index] === "Selecting" && (
+          <Grid container spacing={2} style={{ marginBottom: 10 }}>
+            <Grid item xs={3}>
+              <label>Paid To</label>
+            </Grid>
+            <Grid item xs={9}>
+              {status[index] === "Listing" && (
+                <Box style={{ display: "flex" }}>
+                  <label>{item.de_paid_to}</label>
+                  <Button
+                    onClick={() => handleEditPaidTo(index)}
+                    style={{
+                      marginLeft: "auto",
+                      color: "black !important",
+                      border: "solid #dbdbdb 1px",
+                      borderRadius: 5,
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </Box>
+              )}
+              {status[index] === "Selecting" && 
+              <>
+                {item.de_payment_type === "Team Member" && (
                   <Box>
                     <AgentsPicker
                       flattenTeams={true}
@@ -310,7 +322,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                     />
                     <Box style={{ marginTop: 5, textAlign: "right" }}>
                       <Button
-                        onClick={() => handleClickCancelAddButton(index)}
+                        onClick={() => handleClickCancelEditButton(index)}
                         style={{
                           color: "black !important",
                           border: "solid #dbdbdb 1px",
@@ -322,9 +334,45 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                     </Box>
                   </Box>
                 )}
-              </Grid>
+                {item.de_payment_type !== "Team Member" && (
+                  <Box>
+                    <TextField
+                      style={{ width: "100%" }}
+                      value={tmpDePaidTo}
+                      name="de_paid_to"
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleChangeValue(e, "de_paid_to", index)
+                      }
+                    />
+                    <Box style={{ marginTop: 5, textAlign: "right" }}>
+                      <Button
+                        onClick={() => handleClickSaveEditButton(index)}
+                        style={{
+                          color: "black !important",
+                          border: "solid #dbdbdb 1px",
+                          borderRadius: 5,
+                          marginRight: 5,
+                        }}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        onClick={() => handleClickCancelEditButton(index)}
+                        style={{
+                          color: "black !important",
+                          border: "solid #dbdbdb 1px",
+                          borderRadius: 5,
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </Box>
+                  </Box>
+                )}
+              </>
+              }
             </Grid>
-          }
+          </Grid>
           <Grid container spacing={1}>
             <Grid item xs={3}>
               <label style={{ marginTop: 5 }}>Paid By</label>
@@ -334,7 +382,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                 <PaidByCard
                   key={id}
                   payment={item}
-                  paymentIndex={_payments.indexOf(item)}
+                  paymentIndex={index}
                   updatePayment={updatePayment}
                   index={id}
                   Ui={Ui}
@@ -354,7 +402,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   style={{ width: "100%" }}
                   value={item.de_payment_company}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChangeValue(e, "de_payment_company", _payments.indexOf(item))
+                    handleChangeValue(e, "de_payment_company", index)
                   }
                 />
               </Grid>
@@ -365,7 +413,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   style={{ width: "100%" }}
                   value={item.de_payment_company_address}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChangeValue(e, "de_payment_company_address", _payments.indexOf(item))
+                    handleChangeValue(e, "de_payment_company_address", index)
                   }
                 />
               </Grid>
@@ -376,7 +424,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   style={{ width: "100%" }}
                   value={item.de_payment_office}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChangeValue(e, "de_payment_office", _payments.indexOf(item))
+                    handleChangeValue(e, "de_payment_office", index)
                   }
                 />
               </Grid>
@@ -387,7 +435,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   style={{ width: "100%" }}
                   value={item.de_payment_cell}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChangeValue(e, "de_payment_cell", _payments.indexOf(item))
+                    handleChangeValue(e, "de_payment_cell", index)
                   }
                 />
               </Grid>
@@ -398,7 +446,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   style={{ width: "100%" }}
                   value={item.de_payment_fax}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChangeValue(e, "de_payment_fax", _payments.indexOf(item))
+                    handleChangeValue(e, "de_payment_fax", index)
                   }
                 />
               </Grid>
@@ -409,7 +457,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   style={{ width: "100%" }}
                   value={item.de_payment_tax_id}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChangeValue(e, "de_payment_tax_id", _payments.indexOf(item))
+                    handleChangeValue(e, "de_payment_tax_id", index)
                   }
                 />
               </Grid>
@@ -420,7 +468,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   style={{ width: "100%" }}
                   value={item.de_payment_mail}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChangeValue(e, "de_payment_mail", _payments.indexOf(item))
+                    handleChangeValue(e, "de_payment_mail", index)
                   }
                 />
               </Grid>
