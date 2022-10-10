@@ -14,7 +14,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const { useEffect, useState } = React;
     const { Button, Divider, Box } = Ui;
     const wizard = useWizardContext();
-    const { submitted } = useApp();
+    const { submitted, currentStep } = useApp();
     const { step } = useSectionContext();
 
     // state
@@ -72,14 +72,26 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     }
 
     const handleClickNextButton = () => {
-        handleNext();
+        if (roleType === "SellerLawyer" && currentStep >= step + 1) {
+            setTimeout(() => {
+                wizard.goto(currentStep)
+            }, 80);
+        } else {
+            handleNext();
+        }
         setShowButton(false);
     }
 
     const handleClickSkipButton = () => {
         setShowButton(false);
         setStatus('Skipped');
-        handleNext();
+        if (roleType === "SellerLawyer" && currentStep >= step + 1) {
+            setTimeout(() => {
+                wizard.goto(currentStep)
+            }, 80);
+        } else {
+            handleNext();
+        }
     }
 
     const handleSelectContact = (contact: Partial<IDealFormRole>) => {
@@ -120,7 +132,6 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
         if (matchRoles.length === 0) {
             setStatus("Skipped");
             handleNext();
-            return;
         }
         // click save or save & add to my contacts button
         else { 
