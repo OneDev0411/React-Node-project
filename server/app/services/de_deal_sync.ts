@@ -55,11 +55,13 @@ const getAgentsFromPayments = async (deal, roles) => {
 
   const agent_details = await getAgentDetails(role_ids, user_ids);
 
-  payments.map(async (payment) => {
-    const paidToAgentId = await getAgentIdFromUserId(payment.de_paid_to_deUserId);
+  await Promise.all(payments.map(async (payment) => {
+    let paidToAgentId = null; 
+    if (payment.de_payment_type == "Team Member")
+      paidToAgentId = await getAgentIdFromUserId(payment.de_paid_to_deUserId);
     payment.de_paid_by.map(item => {
       if (item.payment_value) {
-        if (payment.de_payment_type === "Team Member") {
+        if (payment.de_payment_type == "Team Member") {
           const details = _.find(agent_details, { id: item.roleId });
           const { AgentId } = details;
           agents.push({
@@ -85,7 +87,7 @@ const getAgentsFromPayments = async (deal, roles) => {
         }
       }
     });
-  });
+  }));
 
   return agents;
 };
@@ -652,7 +654,7 @@ const sync = async (deal) => {
       DealDate,
       PaidBy: region_details.paid_by,
       ApprovalRequestDate,
-      Status: ApprovalRequestDate === undefined ? "Draft" : region_details.status,
+      Status: ApprovalRequestDate === undefined || ApprovalRequestDate === null ? "Draft" : region_details.status,
       DealCreatedBy: "N/A",
       ProjectedClosingDate: DealDate,
 

@@ -131,7 +131,13 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
         // in case of no match role, ignore cancel action
         if (matchRoles.length === 0) {
             setStatus("Skipped");
-            handleNext();
+            if (roleType === "SellerLawyer" && currentStep >= step + 1) {
+                setTimeout(() => {
+                    wizard.goto(currentStep)
+                }, 80);
+            } else {
+                handleNext();
+            }
         }
         // click save or save & add to my contacts button
         else { 
