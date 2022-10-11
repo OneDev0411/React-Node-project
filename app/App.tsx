@@ -43,7 +43,6 @@ const App: React.FC<EntryProps> = ({
       let {
         id,
         legal_full_name,
-        company_title,
         role,
         commission_percentage,
         commission_dollar,
@@ -52,7 +51,6 @@ const App: React.FC<EntryProps> = ({
         deal: deal.id,
         role_id: id,
         legal_full_name: legal_full_name,
-        company_title: company_title,
         role: role,
         share_percent: commission_percentage,
         share_value: commission_dollar,

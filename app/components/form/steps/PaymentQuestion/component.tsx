@@ -142,7 +142,6 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
           payment_value: null,
           payment_calculated_from: null,
           payment_note: "",
-          company_title: item.company_title,
         });
       }
     });
@@ -179,7 +178,6 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
             payment_value: null,
             payment_calculated_from: null,
             payment_note: "",
-            company_title: item.company_title,
           });
           if (_payments.length > 0) {
             let temp = JSON.parse(JSON.stringify(_payments));
@@ -193,7 +191,6 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   payment_value: null,
                   payment_calculated_from: null,
                   payment_note: "",
-                  company_title: item.company_title,
                 });
               }
             });

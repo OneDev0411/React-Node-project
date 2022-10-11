@@ -65,9 +65,9 @@ const getAgentsFromPayments = async (deal, roles) => {
           const details = _.find(agent_details, { id: item.roleId });
           const { AgentId } = details;
           agents.push({
-            DealAgentRef: paidToAgentId,
+            DealAgentRef: AgentId,
             AgentType: "AgentReferral",
-            AgentId,
+            AgentId: paidToAgentId,
             DealSide: item.role === "SellerAgent" || item.role === "CoSellerAgent" ? "List" : "Buy",
             Feebase: item.payment_calculated_from === 0 ? "Off_the_top" : "Off_the_agent_net",
             PercentOrAmount: item.payment_unit_type === 0 ? "Percent" : "Amount",
@@ -78,8 +78,8 @@ const getAgentsFromPayments = async (deal, roles) => {
             AgentType: "Referral",
             DealSide: item.role === "SellerAgent" || item.role === "CoSellerAgent" ? "List" : "Buy",
             PayTo: "Vendor",
-            VendorName: item.payment_by_name,
-            CompanyName: item.company_title,
+            VendorName: payment.de_paid_to,
+            CompanyName: payment.de_payment_company,
             Feebase: item.payment_calculated_from === 0 ? "Off_the_top" : "Off_the_agent_net",
             PercentOrAmount: item.payment_unit_type === 0 ? "Percent" : "Amount",
             Share: item.payment_value,

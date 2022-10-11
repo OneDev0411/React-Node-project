@@ -50,7 +50,6 @@ export interface IRoleData {
   deal: string;
   role_id: IDealRole["id"];
   legal_full_name: IDealRole["legal_full_name"];
-  company_title: IDealRole["company_title"];
   role: IDealRole["role"];
   share_percent: IDealRole["commission_percentage"];
   share_value: IDealRole["commission_dollar"];
