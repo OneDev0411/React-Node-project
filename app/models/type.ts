@@ -50,6 +50,7 @@ export interface IRoleData {
   deal: string;
   role_id: IDealRole["id"];
   legal_full_name: IDealRole["legal_full_name"];
+  company_title: IDealRole["company_title"];
   role: IDealRole["role"];
   share_percent: IDealRole["commission_percentage"];
   share_value: IDealRole["commission_dollar"];
@@ -81,6 +82,7 @@ export interface IPayment {
   deal: string;
   de_payment_type: string;
   de_paid_to: string;
+  de_paid_to_deUserId: string;
   de_paid_by: IPaidByData[];
   de_payment_company: string;
   de_payment_company_address: string;

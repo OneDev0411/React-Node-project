@@ -13,6 +13,9 @@ export default (sequelize, Sequelize) => {
       de_paid_to: {
         type: Sequelize.TEXT,
       },
+      de_paid_to_deUserId: {
+        type: Sequelize.TEXT,
+      },
       de_paid_by: {
         type: Sequelize.JSONB,
         allowNull: false,

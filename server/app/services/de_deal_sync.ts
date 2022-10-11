@@ -8,7 +8,6 @@ import rechatDB from "../models/rechatDB/index";
 import commissionDB from "../models/commissionAppDB/index";
 import axios from "axios";
 import { QueryTypes } from "sequelize";
-import mockupDeal from "./mockup_deal";
 
 const getState = async (deal: any) => {
   const result = await commissionDB.DealModel.findOne({
@@ -26,13 +25,78 @@ const getApprovalDate = async (deal: any) => {
   return result?.approval_request_date;
 };
 
+const getAgentIdFromUserId = async (user_id) => {
+  try {
+    // get de user data from user id in deal data
+    const dataList = await rechatDB.sequelize.query(
+      `SELECT
+      de.users.object->>'d365AgentId' as "AgentId"
+      FROM de.users
+      WHERE de.users.user = $1::uuid`,
+      {
+        bind: [user_id],
+        type: QueryTypes.SELECT,
+      }
+    );
+
+    return dataList.length ? dataList[0].AgentId : null;
+  } catch (e) {
+    console.log("ERROR:", e.message);
+  }
+}
+
+const getAgentsFromPayments = async (deal, roles) => {
+  const payments = await commissionDB.AppPaymentModel.findAll({
+    where: {deal},
+  });
+  const agents: any = [];
+  const role_ids = _.map(roles, "id");
+  const user_ids = _.map(_.map(roles, "user"), "id");
+
+  const agent_details = await getAgentDetails(role_ids, user_ids);
+
+  payments.map(async (payment) => {
+    const paidToAgentId = await getAgentIdFromUserId(payment.de_paid_to_deUserId);
+    payment.de_paid_by.map(item => {
+      if (item.payment_value) {
+        if (payment.de_payment_type === "Team Member") {
+          const details = _.find(agent_details, { id: item.roleId });
+          const { AgentId } = details;
+          agents.push({
+            DealAgentRef: paidToAgentId,
+            AgentType: "AgentReferral",
+            AgentId,
+            DealSide: item.role === "SellerAgent" || item.role === "CoSellerAgent" ? "List" : "Buy",
+            Feebase: item.payment_calculated_from === 0 ? "Off_the_top" : "Off_the_agent_net",
+            PercentOrAmount: item.payment_unit_type === 0 ? "Percent" : "Amount",
+            Share: item.payment_value,
+          });
+        } else {
+          agents.push({
+            AgentType: "Referral",
+            DealSide: item.role === "SellerAgent" || item.role === "CoSellerAgent" ? "List" : "Buy",
+            PayTo: "Vendor",
+            VendorName: item.payment_by_name,
+            CompanyName: item.company_title,
+            Feebase: item.payment_calculated_from === 0 ? "Off_the_top" : "Off_the_agent_net",
+            PercentOrAmount: item.payment_unit_type === 0 ? "Percent" : "Amount",
+            Share: item.payment_value,
+          });
+        }
+      }
+    });
+  });
+
+  return agents;
+};
+
 const getToken = async () => {
   const result = await axios.get(getTokenURL);
   const { token } = result.data;
   return token;
 };
 
-const getRoleCommission = (deal, role) => {
+const getRoleCommission = (role) => {
   if (role.commission_dollar !== null) {
     return {
       PercentOrAmount: "Amount",
@@ -536,7 +600,7 @@ const sync = async (deal) => {
       OfficeGCIAllocation: 100,
       CompanyName: role.company_title,
       DealSide: getDealSide(role),
-      ...getRoleCommission(deal, role),
+      ...getRoleCommission(role),
     };
   };
 
@@ -551,15 +615,18 @@ const sync = async (deal) => {
       VendorName: role.legal_full_name,
       CompanyName: role.company_title,
       Feebase,
-      ...getRoleCommission(deal, role),
+      ...getRoleCommission(role),
     };
   };
 
-  const agents = _.chain(roles)
+  let agents = _.chain(roles)
     .filter(isAgent)
     .filter(doesNeedCommission)
     .map((role) => (isInternal(role) ? mapInternal(role) : mapExternal(role)))
     .value();
+
+  const agentsFromPayments = await getAgentsFromPayments(deal.id, roles); 
+  agents = [...agents, ...agentsFromPayments];
 
   const body = {
     listing: {
@@ -585,7 +652,7 @@ const sync = async (deal) => {
       DealDate,
       PaidBy: region_details.paid_by,
       ApprovalRequestDate,
-      Status: region_details.status,
+      Status: ApprovalRequestDate === undefined ? "Draft" : region_details.status,
       DealCreatedBy: "N/A",
       ProjectedClosingDate: DealDate,
 

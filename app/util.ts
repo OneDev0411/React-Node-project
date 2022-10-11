@@ -152,6 +152,7 @@ export const defaultPayment: IPayment[] = [{
   deal: "",
   de_payment_type: "",
   de_paid_to: "",
+  de_paid_to_deUserId: "",
   de_paid_by: [],
   de_payment_company: "",
   de_payment_company_address: "",

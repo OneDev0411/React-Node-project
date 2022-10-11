@@ -98,6 +98,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     setStatus(_status);
     let temp = JSON.parse(JSON.stringify(_payments));
     temp[index].de_paid_to = agent.display_name || '';
+    temp[index].de_paid_to_deUserId = agent.id || '';
     if (agent.display_name !== "") {
       if (temp[index].de_paid_by[0]["payment_value"] === null) {
         temp[index].de_paid_by[0]["payment_unit_type"] = 0;
@@ -141,6 +142,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
           payment_value: null,
           payment_calculated_from: null,
           payment_note: "",
+          company_title: item.company_title,
         });
       }
     });
@@ -177,6 +179,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
             payment_value: null,
             payment_calculated_from: null,
             payment_note: "",
+            company_title: item.company_title,
           });
           if (_payments.length > 0) {
             let temp = JSON.parse(JSON.stringify(_payments));
@@ -190,6 +193,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   payment_value: null,
                   payment_calculated_from: null,
                   payment_note: "",
+                  company_title: item.company_title,
                 });
               }
             });
@@ -339,7 +343,6 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                     <TextField
                       style={{ width: "100%" }}
                       value={tmpDePaidTo}
-                      name="de_paid_to"
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         handleChangeValue(e, "de_paid_to", index)
                       }
