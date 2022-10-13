@@ -147,8 +147,36 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     });
     setDefaultPayments(_defaultPayments);
     
-    const payments: IPayment[] = (range === "inside" ? 
+    let payments: IPayment[] = (range === "inside" ? 
       (insidePayments.length ? insidePayments : _defaultPayments) : (outsidePayments.length ? outsidePayments : _defaultPayments));
+    
+    roleData.map((item: IRoleData) => {
+      if (
+        ((dealType == "Buying" || dealType == "Both") && (item.role == "BuyerAgent" || item.role == "CoBuyerAgent" || item.role == "BuyerReferral"))
+        || ((dealType == "Selling" || dealType == "Both") && (item.role == "SellerAgent" || item.role == "CoSellerAgent" || item.role == "SellerReferral"))
+      ) {
+        let temp = JSON.parse(JSON.stringify(payments));
+        payments.map((payment: IPayment, index: number) => {
+          payment.de_paid_by.map((paidByItem, idx) => {
+            if (roleData.find((role: IRoleData) => role.role_id === paidByItem.roleId) === undefined) {
+              temp[index].de_paid_by.splice(idx, 1);
+            }
+          })
+          if (payment.de_paid_by.find((paidByItem: IPaidByData) => paidByItem.roleId === item.role_id) === undefined) {
+            temp[index].de_paid_by.push({
+              roleId: item.role_id,
+              role: item.role,
+              payment_by_name: item.legal_full_name,
+              payment_unit_type: null,
+              payment_value: null,
+              payment_calculated_from: null,
+              payment_note: "",
+            });
+          }
+        });
+        payments = temp;
+      }
+    });
     _setPayments(payments);
 
     const _status = status;
@@ -162,7 +190,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   }, []);
 
   useEffect(() => {
-    if (defaultPayments[0].de_paid_by.length !== 0 && defaultPayments[0].de_paid_by.length === roleData.length - 1) {
+    if (defaultPayments[0].de_paid_by.length !== 0) {
       let _defaultPayments = JSON.parse(JSON.stringify(defaultPayments));
       _defaultPayments[0].de_paid_by = [];
       roleData.map((item: IRoleData) => {
@@ -182,7 +210,12 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
           if (_payments.length > 0) {
             let temp = JSON.parse(JSON.stringify(_payments));
             _payments.map((payment: IPayment, index: number) => {
-              if (payment.de_paid_by.find((paidByItem: IPaidByData) => paidByItem.roleId == item.role_id) == undefined) {
+              payment.de_paid_by.map((paidByItem, idx) => {
+                if (roleData.find((role: IRoleData) => role.role_id === paidByItem.roleId) === undefined) {
+                  temp[index].de_paid_by.splice(idx, 1);
+                }
+              })
+              if (payment.de_paid_by.find((paidByItem: IPaidByData) => paidByItem.roleId === item.role_id) === undefined) {
                 temp[index].de_paid_by.push({
                   roleId: item.role_id,
                   role: item.role,

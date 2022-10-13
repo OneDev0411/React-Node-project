@@ -654,7 +654,7 @@ const sync = async (deal) => {
       DealDate,
       PaidBy: region_details.paid_by,
       ApprovalRequestDate,
-      Status: ApprovalRequestDate === undefined || ApprovalRequestDate === null ? "Draft" : region_details.status,
+      Status: ApprovalRequestDate === null || ApprovalRequestDate === "" ? "Draft" : region_details.status,
       DealCreatedBy: "N/A",
       ProjectedClosingDate: DealDate,
 

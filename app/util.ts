@@ -175,7 +175,7 @@ export const defaultDealData: IDealData = {
   remittance_listing_side_bank_wire_amount: 0,
   approval_request_date: "",
   submitted: 0,
-  current_step: 8,
+  current_step: 6,
 };
 
 export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";

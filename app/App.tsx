@@ -111,7 +111,7 @@ const App: React.FC<EntryProps> = ({
           setOutsidePayments(tempOutsidePayments);
         }
         if (setCurrentStep !== undefined) {
-          setCurrentStep(tempDealData.current_step);
+          setCurrentStep(Number(tempDealData.current_step));
         }
       } else {
         if (setDealData !== undefined) {

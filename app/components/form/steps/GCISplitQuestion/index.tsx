@@ -134,13 +134,13 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     // calculate total percent and value when mounted
     let tempClc = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
       return parseFloat(
-        (Number(totalPercent) + Number(data.share_percent)).toFixed(3)
+        (Number(totalPercent) + Number(data.share_percent ? data.share_percent : (Number(data.share_value) / salesPrice * 100))).toFixed(3)
       );
     }, 0);
     setTotalPercent(tempClc);
     tempClc = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
       return parseFloat(
-        (Number(totalValue) + Number(data.share_value)).toFixed(3)
+        (Number(totalValue) + Number(data.share_value ? data.share_value : (Number(data.share_percent) * salesPrice / 100))).toFixed(3)
       );
     }, 0);
     setTotalValue(tempClc);
@@ -221,7 +221,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       }
     },
     500,
-    [_roleData]
+    [_roleData, _reasonValue, _reasonNote]
   );
 
   return (

@@ -374,22 +374,20 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 <Grid item xs={6}>
                   <label>{item.de_payment_type}</label>
                 </Grid>
-                {item.de_payment_type === "Team Member" &&
-                  <>
-                    <Grid item xs={6}>
-                      Paid To
-                    </Grid>
-                    <Grid item xs={6}>
-                      <label>{item.de_paid_to}</label>
-                    </Grid>
-                  </>
-                }
-                <Grid item xs={12} style={{ marginTop: "15px" }}>
-                  <label>Paid By</label>
+                <Grid item xs={6}>
+                  Paid To
                 </Grid>
+                <Grid item xs={6}>
+                  <label>{item.de_paid_to}</label>
+                </Grid>
+                {item.de_paid_by.filter(paidByItem => paidByItem.payment_unit_type !== null).length > 0 &&
+                  <Grid item xs={12} style={{ marginTop: "15px" }}>
+                    <label>Paid By</label>
+                  </Grid>
+                }
                 <Grid item xs={12}>
                   {item.de_paid_by.map((paidByItem: IPaidByData, id: number) => (
-                    paidByItem.payment_unit_type != null &&
+                    paidByItem.payment_unit_type !== null &&
                     <>
                       {(dealType == "Selling" || dealType == "Both") &&
                         (paidByItem.role == "SellerAgent" ||
@@ -438,22 +436,20 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 <Grid item xs={6}>
                   <label>{item.de_payment_type}</label>
                 </Grid>
-                {item.de_payment_type === "Team Member" &&
-                  <>
-                    <Grid item xs={6}>
-                      Paid To
-                    </Grid>
-                    <Grid item xs={6}>
-                      <label>{item.de_paid_to}</label>
-                    </Grid>
-                  </>
-                }
-                <Grid item xs={12} style={{ marginTop: "15px" }}>
-                  <label>Paid By</label>
+                <Grid item xs={6}>
+                  Paid To
                 </Grid>
+                <Grid item xs={6}>
+                  <label>{item.de_paid_to}</label>
+                </Grid>
+                {item.de_paid_by.filter(paidByItem => paidByItem.payment_unit_type !== null).length > 0 &&
+                  <Grid item xs={12} style={{ marginTop: "15px" }}>
+                    <label>Paid By</label>
+                  </Grid>
+                }
                 <Grid item xs={12}>
                   {item.de_paid_by.map((paidByItem: IPaidByData, id: number) => (
-                    paidByItem.payment_unit_type != null && <>
+                    paidByItem.payment_unit_type !== null && <>
                       {(dealType == "Selling" || dealType == "Both") &&
                         (paidByItem.role == "SellerAgent" ||
                           paidByItem.role == "CoSellerAgent" ||

@@ -13,7 +13,7 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
   const { RadioGroup, FormControlLabel, Radio, Box } = Ui;
   const wizard = useWizardContext();
   const { step } = useSectionContext();
-  const { setFinancing } = useApp();
+  const { dealData, setDealData, setFinancing, setCurrentStep } = useApp();
 
   const financingContextValue = getDealContext('financing')?.text;
   const financingProgramContextValue = getDealContext('financing_program')?.text;
@@ -30,8 +30,16 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
       setFinancing(event.target.value);
     if (wizard.currentStep < step + 1) {
       setTimeout(() => {
-        if (event.target.value == "Cash Deal" && financingProgramContextValue != "")
+        if (event.target.value == "Cash Deal" && financingProgramContextValue != "") {
           wizard.goto(step + 2);
+          let temp = JSON.parse(JSON.stringify(dealData));
+          temp.current_step = step + 2;
+          if (setDealData !== undefined)
+            setDealData(temp);
+          if (setCurrentStep !== undefined) {
+            setCurrentStep(step + 2);
+          }
+        }
         else
           wizard.next();
       }, 10);

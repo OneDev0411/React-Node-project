@@ -142,7 +142,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           />
           <TextField
             size="small"
-            type="text"
+            type="number"
             value={_paidBy.payment_unit_type == 0 ? _paidBy.payment_value : ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeValue(e, "payment_value")
@@ -175,7 +175,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           />
           <TextField
             size="small"
-            type="text"
+            type="number"
             value={
               (_paidBy.payment_unit_type == 1 ? _paidBy.payment_value : "")
             }
