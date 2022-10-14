@@ -133,7 +133,7 @@ const saveCommissionData = async (req: Request, res: Response) => {
   }
 };
 
-const saveApprovalDate = async (req: Request, res: Response) => {
+const approve = async (req: Request, res: Response) => {
   try {
     let deal = req.body.data;
     await saveAppData(deal, AppDealModel);
@@ -274,7 +274,7 @@ const pushAllDealData = async (data: any) => {
 export default {
   handleUpsertFromWebhook,
   saveCommissionData,
-  saveApprovalDate,
+  approve,
   readCommissionData,
   readCombinedData,
   readDealData,

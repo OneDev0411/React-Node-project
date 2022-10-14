@@ -17,12 +17,12 @@ const getState = async (deal: any) => {
   return result?.dataValues;
 };
 
-const getApprovalDate = async (deal: any) => {
+const getApprovalInfo = async (deal: any) => {
   const result = await commissionDB.AppDealModel.findOne({
     where: { deal },
   });
 
-  return result?.approval_request_date;
+  return { approval_request_date: result?.approval_request_date, status: result?.status };
 };
 
 const getAgentIdFromUserId = async (user_id) => {
@@ -315,18 +315,18 @@ const getLeaseAttributes = ({ deal, roles }) => {
 
     ListSideSalesPrice,
     BuySideSalesPrice,
-    ListSideDealValue,
-    BuySideDealValue,
-    ListSideCommissionRate,
-    BuySideCommissionRate,
+    ListSideDealValue: parseFloat(ListSideDealValue.toFixed(2)),
+    BuySideDealValue: parseFloat(BuySideDealValue.toFixed(2)),
+    ListSideCommissionRate: parseFloat(ListSideCommissionRate.toFixed(2)),
+    BuySideCommissionRate: parseFloat(BuySideCommissionRate.toFixed(2)),
 
     DealType: "Rentals",
 
-    GrossCommissionPercent: deal.deal_type === DEAL.SELLING ? ListSideCommissionRate : BuySideCommissionRate,
+    GrossCommissionPercent: parseFloat((deal.deal_type === DEAL.SELLING ? ListSideCommissionRate : BuySideCommissionRate).toFixed(2)),
     CoBrokeName: deal.deal_type === DEAL.SELLING ? BuyerAgent : SellerAgent,
     CoBrokeDealSide: deal.deal_type === DEAL.SELLING ? 'Buy' : 'List',
     CoBrokeAgency: deal.deal_type === DEAL.SELLING ? BuySideAgency : ListSideAgency,
-    CoBrokeCommission: deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate,
+    CoBrokeCommission: parseFloat((deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate).toFixed(2)),
     TenantFee: 0,
     OwnerPays: 0
   };
@@ -423,10 +423,10 @@ const getSaleAttributes = ({ deal, roles }) => {
 
     ListSideSalesPrice,
     BuySideSalesPrice,
-    ListSideDealValue,
-    BuySideDealValue,
-    ListSideCommissionRate,
-    BuySideCommissionRate,
+    ListSideDealValue: parseFloat(ListSideDealValue.toFixed(2)),
+    BuySideDealValue: parseFloat(BuySideDealValue.toFixed(2)),
+    ListSideCommissionRate: parseFloat(ListSideCommissionRate.toFixed(2)),
+    BuySideCommissionRate: parseFloat(BuySideCommissionRate.toFixed(2)),
 
     BuyerName,
     SellerName,
@@ -435,11 +435,11 @@ const getSaleAttributes = ({ deal, roles }) => {
 
     DealType: "Sales",
 
-    GrossCommissionPercent: deal.deal_type === DEAL.SELLING ? ListSideCommissionRate : BuySideCommissionRate,
+    GrossCommissionPercent: parseFloat((deal.deal_type === DEAL.SELLING ? ListSideCommissionRate : BuySideCommissionRate).toFixed(2)),
     CoBrokeName: deal.deal_type === DEAL.SELLING ? BuyerAgent : SellerAgent,
     CoBrokeDealSide: deal.deal_type === DEAL.SELLING ? 'Buy' : 'List',
     CoBrokeAgency: deal.deal_type === DEAL.SELLING ? BuySideAgency : ListSideAgency,
-    CoBrokeCommission: deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate,
+    CoBrokeCommission: parseFloat((deal.deal_type === DEAL.SELLING ? BuySideCommissionRate : ListSideCommissionRate).toFixed(2)),
     TenantFee: 0,
     OwnerPays: 0
   };
@@ -529,7 +529,8 @@ const sync = async (deal) => {
 
   if (isDoubleEnded(deal)) DealSide = "Both";
   
-  const ApprovalRequestDate = await getApprovalDate(deal.id);
+  const approvalInfo = await getApprovalInfo(deal.id);
+  const ApprovalRequestDate = approvalInfo.approval_request_date;
 
   const leaseAttributes = property_type.is_lease
     ? getLeaseAttributes({ deal, roles })
@@ -583,7 +584,15 @@ const sync = async (deal) => {
       : "Buy";
   };
 
-  const mapInternal = (role) => {
+  const totalPercent = _.chain(roles)
+    .filter(isAgent)
+    .filter(doesNeedCommission)
+    .filter((role) => isInternal(role) && role.role !== "BuyerReferral" && role.role !== "AgentReferral")
+    .reduce((totalValue, item) => {
+      return parseFloat((Number(totalValue) + Number(item.commission_percentage ? item.commission_percentage : Number(item.commission_dollar) / Number(sales_price) * 100)).toFixed(3));
+    }, 0);
+
+  const mapInternal = (role, totalPercent) => {
     const AgentType =
       role.role === "BuyerReferral" || role.role === "AgentReferral"
         ? "AgentReferral"
@@ -599,7 +608,7 @@ const sync = async (deal) => {
       AgentType,
       AgentId,
       BusinessLocation,
-      OfficeGCIAllocation: 100,
+      OfficeGCIAllocation: parseFloat((100 * Number(role.commission_percentage ? role.commission_percentage : Number(role.commission_dollar) / Number(sales_price) * 100) / totalPercent).toFixed(2)),
       CompanyName: role.company_title,
       DealSide: getDealSide(role),
       ...getRoleCommission(role),
@@ -624,7 +633,7 @@ const sync = async (deal) => {
   let agents = _.chain(roles)
     .filter(isAgent)
     .filter(doesNeedCommission)
-    .map((role) => (isInternal(role) ? mapInternal(role) : mapExternal(role)))
+    .map((role) => (isInternal(role) ? mapInternal(role, totalPercent) : mapExternal(role)))
     .value();
 
   const agentsFromPayments = await getAgentsFromPayments(deal.id, roles); 
@@ -654,7 +663,7 @@ const sync = async (deal) => {
       DealDate,
       PaidBy: region_details.paid_by,
       ApprovalRequestDate,
-      Status: ApprovalRequestDate === null || ApprovalRequestDate === "" ? "Draft" : region_details.status,
+      Status: approvalInfo.status !== "Approved" ? "Draft" : region_details.status,
       DealCreatedBy: "N/A",
       ProjectedClosingDate: DealDate,
 

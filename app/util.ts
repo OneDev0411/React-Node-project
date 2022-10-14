@@ -174,6 +174,7 @@ export const defaultDealData: IDealData = {
   remittance_buy_side_bank_wire_amount: 0,
   remittance_listing_side_bank_wire_amount: 0,
   approval_request_date: "",
+  status: "",
   submitted: 0,
   current_step: 6,
 };

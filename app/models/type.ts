@@ -42,6 +42,7 @@ export interface IDealData {
   remittance_buy_side_bank_wire_amount: number | null;
   remittance_listing_side_bank_wire_amount: number | null;
   approval_request_date: string;
+  status: string;
   submitted: number; // -1: unsubmitted or submit failed, 1: submitted, 2: should be submitted again
   current_step: number;
 }

@@ -21,6 +21,14 @@ const App: React.FC<EntryProps> = ({
   const { setDealData, setRoleData, setRemittanceChecks, setInsidePayments, setOutsidePayments, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
+  const sortRole = {
+    BuyerAgent: 1,
+    CoBuyerAgent: 2,
+    BuyerReferral: 3,
+    SellerAgent: 4,
+    CoSellerAgent: 5,
+    SellerReferral: 6,
+  };
 
   // push data to global state from backend data by using contextAPI
   const dataToContextAPI = async () => {
@@ -57,6 +65,12 @@ const App: React.FC<EntryProps> = ({
         note: "",
       };
     });
+    tempAgentRoles.sort((a, b) => { 
+      const key1 = a.role;
+      const key2 = b.role;
+      return sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
+    });
+
     try {
       if (data !== null) {
         let tempDealData = data.dealData;
@@ -94,6 +108,11 @@ const App: React.FC<EntryProps> = ({
             return (item.role == "SellerAgent" ||
                       item.role == "CoSellerAgent" ||
                       item.role == "SellerReferral");
+          });
+          _roleData.sort((a: IRoleData, b: IRoleData) => { 
+            const key1 = a.role;
+            const key2 = b.role;
+            return sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
           });
           setRoleData(_roleData);
         }

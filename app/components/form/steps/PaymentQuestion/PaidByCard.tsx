@@ -126,6 +126,9 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           onChange={handleCheckedValue}
         />
         <label>{_paidBy.payment_by_name}</label>
+        <label style={{ marginLeft: 10, fontSize: 13, color: "#ababab" }}>
+          {_paidBy.role}
+        </label>
       </Box>
       <Grid container spacing={1} style={{ padding: 0 }}>
         <Grid item xs={5} style={{ display: "inherit", marginRight: 10 }}>

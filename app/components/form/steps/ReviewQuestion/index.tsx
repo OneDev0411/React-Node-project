@@ -45,8 +45,9 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
     let postData: IDealData = { ...dealData };
     const curDate = new Date();
     postData.approval_request_date = curDate.toISOString();
+    postData.status = "Approved";
     const res = await axios.post(
-      `${APP_URL}/rechat-commission-app-save-approval-date`,
+      `${APP_URL}/rechat-commission-app-approve`,
       {
         data: postData,
       }
@@ -63,12 +64,24 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
     setOpenDeclineMsg(true);
   };
   
-  const handleConfirmDecline = () => {
+  const handleConfirmDecline = async () => {
     wizard.setLoading(true);
     updateTaskStatus('Declined', false, declineMsg);
+    let postData: IDealData = { ...dealData };
+    postData.approval_request_date = "";
+    postData.status = "Declined";
+    const res = await axios.post(
+      `${APP_URL}/rechat-commission-app-approve`,
+      {
+        data: postData,
+      }
+    );
     wizard.setLoading(false);
     setOpenDeclineMsg(false);
-    setFeedback("Declined.");
+    if (res.data.message === "successful")
+      setFeedback("Declined.");
+    else
+      setFeedback("Decline failed.");
     setOpenFeedback(true);
   };
 
@@ -193,10 +206,10 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 {role.legal_full_name}
               </Grid>
               <Grid item xs={12}>
-                Share: {role.share_percent == null ? parseFloat((Number(role.share_value) / Number(salesPrice) * 100).toFixed(3)) : role.share_percent}
+                Share: {role.share_percent == null ? parseFloat((Number(role.share_value) / Number(salesPrice) * 100).toFixed(3)) : role.share_percent}%
               </Grid>
               <Grid item xs={12}>
-                Dollar: {role.share_value == null ? parseFloat((Number(salesPrice) * Number(role.share_percent) / 100).toFixed(3)) : role.share_value}
+                Dollar: ${stylizeNumber(Number(role.share_value == null ? parseFloat((Number(salesPrice) * Number(role.share_percent) / 100).toFixed(3)) : role.share_value))}
               </Grid>
               <Grid item xs={12}>
                 {role.note}
@@ -262,7 +275,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     Amount
                   </Grid>
                   <Grid item xs={6}>
-                    <label style={{ margin: 0 }}>{item.amount}</label>
+                    <label style={{ margin: 0 }}>${stylizeNumber(item.amount)}</label>
                   </Grid>
                   <Grid item xs={6}>
                     Date on check
@@ -287,7 +300,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 Amount
               </Grid>
               <Grid item xs={6}>
-                <label>{dealData.remittance_buy_side_bank_wire_amount}</label>
+                <label>${stylizeNumber(Number(dealData.remittance_buy_side_bank_wire_amount))}</label>
               </Grid>
             </>}
           </Grid>
@@ -325,7 +338,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     Amount
                   </Grid>
                   <Grid item xs={6}>
-                    <label style={{ margin: 0 }}>{item.amount}</label>
+                    <label style={{ margin: 0 }}>${stylizeNumber(item.amount)}</label>
                   </Grid>
                   <Grid item xs={6}>
                     Date on check
@@ -350,7 +363,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 Amount
               </Grid>
               <Grid item xs={6}>
-                <label>{dealData.remittance_listing_side_bank_wire_amount}</label>
+                <label>${stylizeNumber(Number(dealData.remittance_listing_side_bank_wire_amount))}</label>
               </Grid>
             </>}
           </Grid>
@@ -524,33 +537,35 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             )}
           </>
         </Grid>
-        <Box
-          style={{
-            textAlign: "right",
-            marginTop: "20px",
-          }}
-        >
-          <Button
-            variant="contained"
-            onClick={handleClickApprove}
+        {(dealData.status === "" || dealData.status === null) &&
+          <Box
             style={{
-              backgroundColor: "#0fb78d",
-              color: "white",
+              textAlign: "right",
+              marginTop: "20px",
             }}
           >
-            Approve
-          </Button><Button
-            variant="contained"
-            onClick={handleClickDecline}
-            style={{
-              marginLeft: 10,
-              backgroundColor: "#050E21",
-              color: "white",
-            }}
-          >
-            Decline
-          </Button>
-        </Box>
+            <Button
+              variant="contained"
+              onClick={handleClickApprove}
+              style={{
+                backgroundColor: "#0fb78d",
+                color: "white",
+              }}
+            >
+              Approve
+            </Button><Button
+              variant="contained"
+              onClick={handleClickDecline}
+              style={{
+                marginLeft: 10,
+                backgroundColor: "#050E21",
+                color: "white",
+              }}
+            >
+              Decline
+            </Button>
+          </Box>
+        }
       </div>
       <Dialog open={openDeclineMsg} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Decline</DialogTitle>

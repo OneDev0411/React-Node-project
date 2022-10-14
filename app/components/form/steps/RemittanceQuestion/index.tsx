@@ -157,8 +157,8 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
 
     if (submitted === 1 || 
         currentStep > step || 
-        (showBuy && _buySideChecks.length && _buySideChecks[0].check_num == 0 && _buySideChecks[0].amount == 0 && _dealData.remittance_buy_side_bank_wire_amount == null) ||
-        (showSell && _listingSideChecks.length && _listingSideChecks[0].check_num == 0 && _listingSideChecks[0].amount == 0 && _dealData.remittance_listing_side_bank_wire_amount == null)
+        (showBuy && (!_buySideChecks.length || (_buySideChecks.length && _buySideChecks[0].check_num == 0 && _buySideChecks[0].amount == 0)) && _dealData.remittance_buy_side_bank_wire_amount == null) ||
+        (showSell && (!_listingSideChecks.length || (_listingSideChecks.length && _listingSideChecks[0].check_num == 0 && _listingSideChecks[0].amount == 0)) && _dealData.remittance_listing_side_bank_wire_amount == null)
     ) {
       setShowButton(false);
     }

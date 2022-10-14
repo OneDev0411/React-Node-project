@@ -13,7 +13,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
   models: { deal, roles },
-  Components: { RoleForm, ContactRoles },
+  Components: { RoleForm, AgentsPicker },
   api: { deleteRole },
 }) => {
   const { useState, useEffect } = React;
@@ -49,6 +49,15 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const notFinishCase1 = showReason && _reasonValue === -1; // not selected reason
   const notFinishCase2 = showReason && _reasonValue === 2 && _reasonNote === ""; // not completed reason note
   const isShowButton = showButton && !(notFinishCase1 || notFinishCase2);
+  
+  const sortRole = {
+    BuyerAgent: 1,
+    CoBuyerAgent: 2,
+    BuyerReferral: 3,
+    SellerAgent: 4,
+    CoSellerAgent: 5,
+    SellerReferral: 6,
+  };
 
   const handleChangeReasonTextField = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -73,6 +82,11 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     };
     const _role = JSON.parse(JSON.stringify(_roleData));
     _role.push(roleDt);
+    _role.sort((a: IRoleData, b: IRoleData) => { 
+      const key1 = a.role;
+      const key2 = b.role;
+      return sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
+    });
     _setRoleData(_role);
     totalClc(_role.length-1, roleDt, true);
   }
@@ -84,7 +98,15 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     setCurrentObject(null);
   };
 
-  const handleSelectContact = (contact: Partial<IDealFormRole>) => {
+  const handleSelectAgent = (agent: BrandedUser) => {
+    const contact: Partial<IDealFormRole> = {
+      legal_first_name: String(agent.first_name),
+      legal_last_name: String(agent.last_name),
+      email: agent.email,
+      phone_number: String(agent.phone_number),
+      agents: agent.agents,
+      user: agent,
+    }
     setCurrentObject(contact);
     setStatus("Inserting");
   };
@@ -364,9 +386,11 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         )}
         {status === "Selecting" && (
           <>
-            <ContactRoles
-              placeholder={`Enter agent's name`}
-              onSelectRole={handleSelectContact}
+            <AgentsPicker
+              flattenTeams={true}
+              isPrimaryAgent={false}
+              useTeamBrandId={false}
+              onSelectAgent={handleSelectAgent}
             />
             <Box style={{ textAlign: "right" }}>
               <Button

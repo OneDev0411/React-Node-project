@@ -1,6 +1,6 @@
 import React from "@libs/react";
 import Ui from "@libs/material-ui";
-import { AppContextApi, IQuestionProps } from "../../../../models/type";
+import { AppContextApi, IQuestionProps, IDealData } from "../../../../models/type";
 import { APP_URL } from "../../../../util";
 import useApp from "../../../../hooks/useApp";
 import axios from "axios";
@@ -13,7 +13,7 @@ const LastQuestion: React.FC<IQuestionProps> = ({
   const { QuestionSection, QuestionTitle, QuestionForm } = Wizard;
   const { Box, Button, Dialog, DialogTitle, DialogActions } = Ui;
   const total_data: AppContextApi = useApp();
-  const { submitted, setSubmitted } = useApp();
+  const { dealData, submitted, setSubmitted } = useApp();
   const wizard = useWizardContext();
   const [feedback, setFeedback] = React.useState<string>("");
   const [openFeedback, setOpenFeedback] = React.useState<boolean>(false);
@@ -27,6 +27,17 @@ const LastQuestion: React.FC<IQuestionProps> = ({
         data: total_data,
       }
     );
+    if (submitted === 2) {
+      let postData: IDealData = { ...dealData };
+      postData.approval_request_date = "";
+      postData.status = "";
+      await axios.post(
+        `${APP_URL}/rechat-commission-app-approve`,
+        {
+          data: postData,
+        }
+      );
+    }
     if (setSubmitted !== undefined)
       setSubmitted(1);
     wizard.setLoading(false);
