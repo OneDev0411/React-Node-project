@@ -9,7 +9,7 @@ import axios from "axios";
 const ReviewQuestion: React.FC<IQuestionProps> = ({
   Wizard,
   models: { deal, roles },
-  api: { getDealContext, updateTaskStatus },
+  api: { getDealContext, updateTaskStatus, close },
   hooks: { useWizardContext },
 }) => {
   const { QuestionSection, QuestionTitle } = Wizard;
@@ -91,6 +91,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
 
   const handleCloseFeedback = async () => {
     setOpenFeedback(false);
+    close();
   }
 
   return (

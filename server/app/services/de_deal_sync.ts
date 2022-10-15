@@ -454,6 +454,9 @@ const getBrandsFromDeal = (brand, brands) => {
 };
 
 const sync = async (deal) => {
+  if (!deal.faired_at)
+    return; 
+
   const token = await getToken();
 
   const state = await getState(deal.id);
@@ -584,13 +587,20 @@ const sync = async (deal) => {
       : "Buy";
   };
 
-  const totalPercent = _.chain(roles)
+  const totalPercentBuySide = _.chain(roles)
     .filter(isAgent)
     .filter(doesNeedCommission)
-    .filter((role) => isInternal(role) && role.role !== "BuyerReferral" && role.role !== "AgentReferral")
+    .filter((role) => ["BuyerAgent", "CoBuyerAgent"].includes(role.role))
     .reduce((totalValue, item) => {
       return parseFloat((Number(totalValue) + Number(item.commission_percentage ? item.commission_percentage : Number(item.commission_dollar) / Number(sales_price) * 100)).toFixed(3));
     }, 0);
+  const totalPercentSellSide = _.chain(roles)
+  .filter(isAgent)
+  .filter(doesNeedCommission)
+  .filter((role) => ["SellerAgent", "CoSellerAgent"].includes(role.role))
+  .reduce((totalValue, item) => {
+    return parseFloat((Number(totalValue) + Number(item.commission_percentage ? item.commission_percentage : Number(item.commission_dollar) / Number(sales_price) * 100)).toFixed(3));
+  }, 0);
 
   const mapInternal = (role, totalPercent) => {
     const AgentType =
@@ -633,7 +643,7 @@ const sync = async (deal) => {
   let agents = _.chain(roles)
     .filter(isAgent)
     .filter(doesNeedCommission)
-    .map((role) => (isInternal(role) ? mapInternal(role, totalPercent) : mapExternal(role)))
+    .map((role) => (isInternal(role) ? mapInternal(role, getDealSide(role) === "List" ? totalPercentSellSide : totalPercentBuySide) : mapExternal(role)))
     .value();
 
   const agentsFromPayments = await getAgentsFromPayments(deal.id, roles); 

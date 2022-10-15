@@ -219,7 +219,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   return (
     <QuestionSection>
       <QuestionTitle>Please input remittance info.</QuestionTitle>
-      <QuestionForm>
+      <QuestionForm width="55%">
         {(Number(_dealData.stage_cost) !== 0) && (
           <>
             <Box style={{ marginBottom: 10, marginTop: 20 }}>

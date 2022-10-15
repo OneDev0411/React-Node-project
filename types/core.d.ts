@@ -43,6 +43,7 @@ declare interface EntryProps {
       attentionRequest: Nullable<boolean>,
       comment: string
     ) => Promise<void>;
+    close: () => void;
   };
   hooks: {
     wizard: {
