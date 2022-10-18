@@ -311,16 +311,19 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
               <>
                 {buySideChecks.map(
                   (checkData: IRemittanceChecks, index: number) => (
-                    <Box style={{
-                      marginBottom: 20,
-                      padding: 15,
-                      paddingTop: 15,
-                      paddingRight: 10,
-                      display: 'inline-block',
-                      position: 'relative', 
-                      border: "1px solid rgba(0, 0, 0, 0.12)",
-                      borderRadius: 4
-                    }}>
+                    <Box 
+                      style={{
+                        marginBottom: 20,
+                        padding: 15,
+                        paddingTop: 15,
+                        paddingRight: 10,
+                        display: 'inline-block',
+                        position: 'relative', 
+                        border: "1px solid rgba(0, 0, 0, 0.12)",
+                        borderRadius: 4
+                      }}
+                      key={index}
+                    >
                       {buySideChecks.length > 1 && <IconButton size="small" style={{ position: 'absolute', top: 10, right: 10, width: 7, height: 5 }} onClick={() => removeBuySideCheck(index)}>
                         x
                       </IconButton>}
@@ -497,16 +500,19 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
               <>
                 {listingSideChecks.map(
                   (checkData: IRemittanceChecks, index: number) => (
-                    <Box style={{
-                      marginBottom: 20,
-                      padding: 15,
-                      paddingTop: 15,
-                      paddingRight: 10,
-                      display: 'inline-block',
-                      position: 'relative', 
-                      border: "1px solid rgba(0, 0, 0, 0.12)",
-                      borderRadius: 4
-                    }}>
+                    <Box
+                      style={{
+                        marginBottom: 20,
+                        padding: 15,
+                        paddingTop: 15,
+                        paddingRight: 10,
+                        display: 'inline-block',
+                        position: 'relative', 
+                        border: "1px solid rgba(0, 0, 0, 0.12)",
+                        borderRadius: 4
+                      }}
+                      key={index}
+                    >
                       {listingSideChecks.length > 1 && <IconButton size="small" style={{ position: 'absolute', top: 5, right: 5, width: 7, height: 5 }} onClick={() => removeListingSideCheck(index)}>
                         x
                       </IconButton>}

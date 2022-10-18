@@ -199,7 +199,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
               (role.role == "BuyerAgent" || role.role == "CoBuyerAgent" || role.role == "BuyerReferral") : 
               (role.role == "SellerAgent" || role.role == "CoSellerAgent" || role.role == "SellerReferral"))
             .map(role => 
-            <>
+            <React.Fragment key={role.role_id}>
               <Grid item xs={12}>
                 <label>{role.role}</label>
               </Grid>
@@ -215,7 +215,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
               <Grid item xs={12}>
                 {role.note}
               </Grid>
-            </>
+            </React.Fragment>
           )}
         </Grid>
         {Number(dealData.stage_cost) !== 0 &&
@@ -259,10 +259,14 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 <label>Checks</label>
               </Grid>
               {buySideChecks.map((item: IRemittanceChecks, index: number) => 
-                <Grid container style={{
-                  padding: "10px 0",
-                  marginBottom: 10,
-                }}>
+                <Grid
+                  container
+                  style={{
+                    padding: "10px 0",
+                    marginBottom: 10,
+                  }}
+                  key={index}
+                >
                   <Grid item xs={12} style={{ marginBottom: 5 }}>
                     <label>Check{index+1}</label>
                   </Grid>
@@ -322,10 +326,14 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 <label>Checks</label>
               </Grid>
               {listingSideChecks.map((item: IRemittanceChecks, index: number) => 
-                <Grid container style={{
-                  padding: "10px 0",
-                  marginBottom: 10,
-                }}>
+                <Grid 
+                  container
+                  style={{
+                    padding: "10px 0",
+                    marginBottom: 10,
+                  }}
+                  key={index}
+                >
                   <Grid item xs={12} style={{ marginBottom: 5 }}>
                     <label>Check{index+1}</label>
                   </Grid>
@@ -374,14 +382,18 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <Grid item xs={12}>
               <label style={{ fontSize: '17px', marginBottom: 10 }}>Inside Douglas Elliman Payments Info </label>
             </Grid>
-            {insidePayments.map((item: IPayment) => 
+            {insidePayments.map((item: IPayment, index) => 
               item.de_payment_type && 
-              <Grid container style={{
-                padding: 20,
-                marginBottom: 10,
-                border: "1px solid rgba(0, 0, 0, 0.12)",
-                borderRadius: 4
-              }}>
+              <Grid
+                container
+                style={{
+                  padding: 20,
+                  marginBottom: 10,
+                  border: "1px solid rgba(0, 0, 0, 0.12)",
+                  borderRadius: 4
+                }}
+                key={index}
+              >
                 <Grid item xs={6} style={{ marginTop: "5px" }}>
                   Payment Type
                 </Grid>
@@ -436,14 +448,18 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <Grid item xs={12}>
               <label style={{ fontSize: '17px', marginBottom: 10 }}>Outside Douglas Elliman Payments Info </label>
             </Grid>
-            {outsidePayments.map((item: IPayment) => 
+            {outsidePayments.map((item: IPayment, index) => 
               item.de_payment_type && 
-              <Grid container style={{
-                padding: 20,
-                marginBottom: 10,
-                border: "1px solid rgba(0, 0, 0, 0.12)",
-                borderRadius: 4
-              }}>
+              <Grid
+                container
+                style={{
+                  padding: 20,
+                  marginBottom: 10,
+                  border: "1px solid rgba(0, 0, 0, 0.12)",
+                  borderRadius: 4
+                }}
+                key={index}
+              >
                 <Grid item xs={6} style={{ marginTop: "5px" }}>
                   Payment Type
                 </Grid>

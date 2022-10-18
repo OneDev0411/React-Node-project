@@ -78,6 +78,16 @@ export const roleText: { [key: string]: string } = {
   SellerLawyer: "Seller's attorney",
 };
 
+export const sortRole = {
+  BuyerAgent: 1,
+  CoBuyerAgent: 2,
+  BuyerReferral: 3,
+  SellerAgent: 4,
+  CoSellerAgent: 5,
+  SellerReferral: 6,
+};
+
+
 export const financeSelectDataList: SelectData[] = [
   {
     label: "Cash Deal",
@@ -162,6 +172,7 @@ export const defaultPayment: IPayment[] = [{
   de_payment_tax_id: "",
   de_payment_mail: "",
   payment_side: "",
+  keyIndex: 0,
 }];
 
 export const defaultDealData: IDealData = {
@@ -179,4 +190,5 @@ export const defaultDealData: IDealData = {
   current_step: 6,
 };
 
-export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";
+// export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";
+export const APP_URL = "http://localhost:8081";

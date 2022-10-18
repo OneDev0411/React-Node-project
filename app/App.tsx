@@ -3,7 +3,7 @@ import { FormWizard } from "./components/form/Wizard";
 import axios from "axios";
 import { AppContextApi, IRoleData, IPayment } from "./models/type";
 import useApp from "./hooks/useApp";
-import { defaultDealData, defaultRemittanceChecks, APP_URL } from "./util";
+import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole } from "./util";
 import Loading from './components/Loading';
 
 const App: React.FC<EntryProps> = ({
@@ -21,14 +21,6 @@ const App: React.FC<EntryProps> = ({
   const { setDealData, setRoleData, setRemittanceChecks, setInsidePayments, setOutsidePayments, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
-  const sortRole = {
-    BuyerAgent: 1,
-    CoBuyerAgent: 2,
-    BuyerReferral: 3,
-    SellerAgent: 4,
-    CoSellerAgent: 5,
-    SellerReferral: 6,
-  };
 
   // push data to global state from backend data by using contextAPI
   const dataToContextAPI = async () => {
@@ -68,7 +60,8 @@ const App: React.FC<EntryProps> = ({
     tempAgentRoles.sort((a, b) => { 
       const key1 = a.role;
       const key2 = b.role;
-      return sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
+      const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
+      return diff ? diff : a.legal_full_name.localeCompare(b.legal_full_name);
     });
 
     try {
@@ -112,7 +105,8 @@ const App: React.FC<EntryProps> = ({
           _roleData.sort((a: IRoleData, b: IRoleData) => { 
             const key1 = a.role;
             const key2 = b.role;
-            return sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
+            const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
+            return diff ? diff : a.legal_full_name.localeCompare(b.legal_full_name);
           });
           setRoleData(_roleData);
         }

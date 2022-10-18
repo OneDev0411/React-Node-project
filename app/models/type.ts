@@ -92,6 +92,7 @@ export interface IPayment {
   de_payment_tax_id: string;
   de_payment_mail: string;
   payment_side: string;
+  keyIndex: number;
 }
 
 export interface AppContextApi {

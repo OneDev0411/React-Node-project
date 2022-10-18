@@ -124,7 +124,6 @@ const getCommissionRate = (total, role) => {
   return (role.commission_dollar / total) * 100;
 };
 
-// NEED TO TEST
 const save = async ({ deal, is_finalized = false }) => {
   const findRes = await commissionDB.DealModel.findOne({
     where: { deal },

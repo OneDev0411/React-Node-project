@@ -2,7 +2,7 @@ import React from "@libs/react";
 import ReactUse from "@libs/react-use";
 import Ui from "@libs/material-ui";
 import { GCISplitStatus, IPayment, IPaymentQuestionData, IPaymentData, IPaidByData, IRoleData } from "../../../../models/type";
-import { defaultPayment, paymentTypeData } from "../../../../util";
+import { defaultPayment, paymentTypeData, sortRole } from "../../../../util";
 import PaidByCard from "./PaidByCard";
 import useApp from "../../../../hooks/useApp";
 
@@ -53,6 +53,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
 
   const handleClickAddAnotherPayment = () => {
     let temp = JSON.parse(JSON.stringify(_payments));
+    defaultPayments[0].keyIndex += 1;
     temp.push(defaultPayments[0]);
     _setPayments(temp);
     const _status = JSON.parse(JSON.stringify(status));
@@ -172,6 +173,12 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
               payment_calculated_from: null,
               payment_note: "",
             });
+            temp[index].de_paid_by.sort((a: IPaidByData, b: IPaidByData) => { 
+              const key1 = a.role;
+              const key2 = b.role;
+              const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
+              return diff ? diff : a.payment_by_name.localeCompare(b.payment_by_name);
+            });
           }
         });
         payments = temp;
@@ -187,11 +194,13 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
         _status.push("Selecting");
     });
     setStatus(_status);
+    console.log(payments);
   }, []);
 
   useEffect(() => {
     if (defaultPayments[0].de_paid_by.length !== 0) {
       let _defaultPayments = JSON.parse(JSON.stringify(defaultPayments));
+      let temp = JSON.parse(JSON.stringify(_payments));
       _defaultPayments[0].de_paid_by = [];
       roleData.map((item: IRoleData) => {
         if (
@@ -208,13 +217,12 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
             payment_note: "",
           });
           if (_payments.length > 0) {
-            let temp = JSON.parse(JSON.stringify(_payments));
             _payments.map((payment: IPayment, index: number) => {
               payment.de_paid_by.map((paidByItem, idx) => {
                 if (roleData.find((role: IRoleData) => role.role_id === paidByItem.roleId) === undefined) {
                   temp[index].de_paid_by.splice(idx, 1);
                 }
-              })
+              });
               if (payment.de_paid_by.find((paidByItem: IPaidByData) => paidByItem.roleId === item.role_id) === undefined) {
                 temp[index].de_paid_by.push({
                   roleId: item.role_id,
@@ -226,6 +234,12 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   payment_note: "",
                 });
               }
+              temp[index].de_paid_by.sort((a: IPaidByData, b: IPaidByData) => { 
+                const key1 = a.role;
+                const key2 = b.role;
+                const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
+                return diff ? diff : a.payment_by_name.localeCompare(b.payment_by_name);
+              });
             });
             _setPayments(temp);
           }
@@ -280,6 +294,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
             border: "1px solid rgba(0, 0, 0, 0.12)",
             borderRadius: 4
           }}
+          key={item.keyIndex}
         >
           {_payments.length > 1 && 
             <IconButton 
@@ -413,7 +428,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
             <Grid item xs={9}>
               {item.de_paid_by.map((paidByItem: IPaidByData, id: number) => (
                 <PaidByCard
-                  key={id}
+                  key={paidByItem.roleId}
                   payment={item}
                   paymentIndex={index}
                   updatePayment={updatePayment}
