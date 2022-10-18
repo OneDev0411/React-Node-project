@@ -194,7 +194,6 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
         _status.push("Selecting");
     });
     setStatus(_status);
-    console.log(payments);
   }, []);
 
   useEffect(() => {

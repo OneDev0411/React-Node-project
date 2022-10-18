@@ -385,8 +385,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               title=" "
               form={
                 currentRole === null
-                  ? (dealType == "Selling" ? { role: "SellerAgent" } : { role: "BuyerAgent" })
-                  : (dealType == "Selling" ? { ...currentRole, role: "SellerAgent" } : { ...currentRole, role: "BuyerAgent" })
+                  ? { role: "" } : { ...currentRole, role: "" }
               }
             />
           </Box>

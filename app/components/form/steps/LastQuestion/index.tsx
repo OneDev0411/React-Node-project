@@ -7,7 +7,7 @@ import axios from "axios";
 
 const LastQuestion: React.FC<IQuestionProps> = ({
   Wizard,
-  api: { notifyOffice },
+  api: { notifyOffice, close },
   hooks: { useWizardContext },
 }) => {
   const { QuestionSection, QuestionTitle, QuestionForm } = Wizard;
@@ -51,8 +51,9 @@ const LastQuestion: React.FC<IQuestionProps> = ({
     setOpenFeedback(true);
   };
 
-  const handleClose = async () => {
+  const handleClose = () => {
     setOpenFeedback(false);
+    close();
   }
 
   return (

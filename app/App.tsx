@@ -154,6 +154,7 @@ const App: React.FC<EntryProps> = ({
     dataToContextAPI();
   }, []);
 
+  // save data to database when close the app
   useEffect(() => {
     if (submitted !== 0 && !utils.isBackOffice)
       return () => {
