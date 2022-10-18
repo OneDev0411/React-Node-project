@@ -186,8 +186,10 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
               </strong>
             </Box>
           </Grid>
-          <Grid item xs={12}>
-            {dealData.gci_reason}
+          <Grid item xs={12} style={{ marginTop: 5 }}>
+            {dealData.gci_reason_select === 0 && <label>Approved Commission Reduction</label>}
+            {dealData.gci_reason_select === 1 && <label>Co-broke Commission Offered</label>}
+            {dealData.gci_reason_select === 2 && <label>{dealData.gci_reason}</label>}
           </Grid>
         </Grid>
         <Grid container style={{ marginTop: "30px" }}>
