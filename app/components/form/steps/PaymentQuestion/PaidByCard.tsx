@@ -222,7 +222,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
                 <Radio
                   size="small"
                   style={{ marginBottom: 3 }}
-                  disabled={!checkedAgent || _paidBy.payment_unit_type == 1}
+                  disabled={!checkedAgent}
                 />
               }
               label="My GCI"
@@ -234,7 +234,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
                 <Radio
                   size="small"
                   style={{ marginBottom: 3 }}
-                  disabled={!checkedAgent || _paidBy.payment_unit_type == 1}
+                  disabled={!checkedAgent}
                 />
               }
               label="My NET"
