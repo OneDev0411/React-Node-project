@@ -123,14 +123,14 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     temp.current_step = step + 1;
     if (setDealData !== undefined)
       setDealData(temp);
-    if (wizard.currentStep < step + 1) {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (wizard.currentStep < step + 1) {
         wizard.next();
         if (setCurrentStep !== undefined) {
           setCurrentStep(step+1);
         }
-      }, 80);
-    }
+      }
+    }, 80);
   };
 
   const handleChangeValue = (

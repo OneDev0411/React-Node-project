@@ -55,9 +55,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
 
     const handleNext = () => {
         if (wizard.currentStep < step + 1) {
-            setTimeout(() => {
-                wizard.next();
-            }, 80);
+            wizard.next();
         }
     }
 
@@ -72,13 +70,13 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     }
 
     const handleClickNextButton = () => {
-        if (roleType === "SellerLawyer" && currentStep >= step + 1) {
-            setTimeout(() => {
+        setTimeout(() => {
+            if (roleType === "SellerLawyer" && currentStep >= step + 1) {
                 wizard.goto(currentStep)
-            }, 80);
-        } else {
-            handleNext();
-        }
+            } else {
+                handleNext();
+            }
+        }, 80);
         setShowButton(false);
     }
 
