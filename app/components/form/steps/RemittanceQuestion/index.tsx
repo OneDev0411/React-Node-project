@@ -124,12 +124,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     if (setDealData !== undefined)
       setDealData(temp);
     setTimeout(() => {
-      if (wizard.currentStep < step + 1) {
-        wizard.next();
-        if (setCurrentStep !== undefined) {
-          setCurrentStep(step+1);
-        }
-      }
+      wizard.next();
     }, 80);
   };
 
@@ -156,7 +151,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
       setListingSideChecks(_listingSideChecks);
 
     if (submitted === 1 || 
-        currentStep > step || 
+        dealData.current_step > step || 
         (showBuy && (!_buySideChecks.length || (_buySideChecks.length && _buySideChecks[0].check_num == 0 && _buySideChecks[0].amount == 0)) && _dealData.remittance_buy_side_bank_wire_amount == null) ||
         (showSell && (!_listingSideChecks.length || (_listingSideChecks.length && _listingSideChecks[0].check_num == 0 && _listingSideChecks[0].amount == 0)) && _dealData.remittance_listing_side_bank_wire_amount == null)
     ) {
