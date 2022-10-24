@@ -83,13 +83,13 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
     const handleClickSkipButton = () => {
         setShowButton(false);
         setStatus('Skipped');
-        if (roleType === "SellerLawyer" && currentStep >= step + 1) {
-            setTimeout(() => {
-                wizard.goto(currentStep)
-            }, 80);
-        } else {
-            handleNext();
-        }
+        setTimeout(() => {
+            if (roleType === "SellerLawyer" && currentStep >= step + 1) {
+                    wizard.goto(currentStep)
+            } else {
+                handleNext();
+            }
+        }, 80);
     }
 
     const handleSelectContact = (contact: Partial<IDealFormRole>) => {
@@ -129,13 +129,13 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
         // in case of no match role, ignore cancel action
         if (matchRoles.length === 0) {
             setStatus("Skipped");
-            if (roleType === "SellerLawyer" && currentStep >= step + 1) {
-                setTimeout(() => {
-                    wizard.goto(currentStep)
-                }, 80);
-            } else {
-                handleNext();
-            }
+            setTimeout(() => {
+                if (roleType === "SellerLawyer" && currentStep >= step + 1) {
+                        wizard.goto(currentStep)
+                } else {
+                    handleNext();
+                }
+            }, 80);
         }
         // click save or save & add to my contacts button
         else { 
