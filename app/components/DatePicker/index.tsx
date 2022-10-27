@@ -1,7 +1,7 @@
-import Ui from "@libs/material-ui";
-import React from "@libs/react";
-import { IDatePickerProps } from "../../models/type";
-import DateImage from "../../static/icons/date.png";
+import Ui from "@libs/material-ui"
+import React from "@libs/react"
+import { IDatePickerProps } from "../../models/type"
+import DateImage from "../../static/icons/date.png"
 
 export const DatePicker: React.FC<IDatePickerProps> = ({
   Picker,
@@ -9,13 +9,12 @@ export const DatePicker: React.FC<IDatePickerProps> = ({
   setValue,
   label,
 }) => {
-  const { TextField, Popover, Button, Icon } = Ui;
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { TextField, Popover } = Ui
+  const [anchorEl, setAnchorEl] = React.useState(null)
 
   const handlePickDate = (date: Date) => {
-    // setAnchorEl(null);
-    setValue(date);
-  };
+    setValue(date)
+  }
 
   return (
     <div style={{ width: "100%" }} className="date-picker">
@@ -48,5 +47,5 @@ export const DatePicker: React.FC<IDatePickerProps> = ({
         <Picker onChange={handlePickDate} />
       </Popover>
     </div>
-  );
-};
+  )
+}

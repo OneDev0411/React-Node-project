@@ -1,10 +1,10 @@
-import React from "@libs/react";
-import ReactUse from "@libs/react-use";
-import Ui from "@libs/material-ui";
-import { GCISplitStatus, IPayment, IPaymentQuestionData, IPaymentData, IPaidByData, IRoleData } from "../../../../models/type";
-import { defaultPayment, paymentTypeData, sortRole } from "../../../../util";
-import PaidByCard from "./PaidByCard";
-import useApp from "../../../../hooks/useApp";
+import React from "@libs/react"
+import ReactUse from "@libs/react-use"
+import Ui from "@libs/material-ui"
+import useApp from "../../../../hooks/useApp"
+import { GCISplitStatus, IPayment, IPaymentQuestionData, IPaymentData, IPaidByData, IRoleData } from "../../../../models/type"
+import { defaultPayment, paymentTypeData, sortRole } from "../../../../util"
+import PaidByCard from "./PaidByCard"
 
 const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   saveData: { updateFlag },
@@ -13,123 +13,123 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   dealId,
   components: { AgentsPicker },
 }) => {
-  const { useState, useEffect } = React;
-  const { useDebounce } = ReactUse;
-  const { Grid, Box, Button, IconButton, Select, MenuItem, ListSubheader, TextField } = Ui;
+  const { useState, useEffect } = React
+  const { useDebounce } = ReactUse
+  const { Grid, Box, Button, IconButton, Select, MenuItem, ListSubheader, TextField } = Ui
 
-  const { insidePayments, setInsidePayments, outsidePayments, setOutsidePayments, roleData, submitted, setSubmitted } = useApp();
+  const { insidePayments, setInsidePayments, outsidePayments, setOutsidePayments, roleData, submitted, setSubmitted } = useApp()
   
-  const [defaultPayments, setDefaultPayments] = useState<IPayment[]>(defaultPayment);
-  const [_payments, _setPayments] = useState<IPayment[]>([]);
-  const [status, setStatus] = useState<GCISplitStatus[]>([]);
-  const [tmpDePaidTo, setTmpDePaidTo] = useState<string>("");
+  const [defaultPayments, setDefaultPayments] = useState<IPayment[]>(defaultPayment)
+  const [_payments, _setPayments] = useState<IPayment[]>([])
+  const [status, setStatus] = useState<GCISplitStatus[]>([])
+  const [tmpDePaidTo, setTmpDePaidTo] = useState<string>("")
 
   // this make content of select tag
   const paymentTypeElement = paymentTypeData.reduce(
     (result: any, data: IPaymentData) => {
-      result.push(<ListSubheader>{data.groupName}</ListSubheader>);
+      result.push(<ListSubheader>{data.groupName}</ListSubheader>)
       data.member.map((value: string) => {
-        result.push(<MenuItem value={value}>{value}</MenuItem>);
-      });
-      return result;
+        result.push(<MenuItem value={value}>{value}</MenuItem>)
+      })
+      return result
     },
     []
-  );
+  )
 
   const handleChangeValue = (
     e: React.ChangeEvent<{ value: unknown }>,
     key: keyof IPayment,
     index: number
   ) => {
-    updateFlag(true); // for Next button enable
+    updateFlag(true) // for Next button enable
     if (key === "de_paid_to") {
-      setTmpDePaidTo(String(e.target.value));
-      return;
+      setTmpDePaidTo(String(e.target.value))
+      return
     }
-    let temp = JSON.parse(JSON.stringify(_payments));
-    temp[index][key] = e.target.value;
-    _setPayments(temp);
-  };
+    let temp = JSON.parse(JSON.stringify(_payments))
+    temp[index][key] = e.target.value
+    _setPayments(temp)
+  }
 
   const handleClickAddAnotherPayment = () => {
-    let temp = JSON.parse(JSON.stringify(_payments));
-    defaultPayments[0].keyIndex += 1;
-    temp.push(defaultPayments[0]);
-    _setPayments(temp);
-    const _status = JSON.parse(JSON.stringify(status));
-    _status.push("Selecting");
-    setStatus(_status);
-  };
+    let temp = JSON.parse(JSON.stringify(_payments))
+    defaultPayments[0].keyIndex += 1
+    temp.push(defaultPayments[0])
+    _setPayments(temp)
+    const _status = JSON.parse(JSON.stringify(status))
+    _status.push("Selecting")
+    setStatus(_status)
+  }
 
   const handleClickRemovePayment = (index: number) => {
-    let temp = JSON.parse(JSON.stringify(_payments));
-    temp.splice(index, 1);
-    _setPayments(temp);
-    const _status = JSON.parse(JSON.stringify(status));
-    _status.splice(index, 1);
-    setStatus(_status);
-  };
+    let temp = JSON.parse(JSON.stringify(_payments))
+    temp.splice(index, 1)
+    _setPayments(temp)
+    const _status = JSON.parse(JSON.stringify(status))
+    _status.splice(index, 1)
+    setStatus(_status)
+  }
 
   const updatePayment = (payment: IPayment, index: number) => {
-    let temp = JSON.parse(JSON.stringify(_payments));
-    temp[index] = payment;
-    _setPayments(temp);
-  };
+    let temp = JSON.parse(JSON.stringify(_payments))
+    temp[index] = payment
+    _setPayments(temp)
+  }
   
   const handleClickSaveEditButton = (index: number) => {
-    let temp = JSON.parse(JSON.stringify(_payments));
-    temp[index]["de_paid_to"] = tmpDePaidTo;
-    _setPayments(temp);
-    setTmpDePaidTo("");
-    const _status = JSON.parse(JSON.stringify(status));
-    _status[index] = "Listing";
-    setStatus(_status);
-  };
+    let temp = JSON.parse(JSON.stringify(_payments))
+    temp[index]["de_paid_to"] = tmpDePaidTo
+    _setPayments(temp)
+    setTmpDePaidTo("")
+    const _status = JSON.parse(JSON.stringify(status))
+    _status[index] = "Listing"
+    setStatus(_status)
+  }
   
   const handleClickCancelEditButton = (index: number) => {
-    setTmpDePaidTo("");
-    const _status = JSON.parse(JSON.stringify(status));
-    _status[index] = "Listing";
-    setStatus(_status);
-  };
+    setTmpDePaidTo("")
+    const _status = JSON.parse(JSON.stringify(status))
+    _status[index] = "Listing"
+    setStatus(_status)
+  }
 
   const handleSelectAgent = ((agent: BrandedUser, index: number) => {
-    const _status = JSON.parse(JSON.stringify(status));
-    _status[index] = "Listing";
-    setStatus(_status);
-    let temp = JSON.parse(JSON.stringify(_payments));
-    temp[index].de_paid_to = agent.display_name || '';
-    temp[index].de_paid_to_deUserId = agent.id || '';
+    const _status = JSON.parse(JSON.stringify(status))
+    _status[index] = "Listing"
+    setStatus(_status)
+    let temp = JSON.parse(JSON.stringify(_payments))
+    temp[index].de_paid_to = agent.display_name || ''
+    temp[index].de_paid_to_deUserId = agent.id || ''
     if (agent.display_name !== "") {
       if (temp[index].de_paid_by[0]["payment_value"] === null) {
-        temp[index].de_paid_by[0]["payment_unit_type"] = 0;
-        temp[index].de_paid_by[0]["payment_value"] = 0;
-        temp[index].de_paid_by[0]["payment_calculated_from"] = 0;
+        temp[index].de_paid_by[0]["payment_unit_type"] = 0
+        temp[index].de_paid_by[0]["payment_value"] = 0
+        temp[index].de_paid_by[0]["payment_calculated_from"] = 0
       }
     }
     else {
-      temp[index].de_paid_by[0]["payment_unit_type"] = null;
-      temp[index].de_paid_by[0]["payment_value"] = null;
-      temp[index].de_paid_by[0]["payment_calculated_from"] = null;
+      temp[index].de_paid_by[0]["payment_unit_type"] = null
+      temp[index].de_paid_by[0]["payment_value"] = null
+      temp[index].de_paid_by[0]["payment_calculated_from"] = null
     }
-    _setPayments(temp);
-  });
+    _setPayments(temp)
+  })
   
   const handleEditPaidTo = (index: number) => {
     if (_payments[index]["de_paid_to"]) {
-      setTmpDePaidTo(_payments[index]["de_paid_to"]);
+      setTmpDePaidTo(_payments[index]["de_paid_to"])
     }
-    const _status = JSON.parse(JSON.stringify(status));
-    _status[index] = "Selecting";
-    setStatus(_status);
-  };
+    const _status = JSON.parse(JSON.stringify(status))
+    _status[index] = "Selecting"
+    setStatus(_status)
+  }
 
   useEffect(() => {
-    let _defaultPayments = JSON.parse(JSON.stringify(defaultPayments));
-    _defaultPayments[0].deal = dealId;
-    _defaultPayments[0].de_paid_by = [];
-    _defaultPayments[0].de_payment_type = range === "inside" ? "Team Member" : "Outside Referral Broker";
-    _defaultPayments[0].payment_side = range;
+    let _defaultPayments = JSON.parse(JSON.stringify(defaultPayments))
+    _defaultPayments[0].deal = dealId
+    _defaultPayments[0].de_paid_by = []
+    _defaultPayments[0].de_payment_type = range === "inside" ? "Team Member" : "Outside Referral Broker"
+    _defaultPayments[0].payment_side = range
     roleData.map((item: IRoleData) => {
       if (
         ((dealType == "Buying" || dealType == "Both") && (item.role == "BuyerAgent" || item.role == "CoBuyerAgent" || item.role == "BuyerReferral"))
@@ -143,24 +143,24 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
           payment_value: null,
           payment_calculated_from: null,
           payment_note: "",
-        });
+        })
       }
-    });
-    setDefaultPayments(_defaultPayments);
+    })
+    setDefaultPayments(_defaultPayments)
     
     let payments: IPayment[] = (range === "inside" ? 
-      (insidePayments.length ? insidePayments : _defaultPayments) : (outsidePayments.length ? outsidePayments : _defaultPayments));
+      (insidePayments.length ? insidePayments : _defaultPayments) : (outsidePayments.length ? outsidePayments : _defaultPayments))
     
     roleData.map((item: IRoleData) => {
       if (
         ((dealType == "Buying" || dealType == "Both") && (item.role == "BuyerAgent" || item.role == "CoBuyerAgent" || item.role == "BuyerReferral"))
         || ((dealType == "Selling" || dealType == "Both") && (item.role == "SellerAgent" || item.role == "CoSellerAgent" || item.role == "SellerReferral"))
       ) {
-        let temp = JSON.parse(JSON.stringify(payments));
+        let temp = JSON.parse(JSON.stringify(payments))
         payments.map((payment: IPayment, index: number) => {
           payment.de_paid_by.map((paidByItem, idx) => {
             if (roleData.find((role: IRoleData) => role.role_id === paidByItem.roleId) === undefined) {
-              temp[index].de_paid_by.splice(idx, 1);
+              temp[index].de_paid_by.splice(idx, 1)
             }
           })
           if (payment.de_paid_by.find((paidByItem: IPaidByData) => paidByItem.roleId === item.role_id) === undefined) {
@@ -172,35 +172,35 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
               payment_value: null,
               payment_calculated_from: null,
               payment_note: "",
-            });
+            })
             temp[index].de_paid_by.sort((a: IPaidByData, b: IPaidByData) => { 
-              const key1 = a.role;
-              const key2 = b.role;
-              const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
-              return diff ? diff : a.payment_by_name.localeCompare(b.payment_by_name);
-            });
+              const key1 = a.role
+              const key2 = b.role
+              const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole]
+              return diff ? diff : a.payment_by_name.localeCompare(b.payment_by_name)
+            })
           }
-        });
-        payments = temp;
+        })
+        payments = temp
       }
-    });
-    _setPayments(payments);
+    })
+    _setPayments(payments)
 
-    const _status = status;
+    const _status = status
     payments.map((item) => {
       if (item.de_paid_to !== "")
-        _status.push("Listing");
+        _status.push("Listing")
       else
-        _status.push("Selecting");
-    });
-    setStatus(_status);
-  }, []);
+        _status.push("Selecting")
+    })
+    setStatus(_status)
+  }, [])
 
   useEffect(() => {
     if (defaultPayments[0].de_paid_by.length !== 0) {
-      let _defaultPayments = JSON.parse(JSON.stringify(defaultPayments));
-      let temp = JSON.parse(JSON.stringify(_payments));
-      _defaultPayments[0].de_paid_by = [];
+      let _defaultPayments = JSON.parse(JSON.stringify(defaultPayments))
+      let temp = JSON.parse(JSON.stringify(_payments))
+      _defaultPayments[0].de_paid_by = []
       roleData.map((item: IRoleData) => {
         if (
           ((dealType == "Buying" || dealType == "Both") && (item.role == "BuyerAgent" || item.role == "CoBuyerAgent" || item.role == "BuyerReferral"))
@@ -214,14 +214,14 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
             payment_value: null,
             payment_calculated_from: null,
             payment_note: "",
-          });
+          })
           if (_payments.length > 0) {
             _payments.map((payment: IPayment, index: number) => {
               payment.de_paid_by.map((paidByItem, idx) => {
                 if (roleData.find((role: IRoleData) => role.role_id === paidByItem.roleId) === undefined) {
-                  temp[index].de_paid_by.splice(idx, 1);
+                  temp[index].de_paid_by.splice(idx, 1)
                 }
-              });
+              })
               if (payment.de_paid_by.find((paidByItem: IPaidByData) => paidByItem.roleId === item.role_id) === undefined) {
                 temp[index].de_paid_by.push({
                   roleId: item.role_id,
@@ -231,53 +231,53 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   payment_value: null,
                   payment_calculated_from: null,
                   payment_note: "",
-                });
+                })
               }
               temp[index].de_paid_by.sort((a: IPaidByData, b: IPaidByData) => { 
-                const key1 = a.role;
-                const key2 = b.role;
-                const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
-                return diff ? diff : a.payment_by_name.localeCompare(b.payment_by_name);
-              });
-            });
-            _setPayments(temp);
+                const key1 = a.role
+                const key2 = b.role
+                const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole]
+                return diff ? diff : a.payment_by_name.localeCompare(b.payment_by_name)
+              })
+            })
+            _setPayments(temp)
           }
         }
-        setDefaultPayments(_defaultPayments);
-      });
+        setDefaultPayments(_defaultPayments)
+      })
 
-      const _status = status;
+      const _status = status
       _payments.map((item) => {
         if (item.de_paid_to !== "")
-          _status.push("Listing");
+          _status.push("Listing")
         else
-          _status.push("Selecting");
-      });
-      setStatus(_status);
+          _status.push("Selecting")
+      })
+      setStatus(_status)
     }
-  }, [roleData]);
+  }, [roleData])
 
   useDebounce(
     () => {
-      let temp = JSON.parse(JSON.stringify(_payments));
+      let temp = JSON.parse(JSON.stringify(_payments))
       if (range === "inside") {
         if (setInsidePayments !== undefined) {
-          setInsidePayments(temp);
+          setInsidePayments(temp)
         }
       } else {
         if (setOutsidePayments !== undefined) {
-          setOutsidePayments(temp);
+          setOutsidePayments(temp)
         }
       }
       if (submitted === 1) {
         if (setSubmitted !== undefined) {
-          setSubmitted(2);
+          setSubmitted(2)
         }
       }
     },
     500,
     [_payments]
-  );
+  )
 
   return (
     <>
@@ -539,6 +539,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
         </Button>
       </Box>
     </>
-  );
-};
-export default paymentQuestionComponent;
+  )
+}
+
+export default paymentQuestionComponent

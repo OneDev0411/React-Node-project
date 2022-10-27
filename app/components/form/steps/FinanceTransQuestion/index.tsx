@@ -1,48 +1,48 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
+import useApp from "../../../../hooks/useApp"
 import { IQuestionProps, SelectData } from "../../../../models/type"
 import { financeSelectDataList } from '../../../../util'
-import useApp from "../../../../hooks/useApp";
 
 const FinanceTransQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
   api: { updateDealContext, getDealContext },
 }) => {
-  const { useState } = React;
-  const { RadioGroup, FormControlLabel, Radio, Box } = Ui;
-  const wizard = useWizardContext();
-  const { step } = useSectionContext();
-  const { dealData, setDealData, setFinancing, setCurrentStep } = useApp();
+  const { useState } = React
+  const { RadioGroup, FormControlLabel, Radio, Box } = Ui
+  const wizard = useWizardContext()
+  const { step } = useSectionContext()
+  const { dealData, setDealData, setFinancing, setCurrentStep } = useApp()
 
-  const financingContextValue = getDealContext('financing')?.text;
-  const financingProgramContextValue = getDealContext('financing_program')?.text;
+  const financingContextValue = getDealContext('financing')?.text
+  const financingProgramContextValue = getDealContext('financing_program')?.text
 
   // state
-  const [curSelect, setCurSelect] = useState<string>(financingContextValue);
-  const [showBox, setShowBox] = useState<boolean>(true);
+  const [curSelect, setCurSelect] = useState<string>(financingContextValue)
+  const [showBox, setShowBox] = useState<boolean>(true)
 
   const handleClickRadioButton = async (event: any) => {
-    setShowBox(false);
-    updateDealContext("financing", event.target.value);
-    setCurSelect(event.target.value);
+    setShowBox(false)
+    updateDealContext("financing", event.target.value)
+    setCurSelect(event.target.value)
     if (setFinancing !== undefined)
-      setFinancing(event.target.value);
+      setFinancing(event.target.value)
     if (wizard.currentStep < step + 1) {
       setTimeout(() => {
         if (event.target.value == "Cash Deal" && financingProgramContextValue != "") {
-          wizard.goto(step + 2);
-          let temp = JSON.parse(JSON.stringify(dealData));
-          temp.current_step = step + 2;
+          wizard.goto(step + 2)
+          let temp = JSON.parse(JSON.stringify(dealData))
+          temp.current_step = step + 2
           if (setDealData !== undefined)
-            setDealData(temp);
+            setDealData(temp)
           if (setCurrentStep !== undefined) {
-            setCurrentStep(step + 2);
+            setCurrentStep(step + 2)
           }
         }
         else
-          wizard.next();
-      }, 10);
+          wizard.next()
+      }, 10)
     }
   }
 
@@ -76,4 +76,4 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
   )
 }
 
-export default FinanceTransQuestion;
+export default FinanceTransQuestion

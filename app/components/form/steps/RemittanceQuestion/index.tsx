@@ -1,15 +1,10 @@
-import React from "@libs/react";
-import ReactUse from "@libs/react-use";
-import Ui from "@libs/material-ui";
-import { DatePicker } from "../../../DatePicker";
-import {
-  IDealData,
-  IRoleData,
-  IQuestionProps,
-  IRemittanceChecks,
-} from "../../../../models/type";
-import useApp from "../../../../hooks/useApp";
-import { defaultRemittanceChecks } from "../../../../util";
+import React from "@libs/react"
+import ReactUse from "@libs/react-use"
+import Ui from "@libs/material-ui"
+import useApp from "../../../../hooks/useApp"
+import { IDealData, IRoleData, IQuestionProps, IRemittanceChecks } from "../../../../models/type"
+import { defaultRemittanceChecks } from "../../../../util"
+import { DatePicker } from "../../../DatePicker"
 
 const RemittanceQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -17,16 +12,16 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   models: { deal },
   Components: { DatePicker: DayPicker },
 }) => {
-  const { useState, useEffect } = React;
-  const { useDebounce } = ReactUse;
-  const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button, IconButton } = Ui;
-  const wizard = useWizardContext();
-  const { step } = useSectionContext();
-  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, setSubmitted, currentStep, setCurrentStep } = useApp();
-  const enderType = deal.context.ender_type?.text;
-  const showBoth = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? true : false;
-  const showBuy = showBoth || deal.deal_type === "Buying";
-  const showSell = showBoth || deal.deal_type === "Selling";
+  const { useState, useEffect } = React
+  const { useDebounce } = ReactUse
+  const { Grid, Select, MenuItem, TextField, InputAdornment, Box, Button, IconButton } = Ui
+  const wizard = useWizardContext()
+  const { step } = useSectionContext()
+  const { dealData, setDealData, roleData, remittanceChecks, setRemittanceChecks, submitted, setSubmitted, currentStep, setCurrentStep } = useApp()
+  const enderType = deal.context.ender_type?.text
+  const showBoth = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? true : false
+  const showBuy = showBoth || deal.deal_type === "Buying"
+  const showSell = showBoth || deal.deal_type === "Selling"
 
   const defaultCheckData: IRemittanceChecks = {
     id: null,
@@ -36,67 +31,67 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     check_receive_date: new Date(),
     amount: 0,
     deal_side: "",
-  };
-  let defaultChecksData: IRemittanceChecks[] = defaultRemittanceChecks;
-  defaultChecksData[0].deal = deal.id;
+  }
+  let defaultChecksData: IRemittanceChecks[] = defaultRemittanceChecks
+  defaultChecksData[0].deal = deal.id
 
   // state
-  const [buySideChecks, setBuySideChecks] = useState<IRemittanceChecks[]>(defaultChecksData);
-  const [listingSideChecks, setListingSideChecks] = useState<IRemittanceChecks[]>(defaultChecksData);
-  const [_remittanceChecks, _setRemittanceChecks] = useState<IRemittanceChecks[]>(remittanceChecks);
-  const [selectValueBuySide, setSelectValueBuySide] = useState<number>(-1);
-  const [selectValueListingSide, setSelectValueListingSide] = useState<number>(-1);
-  const [_dealData, _setDealData] = useState<IDealData>(dealData);
-  const [showButton, setShowButton] = useState<boolean>(true);
+  const [buySideChecks, setBuySideChecks] = useState<IRemittanceChecks[]>(defaultChecksData)
+  const [listingSideChecks, setListingSideChecks] = useState<IRemittanceChecks[]>(defaultChecksData)
+  const [_remittanceChecks, _setRemittanceChecks] = useState<IRemittanceChecks[]>(remittanceChecks)
+  const [selectValueBuySide, setSelectValueBuySide] = useState<number>(-1)
+  const [selectValueListingSide, setSelectValueListingSide] = useState<number>(-1)
+  const [_dealData, _setDealData] = useState<IDealData>(dealData)
+  const [showButton, setShowButton] = useState<boolean>(true)
 
   const handleBuySideSelectChange = (event: any) => {
-    const value: number = event.target.value;
-    setSelectValueBuySide(value);
+    const value: number = event.target.value
+    setSelectValueBuySide(value)
     if (wizard.currentStep < step + 1 && value !== -1) {
       if (showBoth && selectValueListingSide === -1)
-        setShowButton(false);
+        setShowButton(false)
       else
-        setShowButton(true);
+        setShowButton(true)
     }
     else
-      setShowButton(false);
-  };
+      setShowButton(false)
+  }
 
   const handleListingSideSelectChange = (event: any) => {
-    const value: number = event.target.value;
-    setSelectValueListingSide(value);
+    const value: number = event.target.value
+    setSelectValueListingSide(value)
     if (wizard.currentStep < step + 1 && value !== -1) {
       if (showBoth && selectValueBuySide === -1)
-        setShowButton(false);
+        setShowButton(false)
       else
-        setShowButton(true);
+        setShowButton(true)
     }
     else
-      setShowButton(false);
-  };
+      setShowButton(false)
+  }
 
-  const handleClickBuySideAddAnotherCheckButton = (event: any) => {
-    let temp = buySideChecks.slice();
-    temp.push(defaultCheckData);
-    setBuySideChecks(temp);
-  };
+  const handleClickBuySideAddAnotherCheckButton = () => {
+    let temp = buySideChecks.slice()
+    temp.push(defaultCheckData)
+    setBuySideChecks(temp)
+  }
 
   const removeBuySideCheck = (index: number) => {
-    let temp = buySideChecks.slice();
-    temp.splice(index, 1);
-    setBuySideChecks(temp);
+    let temp = buySideChecks.slice()
+    temp.splice(index, 1)
+    setBuySideChecks(temp)
   }
   
-  const handleClickListingSideAddAnotherCheckButton = (event: any) => {
-    let temp = listingSideChecks.slice();
-    temp.push(defaultCheckData);
-    setListingSideChecks(temp);
-  };
+  const handleClickListingSideAddAnotherCheckButton = () => {
+    let temp = listingSideChecks.slice()
+    temp.push(defaultCheckData)
+    setListingSideChecks(temp)
+  }
 
   const removeListingSideCheck = (index: number) => {
-    let temp = listingSideChecks.slice();
-    temp.splice(index, 1);
-    setListingSideChecks(temp);
+    let temp = listingSideChecks.slice()
+    temp.splice(index, 1)
+    setListingSideChecks(temp)
   }
 
   const updateCheckDataList = (
@@ -106,110 +101,110 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     dealSide: string,
   ) => {
     if (dealSide === "BuySide") {
-      let temp = buySideChecks.slice();
-      temp[index] = { ...temp[index], [key]: value, deal_side: dealSide, deal: deal.id };
-      setBuySideChecks(temp);
+      let temp = buySideChecks.slice()
+      temp[index] = { ...temp[index], [key]: value, deal_side: dealSide, deal: deal.id }
+      setBuySideChecks(temp)
     }
     if (dealSide === "ListingSide") {
-      let temp = listingSideChecks.slice();
-      temp[index] = { ...temp[index], [key]: value, deal_side: dealSide, deal: deal.id };
-      setListingSideChecks(temp);
+      let temp = listingSideChecks.slice()
+      temp[index] = { ...temp[index], [key]: value, deal_side: dealSide, deal: deal.id }
+      setListingSideChecks(temp)
     }
-  };
+  }
 
   const handleClickNextButton = () => {
-    setShowButton(false);
-    let temp = JSON.parse(JSON.stringify(dealData));
-    temp.current_step = step + 1;
+    setShowButton(false)
+    let temp = JSON.parse(JSON.stringify(dealData))
+    temp.current_step = step + 1
     if (setDealData !== undefined)
-      setDealData(temp);
+      setDealData(temp)
     setTimeout(() => {
-      wizard.next();
-    }, 80);
-  };
+      wizard.next()
+    }, 80)
+  }
 
   const handleChangeValue = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IDealData
   ) => {
-    let value: string = e.target.value;
+    let value: string = e.target.value
     if (Number(value) + "" === "NaN" || (value + "").length > 16) {
-      return;
+      return
     }
 
-    let temp = JSON.parse(JSON.stringify(_dealData));
-    temp[key] = Number(value);
-    _setDealData(temp);
-  };
+    let temp = JSON.parse(JSON.stringify(_dealData))
+    temp[key] = Number(value)
+    _setDealData(temp)
+  }
 
   useEffect(() => {
-    const _buySideChecks = _remittanceChecks.filter(item => item.deal_side == "BuySide");
+    const _buySideChecks = _remittanceChecks.filter(item => item.deal_side == "BuySide")
     if (_buySideChecks.length > 0)
-      setBuySideChecks(_buySideChecks);
-    const _listingSideChecks = _remittanceChecks.filter(item => item.deal_side == "ListingSide");
+      setBuySideChecks(_buySideChecks)
+    const _listingSideChecks = _remittanceChecks.filter(item => item.deal_side == "ListingSide")
     if (_listingSideChecks.length > 0)
-      setListingSideChecks(_listingSideChecks);
+      setListingSideChecks(_listingSideChecks)
 
     if (submitted === 1 || 
         dealData.current_step > step || 
         (showBuy && (!_buySideChecks.length || (_buySideChecks.length && _buySideChecks[0].check_num == 0 && _buySideChecks[0].amount == 0)) && _dealData.remittance_buy_side_bank_wire_amount == null) ||
         (showSell && (!_listingSideChecks.length || (_listingSideChecks.length && _listingSideChecks[0].check_num == 0 && _listingSideChecks[0].amount == 0)) && _dealData.remittance_listing_side_bank_wire_amount == null)
     ) {
-      setShowButton(false);
+      setShowButton(false)
     }
     else {
-      setShowButton(true);
+      setShowButton(true)
       _dealData.brokerage_commission = _dealData.brokerage_commission == 0 ? roleData.reduce((total: any, data: IRoleData) => {
         return parseFloat(
           (Number(total) + Number(data.share_value)).toFixed(3)
-        );
-      }, 0) : _dealData.brokerage_commission;
+        )
+      }, 0) : _dealData.brokerage_commission
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    if (buySideChecks.length == 1 && buySideChecks[0].check_num == 0 && buySideChecks[0].amount == 0 && _dealData.remittance_buy_side_bank_wire_amount == null)
-      setSelectValueBuySide(-1);
+    if (buySideChecks.length == 1 && buySideChecks[0].check_num == 0 && buySideChecks[0].amount == 0 && (_dealData.remittance_buy_side_bank_wire_amount == null || _dealData.remittance_buy_side_bank_wire_amount == undefined))
+      setSelectValueBuySide(-1)
     if ((buySideChecks.length == 1 && (buySideChecks[0].check_num != 0 || buySideChecks[0].amount != 0) && _dealData.remittance_buy_side_bank_wire_amount == null) || buySideChecks.length > 1)
-      setSelectValueBuySide(0);
+      setSelectValueBuySide(0)
     if (buySideChecks.length == 1 && buySideChecks[0].check_num == 0 && buySideChecks[0].amount == 0 && _dealData.remittance_buy_side_bank_wire_amount != null)
-      setSelectValueBuySide(1);
-    if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && _dealData.remittance_listing_side_bank_wire_amount == null)
-      setSelectValueListingSide(-1);
+      setSelectValueBuySide(1)
+    if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && (_dealData.remittance_listing_side_bank_wire_amount == null || _dealData.remittance_listing_side_bank_wire_amount == undefined))
+      setSelectValueListingSide(-1)
     if ((listingSideChecks.length == 1 && listingSideChecks[0].check_num != 0 && listingSideChecks[0].amount != 0 && _dealData.remittance_listing_side_bank_wire_amount == null) || listingSideChecks.length > 1)
-      setSelectValueListingSide(0);
+      setSelectValueListingSide(0)
     if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && _dealData.remittance_listing_side_bank_wire_amount != null)
-      setSelectValueListingSide(1);
+      setSelectValueListingSide(1)
     
-    const _buySideChecks = buySideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0);
-    const _listingSideChecks = listingSideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0);
-    _setRemittanceChecks([..._buySideChecks, ..._listingSideChecks]);
-  }, [_dealData, buySideChecks, listingSideChecks]);
+    const _buySideChecks = buySideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0)
+    const _listingSideChecks = listingSideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0)
+    _setRemittanceChecks([..._buySideChecks, ..._listingSideChecks])
+  }, [_dealData, buySideChecks, listingSideChecks])
 
   useDebounce(
     () => {
       if (setRemittanceChecks !== undefined) {
-        setRemittanceChecks(_remittanceChecks);
+        setRemittanceChecks(_remittanceChecks)
       }
-      let temp = JSON.parse(JSON.stringify(dealData));
+      let temp = JSON.parse(JSON.stringify(dealData))
       if (setDealData !== undefined) {
         if (_dealData.stage_cost !== 0) {
-          temp.brokerage_commission = _dealData.brokerage_commission;
-          temp.stage_cost = _dealData.stage_cost;
+          temp.brokerage_commission = _dealData.brokerage_commission
+          temp.stage_cost = _dealData.stage_cost
         }
-        temp.remittance_buy_side_bank_wire_amount = selectValueBuySide == 0 ? null : (_dealData.remittance_buy_side_bank_wire_amount == 0 ? null : _dealData.remittance_buy_side_bank_wire_amount);
-        temp.remittance_listing_side_bank_wire_amount = selectValueListingSide == 0 ? null : (_dealData.remittance_listing_side_bank_wire_amount == 0 ? null : _dealData.remittance_listing_side_bank_wire_amount);
-        setDealData(temp);
+        temp.remittance_buy_side_bank_wire_amount = selectValueBuySide == 0 ? null : (_dealData.remittance_buy_side_bank_wire_amount == 0 ? null : _dealData.remittance_buy_side_bank_wire_amount)
+        temp.remittance_listing_side_bank_wire_amount = selectValueListingSide == 0 ? null : (_dealData.remittance_listing_side_bank_wire_amount == 0 ? null : _dealData.remittance_listing_side_bank_wire_amount)
+        setDealData(temp)
       }
       if (submitted === 1) {
         if (setSubmitted !== undefined) {
-          setSubmitted(2);
+          setSubmitted(2)
         }
       }
     },
     500,
     [_remittanceChecks, _dealData]
-  );
+  )
 
   return (
     <QuestionSection>
@@ -604,9 +599,6 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                   )
                 )}
                 <Box style={{ marginTop: 20 }}>
-                  {/* <Button variant="contained" onClick={handleClickAddAnotherCheckButton} style={{ backgroundColor: '#0fb78d', color: 'white', paddingBottom: 2, paddingTop: 2 }}> */}
-                  {/* + Add another check */}
-                  {/* </Button> */}
                   <Button
                     variant="outlined"
                     onClick={handleClickListingSideAddAnotherCheckButton}
@@ -666,7 +658,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
         )}
       </QuestionForm>
     </QuestionSection>
-  );
-};
+  )
+}
 
-export default RemittanceQuestion;
+export default RemittanceQuestion

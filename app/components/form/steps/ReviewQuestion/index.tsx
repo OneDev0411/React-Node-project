@@ -1,12 +1,12 @@
-import React from "@libs/react";
-import Ui from "@libs/material-ui";
-import { IDealData, IPaidByData, IQuestionProps, IRemittanceChecks, IRoleData, IPayment } from "../../../../models/type";
-import { paymentTypeData, stylizeNumber, APP_URL } from "../../../../util";
-import useApp from "../../../../hooks/useApp";
-import PaidByInfoCard from "./PaidByInfoCard";
-import axios from "axios";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import React from "@libs/react"
+import Ui from "@libs/material-ui"
+import axios from "axios"
+import jsPDF from "jspdf"
+import html2canvas from "html2canvas"
+import useApp from "../../../../hooks/useApp"
+import { IDealData, IPaidByData, IQuestionProps, IRemittanceChecks, IRoleData, IPayment } from "../../../../models/type"
+import { paymentTypeData, stylizeNumber, APP_URL } from "../../../../util"
+import PaidByInfoCard from "./PaidByInfoCard"
 
 const ReviewQuestion: React.FC<IQuestionProps> = ({
   Wizard,
@@ -14,112 +14,112 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   api: { getDealContext, updateTaskStatus, close },
   hooks: { useWizardContext },
 }) => {
-  const { QuestionSection, QuestionTitle } = Wizard;
-  const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui;
-  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments } = useApp();
-  const wizard = useWizardContext();
-  const enderType = deal.context.ender_type?.text;
-  const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
+  const { QuestionSection, QuestionTitle } = Wizard
+  const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui
+  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments } = useApp()
+  const wizard = useWizardContext()
+  const enderType = deal.context.ender_type?.text
+  const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type
 
-  const sellerInfo = roles.filter((role: IDealRole) => role.role === "Seller")[0];
-  const sellerLawyerInfo = roles.filter((role: IDealRole) => role.role === "SellerLawyer")[0];
-  const buyerInfo = roles.filter((role: IDealRole) => role.role === "Buyer")[0];
-  const buyerLawyerInfo = roles.filter((role: IDealRole) => role.role === "BuyerLawyer")[0];
+  const sellerInfo = roles.filter((role: IDealRole) => role.role === "Seller")[0]
+  const sellerLawyerInfo = roles.filter((role: IDealRole) => role.role === "SellerLawyer")[0]
+  const buyerInfo = roles.filter((role: IDealRole) => role.role === "Buyer")[0]
+  const buyerLawyerInfo = roles.filter((role: IDealRole) => role.role === "BuyerLawyer")[0]
 
-  const buySideChecks = remittanceChecks.filter(item => item.deal_side === "BuySide");
-  const listingSideChecks = remittanceChecks.filter(item => item.deal_side === "ListingSide");
+  const buySideChecks = remittanceChecks.filter(item => item.deal_side === "BuySide")
+  const listingSideChecks = remittanceChecks.filter(item => item.deal_side === "ListingSide")
 
-  const salesPrice = getDealContext("sales_price")?.number;
-  const financing = getDealContext("financing")?.text;
-  const financingProgram = getDealContext("financing_program")?.text;
+  const salesPrice = getDealContext("sales_price")?.number
+  const financing = getDealContext("financing")?.text
+  const financingProgram = getDealContext("financing_program")?.text
 
-  const [openDeclineMsg, setOpenDeclineMsg] = React.useState<boolean>(false);
-  const [declineMsg, setDeclineMsg] = React.useState<string>("");
-  const [feedback, setFeedback] = React.useState<string>("");
-  const [openFeedback, setOpenFeedback] = React.useState<boolean>(false);
+  const [openDeclineMsg, setOpenDeclineMsg] = React.useState<boolean>(false)
+  const [declineMsg, setDeclineMsg] = React.useState<string>("")
+  const [feedback, setFeedback] = React.useState<string>("")
+  const [openFeedback, setOpenFeedback] = React.useState<boolean>(false)
 
-  const gciDeValue = dealData.gci_de_value;
-  const gciDePercent = parseFloat((gciDeValue / salesPrice * 100).toFixed(3));
+  const gciDeValue = dealData.gci_de_value
+  const gciDePercent = parseFloat((gciDeValue / salesPrice * 100).toFixed(3))
 
   const handleClickApprove = async () => {
-    wizard.setLoading(true);
-    updateTaskStatus('Approved', false, '');
-    let postData: IDealData = { ...dealData };
-    const curDate = new Date();
-    postData.approval_request_date = curDate.toISOString();
-    postData.status = "Approved";
+    wizard.setLoading(true)
+    updateTaskStatus('Approved', false, '')
+    let postData: IDealData = { ...dealData }
+    const curDate = new Date()
+    postData.approval_request_date = curDate.toISOString()
+    postData.status = "Approved"
     const res = await axios.post(
       `${APP_URL}/rechat-commission-app-approve`,
       {
         data: postData,
       }
-    );
-    wizard.setLoading(false);
+    )
+    wizard.setLoading(false)
     if (res.data.message === "successful")
-      setFeedback("Approved.");
+      setFeedback("Approved.")
     else
-      setFeedback("Approve failed.");
-    setOpenFeedback(true);
-  };
+      setFeedback("Approve failed.")
+    setOpenFeedback(true)
+  }
 
   const handleClickDecline = () => {
-    setOpenDeclineMsg(true);
-  };
+    setOpenDeclineMsg(true)
+  }
   
   const handleConfirmDecline = async () => {
-    wizard.setLoading(true);
-    updateTaskStatus('Declined', false, declineMsg);
-    let postData: IDealData = { ...dealData };
-    postData.approval_request_date = "";
-    postData.status = "Declined";
+    wizard.setLoading(true)
+    updateTaskStatus('Declined', false, declineMsg)
+    let postData: IDealData = { ...dealData }
+    postData.approval_request_date = ""
+    postData.status = "Declined"
     const res = await axios.post(
       `${APP_URL}/rechat-commission-app-approve`,
       {
         data: postData,
       }
-    );
-    wizard.setLoading(false);
-    setOpenDeclineMsg(false);
+    )
+    wizard.setLoading(false)
+    setOpenDeclineMsg(false)
     if (res.data.message === "successful")
-      setFeedback("Declined.");
+      setFeedback("Declined.")
     else
-      setFeedback("Decline failed.");
-    setOpenFeedback(true);
-  };
+      setFeedback("Decline failed.")
+    setOpenFeedback(true)
+  }
 
   const handleClose = () => {
-    setOpenDeclineMsg(false);
-  };
+    setOpenDeclineMsg(false)
+  }
 
   const handleCloseFeedback = async () => {
-    setOpenFeedback(false);
-    close();
+    setOpenFeedback(false)
+    close()
   }
   
   const handlePrint = async () => {
-    wizard.setLoading(true);
-    let pdf = new jsPDF("p", "pt", "a4");
-    const pdfHtml = document.querySelector("#report");
-    const pdfCanvas = await html2canvas(pdfHtml as HTMLElement, {});
-    const img = pdfCanvas.toDataURL("image/png");
-    const imgProperties = pdf.getImageProperties(img);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProperties.height*pdfWidth) / imgProperties.width;
-    const pdfPageHeight = pdf.internal.pageSize.getHeight();
-    const topLeftMargin = 40;
-    const totalPdfPages = Math.ceil((pdfHeight+topLeftMargin)/pdfPageHeight);
+    wizard.setLoading(true)
+    let pdf = new jsPDF("p", "pt", "a4")
+    const pdfHtml = document.querySelector("#report")
+    const pdfCanvas = await html2canvas(pdfHtml as HTMLElement, {})
+    const img = pdfCanvas.toDataURL("image/png")
+    const imgProperties = pdf.getImageProperties(img)
+    const pdfWidth = pdf.internal.pageSize.getWidth()
+    const pdfHeight = (imgProperties.height*pdfWidth) / imgProperties.width
+    const pdfPageHeight = pdf.internal.pageSize.getHeight()
+    const topLeftMargin = 40
+    const totalPdfPages = Math.ceil((pdfHeight+topLeftMargin)/pdfPageHeight)
     
-    pdf.addImage(img, "PNG", topLeftMargin, topLeftMargin, pdfWidth - topLeftMargin*2, pdfHeight);
+    pdf.addImage(img, "PNG", topLeftMargin, topLeftMargin, pdfWidth - topLeftMargin*2, pdfHeight)
     for (let i = 1; i < totalPdfPages; i++) {
-      pdf.addPage("a4", "p");
-      pdf.addImage(img, "PNG", topLeftMargin, -pdfPageHeight*i + topLeftMargin, pdfWidth - topLeftMargin*2, pdfHeight);
+      pdf.addPage("a4", "p")
+      pdf.addImage(img, "PNG", topLeftMargin, -pdfPageHeight*i + topLeftMargin, pdfWidth - topLeftMargin*2, pdfHeight)
     }
-    const pdfData = pdf.output('blob');
-    const url = URL.createObjectURL(pdfData);
-    window.open(url);
-    URL.revokeObjectURL(url);
-    wizard.setLoading(false);
-  };
+    const pdfData = pdf.output('blob')
+    const url = URL.createObjectURL(pdfData)
+    window.open(url)
+    URL.revokeObjectURL(url)
+    wizard.setLoading(false)
+  }
 
   return (
     <QuestionSection>
@@ -664,7 +664,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
         </DialogActions>
       </Dialog>
     </QuestionSection>
-  );
-};
+  )
+}
 
-export default ReviewQuestion;
+export default ReviewQuestion

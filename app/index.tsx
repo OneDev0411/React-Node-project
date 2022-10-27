@@ -1,9 +1,10 @@
-import React from "@libs/react";
-import App from "./App";
-import { createComponents } from "./core/utils/create-components";
-import "./index.css";
-import { AppContextApi } from "./models/type";
-import { defaultDealData, defaultRemittanceChecks } from "./util";
+import React from "@libs/react"
+import App from "./App"
+import { createComponents } from "./core/utils/create-components"
+import { AppContextApi } from "./models/type"
+import { defaultDealData, defaultRemittanceChecks } from "./util"
+import "./index.css"
+
 const { createContext, useState } = React;
 
 const defaultValue: AppContextApi = {

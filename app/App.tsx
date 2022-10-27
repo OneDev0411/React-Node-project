@@ -1,10 +1,10 @@
-import React from "@libs/react";
-import { FormWizard } from "./components/form/Wizard";
-import axios from "axios";
-import { AppContextApi, IRoleData, IPayment } from "./models/type";
-import useApp from "./hooks/useApp";
-import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole } from "./util";
-import Loading from './components/Loading';
+import React from "@libs/react"
+import axios from "axios"
+import useApp from "./hooks/useApp"
+import { AppContextApi, IRoleData, IPayment } from "./models/type"
+import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole } from "./util"
+import { FormWizard } from "./components/form/Wizard"
+import Loading from './components/Loading'
 
 const App: React.FC<EntryProps> = ({
   models,
@@ -22,7 +22,7 @@ const App: React.FC<EntryProps> = ({
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
 
-  // push data to global state from backend data by using contextAPI
+  // push data from database to context
   const dataToContextAPI = async () => {
     let res = await axios.post(
       `${APP_URL}/rechat-commission-app-data-read`,
@@ -31,7 +31,7 @@ const App: React.FC<EntryProps> = ({
       }
     );
     let data = res.data.data;
-    // set initial context agentData
+    // context initial agent data
     let agentRoles: IDealRole[] = roles.filter(
       (role: IDealRole) =>
         role.role === "BuyerAgent" ||
@@ -65,7 +65,7 @@ const App: React.FC<EntryProps> = ({
     });
 
     try {
-      if (data !== null) {
+      if (data !== null) { // in case of data exist in database
         let tempDealData = data.dealData;
 
         if (setSubmitted !== undefined) {
@@ -126,7 +126,7 @@ const App: React.FC<EntryProps> = ({
         if (setCurrentStep !== undefined) {
           setCurrentStep(Number(tempDealData.current_step));
         }
-      } else {
+      } else { // in case of data doesn't exist in database, set default data
         if (setDealData !== undefined) {
           defaultDealData.deal = deal.id;
           setDealData(defaultDealData);
@@ -154,7 +154,7 @@ const App: React.FC<EntryProps> = ({
     dataToContextAPI();
   }, []);
 
-  // save data to database when close the app
+  // save data from context to database when app is closed
   useEffect(() => {
     if (submitted !== 0 && !utils.isBackOffice)
       return () => {

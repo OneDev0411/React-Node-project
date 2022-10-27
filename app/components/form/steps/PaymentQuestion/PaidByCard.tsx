@@ -1,5 +1,5 @@
-import React from "@libs/react";
-import { IPaidByCardProps, IPaidByData } from "../../../../models/type";
+import React from "@libs/react"
+import { IPaidByCardProps, IPaidByData } from "../../../../models/type"
 
 const PaidByCard: React.FC<IPaidByCardProps> = ({
   Ui: {
@@ -18,54 +18,54 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
   updatePayment,
   index,
 }) => {
-  const { useState, useEffect } = React;
+  const { useState, useEffect } = React
   // state
-  const [_paidBy, _setPaidBy] = useState<IPaidByData>(payment.de_paid_by[index]);
-  const [checkedAgent, setCheckedAgent] = useState<boolean>(false);
+  const [_paidBy, _setPaidBy] = useState<IPaidByData>(payment.de_paid_by[index])
+  const [checkedAgent, setCheckedAgent] = useState<boolean>(false)
 
   const handleChangeValue = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IPaidByData
   ) => {
-    updateFlag(true);
-    let value: string = e.target.value;
+    updateFlag(true)
+    let value: string = e.target.value
     if (key != "payment_note" && (value == "NaN" || (value + "").length > 16)) {
-      return;
+      return
     }
     if (
       key == "payment_value" &&
       _paidBy.payment_unit_type == 0 &&
       Number(value) > 100
     ) {
-      return;
+      return
     }
-    let updateValue = JSON.parse(JSON.stringify(_paidBy));
+    let updateValue = JSON.parse(JSON.stringify(_paidBy))
     if (key !== "payment_note") {
       if (value !== "") {
-        updateValue[key] = parseFloat(value);
+        updateValue[key] = parseFloat(value)
       } else {
-        updateValue[key] = 0;
+        updateValue[key] = 0
       }
     }
     if (key == "payment_note") {
-      updateValue[key] = value;
+      updateValue[key] = value
     }
     if (key == "payment_unit_type") {
-      updateValue["payment_value"] = 0;
+      updateValue["payment_value"] = 0
     }
-    _setPaidBy(updateValue);
-  };
+    _setPaidBy(updateValue)
+  }
 
   const handleCheckedValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateFlag(true);
-    let value = e.target.checked;
-    setCheckedAgent(value);
-  };
+    updateFlag(true)
+    let value = e.target.checked
+    setCheckedAgent(value)
+  }
 
   useEffect(() => {
     if (checkedAgent) {
       if (payment.de_paid_by[index].payment_unit_type !== null)
-        _setPaidBy(payment.de_paid_by[index]);
+        _setPaidBy(payment.de_paid_by[index])
       else
         _setPaidBy({
           ..._paidBy,
@@ -73,7 +73,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           payment_value: 0,
           payment_calculated_from: 0,
           payment_note: "",
-        });
+        })
     }
     else {
       _setPaidBy({
@@ -82,31 +82,31 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
         payment_value: null,
         payment_calculated_from: null,
         payment_note: "",
-      });
+      })
     }
   }, [checkedAgent])
   
   useEffect(() => {
     if (payment.de_paid_by[index].payment_value != null)
-      setCheckedAgent(true);
+      setCheckedAgent(true)
     else
-      setCheckedAgent(false);
-  }, []);
+      setCheckedAgent(false)
+  }, [])
   
   useEffect(() => {
     if (index == 0) {
       if (payment.de_paid_by[index].payment_value != null)
-        setCheckedAgent(true);
+        setCheckedAgent(true)
       else
-        setCheckedAgent(false);
+        setCheckedAgent(false)
     }
-  }, [payment.de_paid_to]);
+  }, [payment.de_paid_to])
 
   useEffect(() => {
-    let updateValue = JSON.parse(JSON.stringify(payment));
-    updateValue.de_paid_by[index] = _paidBy;
-    updatePayment(updateValue, paymentIndex);
-  }, [_paidBy]);
+    let updateValue = JSON.parse(JSON.stringify(payment))
+    updateValue.de_paid_by[index] = _paidBy
+    updatePayment(updateValue, paymentIndex)
+  }, [_paidBy])
 
   return (
     <Box
@@ -262,6 +262,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
         </Grid>
       </Grid>
     </Box>
-  );
-};
-export default PaidByCard;
+  )
+}
+
+export default PaidByCard

@@ -1,59 +1,59 @@
-import React from "@libs/react";
-import Ui from "@libs/material-ui";
-import { AppContextApi, IQuestionProps, IDealData } from "../../../../models/type";
-import { APP_URL } from "../../../../util";
-import useApp from "../../../../hooks/useApp";
-import axios from "axios";
+import React from "@libs/react"
+import Ui from "@libs/material-ui"
+import useApp from "../../../../hooks/useApp"
+import { AppContextApi, IQuestionProps, IDealData } from "../../../../models/type"
+import { APP_URL } from "../../../../util"
+import axios from "axios"
 
 const LastQuestion: React.FC<IQuestionProps> = ({
   Wizard,
   api: { notifyOffice, close },
   hooks: { useWizardContext },
 }) => {
-  const { QuestionSection, QuestionTitle, QuestionForm } = Wizard;
-  const { Box, Button, Dialog, DialogTitle, DialogActions } = Ui;
-  const total_data: AppContextApi = useApp();
-  const { dealData, submitted, setSubmitted } = useApp();
-  const wizard = useWizardContext();
-  const [feedback, setFeedback] = React.useState<string>("");
-  const [openFeedback, setOpenFeedback] = React.useState<boolean>(false);
+  const { QuestionSection, QuestionTitle, QuestionForm } = Wizard
+  const { Box, Button, Dialog, DialogTitle, DialogActions } = Ui
+  const total_data: AppContextApi = useApp()
+  const { dealData, submitted, setSubmitted } = useApp()
+  const wizard = useWizardContext()
+  const [feedback, setFeedback] = React.useState<string>("")
+  const [openFeedback, setOpenFeedback] = React.useState<boolean>(false)
   
   const handleSubmit = async () => {
-    wizard.setLoading(true);
-    notifyOffice(true, "Please review the Commission Slip");
+    wizard.setLoading(true)
+    notifyOffice(true, "Please review the Commission Slip")
     const res = await axios.post(
       `${APP_URL}/rechat-commission-app-data-save`,
       {
         data: total_data,
       }
-    );
+    )
     if (submitted === 2) {
-      let postData: IDealData = { ...dealData };
-      postData.approval_request_date = "";
-      postData.status = "";
+      let postData: IDealData = { ...dealData }
+      postData.approval_request_date = ""
+      postData.status = ""
       await axios.post(
         `${APP_URL}/rechat-commission-app-approve`,
         {
           data: postData,
         }
-      );
+      )
     }
     if (setSubmitted !== undefined)
-      setSubmitted(1);
-    wizard.setLoading(false);
+      setSubmitted(1)
+    wizard.setLoading(false)
     if (res.data.message === "successful")
-      setFeedback("Successfully submitted.");
+      setFeedback("Successfully submitted.")
     else {
-      setFeedback("Submit failed.");
+      setFeedback("Submit failed.")
       if (setSubmitted !== undefined)
-        setSubmitted(-1);
+        setSubmitted(-1)
     }
-    setOpenFeedback(true);
-  };
+    setOpenFeedback(true)
+  }
 
   const handleClose = () => {
-    setOpenFeedback(false);
-    close();
+    setOpenFeedback(false)
+    close()
   }
 
   return (
@@ -102,7 +102,7 @@ const LastQuestion: React.FC<IQuestionProps> = ({
         </DialogActions>
       </Dialog>
     </QuestionSection>
-  );
-};
+  )
+}
 
-export default LastQuestion;
+export default LastQuestion

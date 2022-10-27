@@ -1,55 +1,55 @@
 import React from '@libs/react'
-import ReactUse from '@libs/react-use';
+import ReactUse from '@libs/react-use'
 import Ui from '@libs/material-ui'
+import useApp from "../../../../hooks/useApp"
 import { IQuestionProps } from "../../../../models/type"
-import useApp from "../../../../hooks/useApp";
 
 const FinanceProgQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
   api: { updateDealContext, getDealContext },
 }) => {
-  const { useState } = React;
-  const { useDebounce } = ReactUse;
-  const { TextField, Button, Box } = Ui;
-  const wizard = useWizardContext();
-  const { dealData, setDealData, financing, setCurrentStep } = useApp();
-  const { step } = useSectionContext();
+  const { useState } = React
+  const { useDebounce } = ReactUse
+  const { TextField, Button, Box } = Ui
+  const wizard = useWizardContext()
+  const { dealData, setDealData, financing, setCurrentStep } = useApp()
+  const { step } = useSectionContext()
 
-  const financingProgramContextValue = getDealContext('financing_program')?.text;
+  const financingProgramContextValue = getDealContext('financing_program')?.text
 
   // state
-  const [text, setText] = useState<string>(financingProgramContextValue);
-  const [showButton, setShowButton] = useState<boolean>(financingProgramContextValue === undefined ? true : false);
+  const [text, setText] = useState<string>(financingProgramContextValue)
+  const [showButton, setShowButton] = useState<boolean>(financingProgramContextValue === undefined ? true : false)
 
   useDebounce(
     () => {
       if (text !== "")
-        updateDealContext("financing_program", text);
+        updateDealContext("financing_program", text)
     },
     500,
     [text]
-  );
+  )
 
   const handleChange = (event: any) => {
-    setText(event.target.value);
+    setText(event.target.value)
   }
 
   const handleClickNext = () => {
-    setShowButton(false);
+    setShowButton(false)
     if (wizard.currentStep < step + 1) {
       setTimeout(() => {
-        wizard.next();
-        let temp = JSON.parse(JSON.stringify(dealData));
-        temp.current_step = step + 1;
+        wizard.next()
+        let temp = JSON.parse(JSON.stringify(dealData))
+        temp.current_step = step + 1
         if (setDealData !== undefined)
-          setDealData(temp);
+          setDealData(temp)
         if (setCurrentStep !== undefined) {
-          setCurrentStep(step+1);
+          setCurrentStep(step+1)
         }
-      }, 80);
+      }, 80)
     }
-  };
+  }
 
   if (financing == "Mortgage") {
     return (
@@ -83,4 +83,4 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
   }
 }
 
-export default FinanceProgQuestion;
+export default FinanceProgQuestion

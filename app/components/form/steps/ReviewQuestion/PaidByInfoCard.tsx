@@ -1,5 +1,5 @@
-import { IPaidByInfoCardProps } from "../../../../models/type";
-import { stylizeNumber } from "../../../../util";
+import { IPaidByInfoCardProps } from "../../../../models/type"
+import { stylizeNumber } from "../../../../util"
 
 const PaidByInfoCard: React.FC<IPaidByInfoCardProps> = ({
   Ui: {
@@ -23,6 +23,6 @@ const PaidByInfoCard: React.FC<IPaidByInfoCardProps> = ({
         {paidByData.payment_note}
       </Grid>
     </Grid>
-  );
-};
-export default PaidByInfoCard;
+  )
+}
+export default PaidByInfoCard

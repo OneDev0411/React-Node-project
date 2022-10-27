@@ -1,6 +1,6 @@
-import React from "@libs/react";
-import useApp from "../../../../hooks/useApp";
-import { IGCIInfoItemProps, IRoleData } from "../../../../models/type";
+import React from "@libs/react"
+import useApp from "../../../../hooks/useApp"
+import { IGCIInfoItemProps, IRoleData } from "../../../../models/type"
 
 const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   Ui: { Grid, Box, TextField },
@@ -10,51 +10,51 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   index,
   role,
 }) => {
-  const { useState } = React;
-  const { submitted } = useApp();
-  const [_roleData, _setRoleData] = useState<IRoleData>(role);
+  const { useState } = React
+  const { submitted } = useApp()
+  const [_roleData, _setRoleData] = useState<IRoleData>(role)
 
   const handleChangeNumber = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IRoleData
   ) => {
-    let value: string = e.target.value;
+    let value: string = e.target.value
     if (Number(value) + "" === "NaN" || (value + "").length > 16) {
-      return;
+      return
     }
     if (key == "share_percent" && Number(value) > 100) {
-      return;
+      return
     }
     if (submitted !== 1)
-      updateFlag(true);
-    let updateValue = JSON.parse(JSON.stringify(_roleData));
-    updateValue[key] = Number(value);
+      updateFlag(true)
+    let updateValue = JSON.parse(JSON.stringify(_roleData))
+    updateValue[key] = Number(value)
 
     if (key == "share_percent") {
       updateValue["share_value"] = parseFloat(
         ((Number(salesPrice) / 100) * Number(value)).toFixed(3)
-      );
+      )
     }
     if (key == "share_value") {
       updateValue["share_percent"] = parseFloat(
         ((Number(value) / Number(salesPrice)) * 100).toFixed(3)
-      );
+      )
     }
 
-    _setRoleData(updateValue);
-    totalClc(index, updateValue, true);
-  };
+    _setRoleData(updateValue)
+    totalClc(index, updateValue, true)
+  }
 
   const handleChangeText = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IRoleData
   ) => {
-    let value: string = e.target.value;
-    let updateValue = JSON.parse(JSON.stringify(_roleData));
-    updateValue[key] = value;
-    _setRoleData(updateValue);
-    totalClc(index, updateValue, false);
-  };
+    let value: string = e.target.value
+    let updateValue = JSON.parse(JSON.stringify(_roleData))
+    updateValue[key] = value
+    _setRoleData(updateValue)
+    totalClc(index, updateValue, false)
+  }
 
   return (
     <Grid container spacing={2} style={{ paddingTop: 10, paddingBottom: 10 }}>
@@ -108,7 +108,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
         />
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
-export default GCIInfoItem;
+export default GCIInfoItem

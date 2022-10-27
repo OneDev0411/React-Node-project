@@ -1,14 +1,10 @@
-import React from "@libs/react";
-import ReactUse from "@libs/react-use";
-import Ui from "@libs/material-ui";
-import {
-  GCISplitStatus,
-  IQuestionProps,
-  IRoleData,
-} from "../../../../models/type";
-import GCIInfoItem from "./item";
-import useApp from "../../../../hooks/useApp";
-import { sortRole } from "../../../../util";
+import React from "@libs/react"
+import ReactUse from "@libs/react-use"
+import Ui from "@libs/material-ui"
+import useApp from "../../../../hooks/useApp"
+import { GCISplitStatus, IQuestionProps, IRoleData } from "../../../../models/type"
+import { sortRole } from "../../../../util"
+import GCIInfoItem from "./item"
 
 const GCISplitQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -17,52 +13,57 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   Components: { RoleForm, AgentsPicker },
   api: { deleteRole },
 }) => {
-  const { useState, useEffect } = React;
-  const { useDebounce } = ReactUse;
-  const { Grid, Button, Box, IconButton, TextField, Select, MenuItem } = Ui;
-  const wizard = useWizardContext();
-  const { step } = useSectionContext();
-  const { dealData, setDealData, roleData, setRoleData, submitted, setSubmitted, currentStep, setCurrentStep } = useApp();
+  const { useState, useEffect } = React
+  const { useDebounce } = ReactUse
+  const { Grid, Button, Box, IconButton, TextField, Select, MenuItem } = Ui
+  const wizard = useWizardContext()
+  const { step } = useSectionContext()
+  const { dealData, setDealData, roleData, setRoleData, submitted, setSubmitted, currentStep, setCurrentStep } = useApp()
   
   // state
-  const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData);
-  const [status, setStatus] = useState<GCISplitStatus>("Listing");
-  const [currentRole, setCurrentObject] = useState<
-    Partial<IDealFormRole> | IDealRole | null
-  >(null); // data from dropdown select, can be IDealRole object or nameObject
-  const [showButton, setShowButton] = useState<boolean>(true);
-  const [totalPercent, setTotalPercent] = useState<number>(0);
-  const [totalValue, setTotalValue] = useState<number>(0);
-  const [_reasonValue, _setReasonValue] = useState<number>(
-    dealData.gci_reason_select
-  );
-  const [_reasonNote, _setReasonNote] = useState<string>("");
+  const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData)
+  const [status, setStatus] = useState<GCISplitStatus>("Listing")
+  const [currentRole, setCurrentObject] = useState<Partial<IDealFormRole> | IDealRole | null>(null) // data from dropdown select, can be IDealRole object or nameObject
+  const [showButton, setShowButton] = useState<boolean>(true)
+  const [totalPercent, setTotalPercent] = useState<number>(0)
+  const [totalValue, setTotalValue] = useState<number>(0)
+  const [_reasonValue, _setReasonValue] = useState<number>(dealData.gci_reason_select)
+  const [_reasonNote, _setReasonNote] = useState<string>("")
 
   // constants
-  const salesPrice = deal.context.sales_price?.number;
-  const dealType = deal.deal_type;
-  const enderType = deal.context.ender_type?.text;
-  const bothType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? true : false;
+  const salesPrice = deal.context.sales_price?.number
+  const enderType = deal.context.ender_type?.text
+  const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type
 
-  const showReason =
-    bothType ? totalPercent < 4 : totalPercent < 2;
+  const showReason = dealType === "Both" ? totalPercent < 4 : totalPercent < 2
 
-  const notFinishCase1 = showReason && _reasonValue === -1; // not selected reason
-  const notFinishCase2 = showReason && _reasonValue === 2 && _reasonNote === ""; // not completed reason note
-  const isShowButton = showButton && !(notFinishCase1 || notFinishCase2);
+  const notFinishCase1 = showReason && _reasonValue === -1 // not selected reason
+  const notFinishCase2 = showReason && _reasonValue === 2 && _reasonNote === "" // not completed reason note
+  const isShowButton = showButton && !(notFinishCase1 || notFinishCase2)
+
+  let allowedRoles
+  if (dealType === "Both") {
+    allowedRoles = ["CoBuyerAgent", "CoSellerAgent"]
+  } else {
+    if (dealType === "Buying") {
+      allowedRoles = ["CoBuyerAgent"]
+    } else {
+      allowedRoles = ["CoSellerAgent"]
+    }
+  }
 
   const handleChangeReasonTextField = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    _setReasonNote(event.target.value);
-  };
+    _setReasonNote(event.target.value)
+  }
 
   const handleSelectReason = (event: React.ChangeEvent<{ value: unknown }>) => {
-    _setReasonValue(Number(event.target.value));
-  };
+    _setReasonValue(Number(event.target.value))
+  }
 
   const handleUpsertRole = (agentRole: IDealRole) => {
-    const { id, legal_full_name, role, commission_percentage, commission_dollar } = agentRole;
+    const { id, legal_full_name, role, commission_percentage, commission_dollar } = agentRole
     const roleDt: IRoleData = {
       deal: deal.id,
       role_id: id,
@@ -71,39 +72,39 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       share_percent: commission_percentage ? commission_percentage : parseFloat(((Number(commission_dollar) / salesPrice) * 100).toFixed(3)),
       share_value: commission_dollar ? commission_dollar : parseFloat(((salesPrice / 100) * Number(commission_percentage)).toFixed(3)),
       note: "",
-    };
+    }
     
-    let temp = _roleData.slice();
-    temp.push(roleDt);
+    let temp = _roleData.slice()
+    temp.push(roleDt)
     temp.sort((a: IRoleData, b: IRoleData) => { 
-      const key1 = a.role;
-      const key2 = b.role;
-      const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
-      return diff ? diff : a.legal_full_name.localeCompare(b.legal_full_name);
-    });
-    _setRoleData(temp);
+      const key1 = a.role
+      const key2 = b.role
+      const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole]
+      return diff ? diff : a.legal_full_name.localeCompare(b.legal_full_name)
+    })
+    _setRoleData(temp)
     
     // calculate total percent and value when mounted
-    let tempClc = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
+    let tempClc = temp.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
       return parseFloat(
         (Number(totalPercent) + Number(data.share_percent ? data.share_percent : (Number(data.share_value) / salesPrice * 100))).toFixed(3)
-      );
-    }, 0);
-    setTotalPercent(tempClc);
-    tempClc = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
+      )
+    }, 0)
+    setTotalPercent(tempClc)
+    tempClc = temp.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
       return parseFloat(
         (Number(totalValue) + Number(data.share_value ? data.share_value : (Number(data.share_percent) * salesPrice / 100))).toFixed(3)
-      );
-    }, 0);
-    setTotalValue(tempClc);
+      )
+    }, 0)
+    setTotalValue(tempClc)
   }
 
   // this logic is updating
   const handleCloseRoleForm = () => {
     // in case of no match role, ignore cancel action
-    setStatus("Listing");
-    setCurrentObject(null);
-  };
+    setStatus("Listing")
+    setCurrentObject(null)
+  }
 
   const handleSelectAgent = (agent: BrandedUser) => {
     const contact: Partial<IDealFormRole> = {
@@ -114,144 +115,144 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       agents: agent.agents,
       user: agent,
     }
-    setCurrentObject(contact);
-    setStatus("Inserting");
-  };
+    setCurrentObject(contact)
+    setStatus("Inserting")
+  }
 
   const handleClickAddAnotherButton = () => {
-    setStatus("Selecting");
-  };
+    setStatus("Selecting")
+  }
 
   const handleClickNextButton = async () => {
-    setShowButton(false);
-    let temp = JSON.parse(JSON.stringify(dealData));
-    temp.current_step = step + 1;
+    setShowButton(false)
+    let temp = JSON.parse(JSON.stringify(dealData))
+    temp.current_step = step + 1
     if (setDealData !== undefined)
-      setDealData(temp);
+      setDealData(temp)
     setTimeout(() => {
       if (wizard.currentStep < step + 1) {
-        wizard.next();
+        wizard.next()
         if (setCurrentStep !== undefined) {
-          setCurrentStep(step+1);
+          setCurrentStep(step+1)
         }
       }
-    }, 80);
-  };
+    }, 80)
+  }
 
   const handleClickCancelAddButton = () => {
-    setStatus("Listing");
-  };
+    setStatus("Listing")
+  }
 
   const isPrimaryAgent = (role: IRoleData["role"]) => {
     return (
       (role === "BuyerAgent" && dealType === "Buying") ||
       (role === "SellerAgent" && dealType === "Selling")
-    );
-  };
+    )
+  }
 
   const handleClickRemoveButton = async (data: IRoleData, index: number) => {
-    const roleModel = roles.find((role: IDealRole) => role.id == data.role_id);
+    const roleModel = roles.find((role: IDealRole) => role.id == data.role_id)
     if (roleModel !== undefined) {
-      await deleteRole(roleModel);
+      await deleteRole(roleModel)
     }
 
     // for display deleting result
-    let temp = JSON.parse(JSON.stringify(_roleData));
-    temp.splice(index, 1);
-    _setRoleData(temp);
+    let temp = JSON.parse(JSON.stringify(_roleData))
+    temp.splice(index, 1)
+    _setRoleData(temp)
 
     // calculate total percent and value when mounted
-    let tempClc = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
+    let tempClc = temp.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
       return parseFloat(
         (Number(totalPercent) + Number(data.share_percent ? data.share_percent : (Number(data.share_value) / salesPrice * 100))).toFixed(3)
-      );
-    }, 0);
-    setTotalPercent(tempClc);
-    tempClc = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
+      )
+    }, 0)
+    setTotalPercent(tempClc)
+    tempClc = temp.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
       return parseFloat(
         (Number(totalValue) + Number(data.share_value ? data.share_value : (Number(data.share_percent) * salesPrice / 100))).toFixed(3)
-      );
-    }, 0);
-    setTotalValue(tempClc);
-  };
+      )
+    }, 0)
+    setTotalValue(tempClc)
+  }
 
   const updateFlag = (flag: boolean) => {
     if (submitted != 1 && wizard.currentStep < step + 1) {
-      setShowButton(flag);
+      setShowButton(flag)
     }
-  };
+  }
 
   // calculate total percent and value when roleData is changed
   const totalClc = (index: number, data: IRoleData, clcFlag: boolean) => {
-    let temp = JSON.parse(JSON.stringify(_roleData));
-    temp[index] = data;
+    let temp = JSON.parse(JSON.stringify(_roleData))
+    temp[index] = data
     if (clcFlag) {
-      let tempValue = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: number, data: IRoleData) => {
+      let tempValue = temp.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: number, data: IRoleData) => {
         return parseFloat(
           (Number(totalPercent) + Number(data.share_percent)).toFixed(3)
-        );
-      }, 0);
-      setTotalPercent(tempValue);
-      tempValue = temp.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: number, data: IRoleData) => {
+        )
+      }, 0)
+      setTotalPercent(tempValue)
+      tempValue = temp.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: number, data: IRoleData) => {
         return parseFloat(
           (Number(totalValue) + Number(data.share_value)).toFixed(3)
-        );
-      }, 0);
-      setTotalValue(tempValue);
+        )
+      }, 0)
+      setTotalValue(tempValue)
     }
-    _setRoleData(temp);
-  };
+    _setRoleData(temp)
+  }
 
   useEffect(() => {
     if (submitted === 1 || currentStep > step)
-      setShowButton(false);
+      setShowButton(false)
     else
-      setShowButton(true);
+      setShowButton(true)
 
     // calculate total percent and value when mounted
-    let tempClc = _roleData.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
+    let tempClc = _roleData.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
       return parseFloat(
         (Number(totalPercent) + Number(data.share_percent ? data.share_percent : (Number(data.share_value) / salesPrice * 100))).toFixed(3)
-      );
-    }, 0);
-    setTotalPercent(tempClc);
-    tempClc = _roleData.filter((item: IRoleData) => bothType ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
+      )
+    }, 0)
+    setTotalPercent(tempClc)
+    tempClc = _roleData.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
       return parseFloat(
         (Number(totalValue) + Number(data.share_value ? data.share_value : (Number(data.share_percent) * salesPrice / 100))).toFixed(3)
-      );
-    }, 0);
-    setTotalValue(tempClc);
-  }, []);
+      )
+    }, 0)
+    setTotalValue(tempClc)
+  }, [])
 
   // save data to global state 0.5s after data is changed
   useDebounce(
     () => {
-      let temp = JSON.parse(JSON.stringify(dealData));
-      temp.gci_de_value = salesPrice * totalPercent / 100;
+      let temp = JSON.parse(JSON.stringify(dealData))
+      temp.gci_de_value = salesPrice * totalPercent / 100
       if (
-        (totalPercent < 2 && !bothType) ||
-        (totalPercent < 4 && bothType)
+        (totalPercent < 2 && dealType !== "Both") ||
+        (totalPercent < 4 && dealType === "Both")
       ) {
-        temp.gci_reason_select = _reasonValue;
+        temp.gci_reason_select = _reasonValue
         if (_reasonValue === 2) {
-          temp.gci_reason = _reasonNote;
+          temp.gci_reason = _reasonNote
         }
       }
       if (setDealData !== undefined) {
-        setDealData(temp);
+        setDealData(temp)
       }
       if (setRoleData !== undefined) {
-        setRoleData(_roleData);
+        setRoleData(_roleData)
       }
       if (submitted === 1) {
         if (setSubmitted !== undefined) {
-          setSubmitted(2);
+          setSubmitted(2)
         }
       }
     },
     500,
     [_roleData, _reasonValue, _reasonNote]
-  );
+  )
 
   return (
     <QuestionSection>
@@ -261,7 +262,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       <QuestionForm>
         {_roleData.map((item: IRoleData, id: number) => (
           <React.Fragment key={item.role_id}>
-            {(dealType === "Buying" || bothType) && 
+            {(dealType === "Buying" || dealType === "Both") && 
               (item.role == "BuyerAgent" ||
                 item.role == "CoBuyerAgent" ||
                 item.role == "BuyerReferral") &&
@@ -301,7 +302,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                 />
               </Box>
             }
-            {(dealType == "Selling" || bothType) && 
+            {(dealType == "Selling" || dealType === "Both") && 
               (item.role == "SellerAgent" ||
                 item.role == "CoSellerAgent" ||
                 item.role == "SellerReferral") && 
@@ -384,8 +385,10 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               onClose={handleCloseRoleForm}
               title=" "
               form={
-                currentRole === null
-                  ? { role: "" } : { ...currentRole, role: "" }
+                { ...currentRole }
+              }
+              allowedRoles={
+                allowedRoles
               }
             />
           </Box>
@@ -427,7 +430,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         )}
         {showReason && (
           <>
-            <Box id="select-reason-box">
+            <Box>
               <label style={{ float: "right", marginTop: 40 }}>
                 Please select your reason.
               </label>
@@ -475,7 +478,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
         )}
       </QuestionForm>
     </QuestionSection>
-  );
-};
+  )
+}
 
-export default GCISplitQuestion;
+export default GCISplitQuestion
