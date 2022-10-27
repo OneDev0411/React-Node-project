@@ -43,12 +43,12 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
 
   let allowedRoles
   if (dealType === "Both") {
-    allowedRoles = ["CoBuyerAgent", "CoSellerAgent"]
+    allowedRoles = ["CoBuyerAgent", "SellerAgent", "CoSellerAgent"]
   } else {
     if (dealType === "Buying") {
       allowedRoles = ["CoBuyerAgent"]
     } else {
-      allowedRoles = ["CoSellerAgent"]
+      allowedRoles = ["SellerAgent", "CoSellerAgent"]
     }
   }
 
