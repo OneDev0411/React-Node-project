@@ -105,13 +105,14 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
     const imgProperties = pdf.getImageProperties(img);
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (imgProperties.height*pdfWidth) / imgProperties.width;
+    const pdfPageHeight = pdf.internal.pageSize.getHeight();
     const topLeftMargin = 40;
-    const totalPdfPages = Math.ceil(imgProperties.height/pdfHeight) - 1;
+    const totalPdfPages = Math.ceil((pdfHeight+topLeftMargin)/pdfPageHeight);
     
-    pdf.addImage(img, "PNG", topLeftMargin, topLeftMargin, pdfWidth - topLeftMargin*2, pdfHeight - topLeftMargin*2);
-    for (let i = 1; i <= totalPdfPages; i++) {
+    pdf.addImage(img, "PNG", topLeftMargin, topLeftMargin, pdfWidth - topLeftMargin*2, pdfHeight);
+    for (let i = 1; i < totalPdfPages; i++) {
       pdf.addPage("a4", "p");
-      pdf.addImage(img, "PNG", topLeftMargin, -pdfHeight*i + topLeftMargin*5, pdfWidth - topLeftMargin*2, pdfHeight - topLeftMargin*2);
+      pdf.addImage(img, "PNG", topLeftMargin, -pdfPageHeight*i + topLeftMargin, pdfWidth - topLeftMargin*2, pdfHeight);
     }
     const pdfData = pdf.output('blob');
     const url = URL.createObjectURL(pdfData);
