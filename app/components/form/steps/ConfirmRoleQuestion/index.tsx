@@ -90,7 +90,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
         if (matchRoles.length === 0) {
             setStatus("Skipped")
             setTimeout(() => {
-                if (roleType === "SellerLawyer" && currentStep >= step + 1) {
+                if ((roleType === 'SellerLawyer' || roleType === 'LandlordPowerOfAttorney') && currentStep >= step + 1) {
                         wizard.goto(currentStep)
                 } else {
                     handleNext()
@@ -113,7 +113,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
         setShowButton(false)
         setStatus("Skipped")
         setTimeout(() => {
-            if (roleType === "SellerLawyer" && currentStep >= step + 1) {
+            if ((roleType === 'SellerLawyer' || roleType === 'LandlordPowerOfAttorney') && currentStep >= step + 1) {
                     wizard.goto(currentStep)
             } else {
                 handleNext()
@@ -133,7 +133,7 @@ const ConfirmContactInfo: React.FC<IQuestionProps> = ({
 
     const handleClickNextButton = () => {
         setTimeout(() => {
-            if (roleType === "SellerLawyer" && currentStep >= step + 1) {
+            if ((roleType === 'SellerLawyer' || roleType === 'LandlordPowerOfAttorney') && currentStep >= step + 1) {
                 wizard.goto(currentStep)
             } else {
                 handleNext()

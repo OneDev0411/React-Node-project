@@ -9,7 +9,7 @@ export type ConfirmRoleStatus =
 
 export type GCISplitStatus = "Listing" | "Inserting" | "Selecting";
 
-export type RoleType = "Buyer" | "Seller" | "BuyerLawyer" | "SellerLawyer";
+export type RoleType = "Buyer" | "Seller" | "BuyerLawyer" | "SellerLawyer" | "Tenant" | "Landlord" | "TenantPowerOfAttorney" | "LandlordPowerOfAttorney";
 
 export type RemittanceStatus = "ShowBuy" | "ShowSell";
 
@@ -25,7 +25,7 @@ export interface SelectData {
 export interface IGCIInfoItemProps {
   Ui: typeof Ui;
   // itemData: ItemData
-  salesPrice: Number;
+  price: Number;
   index: number;
   saveData: IDataToConText;
   totalClc: (index: number, data: IRoleData, clcFlag: boolean) => void;

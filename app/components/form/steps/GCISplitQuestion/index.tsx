@@ -31,7 +31,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const [_reasonNote, _setReasonNote] = useState<string>("")
 
   // constants
-  const salesPrice = deal.context.sales_price?.number
+  const price = deal.property_type.is_lease ? deal.context.leased_price?.number : deal.context.sales_price?.number
   const enderType = deal.context.ender_type?.text
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type
 
@@ -69,8 +69,8 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       role_id: id,
       legal_full_name: legal_full_name,
       role: role,
-      share_percent: commission_percentage ? commission_percentage : parseFloat(((Number(commission_dollar) / salesPrice) * 100).toFixed(3)),
-      share_value: commission_dollar ? commission_dollar : parseFloat(((salesPrice / 100) * Number(commission_percentage)).toFixed(3)),
+      share_percent: commission_percentage ? commission_percentage : parseFloat(((Number(commission_dollar) / price) * 100).toFixed(3)),
+      share_value: commission_dollar ? commission_dollar : parseFloat(((price / 100) * Number(commission_percentage)).toFixed(3)),
       note: "",
     }
     
@@ -87,13 +87,13 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     // calculate total percent and value when mounted
     let tempClc = temp.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
       return parseFloat(
-        (Number(totalPercent) + Number(data.share_percent ? data.share_percent : (Number(data.share_value) / salesPrice * 100))).toFixed(3)
+        (Number(totalPercent) + Number(data.share_percent ? data.share_percent : (Number(data.share_value) / price * 100))).toFixed(3)
       )
     }, 0)
     setTotalPercent(tempClc)
     tempClc = temp.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
       return parseFloat(
-        (Number(totalValue) + Number(data.share_value ? data.share_value : (Number(data.share_percent) * salesPrice / 100))).toFixed(3)
+        (Number(totalValue) + Number(data.share_value ? data.share_value : (Number(data.share_percent) * price / 100))).toFixed(3)
       )
     }, 0)
     setTotalValue(tempClc)
@@ -164,13 +164,13 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     // calculate total percent and value when mounted
     let tempClc = temp.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
       return parseFloat(
-        (Number(totalPercent) + Number(data.share_percent ? data.share_percent : (Number(data.share_value) / salesPrice * 100))).toFixed(3)
+        (Number(totalPercent) + Number(data.share_percent ? data.share_percent : (Number(data.share_value) / price * 100))).toFixed(3)
       )
     }, 0)
     setTotalPercent(tempClc)
     tempClc = temp.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
       return parseFloat(
-        (Number(totalValue) + Number(data.share_value ? data.share_value : (Number(data.share_percent) * salesPrice / 100))).toFixed(3)
+        (Number(totalValue) + Number(data.share_value ? data.share_value : (Number(data.share_percent) * price / 100))).toFixed(3)
       )
     }, 0)
     setTotalValue(tempClc)
@@ -212,13 +212,13 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     // calculate total percent and value when mounted
     let tempClc = _roleData.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalPercent: any, data: IRoleData) => {
       return parseFloat(
-        (Number(totalPercent) + Number(data.share_percent ? data.share_percent : (Number(data.share_value) / salesPrice * 100))).toFixed(3)
+        (Number(totalPercent) + Number(data.share_percent ? data.share_percent : (Number(data.share_value) / price * 100))).toFixed(3)
       )
     }, 0)
     setTotalPercent(tempClc)
     tempClc = _roleData.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: any, data: IRoleData) => {
       return parseFloat(
-        (Number(totalValue) + Number(data.share_value ? data.share_value : (Number(data.share_percent) * salesPrice / 100))).toFixed(3)
+        (Number(totalValue) + Number(data.share_value ? data.share_value : (Number(data.share_percent) * price / 100))).toFixed(3)
       )
     }, 0)
     setTotalValue(tempClc)
@@ -228,7 +228,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   useDebounce(
     () => {
       let temp = JSON.parse(JSON.stringify(dealData))
-      temp.gci_de_value = salesPrice * totalPercent / 100
+      temp.gci_de_value = price * totalPercent / 100
       if (
         (totalPercent < 2 && dealType !== "Both") ||
         (totalPercent < 4 && dealType === "Both")
@@ -295,7 +295,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                   Ui={Ui}
                   key={id}
                   index={id}
-                  salesPrice={salesPrice}
+                  price={price}
                   saveData={{ updateFlag }}
                   totalClc={totalClc}
                   role={item}
@@ -335,7 +335,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                   Ui={Ui}
                   key={id}
                   index={id}
-                  salesPrice={salesPrice}
+                  price={price}
                   saveData={{ updateFlag }}
                   totalClc={totalClc}
                   role={item}

@@ -21,17 +21,17 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const enderType = deal.context.ender_type?.text
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type
 
-  const sellerInfo = roles.filter((role: IDealRole) => role.role === "Seller")[0]
-  const sellerLawyerInfo = roles.filter((role: IDealRole) => role.role === "SellerLawyer")[0]
-  const buyerInfo = roles.filter((role: IDealRole) => role.role === "Buyer")[0]
-  const buyerLawyerInfo = roles.filter((role: IDealRole) => role.role === "BuyerLawyer")[0]
+  const sellerInfo = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'Landlord' : 'Seller'))[0]
+  const sellerLawyerInfo = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'LandlordPowerOfAttorney' : 'SellerLawyer'))[0]
+  const buyerInfo = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'Tenant' : 'Buyer'))[0]
+  const buyerLawyerInfo = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'TenantPowerOfAttorney' : 'BuyerLawyer'))[0]
 
   const buySideChecks = remittanceChecks.filter(item => item.deal_side === "BuySide")
   const listingSideChecks = remittanceChecks.filter(item => item.deal_side === "ListingSide")
 
-  const salesPrice = getDealContext("sales_price")?.number
-  const financing = getDealContext("financing")?.text
-  const financingProgram = getDealContext("financing_program")?.text
+  const price = deal.property_type.is_lease ? getDealContext("leased_price")?.number : getDealContext("sales_price")?.number
+  const financing = deal.property_type.is_lease ? getDealContext("financing")?.text : ''
+  const financingProgram = deal.property_type.is_lease ? getDealContext("financing_program")?.text : ''
 
   const [openDeclineMsg, setOpenDeclineMsg] = React.useState<boolean>(false)
   const [declineMsg, setDeclineMsg] = React.useState<string>("")
@@ -39,7 +39,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const [openFeedback, setOpenFeedback] = React.useState<boolean>(false)
 
   const gciDeValue = dealData.gci_de_value
-  const gciDePercent = parseFloat((gciDeValue / salesPrice * 100).toFixed(3))
+  const gciDePercent = parseFloat((gciDeValue / price * 100).toFixed(3))
 
   const handleClickApprove = async () => {
     wizard.setLoading(true)
@@ -132,7 +132,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             {sellerInfo && (
               <Grid item xs={6}>
                 <Grid item xs={12}>
-                  <label style={{ fontSize: '17px' }}>Seller Info</label>
+                  <label style={{ fontSize: '17px' }}>{deal.property_type.is_lease ? 'Landlord Info' : 'Seller Info'}</label>
                 </Grid>
                 <Grid item xs={12}>{sellerInfo.legal_full_name}</Grid>
                 <Grid item xs={12}>{sellerInfo.email}</Grid>
@@ -143,7 +143,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             {sellerLawyerInfo && (
               <Grid item xs={6}>
                 <Grid item xs={12}>
-                  <label style={{ fontSize: '17px' }}>Seller's Attorney Info</label>
+                  <label style={{ fontSize: '17px' }}>{deal.property_type.is_lease ? 'Landlord Power Of Attorney Info' : `Seller's Attorney Info`}</label>
                 </Grid>
                 <Grid item xs={12}>{sellerLawyerInfo.legal_full_name}</Grid>
                 <Grid item xs={12}>{sellerLawyerInfo.email}</Grid>
@@ -156,7 +156,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             {buyerInfo && (
               <Grid item xs={6}>
                 <Grid item xs={12}>
-                  <label style={{ fontSize: '17px' }}>Buyer Info</label>
+                  <label style={{ fontSize: '17px' }}>{deal.property_type.is_lease ? 'Tenant Info' : 'Buyer Info'}</label>
                 </Grid>
                 <Grid item xs={12}>{buyerInfo.legal_full_name}</Grid>
                 <Grid item xs={12}>{buyerInfo.email}</Grid>
@@ -168,7 +168,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             {buyerLawyerInfo && (
               <Grid item xs={6}>
                 <Grid item xs={12}>
-                  <label style={{ fontSize: '17px' }}>Buyer's Attorney Info</label>
+                  <label style={{ fontSize: '17px' }}>{deal.property_type.is_lease ? 'Tenant Power Of Attorney Info' : `Buyer's Attorney Info`}</label>
                 </Grid>
                 <Grid item xs={12}>{buyerLawyerInfo.legal_full_name}</Grid>
                 <Grid item xs={12}>{buyerLawyerInfo.email}</Grid>
@@ -178,23 +178,27 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             )}
             </Grid>
           </Grid>
-          <Grid container style={{ marginTop: "30px" }}>
-            <Grid item xs={12}>
-              <label style={{ fontSize: '17px' }}>Financing</label>
-            </Grid>
-            <Grid item xs={12}>
-              {financing}
-            </Grid>
-          </Grid>
-          {financing != "Cash Deal" && (
-            <Grid container style={{ marginTop: "30px" }}>
-              <Grid item xs={12}>
-                <label style={{ fontSize: '17px' }}>Financing Program</label>
+          {!deal.property_type.is_lease && (
+            <>
+              <Grid container style={{ marginTop: "30px" }}>
+                <Grid item xs={12}>
+                  <label style={{ fontSize: '17px' }}>Financing</label>
+                </Grid>
+                <Grid item xs={12}>
+                  {financing}
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                {financingProgram}
-              </Grid>
-            </Grid>
+              {financing != "Cash Deal" && (
+                <Grid container style={{ marginTop: "30px" }}>
+                  <Grid item xs={12}>
+                    <label style={{ fontSize: '17px' }}>Financing Program</label>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {financingProgram}
+                  </Grid>
+                </Grid>
+              )}
+            </>
           )}
           <Grid container style={{ marginTop: "30px" }}>
             <Grid item xs={12}>
@@ -203,10 +207,10 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <Grid item xs={12}>
               {gciDePercent}%
               <Box>
-                <strong>{"$" + stylizeNumber(salesPrice)}</strong>
-                {` (Sales Price) * ${gciDePercent}% (GCI) = `}
+                <strong>{"$" + stylizeNumber(price)}</strong>
+                {` ${deal.property_type.is_lease ? '(Leased Price)' : '(Sales Price)'} * ${gciDePercent}% (GCI) = `}
                 <strong>
-                  ${stylizeNumber(salesPrice * Number(gciDePercent) / 100)}
+                  ${stylizeNumber(price * Number(gciDePercent) / 100)}
                 </strong>
               </Box>
             </Grid>
@@ -233,10 +237,10 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                   {role.legal_full_name}
                 </Grid>
                 <Grid item xs={12}>
-                  Share: {role.share_percent == null ? parseFloat((Number(role.share_value) / Number(salesPrice) * 100).toFixed(3)) : role.share_percent}%
+                  Share: {role.share_percent == null ? parseFloat((Number(role.share_value) / Number(price) * 100).toFixed(3)) : role.share_percent}%
                 </Grid>
                 <Grid item xs={12}>
-                  Dollar: ${stylizeNumber(Number(role.share_value == null ? parseFloat((Number(salesPrice) * Number(role.share_percent) / 100).toFixed(3)) : role.share_value))}
+                  Dollar: ${stylizeNumber(Number(role.share_value == null ? parseFloat((Number(price) * Number(role.share_percent) / 100).toFixed(3)) : role.share_value))}
                 </Grid>
                 <Grid item xs={12}>
                   {role.note}

@@ -6,7 +6,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   Ui: { Grid, Box, TextField },
   saveData: { updateFlag },
   totalClc,
-  salesPrice,
+  price,
   index,
   role,
 }) => {
@@ -32,12 +32,12 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
 
     if (key == "share_percent") {
       updateValue["share_value"] = parseFloat(
-        ((Number(salesPrice) / 100) * Number(value)).toFixed(3)
+        ((Number(price) / 100) * Number(value)).toFixed(3)
       )
     }
     if (key == "share_value") {
       updateValue["share_percent"] = parseFloat(
-        ((Number(value) / Number(salesPrice)) * 100).toFixed(3)
+        ((Number(value) / Number(price)) * 100).toFixed(3)
       )
     }
 
@@ -76,7 +76,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           type="number"
           label="Share(%)"
           defaultValue={5}
-          value={_roleData.share_percent ? Number(_roleData.share_percent) : parseFloat(((Number(_roleData.share_value) / Number(salesPrice)) * 100).toFixed(3))}
+          value={_roleData.share_percent ? Number(_roleData.share_percent) : parseFloat(((Number(_roleData.share_value) / Number(price)) * 100).toFixed(3))}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChangeNumber(e, "share_percent")
           }
@@ -88,7 +88,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           size="small"
           type="number"
           label="Share($)"
-          value={_roleData.share_value ? Number(_roleData.share_value) : parseFloat(((Number(_roleData.share_percent) / 100) * Number(salesPrice)).toFixed(3))}
+          value={_roleData.share_value ? Number(_roleData.share_value) : parseFloat(((Number(_roleData.share_percent) / 100) * Number(price)).toFixed(3))}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChangeNumber(e, "share_value")
           }

@@ -11,19 +11,24 @@ import LastQuestion from "../steps/LastQuestion"
 import { IQuestionProps } from "../../../models/type"
 
 export const FormWizard: React.FC<IQuestionProps> = (props) => {
-  const { Wizard, utils } = props
+  const { Wizard, utils, models } = props
+  const { deal } = models
   const isBackOffice = utils.isBackOffice
 
   if (!isBackOffice) {
     return (
       <Wizard.QuestionWizard onFinish={() => console.log("done")}>
         <StartQuestion {...props} />
-        <ComformRoleQuestion {...props} roleType="Seller" />
-        <ComformRoleQuestion {...props} roleType="Buyer" />
-        <ComformRoleQuestion {...props} roleType="BuyerLawyer" />
-        <ComformRoleQuestion {...props} roleType="SellerLawyer" />
-        <FinanceTransQuestion {...props} />
-        <FinanceProgQuestion {...props} />
+        <ComformRoleQuestion {...props} roleType={deal.property_type.is_lease ? "Landlord" : "Seller"} />
+        <ComformRoleQuestion {...props} roleType={deal.property_type.is_lease ? "Tenant" : "Buyer"} />
+        <ComformRoleQuestion {...props} roleType={deal.property_type.is_lease ? "TenantPowerOfAttorney" : "BuyerLawyer"} />
+        <ComformRoleQuestion {...props} roleType={deal.property_type.is_lease ? "LandlordPowerOfAttorney" : "SellerLawyer"} />
+        {!deal.property_type.is_lease && (
+          <>
+            <FinanceTransQuestion {...props} />
+            <FinanceProgQuestion {...props} />
+          </>
+        )}
         <GCISplitQuestion {...props} />
         <RemittanceQuestion {...props} />
         <PaymentQuestionInside {...props} />

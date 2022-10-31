@@ -119,7 +119,12 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     if (setDealData !== undefined)
       setDealData(temp)
     setTimeout(() => {
-      wizard.next()
+      if (wizard.currentStep < step + 1) {
+        wizard.next()
+        if (setCurrentStep !== undefined) {
+          setCurrentStep(step+1)
+        }
+      }
     }, 80)
   }
 
@@ -167,13 +172,13 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
       setSelectValueBuySide(-1)
     if ((buySideChecks.length == 1 && (buySideChecks[0].check_num != 0 || buySideChecks[0].amount != 0) && _dealData.remittance_buy_side_bank_wire_amount == null) || buySideChecks.length > 1)
       setSelectValueBuySide(0)
-    if (buySideChecks.length == 1 && buySideChecks[0].check_num == 0 && buySideChecks[0].amount == 0 && _dealData.remittance_buy_side_bank_wire_amount != null)
+    if (buySideChecks.length == 1 && buySideChecks[0].check_num == 0 && buySideChecks[0].amount == 0 && (_dealData.remittance_buy_side_bank_wire_amount != null && _dealData.remittance_buy_side_bank_wire_amount != undefined))
       setSelectValueBuySide(1)
     if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && (_dealData.remittance_listing_side_bank_wire_amount == null || _dealData.remittance_listing_side_bank_wire_amount == undefined))
       setSelectValueListingSide(-1)
     if ((listingSideChecks.length == 1 && listingSideChecks[0].check_num != 0 && listingSideChecks[0].amount != 0 && _dealData.remittance_listing_side_bank_wire_amount == null) || listingSideChecks.length > 1)
       setSelectValueListingSide(0)
-    if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && _dealData.remittance_listing_side_bank_wire_amount != null)
+    if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && (_dealData.remittance_listing_side_bank_wire_amount != null && _dealData.remittance_listing_side_bank_wire_amount != undefined))
       setSelectValueListingSide(1)
     
     const _buySideChecks = buySideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0)

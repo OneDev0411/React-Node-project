@@ -76,6 +76,10 @@ export const roleText: { [key: string]: string } = {
   Buyer: "Buyer",
   BuyerLawyer: "Buyer's attorney",
   SellerLawyer: "Seller's attorney",
+  Landlord: "Landlord",
+  Tenant: "Tenant",
+  TenantPowerOfAttorney: "Tenant Power Of Attorney",
+  LandlordPowerOfAttorney: "Landlord Power Of Attorney",
 };
 
 export const sortRole = {
@@ -182,8 +186,8 @@ export const defaultDealData: IDealData = {
   gci_reason: "",
   brokerage_commission: 0,
   stage_cost: 0,
-  remittance_buy_side_bank_wire_amount: 0,
-  remittance_listing_side_bank_wire_amount: 0,
+  remittance_buy_side_bank_wire_amount: null,
+  remittance_listing_side_bank_wire_amount: null,
   approval_request_date: "",
   status: "",
   submitted: 0,
