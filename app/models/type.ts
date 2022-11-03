@@ -50,6 +50,8 @@ export interface IDealData {
 export interface IRoleData {
   deal: string;
   role_id: IDealRole["id"];
+  user_id: string | null;
+  agent_id: string | null; // d365AgentId
   legal_full_name: IDealRole["legal_full_name"];
   role: IDealRole["role"];
   share_percent: IDealRole["commission_percentage"];

@@ -23,12 +23,8 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
         <ComformRoleQuestion {...props} roleType={deal.property_type.is_lease ? "Tenant" : "Buyer"} />
         <ComformRoleQuestion {...props} roleType={deal.property_type.is_lease ? "TenantPowerOfAttorney" : "BuyerLawyer"} />
         <ComformRoleQuestion {...props} roleType={deal.property_type.is_lease ? "LandlordPowerOfAttorney" : "SellerLawyer"} />
-        {!deal.property_type.is_lease && (
-          <>
-            <FinanceTransQuestion {...props} />
-            <FinanceProgQuestion {...props} />
-          </>
-        )}
+        {!deal.property_type.is_lease && <FinanceTransQuestion {...props} />}
+        {!deal.property_type.is_lease && <FinanceProgQuestion {...props} />}
         <GCISplitQuestion {...props} />
         <RemittanceQuestion {...props} />
         <PaymentQuestionInside {...props} />

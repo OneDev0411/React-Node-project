@@ -11,6 +11,9 @@ export default (sequelize, Sequelize) => {
         allowNull: false,
         unique: true,
       },
+      agent_id: {
+        type: Sequelize.TEXT,
+      },
       legal_full_name: {
         type: Sequelize.TEXT,
         allowNull: false,

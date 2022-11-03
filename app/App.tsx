@@ -46,10 +46,13 @@ const App: React.FC<EntryProps> = ({
         role,
         commission_percentage,
         commission_dollar,
+        user,
       } = agentRole;
       return {
         deal: deal.id,
         role_id: id,
+        user_id: user ? user.id : null,
+        agent_id: null,
         legal_full_name: legal_full_name,
         role: role,
         share_percent: commission_percentage,

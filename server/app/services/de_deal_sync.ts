@@ -25,7 +25,7 @@ const getApprovalInfo = async (deal: any) => {
   return { approval_request_date: result?.approval_request_date, status: result?.status };
 };
 
-const getAgentIdFromUserId = async (user_id) => {
+export const getAgentIdFromUserId = async (user_id) => {
   try {
     // get de user data from user id in deal data
     const dataList = await rechatDB.sequelize.query(

@@ -63,10 +63,12 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   }
 
   const handleUpsertRole = (agentRole: IDealRole) => {
-    const { id, legal_full_name, role, commission_percentage, commission_dollar } = agentRole
+    const { id, legal_full_name, role, commission_percentage, commission_dollar, user } = agentRole
     const roleDt: IRoleData = {
       deal: deal.id,
       role_id: id,
+      user_id: user ? user.id : null,
+      agent_id: null,
       legal_full_name: legal_full_name,
       role: role,
       share_percent: commission_percentage ? commission_percentage : parseFloat(((Number(commission_dollar) / price) * 100).toFixed(3)),

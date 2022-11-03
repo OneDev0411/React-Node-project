@@ -16,7 +16,6 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
   const { dealData, setDealData, setFinancing, setCurrentStep } = useApp()
 
   const financingContextValue = getDealContext('financing')?.text
-  const financingProgramContextValue = getDealContext('financing_program')?.text
 
   // state
   const [curSelect, setCurSelect] = useState<string>(financingContextValue)
@@ -30,7 +29,7 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
       setFinancing(event.target.value)
     if (wizard.currentStep < step + 1) {
       setTimeout(() => {
-        if (event.target.value == "Cash Deal" && financingProgramContextValue != "") {
+        if (event.target.value == "Cash Deal") {
           wizard.goto(step + 2)
           let temp = JSON.parse(JSON.stringify(dealData))
           temp.current_step = step + 2

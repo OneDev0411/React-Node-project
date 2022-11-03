@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import {
   ICombinedDealData,
   ICommissionData,
-  IDealData,
 } from "../../../../type";
 import db from "../../../models/commissionAppDB";
 import sync from "../../../services/de_deal_sync";
+import { getAgentIdFromUserId } from "../../../services/de_deal_sync";
 import Jsonb from "jsonb-builder";
 const { AppDealModel, AppRoleModel, AppRemittanceCheckModel, AppPaymentModel, DealModel } = db;
 
@@ -29,6 +29,15 @@ const saveAppData = async (data: any, model: any) => {
     });
   }
   if (findRes === null) {
+    if (model == AppRoleModel) {
+      let agentId = null;
+      if (data.user_id) {
+        agentId = await getAgentIdFromUserId(data.user_id);
+      }
+      if (agentId && data.agent_id === null) {
+        data.agent_id = agentId;
+      }
+    }
     await model.create(data);
   } else {
     if (model == AppRemittanceCheckModel) {

@@ -6,19 +6,19 @@ const StartQuestion: React.FC<IQuestionProps> = ({
   Wizard,
   hooks: { useWizardContext },
   api: { getDealContext },
-  models: { roles },
+  models: { deal, roles },
 }) => {
   const { useEffect } = React
   const { QuestionSection, QuestionTitle } = Wizard
   const wizard = useWizardContext()
   const { currentStep, submitted } = useApp()
   
-  const seller = roles.filter((role: IDealRole) => role.role === "Seller")
-  const buyer = roles.filter((role: IDealRole) => role.role === "Buyer")
-  const buyerLawyer = roles.filter((role: IDealRole) => role.role === "BuyerLawyer")
-  const sellerLawyer = roles.filter((role: IDealRole) => role.role === "SellerLawyer")
-  const financingContextValue = getDealContext('financing')?.text
-  const financingProgramContextValue = getDealContext('financing_program')?.text
+  const seller = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'Landlord' : 'Seller'))
+  const buyer = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'Tenant' : 'Buyer'))
+  const buyerLawyer = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'TenantPowerOfAttorney' : 'BuyerLawyer'))
+  const sellerLawyer = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'LandlordPowerOfAttorney' : 'SellerLawyer'))
+  const financingContextValue = deal.property_type.is_lease ? '' : getDealContext('financing')?.text
+  const financingProgramContextValue = deal.property_type.is_lease ? '' : getDealContext('financing_program')?.text
 
   // mockup loading, need to remove after the backend is implemented
   useEffect(() => {
