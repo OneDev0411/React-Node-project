@@ -109,6 +109,9 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
     .value()
   const OfficeGCIValue = Number(price) * OfficeGCIPercent / 100
 
+  const activeInsidePayments = insidePayments.filter((item: IPayment) => item.de_paid_to !== '')
+  const activeOutsidePayments = outsidePayments.filter((item: IPayment) => item.de_paid_to !== '')
+
   const handleClickApprove = async () => {
     wizard.setLoading(true)
     updateTaskStatus('Approved', false, '')
@@ -430,94 +433,95 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             </>
           )}
         </Grid>
-        
-        <Grid container style={styles.group}>
-          <Grid item xs={12} style={styles.group_title}>
-            <label>PAYMENTS AND FEES</label>
-          </Grid>
-          {insidePayments.length > 0 && (
-            <>
-              <Grid item xs={12}>
-                <label>Inside Douglas Elliman Payments:</label>
-              </Grid>
-              {insidePayments.map((item: IPayment, idx: number) => 
-                <Grid container key={idx} style={{ margin: '7px 0' }}>
-                  <Grid item xs={4}>
-                    <label>Payment type</label> {item.de_payment_type}
-                  </Grid>
-                  <Grid item xs={8}>
-                    <label>Paid To:</label> {item.de_paid_to}
-                  </Grid>
-                  {item.de_paid_by.filter(paidByItem => paidByItem.payment_unit_type !== null).length > 0 && (
-                    <>
-                      <Grid item xs={1}>
-                        <label>Paid By:</label>
-                      </Grid>
-                      <Grid item xs={11}>
-                        {item.de_paid_by.filter(item => item.payment_unit_type !== null).map((paidByItem: IPaidByData, idx: number) =>
-                          <Grid container style={{ marginTop: '5px' }} key={idx}>
-                            <Grid item xs={3}>
-                              {paidByItem.payment_by_name}
-                              <b style={{ marginLeft: 10, fontSize: 13, color: '#ababab' }}>{paidByItem.role}</b>
-                            </Grid>
-                            <Grid item xs={2}>
-                              {paidByItem.payment_unit_type == 0 ? `${paidByItem.payment_value}%` : `$${stylizeNumber(Number(paidByItem.payment_value))}`}
-                            </Grid>
-                            <Grid item xs={3}>
-                              Calculated from: <b>{paidByItem.payment_calculated_from == 0 ? 'My GCI' : 'My NET'}</b>
-                            </Grid>
-                            <Grid item xs={3}>
-                              Note: {paidByItem.payment_note}
-                            </Grid>
-                          </Grid>
-                        )}
-                      </Grid>
-                    </>
-                  )}
+        {activeInsidePayments.length > 0 || activeOutsidePayments.length > 0 && (
+          <Grid container style={styles.group}>
+            <Grid item xs={12} style={styles.group_title}>
+              <label>PAYMENTS AND FEES</label>
+            </Grid>
+            {activeInsidePayments.length > 0 && (
+              <>
+                <Grid item xs={12}>
+                  <label>Inside Douglas Elliman Payments:</label>
                 </Grid>
-              )}
-            </>
-          )}
-          {outsidePayments.length > 0 && (
-            <>
-              <Grid item xs={12} style={{ marginTop: '5px' }}>
-                <label>Outside Douglas Elliman Payments:</label>
-              </Grid>
-              {outsidePayments.map((item: IPayment, idx: number) => 
-                <Grid container key={idx} style={{ margin: '7px 0' }}>
-                  <Grid item xs={4}>
-                    <label>Payment type</label> {item.de_payment_type}
-                  </Grid>
-                  <Grid item xs={8}>
-                    <label>Paid To:</label> {item.de_paid_to}
-                  </Grid>
-                  <Grid item xs={1}>
-                    <label>Paid By:</label>
-                  </Grid>
-                  <Grid item xs={11}>
-                    {item.de_paid_by.filter(item => item.payment_unit_type !== null).map((paidByItem: IPaidByData, idx: number) =>
-                      <Grid container style={{ marginTop: '5px' }} key={idx}>
-                        <Grid item xs={3}>
-                          {paidByItem.payment_by_name}
-                          <b style={{ marginLeft: 10, fontSize: 13, color: '#ababab' }}>{paidByItem.role}</b>
+                {activeInsidePayments.map((item: IPayment, idx: number) => 
+                  <Grid container key={idx} style={{ margin: '7px 0' }}>
+                    <Grid item xs={4}>
+                      <label>Payment type</label> {item.de_payment_type}
+                    </Grid>
+                    <Grid item xs={8}>
+                      <label>Paid To:</label> {item.de_paid_to}
+                    </Grid>
+                    {item.de_paid_by.filter(paidByItem => paidByItem.payment_unit_type !== null).length > 0 && (
+                      <>
+                        <Grid item xs={1}>
+                          <label>Paid By:</label>
                         </Grid>
-                        <Grid item xs={2}>
-                          {paidByItem.payment_unit_type == 0 ? `${paidByItem.payment_value}%` : `$${stylizeNumber(Number(paidByItem.payment_value))}`}
+                        <Grid item xs={11}>
+                          {item.de_paid_by.filter(item => item.payment_unit_type !== null).map((paidByItem: IPaidByData, idx: number) =>
+                            <Grid container style={{ marginTop: '5px' }} key={idx}>
+                              <Grid item xs={3}>
+                                {paidByItem.payment_by_name}
+                                <b style={{ marginLeft: 10, fontSize: 13, color: '#ababab' }}>{paidByItem.role}</b>
+                              </Grid>
+                              <Grid item xs={2}>
+                                {paidByItem.payment_unit_type == 0 ? `${paidByItem.payment_value}%` : `$${stylizeNumber(Number(paidByItem.payment_value))}`}
+                              </Grid>
+                              <Grid item xs={3}>
+                                Calculated from: <b>{paidByItem.payment_calculated_from == 0 ? 'My GCI' : 'My NET'}</b>
+                              </Grid>
+                              <Grid item xs={3}>
+                                Note: {paidByItem.payment_note}
+                              </Grid>
+                            </Grid>
+                          )}
                         </Grid>
-                        <Grid item xs={3}>
-                          Calculated from: <b>{paidByItem.payment_calculated_from == 0 ? 'My GCI' : 'My NET'}</b>
-                        </Grid>
-                        <Grid item xs={3}>
-                          Note: {paidByItem.payment_note}
-                        </Grid>
-                      </Grid>
+                      </>
                     )}
                   </Grid>
+                )}
+              </>
+            )}
+            {activeOutsidePayments.length > 0 && (
+              <>
+                <Grid item xs={12} style={{ marginTop: '5px' }}>
+                  <label>Outside Douglas Elliman Payments:</label>
                 </Grid>
-              )}
-            </>
-          )}
-        </Grid>
+                {activeOutsidePayments.map((item: IPayment, idx: number) => 
+                  <Grid container key={idx} style={{ margin: '7px 0' }}>
+                    <Grid item xs={4}>
+                      <label>Payment type</label> {item.de_payment_type}
+                    </Grid>
+                    <Grid item xs={8}>
+                      <label>Paid To:</label> {item.de_paid_to}
+                    </Grid>
+                    <Grid item xs={1}>
+                      <label>Paid By:</label>
+                    </Grid>
+                    <Grid item xs={11}>
+                      {item.de_paid_by.filter(item => item.payment_unit_type !== null).map((paidByItem: IPaidByData, idx: number) =>
+                        <Grid container style={{ marginTop: '5px' }} key={idx}>
+                          <Grid item xs={3}>
+                            {paidByItem.payment_by_name}
+                            <b style={{ marginLeft: 10, fontSize: 13, color: '#ababab' }}>{paidByItem.role}</b>
+                          </Grid>
+                          <Grid item xs={2}>
+                            {paidByItem.payment_unit_type == 0 ? `${paidByItem.payment_value}%` : `$${stylizeNumber(Number(paidByItem.payment_value))}`}
+                          </Grid>
+                          <Grid item xs={3}>
+                            Calculated from: <b>{paidByItem.payment_calculated_from == 0 ? 'My GCI' : 'My NET'}</b>
+                          </Grid>
+                          <Grid item xs={3}>
+                            Note: {paidByItem.payment_note}
+                          </Grid>
+                        </Grid>
+                      )}
+                    </Grid>
+                  </Grid>
+                )}
+              </>
+            )}
+          </Grid>
+        )}
         
         <Grid container style={styles.group}>
           <Grid item xs={12} style={styles.group_title}>
