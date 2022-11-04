@@ -6,7 +6,7 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import useApp from '../../../../hooks/useApp'
 import { IDealData, IPaidByData, IQuestionProps, IRemittanceChecks, IRoleData, IPayment } from '../../../../models/type'
-import { stylizeNumber, APP_URL } from '../../../../util'
+import { stylizeNumber, APP_URL, commissionReason } from '../../../../util'
 
 const ReviewQuestion: React.FC<IQuestionProps> = ({
   Wizard,
@@ -334,6 +334,13 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <Grid item xs={2}>${stylizeNumber(Number(BuySideDealValue + ListSideDealValue))}</Grid>
             <Grid item xs={2}>${stylizeNumber(Number(gciDeValue))}</Grid>
             <Grid item xs={3}>${stylizeNumber(Number(OfficeGCIValue))}</Grid>
+          </Grid>
+          <Grid container>
+            <Grid item xs={12}>
+              {dealData.gci_reason_select === 0 && commissionReason.Approved}
+              {dealData.gci_reason_select === 1 && commissionReason.CoBroke}
+              {dealData.gci_reason_select === 2 && dealData.gci_reason}
+            </Grid>
           </Grid>
           <Grid container>
             <Grid container style={{margin: '5px 0'}}>

@@ -91,6 +91,12 @@ export const sortRole = {
   SellerReferral: 6,
 };
 
+export const commissionReason = {
+  Approved: 'Approved Commission Reduction',
+  CoBroke: 'Co-broke Commission Offered',
+  Other: 'Other'
+};
+
 
 export const financeSelectDataList: SelectData[] = [
   {

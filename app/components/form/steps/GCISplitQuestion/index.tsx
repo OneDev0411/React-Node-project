@@ -3,7 +3,7 @@ import ReactUse from "@libs/react-use"
 import Ui from "@libs/material-ui"
 import useApp from "../../../../hooks/useApp"
 import { GCISplitStatus, IQuestionProps, IRoleData } from "../../../../models/type"
-import { sortRole } from "../../../../util"
+import { sortRole, commissionReason } from "../../../../util"
 import GCIInfoItem from "./item"
 
 const GCISplitQuestion: React.FC<IQuestionProps> = ({
@@ -28,7 +28,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   const [totalPercent, setTotalPercent] = useState<number>(0)
   const [totalValue, setTotalValue] = useState<number>(0)
   const [_reasonValue, _setReasonValue] = useState<number>(dealData.gci_reason_select)
-  const [_reasonNote, _setReasonNote] = useState<string>("")
+  const [_reasonNote, _setReasonNote] = useState<string>(dealData.gci_reason)
 
   // constants
   const price = deal.property_type.is_lease ? deal.context.leased_price?.number : deal.context.sales_price?.number
@@ -447,9 +447,9 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               style={{ width: "100%" }}
             >
               <MenuItem value={-1}>Select...</MenuItem>
-              <MenuItem value={0}>Approved Commission Reduction</MenuItem>
-              <MenuItem value={1}>Co-broke Commission Offered</MenuItem>
-              <MenuItem value={2}>Other</MenuItem>
+              <MenuItem value={0}>{commissionReason.Approved}</MenuItem>
+              <MenuItem value={1}>{commissionReason.CoBroke}</MenuItem>
+              <MenuItem value={2}>{commissionReason.Other}</MenuItem>
             </Select>
             {_reasonValue == 2 && (
               <TextField
