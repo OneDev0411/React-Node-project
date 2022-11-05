@@ -112,6 +112,9 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const activeInsidePayments = insidePayments.filter((item: IPayment) => item.de_paid_to !== '')
   const activeOutsidePayments = outsidePayments.filter((item: IPayment) => item.de_paid_to !== '')
 
+  const nonGCIInsidePayments = insidePayments.filter((item: IPayment) => item.de_payment_type === 'Team Member')
+  const nonGCIOutsidePayments = outsidePayments.filter((item: IPayment) => item.de_payment_type === 'Team Member')
+
   const handleClickApprove = async () => {
     wizard.setLoading(true)
     updateTaskStatus('Approved', false, '')
@@ -265,12 +268,12 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           )}
         </Grid>
         
-        {(insidePayments.length > 0 || outsidePayments.length > 0) && (
+        {(nonGCIInsidePayments.length > 0 || nonGCIOutsidePayments.length > 0) && (
           <Grid container style={styles.group}>
             <Grid item xs={12} style={styles.group_title}>
               <label>NON-GCI AGENTS</label>
             </Grid>
-            {insidePayments.map((item: IPayment, idx: number) =>
+            {nonGCIInsidePayments.map((item: IPayment, idx: number) =>
               item.de_paid_to && (
                 <Grid container spacing={2} key={idx}>
                   <Grid item xs={3}>{item.de_paid_to}</Grid>
@@ -279,7 +282,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 </Grid>
               )
             )}
-            {outsidePayments.map((item: IPayment, idx: number) =>
+            {nonGCIOutsidePayments.map((item: IPayment, idx: number) =>
               item.de_paid_to && (
                 <Grid container spacing={2} key={idx}>
                   <Grid item xs={3}>{item.de_paid_to}</Grid>
@@ -433,7 +436,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             </>
           )}
         </Grid>
-        {activeInsidePayments.length > 0 || activeOutsidePayments.length > 0 && (
+        {(activeInsidePayments.length > 0 || activeOutsidePayments.length > 0) && (
           <Grid container style={styles.group}>
             <Grid item xs={12} style={styles.group_title}>
               <label>PAYMENTS AND FEES</label>
