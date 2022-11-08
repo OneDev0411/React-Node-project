@@ -525,15 +525,15 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             )}
           </Grid>
         )}
-        
+
         <Grid container style={styles.group}>
           <Grid item xs={12} style={styles.group_title}>
-            <label>SELLER(S)</label>
+            <label>{deal.property_type.is_lease ? "LANDLORD(S)" : "SELLER(S)"}</label>
           </Grid>
           {sellers.map((item, idx) => 
             <React.Fragment key={idx}>
               <Grid item xs={3}>
-                <label>Seller Name</label>
+                <label>{deal.property_type.is_lease ? "Landlord Name" : "Seller Name"}</label>
               </Grid>
               <Grid item xs={3}>
                 {item.legal_full_name}
@@ -544,12 +544,12 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
         
         <Grid container style={styles.group}>
           <Grid item xs={12} style={styles.group_title}>
-            <label>BUYER(S)</label>
+            <label>{deal.property_type.is_lease ? "TENANT(S)" : "BUYER(S)"}</label>
           </Grid>
           {buyers.map((item, idx) => 
             <React.Fragment key={idx}>
               <Grid item xs={3}>
-                <label>Buyer Name</label>
+                <label>{deal.property_type.is_lease ? "Tenant Name" : "Buyer Name"}</label>
               </Grid>
               <Grid item xs={3}>
                 {item.legal_full_name}
