@@ -57,6 +57,7 @@ export interface IRoleData {
   share_percent: IDealRole["commission_percentage"];
   share_value: IDealRole["commission_dollar"];
   note: string;
+  address: string
 }
 
 export interface IRemittanceChecks {
@@ -95,6 +96,7 @@ export interface IPayment {
   de_payment_mail: string;
   payment_side: string;
   keyIndex: number;
+  de_office_address: string;
 }
 
 export interface AppContextApi {

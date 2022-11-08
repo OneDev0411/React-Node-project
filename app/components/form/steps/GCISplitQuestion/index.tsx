@@ -74,6 +74,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       share_percent: commission_percentage ? commission_percentage : parseFloat(((Number(commission_dollar) / price) * 100).toFixed(3)),
       share_value: commission_dollar ? commission_dollar : parseFloat(((price / 100) * Number(commission_percentage)).toFixed(3)),
       note: "",
+      address: ""
     }
     
     let temp = _roleData.slice()

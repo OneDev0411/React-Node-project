@@ -5,7 +5,7 @@ import {
 } from "../../../../type";
 import db from "../../../models/commissionAppDB";
 import sync from "../../../services/de_deal_sync";
-import { getAgentIdFromUserId } from "../../../services/de_deal_sync";
+import { getAgentIdFromUserId, getAddressFromUserId } from "../../../services/de_deal_sync";
 import Jsonb from "jsonb-builder";
 const { AppDealModel, AppRoleModel, AppRemittanceCheckModel, AppPaymentModel, DealModel } = db;
 
@@ -31,11 +31,20 @@ const saveAppData = async (data: any, model: any) => {
   if (findRes === null) {
     if (model == AppRoleModel) {
       let agentId = null;
+      let address = null;
       if (data.user_id) {
         agentId = await getAgentIdFromUserId(data.user_id);
+        address = await getAddressFromUserId(data.user_id);        
       }
-      if (agentId && data.agent_id === null) {
+      if (agentId && address && data.agent_id === null) {
         data.agent_id = agentId;
+        data.address = address;
+      }
+    }
+    if (model == AppPaymentModel) {
+      let address = await getAddressFromUserId(data.de_paid_to_deUserId);
+      if(address) {
+        data.de_office_address = address
       }
     }
     await model.create(data);
@@ -50,6 +59,8 @@ const saveAppData = async (data: any, model: any) => {
     else if (model == AppPaymentModel) {
       const id = data.id;
       delete data.id;
+      let address = await getAddressFromUserId(data.de_paid_to_deUserId);
+      data.de_office_address = address
       await model.update(data, {
         where: { id: id },
       });

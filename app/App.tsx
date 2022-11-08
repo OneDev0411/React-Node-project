@@ -58,6 +58,7 @@ const App: React.FC<EntryProps> = ({
         share_percent: commission_percentage,
         share_value: commission_dollar,
         note: "",
+        address: ""
       };
     });
     tempAgentRoles.sort((a, b) => { 
@@ -70,7 +71,7 @@ const App: React.FC<EntryProps> = ({
     try {
       if (data !== null) { // in case of data exist in database
         let tempDealData = data.dealData;
-
+        
         if (setSubmitted !== undefined) {
           if (tempDealData.deal && tempDealData.submitted !== null)
             setSubmitted(Number(tempDealData.submitted));
@@ -88,7 +89,7 @@ const App: React.FC<EntryProps> = ({
             });
             return findIndex == -1;
           });
-
+          
           temp.map((item: IRoleData) => {
             tempRoleData.push(item);
           });

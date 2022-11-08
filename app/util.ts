@@ -183,6 +183,7 @@ export const defaultPayment: IPayment[] = [{
   de_payment_mail: "",
   payment_side: "",
   keyIndex: 0,
+  de_office_address: ""
 }];
 
 export const defaultDealData: IDealData = {

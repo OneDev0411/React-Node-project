@@ -251,18 +251,18 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <label>GCI AGENTS</label>
           </Grid>
           {(dealType === 'Buying' || dealType === 'Both') && 
-            roles.filter((roleItem: IDealRole) => roleItem.role == 'BuyerAgent' || roleItem.role == 'CoBuyerAgent' || roleItem.role == 'BuyerReferral').map(role => 
+            roleData.filter((roleItem: IRoleData) => roleItem.role == 'BuyerAgent' || roleItem.role == 'CoBuyerAgent' || roleItem.role == 'BuyerReferral').map(role => 
               <Grid container spacing={2} key={role.legal_full_name}>
                 <Grid item xs={3}>{role.legal_full_name}</Grid>
-                <Grid item xs={3}>575 Madison Ave</Grid>
+                <Grid item xs={3}>{role.address}</Grid>
                 <Grid item xs={3}>{dealType === 'Both' ? 'Buy & Listing Side' : 'Buy Side'}</Grid>
               </Grid>
           )}
           {(dealType === 'Selling' || dealType === 'Both') && 
-            roles.filter((roleItem: IDealRole) => roleItem.role == 'SellerAgent' || roleItem.role == 'CoSellerAgent' || roleItem.role == 'SellerReferral').map(role => 
+            roleData.filter((roleItem: IRoleData) => roleItem.role == 'SellerAgent' || roleItem.role == 'CoSellerAgent' || roleItem.role == 'SellerReferral').map(role => 
             <Grid container spacing={2}>
               <Grid item xs={3}>{role.legal_full_name}</Grid>
-              <Grid item xs={3}>575 Madison Ave</Grid>
+              <Grid item xs={3}>{role.address}</Grid>
               <Grid item xs={3}>{dealType === 'Both' ? 'Buy & Listing Side' : 'Listing Side'}</Grid>
             </Grid>
           )}
@@ -277,7 +277,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
               item.de_paid_to && (
                 <Grid container spacing={2} key={idx}>
                   <Grid item xs={3}>{item.de_paid_to}</Grid>
-                  <Grid item xs={3}>575 Madison Ave</Grid>
+                  <Grid item xs={3}>{item.de_office_address}</Grid>
                   <Grid item xs={3}>{dealType === 'Both' ? 'Buy & Listing Side' : 'Buy Side'}</Grid>
                 </Grid>
               )
@@ -286,7 +286,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
               item.de_paid_to && (
                 <Grid container spacing={2} key={idx}>
                   <Grid item xs={3}>{item.de_paid_to}</Grid>
-                  <Grid item xs={3}>575 Madison Ave</Grid>
+                  <Grid item xs={3}>{item.de_office_address}</Grid>
                   <Grid item xs={3}>{dealType === 'Both' ? 'Buy & Listing Side' : 'Buy Side'}</Grid>
                 </Grid>
               )

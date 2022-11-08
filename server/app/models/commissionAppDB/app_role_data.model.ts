@@ -31,6 +31,12 @@ export default (sequelize, Sequelize) => {
       note: {
         type: Sequelize.TEXT,
       },
+      address: {
+        type: Sequelize.TEXT,
+      },
+      user_id: {
+        type: Sequelize.TEXT,
+      }
     },
     {
       timestamps: true,

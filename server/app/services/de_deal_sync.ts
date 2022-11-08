@@ -45,6 +45,26 @@ export const getAgentIdFromUserId = async (user_id) => {
   }
 }
 
+export const getAddressFromUserId = async (user_id) => {
+  try {
+    // get de user data from user id in deal data
+    const dataList = await rechatDB.sequelize.query(
+      `SELECT
+      de.users.object->>'offices' as "Offices"
+      FROM de.users
+      WHERE de.users.user = $1::uuid`,
+      {
+        bind: [user_id],
+        type: QueryTypes.SELECT,
+      }
+    );
+    const res = JSON.parse(dataList[0].Offices)
+    return dataList.length ? res[0].address : null;
+  } catch (e) {
+    console.log("ERROR:", e.message);
+  }
+}
+
 const getAgentsFromPayments = async (deal, roles) => {
   const payments = await commissionDB.AppPaymentModel.findAll({
     where: {deal},

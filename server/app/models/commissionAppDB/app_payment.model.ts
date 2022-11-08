@@ -45,6 +45,9 @@ export default (sequelize, Sequelize) => {
         type: Sequelize.TEXT,
         allowNull: false,
       },
+      de_office_address: {
+        type: Sequelize.TEXT,
+      }
     },
     {
       timestamps: true,
