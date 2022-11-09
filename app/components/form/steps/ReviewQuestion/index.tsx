@@ -115,6 +115,13 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const nonGCIInsidePayments = insidePayments.filter((item: IPayment) => item.de_payment_type === 'Team Member')
   const nonGCIOutsidePayments = outsidePayments.filter((item: IPayment) => item.de_payment_type === 'Team Member')
 
+  const getDEOfficeAddress = (data: any): string => {
+    if (data.brand_type === 'Office')
+      return data.name
+    return getDEOfficeAddress(data.parent)
+  }
+  const deOfficeAddress = getDEOfficeAddress(deal.brand)
+
   const handleClickApprove = async () => {
     wizard.setLoading(true)
     updateTaskStatus('Approved', false, '')
@@ -329,7 +336,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           <Grid container spacing={2}>
             <Grid item xs={2}>Gross Commission</Grid>
             <Grid item xs={2}>GCI To DE</Grid>
-            <Grid item xs={3}>GCI To 575 Madison Ave</Grid>
+            <Grid item xs={3}>GCI To {deOfficeAddress}</Grid>
           </Grid>
           <Grid container spacing={2}>
             <Grid item xs={2}>%{BuySideCommissionRate + ListSideCommissionRate}</Grid>
