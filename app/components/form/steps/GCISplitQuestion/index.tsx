@@ -232,6 +232,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     () => {
       let temp = JSON.parse(JSON.stringify(dealData))
       temp.gci_de_value = price * totalPercent / 100
+      temp.status = ""
       if (
         (totalPercent < 2 && dealType !== "Both") ||
         (totalPercent < 4 && dealType === "Both")

@@ -89,7 +89,13 @@ const App: React.FC<EntryProps> = ({
             });
             return findIndex == -1;
           });
-          
+          tempRoleData.map((item: IRoleData) => {
+            let findIndex = tempAgentRoles.findIndex((mem: IRoleData) => {
+              return item.role_id == mem.role_id;
+            });
+            item.share_percent = tempAgentRoles[findIndex].share_percent;
+            item.share_value = tempAgentRoles[findIndex].share_value;
+          });
           temp.map((item: IRoleData) => {
             tempRoleData.push(item);
           });

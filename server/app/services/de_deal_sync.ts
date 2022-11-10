@@ -500,8 +500,7 @@ const sync = async (deal) => {
   const DealDate = moment.utc(created_at).format("YYYY-MM-DD");
 
   const isHippocket = !deal.listing;
-  const ListingId = deal.id;
-  const MLSNum = getContextFromDeal(deal, 'deal_number') ?? getContextFromDeal(deal, 'mls_number') ?? `Hippocket-${deal.number}`;
+  const ListingId = getContextFromDeal(deal, 'deal_number') ?? getContextFromDeal(deal, 'mls_number') ?? `Hippocket-${deal.number}`;
   const Street = getContextFromDeal(deal, "street_address");
   const ZipCode = getContextFromDeal(deal, "postal_code");
   const PropertyType = property_type.label;
@@ -682,8 +681,7 @@ const sync = async (deal) => {
       City,
       State,
       ListingType: "Other",
-      BusinessLocation: office_details.business_locations[0],
-      MLSNum
+      BusinessLocation: office_details.business_locations[0]
     },
     deal: {
       Source: "StudioPro",
