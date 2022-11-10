@@ -71,7 +71,25 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
     .map((r) => getCommissionRate(price, r))
     .reduce(sum)
     .value();
-    
+
+  const getTotalPercent = (roleData: IRoleData[]) => {
+    let sum: any = 0;
+    for(let i = 0; i < roleData.length; i++ ) {
+      sum += Number(roleData[i].share_percent)
+    } 
+    return sum
+  }
+  const getTotalValue = (roleData: IRoleData[]) => {
+    let sum: any = 0;
+    for(let i = 0; i < roleData.length; i++ ) {
+      sum += Number(roleData[i].share_value)
+    } 
+    return sum
+  }
+
+  const totalValue = getTotalValue(roleData)
+  const totalPercent = getTotalPercent(roleData);
+
   const isAgent = (role: IRoleData) => {
     return [
       'SellerAgent',
@@ -331,7 +349,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
         
         <Grid container style={styles.group}>
           <Grid item xs={12} style={styles.group_title}>
-            <label>COMMISSTION</label>
+            <label>COMMISSION</label>
           </Grid>
           <Grid container spacing={2}>
             <Grid item xs={2}>Gross Commission</Grid>
@@ -366,7 +384,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     <Grid container>
                       <Grid item xs={2}>{role.legal_full_name}</Grid>
                       <Grid item xs={2}><b>Agent NO:</b> {role.agent_id}</Grid>
-                      <Grid item xs={2}><b>Share %:</b> {role.share_percent == null ? (Number(role.share_value) / Number(price) * 100) : role.share_percent}</Grid>
+                      <Grid item xs={2}><b>Share %:</b> {role.share_percent != null ? ((Number(role.share_percent) * 100 / Number(totalPercent)).toFixed(2)) : ((Number(role.share_value) * 100 / Number(totalValue)).toFixed(2))}</Grid>
                       <Grid item xs={2}><b>Share $:</b> {stylizeNumber(Number(role.share_value == null ? (Number(price) * Number(role.share_percent) / 100) : role.share_value))}</Grid>
                     </Grid>
                     <Grid container>
@@ -380,7 +398,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     <Grid container>
                       <Grid item xs={2}>{role.legal_full_name}</Grid>
                       <Grid item xs={2}><b>Agent NO:</b> {role.agent_id}</Grid>
-                      <Grid item xs={2}><b>Share %:</b> {role.share_percent == null ? (Number(role.share_value) / Number(price) * 100) : role.share_percent}</Grid>
+                      <Grid item xs={2}><b>Share %:</b> {role.share_percent != null ? ((Number(role.share_percent) * 100 / Number(totalPercent)).toFixed(2)) : ((Number(role.share_value) * 100 / Number(totalValue)).toFixed(2))}</Grid>
                       <Grid item xs={2}><b>Share $:</b> {stylizeNumber(Number(role.share_value == null ? (Number(price) * Number(role.share_percent) / 100) : role.share_value))}</Grid>
                     </Grid>
                     <Grid container>
