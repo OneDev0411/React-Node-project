@@ -75,15 +75,11 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     temp[index] = payment
     _setPayments(temp)
   }
-  
-  const handleClickSaveEditButton = (index: number) => {
+
+  const handleAutoSave = (e: React.ChangeEvent<{ value: unknown }>, index: number) => {
     let temp = JSON.parse(JSON.stringify(_payments))
-    temp[index]["de_paid_to"] = tmpDePaidTo
+    temp[index]["de_paid_to"] = e.target.value
     _setPayments(temp)
-    setTmpDePaidTo("")
-    const _status = JSON.parse(JSON.stringify(status))
-    _status[index] = "Listing"
-    setStatus(_status)
   }
   
   const handleClickCancelEditButton = (index: number) => {
@@ -341,83 +337,60 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
             </Grid>
             <Grid item xs={9}>
               {status[index] === "Listing" && (
-                <Box style={{ display: "flex" }}>
-                  <label>{item.de_paid_to}</label>
-                  <Button
-                    onClick={() => handleEditPaidTo(index)}
-                    style={{
-                      marginLeft: "auto",
-                      color: "black !important",
-                      border: "solid #dbdbdb 1px",
-                      borderRadius: 5,
-                    }}
-                  >
-                    Edit
-                  </Button>
+                <>
+                  {item.de_payment_type === "Team Member" && (
+                    <Box style={{ display: "flex" }}>
+                      <label>{item.de_paid_to}</label>
+                      <Button
+                        onClick={() => handleEditPaidTo(index)}
+                        style={{
+                          marginLeft: "auto",
+                          color: "black !important",
+                          border: "solid #dbdbdb 1px",
+                          borderRadius: 5,
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    </Box>
+                  )}
+                  {item.de_payment_type !== "Team Member" && (
+                    <Box>
+                      <TextField
+                        style={{ width: "100%" }}
+                        value={item.de_paid_to}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          handleAutoSave(e, index)
+                        }
+                      />
+                    </Box>
+                  )}
+                </>
+              )}
+              {status[index] === "Selecting" && (
+                <Box>
+                  <AgentsPicker
+                    flattenTeams={true}
+                    isPrimaryAgent={false}
+                    useTeamBrandId={false}
+                    onSelectAgent={(agent: BrandedUser) =>
+                      handleSelectAgent(agent, index)
+                    }
+                  />
+                  <Box style={{ marginTop: 5, textAlign: "right" }}>
+                    <Button
+                      onClick={() => handleClickCancelEditButton(index)}
+                      style={{
+                        color: "black !important",
+                        border: "solid #dbdbdb 1px",
+                        borderRadius: 5,
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </Box>
                 </Box>
               )}
-              {status[index] === "Selecting" && 
-              <>
-                {item.de_payment_type === "Team Member" && (
-                  <Box>
-                    <AgentsPicker
-                      flattenTeams={true}
-                      isPrimaryAgent={false}
-                      useTeamBrandId={false}
-                      onSelectAgent={(agent: BrandedUser) =>
-                        handleSelectAgent(agent, index)
-                      }
-                    />
-                    <Box style={{ marginTop: 5, textAlign: "right" }}>
-                      <Button
-                        onClick={() => handleClickCancelEditButton(index)}
-                        style={{
-                          color: "black !important",
-                          border: "solid #dbdbdb 1px",
-                          borderRadius: 5,
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </Box>
-                  </Box>
-                )}
-                {item.de_payment_type !== "Team Member" && (
-                  <Box>
-                    <TextField
-                      style={{ width: "100%" }}
-                      value={tmpDePaidTo}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleChangeValue(e, "de_paid_to", index)
-                      }
-                    />
-                    <Box style={{ marginTop: 5, textAlign: "right" }}>
-                      <Button
-                        onClick={() => handleClickSaveEditButton(index)}
-                        style={{
-                          color: "black !important",
-                          border: "solid #dbdbdb 1px",
-                          borderRadius: 5,
-                          marginRight: 5,
-                        }}
-                      >
-                        Save
-                      </Button>
-                      <Button
-                        onClick={() => handleClickCancelEditButton(index)}
-                        style={{
-                          color: "black !important",
-                          border: "solid #dbdbdb 1px",
-                          borderRadius: 5,
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </Box>
-                  </Box>
-                )}
-              </>
-              }
             </Grid>
           </Grid>
           <Grid container spacing={1}>
