@@ -34,6 +34,7 @@ declare interface EntryProps {
     getDealContext: (field: string) => IDealContext;
     updateDealContext: (field: string, value: unknown) => Promise<void>;
     deleteRole: (roleModel: IDealRole) => Promise<void>;
+    updateRole: (roleModel: IDealRole) => Promise<void>;
     notifyOffice: (
       attentionRequest?: boolean,
       comment?: string

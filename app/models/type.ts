@@ -30,6 +30,7 @@ export interface IGCIInfoItemProps {
   saveData: IDataToConText;
   totalClc: (index: number, data: IRoleData, clcFlag: boolean) => void;
   role: IRoleData;
+  updateData: (role: IRoleData) => void;
 }
 
 export interface IDealData {
@@ -163,6 +164,19 @@ export interface CheckData {
 export interface IPaymentData {
   groupName: string;
   member: string[];
+}
+
+export interface IFeeType {
+  feeName: string[];
+}
+
+export interface IFeeData {
+  fee_type: string,
+  fee_amount: string,
+  fee_amount_percentage: string,
+  fee_unit: number,
+  fee_method: number,
+  select_fee_unit: boolean
 }
 
 export interface IPaymentQuestionData {

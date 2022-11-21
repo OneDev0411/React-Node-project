@@ -9,6 +9,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   price,
   index,
   role,
+  updateData,
 }) => {
   const { useState } = React
   const { submitted } = useApp()
@@ -27,7 +28,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     }
     if (submitted !== 1)
       updateFlag(true)
-    let updateValue = JSON.parse(JSON.stringify(_roleData))
+    let updateValue: IRoleData = JSON.parse(JSON.stringify(_roleData))
     updateValue[key] = Number(value)
 
     if (key == "share_percent") {
@@ -41,6 +42,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
       )
     }
 
+    updateData(updateValue)
     _setRoleData(updateValue)
     totalClc(index, updateValue, true)
   }

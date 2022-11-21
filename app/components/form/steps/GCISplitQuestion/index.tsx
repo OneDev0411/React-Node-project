@@ -11,7 +11,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   hooks: { useWizardContext, useSectionContext },
   models: { deal, roles },
   Components: { RoleForm, AgentsPicker },
-  api: { deleteRole },
+  api: { deleteRole, updateRole },
 }) => {
   const { useState, useEffect } = React
   const { useDebounce } = ReactUse
@@ -185,6 +185,15 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
     }
   }
 
+  const updateData = async (role: IRoleData) => {
+    let updatedRole = roles.find((item: IDealRole) => item.id === role.role_id)
+    let _updatedRole: IDealRole = JSON.parse(JSON.stringify(updatedRole))
+    if(_updatedRole !== undefined) {
+      _updatedRole.commission_percentage = role.share_percent
+      await updateRole(_updatedRole)
+    }
+  }
+
   // calculate total percent and value when roleData is changed
   const totalClc = (index: number, data: IRoleData, clcFlag: boolean) => {
     let temp = JSON.parse(JSON.stringify(_roleData))
@@ -303,6 +312,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                   saveData={{ updateFlag }}
                   totalClc={totalClc}
                   role={item}
+                  updateData={updateData}
                 />
               </Box>
             }
@@ -343,6 +353,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
                   saveData={{ updateFlag }}
                   totalClc={totalClc}
                   role={item}
+                  updateData={updateData}
                 />
               </Box>
             }

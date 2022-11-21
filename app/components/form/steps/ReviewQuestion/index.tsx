@@ -5,8 +5,8 @@ import axios from 'axios'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import useApp from '../../../../hooks/useApp'
-import { IDealData, IPaidByData, IQuestionProps, IRemittanceChecks, IRoleData, IPayment } from '../../../../models/type'
-import { stylizeNumber, APP_URL, commissionReason } from '../../../../util'
+import { IDealData, IPaidByData, IQuestionProps, IRemittanceChecks, IRoleData, IPayment, IFeeData } from '../../../../models/type'
+import { stylizeNumber, APP_URL, commissionReason, feeTypeData, feeData } from '../../../../util'
 
 const ReviewQuestion: React.FC<IQuestionProps> = ({
   Wizard,
@@ -14,8 +14,9 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   api: { getDealContext, updateTaskStatus, close },
   hooks: { useWizardContext },
 }) => {
+  const { useState, useEffect } = React
   const { QuestionSection, QuestionTitle } = Wizard
-  const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui
+  const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid, Select, MenuItem, Radio, InputAdornment, RadioGroup, FormControlLabel } = Ui
   const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments } = useApp()
   const wizard = useWizardContext()
   const enderType = deal.context.ender_type?.text
@@ -71,24 +72,42 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
     .map((r) => getCommissionRate(price, r))
     .reduce(sum)
     .value();
+  const ListSideAgent = roleData.filter((role) => ["SellerAgent", "CoSellerAgent"].includes(role.role))
+  const BuySideAgent = roleData.filter((role) => ["BuyerAgent", "CoBuyerAgent"].includes(role.role))
 
-  const getTotalPercent = (roleData: IRoleData[]) => {
+  const getTotalPercentBuyerSide = (roleData: IRoleData[]) => {
     let sum: any = 0;
     for(let i = 0; i < roleData.length; i++ ) {
       sum += Number(roleData[i].share_percent)
     } 
     return sum
-  }
-  const getTotalValue = (roleData: IRoleData[]) => {
+  };
+  const getTotalPercentSellerSide = (roleData: IRoleData[]) => {
+    let sum: any = 0;
+    for(let i = 0; i < roleData.length; i++ ) {
+      sum += Number(roleData[i].share_percent)
+    }
+    return sum
+  };
+  const getTotalValueBuyerSide = (roleData: IRoleData[]) => {
     let sum: any = 0;
     for(let i = 0; i < roleData.length; i++ ) {
       sum += Number(roleData[i].share_value)
     } 
     return sum
-  }
+  };
+  const getTotalValueSellerSide = (roleData: IRoleData[]) => {
+    let sum: any = 0;
+    for(let i = 0; i < roleData.length; i++) {
+      sum += Number(roleData[i].share_value)
+    }
+    return sum
+  };
 
-  const totalValue = getTotalValue(roleData)
-  const totalPercent = getTotalPercent(roleData);
+  const totalValueBuyerSide = getTotalValueBuyerSide(BuySideAgent);
+  const totalValueSellerSide = getTotalValueSellerSide(ListSideAgent);
+  const totalPercentBuyerSide = getTotalPercentBuyerSide(BuySideAgent);
+  const totalPercentSellerSide = getTotalPercentSellerSide(ListSideAgent);
 
   const isAgent = (role: IRoleData) => {
     return [
@@ -193,6 +212,60 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const handleCloseFeedback = async () => {
     setOpenFeedback(false)
     close()
+  }
+
+  const feeTypeElement = feeTypeData.feeName.map((feeType: string, index: any) => {
+    return (
+      <MenuItem value={feeType} id={index}>{feeType}</MenuItem>
+    )
+  })
+
+  const [ _feeData, _setFeeData ] = useState<IFeeData[]>(feeData)
+
+  const handleChangeValue = (
+    e: React.ChangeEvent<{ value: unknown }>,
+    key: string,
+    id: number
+  ) => {
+    let updatedValue = JSON.parse(JSON.stringify(_feeData))
+    if (key == "feeType"){
+      updatedValue[id].fee_type = e.target.value
+    }
+    if (key == "feePercentAmount") {
+      updatedValue[id].fee_amount_percentage = e.target.value
+    }
+    if (key == "feeAmount") {
+      updatedValue[id].fee_amount = e.target.value
+    }
+    if (key == "feeUnit") {
+      updatedValue[id].fee_unit = Number(e.target.value)
+      if(updatedValue[id].fee_unit == 1) {
+        updatedValue[id].select_fee_unit = false
+        updatedValue[id].fee_amount_percentage = 0
+      } else {
+        updatedValue[id].select_fee_unit = true
+        updatedValue[id].fee_amount = 0
+      }
+    }
+    if (key == "feeType-method") {
+      updatedValue[id].fee_method = e.target.value
+    }
+    _setFeeData(updatedValue)
+  }
+
+
+  const handleClickAddAnotherButton = () => {
+    let emptyValue: IFeeData = {
+      fee_type: "",
+      fee_amount: "",
+      fee_amount_percentage: "",
+      fee_unit: 0,
+      fee_method: 0,
+      select_fee_unit: true
+    }
+    let updatedValue = JSON.parse(JSON.stringify(_feeData))
+    updatedValue.push(emptyValue)
+    _setFeeData(updatedValue)
   }
   
   const handlePrint = async () => {
@@ -384,7 +457,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     <Grid container>
                       <Grid item xs={2}>{role.legal_full_name}</Grid>
                       <Grid item xs={2}><b>Agent NO:</b> {role.agent_id}</Grid>
-                      <Grid item xs={2}><b>Share %:</b> {role.share_percent != null ? ((Number(role.share_percent) * 100 / Number(totalPercent)).toFixed(2)) : ((Number(role.share_value) * 100 / Number(totalValue)).toFixed(2))}</Grid>
+                      <Grid item xs={2}><b>Share %:</b> {role.share_percent != null ? ((Number(role.share_percent) * 100 / Number(totalPercentBuyerSide)).toFixed(2)) : ((Number(role.share_value) * 100 / Number(totalValueBuyerSide)).toFixed(2))}</Grid>
                       <Grid item xs={2}><b>Share $:</b> {stylizeNumber(Number(role.share_value == null ? (Number(price) * Number(role.share_percent) / 100) : role.share_value))}</Grid>
                     </Grid>
                     <Grid container>
@@ -398,7 +471,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     <Grid container>
                       <Grid item xs={2}>{role.legal_full_name}</Grid>
                       <Grid item xs={2}><b>Agent NO:</b> {role.agent_id}</Grid>
-                      <Grid item xs={2}><b>Share %:</b> {role.share_percent != null ? ((Number(role.share_percent) * 100 / Number(totalPercent)).toFixed(2)) : ((Number(role.share_value) * 100 / Number(totalValue)).toFixed(2))}</Grid>
+                      <Grid item xs={2}><b>Share %:</b> {role.share_percent != null ? ((Number(role.share_percent) * 100 / Number(totalPercentSellerSide)).toFixed(2)) : ((Number(role.share_value) * 100 / Number(totalValueSellerSide)).toFixed(2))}</Grid>
                       <Grid item xs={2}><b>Share $:</b> {stylizeNumber(Number(role.share_value == null ? (Number(price) * Number(role.share_percent) / 100) : role.share_value))}</Grid>
                     </Grid>
                     <Grid container>
@@ -550,6 +623,144 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             )}
           </Grid>
         )}
+        <Grid container style={styles.group} >
+          <Grid item xs={12} style={styles.group_title}>
+            <label>Fees</label>
+          </Grid>
+          {_feeData.map((item: IFeeData, id: number) => 
+            (
+              <>
+                <Grid container xs={8} >
+                  <Grid item xs={2}>
+                    <label>Fee Type</label>
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Select
+                      defaultValue=""
+                      id='feetype-selected'
+                      label="Feetype"
+                      style={{ width: '97%', marginLeft: '3%' }}
+                      value={item.fee_type}
+                      onChange={(e: React.ChangeEvent<{ value: unknown }>) => 
+                        handleChangeValue(e, "feeType", id)
+                      }
+                    >
+                      {feeTypeElement}
+                    </Select>
+                  </Grid>
+                </Grid>
+                <Grid container xs={8} style={{ marginTop: '10px' }}>
+                  <Grid item xs={2}>
+                    <label>Fee Amount</label>
+                  </Grid>
+                  <Grid item xs={5} style={{display: 'inherit'}}>
+                    <Radio
+                      checked={item.fee_unit == 0}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                        handleChangeValue(e, "feeUnit",id)
+                      }
+                      value={0}
+                      name="radio-buttons"
+                      size="small"
+                    />
+                    <TextField
+                      variant="standard"
+                      style={{ width: '100%'}}
+                      value={item.fee_amount_percentage}
+                      onChange={(e: React.ChangeEvent<{ value: unknown }>) => 
+                        handleChangeValue(e, "feePercentAmount", id)
+                      }
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">%</InputAdornment>
+                        ),
+                      }}
+                      disabled={item.fee_unit == 1}
+                    />
+                  </Grid>
+                  <Grid item xs={5} style={{display: 'inherit'}}>
+                    <Radio
+                      checked={item.fee_unit == 1}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                        handleChangeValue(e, "feeUnit", id)
+                      }
+                      value={1}
+                      name="radio-buttons"
+                      size="small"
+                    />
+                    <TextField
+                      variant="standard"
+                      style={{ width: '100%'}}
+                      value={item.fee_amount}
+                      onChange={(e: React.ChangeEvent<{ value: unknown }>) => 
+                        handleChangeValue(e, "feeAmount", id)
+                      }
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">$</InputAdornment>
+                        ),
+                      }}
+                      disabled={item.fee_unit == 0}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid container xs={8}>
+                  <Grid item xs={3}></Grid>
+                  <Grid item xs={9}>
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-row-radio-buttons-group-label"
+                      name="row-radio-buttons-group"
+                      value={item.fee_method}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleChangeValue(e, "feeType-method", id)
+                      }
+                    >
+                      <FormControlLabel
+                        value={0}
+                        style={{ marginRight: 20 }}
+                        control={
+                          <Radio
+                            checked={item.fee_method == 0}
+                            size="small"
+                            style={{ marginBottom: 3 }}
+                          />
+                        }
+                        label="Off Net"
+                      />
+                      <FormControlLabel
+                        value={1}
+                        style={{ marginRight: 0 }}
+                        control={
+                          <Radio
+                            checked={item.fee_method == 1}
+                            size="small"
+                            style={{ marginBottom: 3 }}
+                          />
+                        }
+                        label="Off the Top"
+                      />
+                    </RadioGroup>
+                  </Grid>
+                </Grid>
+              </>
+            )
+          )}
+          <Button
+            variant='outlined'
+            onClick={handleClickAddAnotherButton}
+            style={{
+              color: "black !important",
+              borderColor: "#dbdbdb !important",
+              paddingBottom: 2,
+              paddingTop: 2,
+              marginTop: 20,
+              marginBottom: 10
+            }}
+          >
+            + Add More Fee
+          </Button>
+        </Grid>
 
         <Grid container style={styles.group}>
           <Grid item xs={12} style={styles.group_title}>

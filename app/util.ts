@@ -4,6 +4,8 @@ import {
   IDealData,
   IRemittanceChecks,
   IPayment,
+  IFeeData,
+  IFeeType,
 } from "./models/type";
 
 export const defaultUser: IUser = {
@@ -153,6 +155,33 @@ export const paymentTypeData: IPaymentData[] = [
     groupName: "Co-Broke",
     member: ["Outside Co-Broke"],
   },
+];
+
+export const feeTypeData: IFeeType = {
+  feeName: [
+    "CORPERATE / ADMIN FEE",
+    "MLS FEE",
+    "TRANSACTION FEE",
+    "OTHER FEE",
+    "MTF Fees",
+    "BUSINESS",
+    "G1- Tax fee",
+    "SkyTC fee",
+    "Credit given by Agent",
+    "Garnishments",
+    "Agent incentives"
+  ]
+}
+
+export const feeData: IFeeData[] = [
+  {
+    fee_type: "",
+    fee_amount: "",
+    fee_amount_percentage: "",
+    fee_unit: 0,
+    fee_method: 0,
+    select_fee_unit: true
+  }
 ];
 
 export const defaultRemittanceChecks: IRemittanceChecks[] = [
