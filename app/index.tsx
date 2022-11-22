@@ -16,6 +16,7 @@ const defaultValue: AppContextApi = {
   submitted: 0,
   financing: "",
   currentStep: 0,
+  feeData: []
 };
 
 export const AppContext = createContext<AppContextApi>(defaultValue);
@@ -32,6 +33,7 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   const [submitted, setSubmitted] = useState<AppContextApi["submitted"]>(0);
   const [financing, setFinancing] = useState<AppContextApi["financing"]>("");
   const [currentStep, setCurrentStep] = useState<AppContextApi["currentStep"]>(0);
+  const [feeData, setFeeData] = useState<AppContextApi["feeData"]>([]);
 
   return (
     <AppContext.Provider
@@ -52,6 +54,8 @@ export const AppProvider: React.FC<any> = ({ children }) => {
         setFinancing,
         currentStep,
         setCurrentStep,
+        feeData,
+        setFeeData
       }}
     >
       {children}

@@ -6,7 +6,7 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import useApp from '../../../../hooks/useApp'
 import { IDealData, IPaidByData, IQuestionProps, IRemittanceChecks, IRoleData, IPayment, IFeeData } from '../../../../models/type'
-import { stylizeNumber, APP_URL, commissionReason, feeTypeData, feeData } from '../../../../util'
+import { stylizeNumber, APP_URL, commissionReason, feeTypeData } from '../../../../util'
 
 const ReviewQuestion: React.FC<IQuestionProps> = ({
   Wizard,
@@ -17,7 +17,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const { useState, useEffect } = React
   const { QuestionSection, QuestionTitle } = Wizard
   const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid, Select, MenuItem, Radio, InputAdornment, RadioGroup, FormControlLabel } = Ui
-  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments } = useApp()
+  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData, setFeeData } = useApp()
   const wizard = useWizardContext()
   const enderType = deal.context.ender_type?.text
   const dealType = (enderType === 'AgentDoubleEnder' || enderType === 'OfficeDoubleEnder') ? 'Both' : deal.deal_type
@@ -220,14 +220,12 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
     )
   })
 
-  const [ _feeData, _setFeeData ] = useState<IFeeData[]>(feeData)
-
   const handleChangeValue = (
     e: React.ChangeEvent<{ value: unknown }>,
     key: string,
     id: number
   ) => {
-    let updatedValue = JSON.parse(JSON.stringify(_feeData))
+    let updatedValue = JSON.parse(JSON.stringify(feeData))
     if (key == "feeType"){
       updatedValue[id].fee_type = e.target.value
     }
@@ -240,32 +238,35 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
     if (key == "feeUnit") {
       updatedValue[id].fee_unit = Number(e.target.value)
       if(updatedValue[id].fee_unit == 1) {
-        updatedValue[id].select_fee_unit = false
         updatedValue[id].fee_amount_percentage = 0
       } else {
-        updatedValue[id].select_fee_unit = true
         updatedValue[id].fee_amount = 0
       }
     }
     if (key == "feeType-method") {
       updatedValue[id].fee_method = e.target.value
     }
-    _setFeeData(updatedValue)
+    if(setFeeData != undefined){
+      setFeeData(updatedValue)
+    }
   }
 
 
   const handleClickAddAnotherButton = () => {
     let emptyValue: IFeeData = {
+      id: feeData.length + 1,
+      deal: deal.id,
       fee_type: "",
       fee_amount: "",
       fee_amount_percentage: "",
       fee_unit: 0,
       fee_method: 0,
-      select_fee_unit: true
     }
-    let updatedValue = JSON.parse(JSON.stringify(_feeData))
+    let updatedValue = JSON.parse(JSON.stringify(feeData))
     updatedValue.push(emptyValue)
-    _setFeeData(updatedValue)
+    if(setFeeData != undefined){
+      setFeeData(updatedValue)
+    }
   }
   
   const handlePrint = async () => {
@@ -627,7 +628,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           <Grid item xs={12} style={styles.group_title}>
             <label>Fees</label>
           </Grid>
-          {_feeData.map((item: IFeeData, id: number) => 
+          {feeData.map((item: IFeeData, id: number) => 
             (
               <>
                 <Grid container xs={8} >

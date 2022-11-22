@@ -57,7 +57,11 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     temp.push(defaultPayments[0])
     _setPayments(temp)
     const _status = JSON.parse(JSON.stringify(status))
-    _status.push("Selecting")
+    if(defaultPayments[0].de_payment_type === "Team Member"){
+      _status.push("Selecting")
+    }
+    else
+      _status.push("Listing")
     setStatus(_status)
   }
 
@@ -184,10 +188,10 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
 
     const _status = status
     payments.map((item) => {
-      if (item.de_paid_to !== "")
-        _status.push("Listing")
-      else
+      if (item.de_payment_type === "Team Member")
         _status.push("Selecting")
+      else if (item.de_payment_type !== "Team Member")
+        _status.push("Listing")
     })
     setStatus(_status)
   }, [])

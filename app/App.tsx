@@ -1,7 +1,7 @@
 import React from "@libs/react"
 import axios from "axios"
 import useApp from "./hooks/useApp"
-import { AppContextApi, IRoleData, IPayment } from "./models/type"
+import { AppContextApi, IRoleData, IPayment, IFeeData } from "./models/type"
 import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole } from "./util"
 import { FormWizard } from "./components/form/Wizard"
 import Loading from './components/Loading'
@@ -18,7 +18,7 @@ const App: React.FC<EntryProps> = ({
   const { deal, roles } = models;
   const total_data: AppContextApi = useApp();
   const _totalData = useRef(total_data);
-  const { setDealData, setRoleData, setRemittanceChecks, setInsidePayments, setOutsidePayments, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep } = useApp();
+  const { setDealData, setRoleData, setRemittanceChecks, setInsidePayments, setOutsidePayments, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep, setFeeData } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
 
@@ -136,6 +136,10 @@ const App: React.FC<EntryProps> = ({
         if (setCurrentStep !== undefined) {
           setCurrentStep(Number(tempDealData.current_step));
         }
+        let tempFeeData = data.feeData.filter((item: IFeeData) => item.deal === deal.id);
+        if(setFeeData !== undefined) {
+          setFeeData(tempFeeData)
+        }
       } else { // in case of data doesn't exist in database, set default data
         if (setDealData !== undefined) {
           defaultDealData.deal = deal.id;
@@ -166,7 +170,7 @@ const App: React.FC<EntryProps> = ({
 
   // save data from context to database when app is closed
   useEffect(() => {
-    if (submitted !== 0 && !utils.isBackOffice)
+    if (submitted !== 0)
       return () => {
         const saveData = async () => {
           await axios.post(

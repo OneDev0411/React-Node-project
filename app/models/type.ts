@@ -117,6 +117,8 @@ export interface AppContextApi {
   setFinancing?: (data: string) => void;
   currentStep: number;
   setCurrentStep?: (data: number) => void;
+  feeData: IFeeData[];
+  setFeeData?: (data: IFeeData[]) => void;
 }
 
 export interface IQuestionProps {
@@ -171,12 +173,13 @@ export interface IFeeType {
 }
 
 export interface IFeeData {
+  id: number,
+  deal: string,
   fee_type: string,
   fee_amount: string,
   fee_amount_percentage: string,
   fee_unit: number,
   fee_method: number,
-  select_fee_unit: boolean
 }
 
 export interface IPaymentQuestionData {

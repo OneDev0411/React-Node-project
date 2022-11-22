@@ -10,6 +10,7 @@ export interface ICommissionData {
   insidePayments: any;
   outsidePayments: any;
   submitted: number;
+  feeData: any;
 }
 export interface ICombinedDealData {
   commissionData: any;
