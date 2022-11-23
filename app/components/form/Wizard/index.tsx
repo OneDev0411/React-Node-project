@@ -13,9 +13,9 @@ import { IQuestionProps } from "../../../models/type"
 export const FormWizard: React.FC<IQuestionProps> = (props) => {
   const { Wizard, utils, models } = props
   const { deal } = models
-  const isBackOffice = utils.isBackOffice
+  const isReveiew = utils.isReview
 
-  if (!isBackOffice) {
+  if (!isReveiew) {
     return (
       <Wizard.QuestionWizard onFinish={() => console.log("done")}>
         <StartQuestion {...props} />

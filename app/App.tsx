@@ -14,6 +14,11 @@ const App: React.FC<EntryProps> = ({
   hooks,
 }) => {
   const { useEffect, useRef } = React;
+  useEffect(() => {
+    if(utils.isBackOffice === true) {
+      utils.isReview = false;
+    }
+  }, [])
   const { Wizard } = Components;
   const { deal, roles } = models;
   const total_data: AppContextApi = useApp();

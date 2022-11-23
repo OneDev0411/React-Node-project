@@ -7,10 +7,12 @@ import axios from "axios"
 
 const LastQuestion: React.FC<IQuestionProps> = ({
   Wizard,
+  utils,
   api: { notifyOffice, close },
   hooks: { useWizardContext },
 }) => {
   const { QuestionSection, QuestionTitle, QuestionForm } = Wizard
+  const isBackOffice = utils.isBackOffice
   const { Box, Button, Dialog, DialogTitle, DialogActions } = Ui
   const total_data: AppContextApi = useApp()
   const { dealData, submitted, setSubmitted } = useApp()
@@ -20,14 +22,15 @@ const LastQuestion: React.FC<IQuestionProps> = ({
   
   const handleSubmit = async () => {
     wizard.setLoading(true)
-    notifyOffice(true, "Please review the Commission Slip")
+    if (!isBackOffice)
+      notifyOffice(true, "Please review the Commission Slip")
     const res = await axios.post(
       `${APP_URL}/rechat-commission-app-data-save`,
       {
         data: total_data,
       }
     )
-    if (submitted === 2) {
+    if (submitted === 2 && !isBackOffice) {
       let postData: IDealData = { ...dealData }
       postData.approval_request_date = ""
       postData.status = ""
@@ -37,6 +40,8 @@ const LastQuestion: React.FC<IQuestionProps> = ({
           data: postData,
         }
       )
+    } else if (submitted === 2 && isBackOffice) {
+      utils.isReview = true
     }
     if (setSubmitted !== undefined)
       setSubmitted(1)
@@ -77,20 +82,37 @@ const LastQuestion: React.FC<IQuestionProps> = ({
             </Button>
           </Box>
         }
-        {submitted === 2 &&
-          <Box style={{ textAlign: "right" }}>
-            <Button
-              onClick={handleSubmit}
-              variant="contained"
-              style={{
-                marginBottom: 20,
-                backgroundColor: "#0fb78d",
-                color: "white",
-              }}
-            >
-              Submit again for Review
-            </Button>
-          </Box>
+        {(submitted === 2 && !isBackOffice) ? 
+          (
+            <Box style={{ textAlign: "right" }}>
+              <Button
+                onClick={handleSubmit}
+                variant="contained"
+                style={{
+                  marginBottom: 20,
+                  backgroundColor: "#0fb78d",
+                  color: "white",
+                }}
+              >
+                Submit again for Review
+              </Button>
+            </Box>
+          )
+          : (
+            <Box style={{ textAlign: "right" }}>
+              <Button
+                onClick={handleSubmit}
+                variant="contained"
+                style={{
+                  marginBottom: 20,
+                  backgroundColor: "#0fb78d",
+                  color: "white",
+                }}
+              >
+                Review
+              </Button>
+            </Box>
+          )
         }
       </QuestionForm>
       <Dialog open={openFeedback} onClose={handleClose} aria-labelledby="form-dialog-title">

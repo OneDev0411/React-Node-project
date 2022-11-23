@@ -132,6 +132,7 @@ export interface IQuestionProps {
     notify: (data: NotificationData) => void;
     // notifyOffice: (comment: string) => Promise<void>;
     isBackOffice: boolean;
+    isReview: boolean;
   };
 }
 

@@ -29,6 +29,7 @@ declare interface EntryProps {
     notify: (data: NotificationData) => void;
     // notifyOffice: (comment: string) => Promise<void>;
     isBackOffice: boolean;
+    isReview: boolean;
   };
   api: {
     getDealContext: (field: string) => IDealContext;

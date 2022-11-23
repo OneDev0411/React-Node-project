@@ -1,18 +1,25 @@
 import React from "@libs/react"
 import useApp from "../../../../hooks/useApp"
-import { IQuestionProps } from "../../../../models/type"
+import { IQuestionProps, AppContextApi } from "../../../../models/type"
+import Ui from "@libs/material-ui"
+import { APP_URL } from "../../../../util"
+import axios from "axios"
 
 const StartQuestion: React.FC<IQuestionProps> = ({
   Wizard,
+  utils,
   hooks: { useWizardContext },
-  api: { getDealContext },
+  api: { getDealContext, notifyOffice },
   models: { deal, roles },
 }) => {
   const { useEffect } = React
   const { QuestionSection, QuestionTitle } = Wizard
   const wizard = useWizardContext()
-  const { currentStep, submitted } = useApp()
-  
+  const { currentStep, submitted, setSubmitted } = useApp()
+  const isBackOffice = utils.isBackOffice
+  const { Box, Button } = Ui
+  const total_data: AppContextApi = useApp()
+
   const seller = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'Landlord' : 'Seller'))
   const buyer = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'Tenant' : 'Buyer'))
   const buyerLawyer = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'TenantPowerOfAttorney' : 'BuyerLawyer'))
@@ -43,11 +50,40 @@ const StartQuestion: React.FC<IQuestionProps> = ({
     }
   }, [])
 
+  const handleSubmit = async () => {
+    wizard.setLoading(true)
+    const res = await axios.post(
+      `${APP_URL}/rechat-commission-app-data-save`,
+      {
+        data: total_data,
+      }
+    )
+    utils.isReview = true
+    if (setSubmitted !== undefined)
+      setSubmitted(1)
+    if (res.data.message === "successful")
+    wizard.setLoading(false)
+  }
+
   return (
     <QuestionSection>
       <QuestionTitle>
           Awesome🎉 let's get a few questions answered and get you paid.
       </QuestionTitle>
+      {isBackOffice && (
+        <Box style={{ textAlign: "right" }}>
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            style={{
+              backgroundColor: "#0fb78d",
+              color: "white",
+            }}
+          >
+            Review
+          </Button>
+        </Box>
+      )}
     </QuestionSection>
   )
 }
