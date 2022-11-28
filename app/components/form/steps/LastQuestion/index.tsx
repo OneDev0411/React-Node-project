@@ -67,7 +67,7 @@ const LastQuestion: React.FC<IQuestionProps> = ({
         {submitted !== 1 ? <>Awesome! Let's submit this for the review, and get you paid!</> : <>Awesome! Submitted!</>}
       </QuestionTitle>
       <QuestionForm>
-        {submitted === -1 && 
+        {(submitted === -1 && !isBackOffice ) && 
           <Box style={{ textAlign: "right" }}>
             <Button
               onClick={handleSubmit}
@@ -82,7 +82,7 @@ const LastQuestion: React.FC<IQuestionProps> = ({
             </Button>
           </Box>
         }
-        {(submitted === 2 && !isBackOffice) ? 
+        {(submitted === 2 && !isBackOffice) && 
           (
             <Box style={{ textAlign: "right" }}>
               <Button
@@ -98,7 +98,9 @@ const LastQuestion: React.FC<IQuestionProps> = ({
               </Button>
             </Box>
           )
-          : (
+        }
+        {isBackOffice && 
+          (
             <Box style={{ textAlign: "right" }}>
               <Button
                 onClick={handleSubmit}

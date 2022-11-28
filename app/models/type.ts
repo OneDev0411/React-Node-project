@@ -183,6 +183,11 @@ export interface IFeeData {
   fee_method: number,
 }
 
+export interface FeeQuestionProps {
+  feeData: IFeeData[],
+  deal: string
+}
+
 export interface IPaymentQuestionData {
   range: string;
   dealType: string;

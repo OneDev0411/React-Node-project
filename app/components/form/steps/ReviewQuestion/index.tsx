@@ -631,138 +631,36 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           {feeData.map((item: IFeeData, id: number) => 
             (
               <>
-                <Grid container xs={8} >
+                <Grid container xs={8}>
                   <Grid item xs={2}>
                     <label>Fee Type</label>
                   </Grid>
-                  <Grid item xs={10}>
-                    <Select
-                      defaultValue=""
-                      id='feetype-selected'
-                      label="Feetype"
-                      style={{ width: '97%', marginLeft: '3%' }}
-                      value={item.fee_type}
-                      onChange={(e: React.ChangeEvent<{ value: unknown }>) => 
-                        handleChangeValue(e, "feeType", id)
-                      }
-                    >
-                      {feeTypeElement}
-                    </Select>
+                  <Grid item xs={10} style={{display: 'inherit', alignItems: 'center'}}>
+                    {item.fee_type}
                   </Grid>
                 </Grid>
-                <Grid container xs={8} style={{ marginTop: '10px' }}>
+                <Grid container xs={8} style={{ marginTop: '5px', marginBottom: '10px' }}>
                   <Grid item xs={2}>
                     <label>Fee Amount</label>
                   </Grid>
-                  <Grid item xs={5} style={{display: 'inherit'}}>
-                    <Radio
-                      checked={item.fee_unit == 0}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-                        handleChangeValue(e, "feeUnit",id)
-                      }
-                      value={0}
-                      name="radio-buttons"
-                      size="small"
-                    />
-                    <TextField
-                      variant="standard"
-                      style={{ width: '100%'}}
-                      value={item.fee_amount_percentage}
-                      onChange={(e: React.ChangeEvent<{ value: unknown }>) => 
-                        handleChangeValue(e, "feePercentAmount", id)
-                      }
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">%</InputAdornment>
-                        ),
-                      }}
-                      disabled={item.fee_unit == 1}
-                    />
-                  </Grid>
-                  <Grid item xs={5} style={{display: 'inherit'}}>
-                    <Radio
-                      checked={item.fee_unit == 1}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-                        handleChangeValue(e, "feeUnit", id)
-                      }
-                      value={1}
-                      name="radio-buttons"
-                      size="small"
-                    />
-                    <TextField
-                      variant="standard"
-                      style={{ width: '100%'}}
-                      value={item.fee_amount}
-                      onChange={(e: React.ChangeEvent<{ value: unknown }>) => 
-                        handleChangeValue(e, "feeAmount", id)
-                      }
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">$</InputAdornment>
-                        ),
-                      }}
-                      disabled={item.fee_unit == 0}
-                    />
-                  </Grid>
-                </Grid>
-                <Grid container xs={8}>
-                  <Grid item xs={3}></Grid>
-                  <Grid item xs={9}>
-                    <RadioGroup
-                      row
-                      aria-labelledby="demo-row-radio-buttons-group-label"
-                      name="row-radio-buttons-group"
-                      value={item.fee_method}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleChangeValue(e, "feeType-method", id)
-                      }
-                    >
-                      <FormControlLabel
-                        value={0}
-                        style={{ marginRight: 20 }}
-                        control={
-                          <Radio
-                            checked={item.fee_method == 0}
-                            size="small"
-                            style={{ marginBottom: 3 }}
-                          />
-                        }
-                        label="Off Net"
-                      />
-                      <FormControlLabel
-                        value={1}
-                        style={{ marginRight: 0 }}
-                        control={
-                          <Radio
-                            checked={item.fee_method == 1}
-                            size="small"
-                            style={{ marginBottom: 3 }}
-                          />
-                        }
-                        label="Off the Top"
-                      />
-                    </RadioGroup>
+                  {item.fee_unit == 0 && (
+                    <Grid item xs={3} style={{display: 'inherit', alignItems: 'center'}}>
+                      % {item.fee_amount_percentage}
+                    </Grid>
+                  )}
+                  {item.fee_unit == 1 && (
+                    <Grid item xs={3} style={{display: 'inherit', alignItems: 'center'}}>
+                      $ {item.fee_amount}
+                    </Grid>
+                  )}
+                  <Grid item xs={2} style={{display: 'inherit', alignItems: 'center'}}>
+                    {item.fee_method == 0 ? "Off Net" : "Off the Top"}
                   </Grid>
                 </Grid>
               </>
             )
           )}
-          <Button
-            variant='outlined'
-            onClick={handleClickAddAnotherButton}
-            style={{
-              color: "black !important",
-              borderColor: "#dbdbdb !important",
-              paddingBottom: 2,
-              paddingTop: 2,
-              marginTop: 20,
-              marginBottom: 10
-            }}
-          >
-            + Add More Fee
-          </Button>
         </Grid>
-
         <Grid container style={styles.group}>
           <Grid item xs={12} style={styles.group_title}>
             <label>{deal.property_type.is_lease ? "LANDLORD(S)" : "SELLER(S)"}</label>

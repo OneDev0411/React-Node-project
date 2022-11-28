@@ -14,16 +14,12 @@ const App: React.FC<EntryProps> = ({
   hooks,
 }) => {
   const { useEffect, useRef } = React;
-  useEffect(() => {
-    if(utils.isBackOffice === true) {
-      utils.isReview = false;
-    }
-  }, [])
+  
   const { Wizard } = Components;
   const { deal, roles } = models;
   const total_data: AppContextApi = useApp();
   const _totalData = useRef(total_data);
-  const { setDealData, setRoleData, setRemittanceChecks, setInsidePayments, setOutsidePayments, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep, setFeeData } = useApp();
+  const { setDealData, setRoleData, setRemittanceChecks, setInsidePayments, setOutsidePayments, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep, feeData, setFeeData } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
 
@@ -72,6 +68,8 @@ const App: React.FC<EntryProps> = ({
       const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
       return diff ? diff : a.legal_full_name.localeCompare(b.legal_full_name);
     });
+
+    let tempFeeData = data.feeData.filter((item: IFeeData) => item.deal === deal.id);
 
     try {
       if (data !== null) { // in case of data exist in database
@@ -141,7 +139,6 @@ const App: React.FC<EntryProps> = ({
         if (setCurrentStep !== undefined) {
           setCurrentStep(Number(tempDealData.current_step));
         }
-        let tempFeeData = data.feeData.filter((item: IFeeData) => item.deal === deal.id);
         if(setFeeData !== undefined) {
           setFeeData(tempFeeData)
         }
@@ -152,6 +149,9 @@ const App: React.FC<EntryProps> = ({
         }
         if (setRoleData !== undefined) {
           setRoleData(tempAgentRoles);
+        }
+        if (setFeeData !== undefined) {
+          setFeeData(tempFeeData)
         }
         if (setRemittanceChecks !== undefined) {
           setRemittanceChecks(defaultRemittanceChecks);
@@ -168,6 +168,9 @@ const App: React.FC<EntryProps> = ({
   };
 
   useEffect(() => {
+    if(utils.isBackOffice === true) {
+      utils.isReview = false;
+    }
     if (setFinancing !== undefined)
       setFinancing(deal.context.financing?.text);
     dataToContextAPI();

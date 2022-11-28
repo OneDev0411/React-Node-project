@@ -8,12 +8,14 @@ import PaymentQuestionInside from "../steps/PaymentQuestion/Inside"
 import PaymentQuestionOutside from "../steps/PaymentQuestion/Outside"
 import ReviewQuestion from "../steps/ReviewQuestion"
 import LastQuestion from "../steps/LastQuestion"
+import FeeQuestion from "../steps/FeeQuestion"
 import { IQuestionProps } from "../../../models/type"
 
 export const FormWizard: React.FC<IQuestionProps> = (props) => {
   const { Wizard, utils, models } = props
   const { deal } = models
   const isReveiew = utils.isReview
+  const isBackOffice = utils.isBackOffice
 
   if (!isReveiew) {
     return (
@@ -29,6 +31,9 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
         <RemittanceQuestion {...props} />
         <PaymentQuestionInside {...props} />
         <PaymentQuestionOutside {...props} />
+        {isBackOffice && (
+          <FeeQuestion {...props} />
+        )}
         <LastQuestion {...props} />
       </Wizard.QuestionWizard> 
     )
