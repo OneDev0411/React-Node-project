@@ -173,6 +173,18 @@ export const feeTypeData: IFeeType = {
   ]
 }
 
+export const defaultFeeData: IFeeData[] = [
+  {
+    id: 0,
+    deal: "",
+    fee_type: "",
+    fee_amount: "",
+    fee_amount_percentage: "",
+    fee_unit: 0,
+    fee_method: 0
+  }
+];
+
 export const defaultRemittanceChecks: IRemittanceChecks[] = [
   {
     id: null,

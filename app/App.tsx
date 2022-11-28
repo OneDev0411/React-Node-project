@@ -2,7 +2,7 @@ import React from "@libs/react"
 import axios from "axios"
 import useApp from "./hooks/useApp"
 import { AppContextApi, IRoleData, IPayment, IFeeData } from "./models/type"
-import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole } from "./util"
+import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole, defaultFeeData } from "./util"
 import { FormWizard } from "./components/form/Wizard"
 import Loading from './components/Loading'
 
@@ -68,8 +68,6 @@ const App: React.FC<EntryProps> = ({
       const diff = sortRole[key1 as keyof typeof sortRole] - sortRole[key2 as keyof typeof sortRole];
       return diff ? diff : a.legal_full_name.localeCompare(b.legal_full_name);
     });
-
-    let tempFeeData = data.feeData.filter((item: IFeeData) => item.deal === deal.id);
 
     try {
       if (data !== null) { // in case of data exist in database
@@ -139,6 +137,7 @@ const App: React.FC<EntryProps> = ({
         if (setCurrentStep !== undefined) {
           setCurrentStep(Number(tempDealData.current_step));
         }
+        let tempFeeData = data.feeData
         if(setFeeData !== undefined) {
           setFeeData(tempFeeData)
         }
@@ -151,7 +150,7 @@ const App: React.FC<EntryProps> = ({
           setRoleData(tempAgentRoles);
         }
         if (setFeeData !== undefined) {
-          setFeeData(tempFeeData)
+          setFeeData(defaultFeeData)
         }
         if (setRemittanceChecks !== undefined) {
           setRemittanceChecks(defaultRemittanceChecks);
