@@ -52,6 +52,16 @@ const saveAppData = async (data: any, model: any) => {
         data.de_office_address = address
       }
     }
+    if (model == AppFeeModel) {
+      let feeData = await model.findAll({
+        order: [
+          ["created_at", "ASC"]
+        ]
+      })
+      if(feeData) {
+        data.id = feeData.length + 1
+      }
+    }
     await model.create(data);
   } else {
     if (model == AppRemittanceCheckModel) {
