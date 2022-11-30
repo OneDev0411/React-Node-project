@@ -20,7 +20,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 			updateFlag(false)
 		else
 			updateFlag(true)
-		_setFeeData(feeData)
+		_setFeeData(feeData.filter((item: IFeeData) => (item.deal == deal)))
 	}, [feeData])
 
 	const feeTypeElement = feeTypeData.feeName.map((feeType: string, index: any) => {
@@ -43,7 +43,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
     key: string,
     id: number
   ) => {
-    let updatedValue = JSON.parse(JSON.stringify(_feeData))
+    let updatedValue = JSON.parse(JSON.stringify(feeData))
     if (key == "feeType"){
       updatedValue[id].fee_type = e.target.value
     }
@@ -71,7 +71,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 
 	const handleClickAddAnotherButton = () => {
     let emptyValue: IFeeData = {
-      id: _feeData.length + 1,
+      id: feeData.length + 1,
       deal: deal,
       fee_type: "",
       fee_amount: "",

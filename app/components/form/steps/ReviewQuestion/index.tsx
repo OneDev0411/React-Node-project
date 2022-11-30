@@ -14,7 +14,6 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   api: { getDealContext, updateTaskStatus, close },
   hooks: { useWizardContext },
 }) => {
-  const { useState, useEffect } = React
   const { QuestionSection, QuestionTitle } = Wizard
   const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid, Select, MenuItem, Radio, InputAdornment, RadioGroup, FormControlLabel } = Ui
   const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData, setFeeData } = useApp()
@@ -22,6 +21,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const enderType = deal.context.ender_type?.text
   const dealType = (enderType === 'AgentDoubleEnder' || enderType === 'OfficeDoubleEnder') ? 'Both' : deal.deal_type
 
+  const fees = feeData.filter((fee: IFeeData) => fee.deal === deal.id)
   const sellers = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'Landlord' : 'Seller'))
   const buyers = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'Tenant' : 'Buyer'))
 
@@ -212,61 +212,6 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const handleCloseFeedback = async () => {
     setOpenFeedback(false)
     close()
-  }
-
-  const feeTypeElement = feeTypeData.feeName.map((feeType: string, index: any) => {
-    return (
-      <MenuItem value={feeType} id={index}>{feeType}</MenuItem>
-    )
-  })
-
-  const handleChangeValue = (
-    e: React.ChangeEvent<{ value: unknown }>,
-    key: string,
-    id: number
-  ) => {
-    let updatedValue = JSON.parse(JSON.stringify(feeData))
-    if (key == "feeType"){
-      updatedValue[id].fee_type = e.target.value
-    }
-    if (key == "feePercentAmount") {
-      updatedValue[id].fee_amount_percentage = e.target.value
-    }
-    if (key == "feeAmount") {
-      updatedValue[id].fee_amount = e.target.value
-    }
-    if (key == "feeUnit") {
-      updatedValue[id].fee_unit = Number(e.target.value)
-      if(updatedValue[id].fee_unit == 1) {
-        updatedValue[id].fee_amount_percentage = 0
-      } else {
-        updatedValue[id].fee_amount = 0
-      }
-    }
-    if (key == "feeType-method") {
-      updatedValue[id].fee_method = e.target.value
-    }
-    if(setFeeData != undefined){
-      setFeeData(updatedValue)
-    }
-  }
-
-
-  const handleClickAddAnotherButton = () => {
-    let emptyValue: IFeeData = {
-      id: feeData.length + 1,
-      deal: deal.id,
-      fee_type: "",
-      fee_amount: "",
-      fee_amount_percentage: "",
-      fee_unit: 0,
-      fee_method: 0,
-    }
-    let updatedValue = JSON.parse(JSON.stringify(feeData))
-    updatedValue.push(emptyValue)
-    if(setFeeData != undefined){
-      setFeeData(updatedValue)
-    }
   }
   
   const handlePrint = async () => {
@@ -628,9 +573,9 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           <Grid item xs={12} style={styles.group_title}>
             <label>Fees</label>
           </Grid>
-          {feeData.map((item: IFeeData, id: number) => 
+          {fees.map((item: IFeeData, id: number) => 
             (
-              <>
+              <Grid container xs={12} key={id}>
                 <Grid container xs={8}>
                   <Grid item xs={2}>
                     <label>Fee Type</label>
@@ -657,7 +602,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     {item.fee_method == 0 ? "Off Net" : "Off the Top"}
                   </Grid>
                 </Grid>
-              </>
+              </Grid>
             )
           )}
         </Grid>
