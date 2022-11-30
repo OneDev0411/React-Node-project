@@ -40,6 +40,10 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
     }, 80)
   }
 
+  const updateFlag = (flag: boolean) => {
+    setShowButton(flag)
+  }
+
   return (
     <QuestionSection>
       <QuestionTitle>
@@ -49,6 +53,7 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
         <FeeQuestionComponent
           feeData={feeData}
           deal={deal.id}
+          saveData={{ updateFlag }}
         />
         {showButton && (
           <Box

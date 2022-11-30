@@ -174,18 +174,19 @@ export interface IFeeType {
 }
 
 export interface IFeeData {
-  id: number,
-  deal: string,
-  fee_type: string,
-  fee_amount: string,
-  fee_amount_percentage: string,
-  fee_unit: number,
-  fee_method: number,
+  id: number;
+  deal: string;
+  fee_type: string;
+  fee_amount: string;
+  fee_amount_percentage: string;
+  fee_unit: number;
+  fee_method: number;
 }
 
 export interface FeeQuestionProps {
-  feeData: IFeeData[],
-  deal: string
+  feeData: IFeeData[];
+  deal: string;
+  saveData: IDataToConText;
 }
 
 export interface IPaymentQuestionData {

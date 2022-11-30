@@ -6,7 +6,8 @@ import { feeTypeData } from '../../../../util'
 
 const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
   feeData,
-  deal
+  deal,
+  saveData: { updateFlag }
 }) => {
 	const { Box, Button, TextField, Grid, Select, IconButton, MenuItem, Radio, RadioGroup, InputAdornment, FormControlLabel } = Ui
   const { useState, useEffect } = React
@@ -15,6 +16,10 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 	const [ _feeData, _setFeeData ] = useState<IFeeData[]>([])
 
 	useEffect(() => {
+		if (feeData.length === 0) 
+			updateFlag(false)
+		else
+			updateFlag(true)
 		_setFeeData(feeData)
 	}, [feeData])
 
