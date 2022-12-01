@@ -184,7 +184,6 @@ export interface IFeeData {
 }
 
 export interface FeeQuestionProps {
-  feeData: IFeeData[];
   deal: string;
   saveData: IDataToConText;
 }

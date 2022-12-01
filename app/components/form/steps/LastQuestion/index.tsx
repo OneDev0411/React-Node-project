@@ -46,14 +46,16 @@ const LastQuestion: React.FC<IQuestionProps> = ({
     if (setSubmitted !== undefined)
       setSubmitted(1)
     wizard.setLoading(false)
-    if (res.data.message === "successful")
+    if (!isBackOffice) {
+      if (res.data.message === "successful")
       setFeedback("Successfully submitted.")
-    else {
-      setFeedback("Submit failed.")
-      if (setSubmitted !== undefined)
-        setSubmitted(-1)
+      else {
+        setFeedback("Submit failed.")
+        if (setSubmitted !== undefined)
+          setSubmitted(-1)
+      }
+      setOpenFeedback(true)
     }
-    setOpenFeedback(true)
   }
 
   const handleClose = () => {

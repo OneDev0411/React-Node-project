@@ -13,7 +13,7 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
   const { Box, Button } = Ui
   const wizard = useWizardContext()
   const { step } = useSectionContext()
-  const { dealData, setDealData, submitted, currentStep, setCurrentStep, feeData } = useApp()
+  const { dealData, setDealData, submitted, currentStep, setCurrentStep } = useApp()
 
   const [showButton, setShowButton] = useState<boolean>(true)
 
@@ -41,7 +41,9 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
   }
 
   const updateFlag = (flag: boolean) => {
-    setShowButton(flag)
+    if (wizard.currentStep < step + 1) {
+      setShowButton(flag)
+    }
   }
 
   return (
@@ -51,7 +53,6 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
       </QuestionTitle>
       <QuestionForm width="60%">
         <FeeQuestionComponent
-          feeData={feeData}
           deal={deal.id}
           saveData={{ updateFlag }}
         />

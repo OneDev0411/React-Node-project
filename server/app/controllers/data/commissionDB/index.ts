@@ -132,6 +132,13 @@ const saveCommissionData = async (req: Request, res: Response) => {
       await saveAppData(roleData[i], AppRoleModel);
     }
     // save appFeeData
+    const dbFeeData = await readData(dealData.deal, AppFeeModel);
+    for (let k = 0; k < dbFeeData.length; k++) {
+      const isExist = feeData.filter(item => item.id && item.id == dbFeeData[k].id);
+      if (!isExist.length) {
+        await deleteData(dbFeeData[k], AppFeeModel);
+      }
+    }
     for (let i = 0; i < feeData.length; i++) {
       await saveAppData(feeData[i], AppFeeModel);
     }
