@@ -41,24 +41,24 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
   ) => {
     let updatedValue = JSON.parse(JSON.stringify(feeData))
     if (key == "feeType"){
-      updatedValue[id-1].fee_type = e.target.value
+      updatedValue[id].fee_type = e.target.value
     }
     if (key == "feePercentAmount") {
-      updatedValue[id-1].fee_amount_percentage = e.target.value
+      updatedValue[id].fee_amount_percentage = e.target.value
     }
     if (key == "feeAmount") {
-      updatedValue[id-1].fee_amount = e.target.value
+      updatedValue[id].fee_amount = e.target.value
     }
     if (key == "feeUnit") {
-      updatedValue[id-1].fee_unit = Number(e.target.value)
-      if(updatedValue[id-1].fee_unit == 1) {
-        updatedValue[id-1].fee_amount_percentage = 0
+      updatedValue[id].fee_unit = Number(e.target.value)
+      if(updatedValue[id].fee_unit == 1) {
+        updatedValue[id].fee_amount_percentage = 0
       } else {
-        updatedValue[id-1].fee_amount = 0
+        updatedValue[id].fee_amount = 0
       }
     }
     if (key == "feeType-method") {
-      updatedValue[id-1].fee_method = e.target.value
+      updatedValue[id].fee_method = e.target.value
     }
 		if (setFeeData !== undefined) {
 			setFeeData(updatedValue)
@@ -67,7 +67,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 
 	const handleClickAddAnotherButton = () => {
     let emptyValue: IFeeData = {
-      id: feeData.length + 1,
+      id: feeData.length,
       deal: deal,
       fee_type: "",
       fee_amount: "",
