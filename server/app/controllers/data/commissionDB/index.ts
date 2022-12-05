@@ -52,6 +52,13 @@ const saveAppData = async (data: any, model: any) => {
         data.de_office_address = address
       }
     }
+    if(model == AppFeeModel) {
+      if(data.deal === "") {
+        return
+      } else {
+        await model.create(data);
+      }
+    }
     await model.create(data);
   } else {
     if (model == AppRemittanceCheckModel) {

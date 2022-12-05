@@ -569,43 +569,46 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             )}
           </Grid>
         )}
-        <Grid container style={styles.group} >
-          <Grid item xs={12} style={styles.group_title}>
-            <label>Fees</label>
+        {fees.length > 0 && (
+          <Grid container style={styles.group} >
+            <Grid item xs={12} style={styles.group_title}>
+              <label>Fees</label>
+            </Grid>
+            {fees.map((item: IFeeData, id: number) => 
+              (
+                <Grid container xs={12} key={id}>
+                  <Grid container xs={8}>
+                    <Grid item xs={2}>
+                      <label>Fee Type</label>
+                    </Grid>
+                    <Grid item xs={10} style={{display: 'inherit', alignItems: 'center'}}>
+                      {item.fee_type}
+                    </Grid>
+                  </Grid>
+                  <Grid container xs={8} style={{ marginTop: '5px', marginBottom: '10px' }}>
+                    <Grid item xs={2}>
+                      <label>Fee Amount</label>
+                    </Grid>
+                    {item.fee_unit == 0 && (
+                      <Grid item xs={3} style={{display: 'inherit', alignItems: 'center'}}>
+                        % {item.fee_amount_percentage}
+                      </Grid>
+                    )}
+                    {item.fee_unit == 1 && (
+                      <Grid item xs={3} style={{display: 'inherit', alignItems: 'center'}}>
+                        $ {item.fee_amount}
+                      </Grid>
+                    )}
+                    <Grid item xs={2} style={{display: 'inherit', alignItems: 'center'}}>
+                      {item.fee_method == 0 ? "Off Net" : "Off the Top"}
+                    </Grid>
+                  </Grid>
+                </Grid>
+              )
+            )}
           </Grid>
-          {fees.map((item: IFeeData, id: number) => 
-            (
-              <Grid container xs={12} key={id}>
-                <Grid container xs={8}>
-                  <Grid item xs={2}>
-                    <label>Fee Type</label>
-                  </Grid>
-                  <Grid item xs={10} style={{display: 'inherit', alignItems: 'center'}}>
-                    {item.fee_type}
-                  </Grid>
-                </Grid>
-                <Grid container xs={8} style={{ marginTop: '5px', marginBottom: '10px' }}>
-                  <Grid item xs={2}>
-                    <label>Fee Amount</label>
-                  </Grid>
-                  {item.fee_unit == 0 && (
-                    <Grid item xs={3} style={{display: 'inherit', alignItems: 'center'}}>
-                      % {item.fee_amount_percentage}
-                    </Grid>
-                  )}
-                  {item.fee_unit == 1 && (
-                    <Grid item xs={3} style={{display: 'inherit', alignItems: 'center'}}>
-                      $ {item.fee_amount}
-                    </Grid>
-                  )}
-                  <Grid item xs={2} style={{display: 'inherit', alignItems: 'center'}}>
-                    {item.fee_method == 0 ? "Off Net" : "Off the Top"}
-                  </Grid>
-                </Grid>
-              </Grid>
-            )
-          )}
-        </Grid>
+        )}
+        
         <Grid container style={styles.group}>
           <Grid item xs={12} style={styles.group_title}>
             <label>{deal.property_type.is_lease ? "LANDLORD(S)" : "SELLER(S)"}</label>
