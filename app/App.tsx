@@ -150,6 +150,7 @@ const App: React.FC<EntryProps> = ({
           setRoleData(tempAgentRoles);
         }
         if (setFeeData !== undefined) {
+          defaultFeeData[0].deal = deal.id
           setFeeData(defaultFeeData)
         }
         if (setRemittanceChecks !== undefined) {
