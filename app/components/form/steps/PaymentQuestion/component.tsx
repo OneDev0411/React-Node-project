@@ -42,6 +42,16 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
     index: number
   ) => {
     updateFlag(true) // for Next button enable
+    if (key === "de_payment_type") {
+      const _status = JSON.parse(JSON.stringify(status))
+      if (e.target.value === "Team Member") {
+        _status[index] = "Selecting"
+        setStatus(_status)
+      } else {
+        _status[index] = "Listing"
+        setStatus(_status)
+      }
+    }
     if (key === "de_paid_to") {
       setTmpDePaidTo(String(e.target.value))
       return
@@ -188,8 +198,10 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
 
     const _status = status
     payments.map((item) => {
-      if (item.de_payment_type === "Team Member")
+      if (item.de_payment_type === "Team Member" && item.de_paid_to === "")
         _status.push("Selecting")
+      else if (item.de_payment_type === "Team Member" && item.de_paid_to !== "")
+        _status.push("Listing")
       else if (item.de_payment_type !== "Team Member")
         _status.push("Listing")
     })
