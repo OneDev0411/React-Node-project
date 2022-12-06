@@ -199,12 +199,7 @@ const readCombinedAppData = async (deal: string) => {
   let roleData = await readData(deal, AppRoleModel);
   let remittanceChecks = await readData(deal, AppRemittanceCheckModel);
   let payments = await readData(deal, AppPaymentModel);
-  let feeData = await AppFeeModel.findAll({
-    order: [
-      ["created_at", "ASC"]
-    ],
-    attributes: { exclude: ["created_at", "updated_at"] },
-  });
+  let feeData = await readData(deal, AppFeeModel);
 
   let allData: any = null;
   if (dealData.length > 0) {

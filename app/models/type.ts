@@ -174,13 +174,14 @@ export interface IFeeType {
 }
 
 export interface IFeeData {
-  id: number;
+  id: number | null;
   deal: string;
   fee_type: string;
   fee_amount: string;
   fee_amount_percentage: string;
   fee_unit: number;
   fee_method: number;
+  key_Index: number
 }
 
 export interface FeeQuestionProps {

@@ -1,5 +1,3 @@
-import { AllowNull } from "sequelize-typescript";
-
 export default (sequelize, Sequelize) => {
 	const AppFeeModel = sequelize.define(
 		"app_fee",
@@ -21,6 +19,9 @@ export default (sequelize, Sequelize) => {
 				type: Sequelize.NUMERIC,
 			},
 			fee_method: {
+				type: Sequelize.NUMERIC
+			},
+			key_Index: {
 				type: Sequelize.NUMERIC
 			}
 		},

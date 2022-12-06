@@ -2,7 +2,7 @@ import React from "@libs/react"
 import Ui from "@libs/material-ui"
 import useApp from "../../../../hooks/useApp"
 import { FeeQuestionProps, IFeeData } from "../../../../models/type"
-import { feeTypeData } from '../../../../util'
+import { defaultFeeData, feeTypeData } from '../../../../util'
 
 const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
   deal,
@@ -12,7 +12,6 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
   const { useEffect } = React
   const { submitted, setFeeData, feeData } = useApp()
 
-	const fees = feeData.filter((item: IFeeData) => (item.deal == deal))
 	useEffect(() => {
 		updateFlag(true)
 	}, [feeData])
@@ -25,9 +24,9 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 
 	const handleClickRemoveFee = (index: number) => {
     let temp = JSON.parse(JSON.stringify(feeData))
-    temp.splice(index-1 , 1)
+    temp.splice(index , 1)
 		for (let i= 0; i < temp.length; i++) {
-			temp[i].id = i+1;
+			temp[i].key_Index = i;
 		}
 		if(setFeeData !== undefined) {
 			setFeeData(temp)
@@ -67,13 +66,14 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 
 	const handleClickAddAnotherButton = () => {
     let emptyValue: IFeeData = {
-      id: feeData.length,
+      id: null,
       deal: deal,
       fee_type: "",
       fee_amount: "",
       fee_amount_percentage: "",
       fee_unit: 0,
       fee_method: 0,
+	  	key_Index: feeData.length
     }
     let updatedValue = JSON.parse(JSON.stringify(feeData))
     updatedValue.push(emptyValue)
@@ -84,7 +84,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 
   return (
 		<>
-    {fees.map((item: IFeeData, id: number) => 
+    {feeData.map((item: IFeeData, id: number) => 
 			<Box 
 				style={{
 					marginBottom: 20,
@@ -98,7 +98,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 				}}
 				key={id}
 			>
-				{fees.length > 1 && 
+				{feeData.length > 1 && 
 					<IconButton 
 						size="small"
 						style={{
@@ -109,7 +109,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 							height: 5
 						}}
 						onClick={
-							() => handleClickRemoveFee(item.id)
+							() => handleClickRemoveFee(id)
 						}
 					>
 						x
@@ -127,7 +127,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 							style={{ width: "100%" }}
 							value={item.fee_type}
 							onChange={(e: React.ChangeEvent<{ value: unknown }>) =>
-								handleChangeValue(e, "feeType", item.id)
+								handleChangeValue(e, "feeType", id)
 							}
 						>
 							{feeTypeElement}
@@ -142,7 +142,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 						<Radio
 							checked={item.fee_unit == 0}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-								handleChangeValue(e, "feeUnit", item.id)
+								handleChangeValue(e, "feeUnit", id)
 							}
 							value={0}
 							name="radio-buttons"
@@ -153,7 +153,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 							style={{ width: '100%'}}
 							value={item.fee_amount_percentage}
 							onChange={(e: React.ChangeEvent<{ value: unknown }>) => 
-								handleChangeValue(e, "feePercentAmount", item.id)
+								handleChangeValue(e, "feePercentAmount", id)
 							}
 							InputProps={{
 								startAdornment: (
@@ -170,7 +170,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 						<Radio
 							checked={item.fee_unit == 1}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-								handleChangeValue(e, "feeUnit", item.id)
+								handleChangeValue(e, "feeUnit", id)
 							}
 							value={1}
 							name="radio-buttons"
@@ -181,7 +181,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 							style={{ width: '100%'}}
 							value={item.fee_amount}
 							onChange={(e: React.ChangeEvent<{ value: unknown }>) => 
-								handleChangeValue(e, "feeAmount", item.id)
+								handleChangeValue(e, "feeAmount", id)
 							}
 							InputProps={{
 								startAdornment: (
