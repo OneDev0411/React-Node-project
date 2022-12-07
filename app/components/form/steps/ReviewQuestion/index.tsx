@@ -282,7 +282,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           <Grid container spacing={2}>
             <Grid item>
               <label>Contract {deal.property_type.is_lease ? 'Leased' : 'Sales'} Price:&nbsp;</label>
-              ${deal.property_type.is_lease ? deal.context.leased_price?.text : deal.context.sales_price?.text}
+              ${deal.property_type.is_lease ? stylizeNumber(Number(deal.context.leased_price?.text)) : stylizeNumber(Number(deal.context.sales_price?.text))}
             </Grid>
             <Grid item>
               <label>Closing Date:&nbsp;</label>{deal.context.closing_date?.text}

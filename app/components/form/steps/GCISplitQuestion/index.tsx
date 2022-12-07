@@ -3,7 +3,7 @@ import ReactUse from "@libs/react-use"
 import Ui from "@libs/material-ui"
 import useApp from "../../../../hooks/useApp"
 import { GCISplitStatus, IQuestionProps, IRoleData } from "../../../../models/type"
-import { sortRole, commissionReason } from "../../../../util"
+import { sortRole, commissionReason, stylizeNumber } from "../../../../util"
 import GCIInfoItem from "./item"
 
 const GCISplitQuestion: React.FC<IQuestionProps> = ({
@@ -385,7 +385,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               </Grid>
               <Grid item xs={4} style={{ paddingLeft: 0 }}>
                 <label style={{ fontWeight: 300 }}>
-                  Total: <strong>${totalValue}</strong>
+                  Total: <strong>${stylizeNumber(totalValue)}</strong>
                 </label>
               </Grid>
             </Grid>
@@ -437,7 +437,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               </Grid>
               <Grid item xs={4} style={{ paddingLeft: 0 }}>
                 <label style={{ fontWeight: 300 }}>
-                  Total: <strong>${totalValue}</strong>
+                  Total: <strong>${stylizeNumber(totalValue)}</strong>
                 </label>
               </Grid>
             </Grid>

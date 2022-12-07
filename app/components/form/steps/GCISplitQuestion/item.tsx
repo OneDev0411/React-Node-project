@@ -1,6 +1,7 @@
 import React from "@libs/react"
 import useApp from "../../../../hooks/useApp"
 import { IGCIInfoItemProps, IRoleData } from "../../../../models/type"
+import { stylizeNumber } from "../../../../util"
 
 const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   Ui: { Grid, Box, TextField },
@@ -11,15 +12,19 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   role,
   updateData,
 }) => {
-  const { useState } = React
+  const { useState, useEffect } = React
   const { submitted } = useApp()
   const [_roleData, _setRoleData] = useState<IRoleData>(role)
+  const [calculatedFromSharePercent, setCalculatedFromSharePercent] = useState<String>(stylizeNumber(parseFloat(((Number(_roleData.share_percent) / 100) * Number(price)).toFixed(3))))
 
+  useEffect(() => {
+    setCalculatedFromSharePercent(stylizeNumber(parseFloat(((Number(_roleData.share_percent) / 100) * Number(price)).toFixed(3))))
+  }, [_roleData.share_percent])
   const handleChangeNumber = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IRoleData
   ) => {
-    let value: string = e.target.value
+    let value: string = e.target.value.replace(/\,/g,'')
     if (Number(value) + "" === "NaN" || (value + "").length > 16) {
       return
     }
@@ -88,9 +93,9 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
       <Grid item xs={4}>
         <TextField
           size="small"
-          type="number"
+          type="string"
           label="Share($)"
-          value={_roleData.share_value ? Number(_roleData.share_value) : parseFloat(((Number(_roleData.share_percent) / 100) * Number(price)).toFixed(3))}
+          value={_roleData.share_value ? stylizeNumber(Number(_roleData.share_value)) : calculatedFromSharePercent}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChangeNumber(e, "share_value")
           }

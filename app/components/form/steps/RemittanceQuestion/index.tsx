@@ -3,7 +3,7 @@ import ReactUse from "@libs/react-use"
 import Ui from "@libs/material-ui"
 import useApp from "../../../../hooks/useApp"
 import { IDealData, IRoleData, IQuestionProps, IRemittanceChecks } from "../../../../models/type"
-import { defaultRemittanceChecks } from "../../../../util"
+import { defaultRemittanceChecks, stylizeNumber } from "../../../../util"
 import { DatePicker } from "../../../DatePicker"
 
 const RemittanceQuestion: React.FC<IQuestionProps> = ({
@@ -100,6 +100,9 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     value: IRemittanceChecks[typeof key],
     dealSide: string,
   ) => {
+    if(key==="amount") {
+      value = Number(String(value).replace(/\,/g,''))
+    }
     if (dealSide === "BuySide") {
       let temp = buySideChecks.slice()
       temp[index] = { ...temp[index], [key]: value, deal_side: dealSide, deal: deal.id }
@@ -132,7 +135,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IDealData
   ) => {
-    let value: string = e.target.value
+    let value: string = e.target.value.replace(/\,/g,'')
     if (Number(value) + "" === "NaN" || (value + "").length > 16) {
       return
     }
@@ -350,7 +353,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                             <Grid item xs={6}>
                               <TextField
                                 size="small"
-                                value={checkData.amount}
+                                value={stylizeNumber(Number(checkData.amount))}
                                 style={{ width: "100%" }}
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>
@@ -358,11 +361,11 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                                   updateCheckDataList(
                                     index,
                                     "amount",
-                                    e.target.value,
+                                    Number(e.target.value.replace(/\,/g,'')),
                                     "BuySide"
                                   )
                                 }
-                                type="number"
+                                type="string"
                                 InputProps={{
                                   startAdornment: (
                                     <InputAdornment position="start">
@@ -440,11 +443,11 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                 <Grid item xs={8}>
                   <TextField
                     size="small"
-                    value={_dealData.remittance_buy_side_bank_wire_amount}
+                    value={stylizeNumber(Number(_dealData.remittance_buy_side_bank_wire_amount))}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleChangeValue(e, "remittance_buy_side_bank_wire_amount")
                     }
-                    type="number"
+                    type="string"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -539,7 +542,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                             <Grid item xs={6}>
                               <TextField
                                 size="small"
-                                value={checkData.amount}
+                                value={stylizeNumber(checkData.amount)}
                                 style={{ width: "100%" }}
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>
@@ -551,7 +554,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                                     "ListingSide"
                                   )
                                 }
-                                type="number"
+                                type="string"
                                 InputProps={{
                                   startAdornment: (
                                     <InputAdornment position="start">
@@ -628,11 +631,11 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
                 <Grid item xs={8}>
                   <TextField
                     size="small"
-                    value={_dealData.remittance_listing_side_bank_wire_amount}
+                    value={stylizeNumber(Number(_dealData.remittance_listing_side_bank_wire_amount))}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleChangeValue(e, "remittance_listing_side_bank_wire_amount")
                     }
-                    type="number"
+                    type="string"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
