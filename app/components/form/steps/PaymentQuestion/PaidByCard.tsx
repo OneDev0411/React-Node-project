@@ -1,5 +1,6 @@
 import React from "@libs/react"
 import { IPaidByCardProps, IPaidByData } from "../../../../models/type"
+import { stylizeNumber } from "../../../../util"
 
 const PaidByCard: React.FC<IPaidByCardProps> = ({
   Ui: {
@@ -28,7 +29,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
     key: keyof IPaidByData
   ) => {
     updateFlag(true)
-    let value: string = e.target.value
+    let value: string = e.target.value.replace(/\,/g,'')
     if (key != "payment_note" && (value == "NaN" || (value + "").length > 16)) {
       return
     }
@@ -178,9 +179,9 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           />
           <TextField
             size="small"
-            type="number"
+            type="string"
             value={
-              (_paidBy.payment_unit_type == 1 ? _paidBy.payment_value : "")
+              (_paidBy.payment_unit_type == 1 ? stylizeNumber(Number(_paidBy.payment_value)) : "")
             }
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeValue(e, "payment_value")
