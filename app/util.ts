@@ -123,7 +123,7 @@ export const commissionSelectDataList: SelectData[] = [
 ];
 
 export const stylizeNumber = (data: number): string => {
-  return data.toLocaleString("en-US");
+  return data.toLocaleString(undefined, {minimumFractionDigits: 2});
 };
 
 export const paymentTypeData: IPaymentData[] = [
