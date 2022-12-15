@@ -607,8 +607,8 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                         $ {Number(item.fee_amount).toLocaleString(undefined, {minimumFractionDigits: 2})}
                       </Grid>
                     )}
-                    <Grid item xs={2} style={{display: 'inherit', alignItems: 'center'}}>
-                      {item.fee_method == 0 ? "Off Net" : "Off the Top"}
+                    <Grid item xs={3} style={{display: 'inherit', alignItems: 'center'}}>
+                      {item.fee_method == 0 ? "Off the agent net" : "Off the Top"}
                     </Grid>
                   </Grid>
                 </Grid>
