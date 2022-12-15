@@ -159,16 +159,15 @@ export const paymentTypeData: IPaymentData[] = [
 
 export const feeTypeData: IFeeType = {
   feeName: [
-    "CORPORATE / ADMIN FEE",
-    "MLS FEE",
-    "TRANSACTION FEE",
-    "OTHER FEE",
+    "Listing Fee",
+    "Selling Fee",
     "MTF Fees",
-    "BUSINESS",
+    "Business Fee",
     "G1- Tax fee",
     "SkyTC fee",
     "Credit given by Agent (Seller)",
     "Credit given by Agent (Buyer)",
+    "E & O Insurance",
     "Garnishments",
     "Agent incentives"
   ]

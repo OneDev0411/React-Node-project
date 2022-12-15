@@ -692,15 +692,21 @@ const sync = async (deal) => {
     attributes: { exclude: ["created_at", "updated_at"] },
   })
 
-  const tempFeeData: IFeeData[] = [];
+  const tempFeeData = new Array();
   const tempFeeType = new Array();
   
   for (let i = 0; i < dbFeeData.length; i++) {
     let eachFeeType = '';
-    if (dbFeeData[i].fee_type === "CORPERATE / ADMIN FEE") {
-      eachFeeType = "ADMIN " + `${dbFeeData[i].fee_amount_percentage}` + "%"
-    } else if (dbFeeData[i].fee_type === "MLS FEE") {
-      eachFeeType = "MLS"
+    if (dbFeeData[i].fee_type === "Listing Fee") {
+      eachFeeType = "LISTING295"
+    } else if (dbFeeData[i].fee_type === "Selling Fee" ) {
+      eachFeeType = "SELLING295"
+    } else if (dbFeeData[i].fee_type === "MTF Fees") {
+      eachFeeType = "CALTAX.065"
+    } else if (dbFeeData[i].fee_type === "Business Fee") {
+      eachFeeType = "ADMIN" + `${dbFeeData[i].fee_amount_percentage}` + "%"
+    } else if (dbFeeData[i].fee_type === "G1- Tax fee") {
+      eachFeeType = "CALTAX0.1"
     } else if (dbFeeData[i].fee_type === "SkyTC fee") {
       eachFeeType = "TC Fee"
     } else if (dbFeeData[i].fee_type === "Credit given by Agent (Seller)") {
@@ -713,19 +719,34 @@ const sync = async (deal) => {
     tempFeeType.push(eachFeeType)
   }
   for(let i= 0; i < dbFeeData.length; i++){
-    let eachFeeData: IFeeData = {
-      DealSide: dbFeeData[i].deal_side == 0? "Buy" : "List",
-      DealFeeType: dbFeeData[i].fee_from == 0? "Agent" : "Deal",
-      DealFeeCode: tempFeeType[i],
-      FeeBase: dbFeeData[i].fee_method == 0? "Off the agent net" : "Off the Top",
-      PercentorAmount: dbFeeData[i].fee_unit==0 ? 'Percent' : 'Amount',
-      Amount: dbFeeData[i].fee_unit==0? dbFeeData[i].fee_amount_percentage : dbFeeData[i].fee_amount,
-      FeeCollectFrom: "Deal",
-      AgentId: agentId[0],
-      CreditToSeller: dbFeeData[i].fee_type === "Credit given by Agent (Seller)" ? true : false,
-      IncludeInGross: dbFeeData[i].fee_method == 0? false : true
+    if (dbFeeData[i].fee_type === "E & O Insurance" || dbFeeData[i].fee_type === "Garnishments" || dbFeeData[i].fee_type === "Agent incentives") {
+      let eachFeeData = {
+        DealSide: dbFeeData[i].deal_side == 0? "Buy" : "List",
+        DealFeeType: dbFeeData[i].fee_from == 0? "Agent" : "Deal",
+        FeeBase: dbFeeData[i].fee_method == 0? "Off the agent net" : "Off the Top",
+        PercentorAmount: dbFeeData[i].fee_unit==0 ? 'Percent' : 'Amount',
+        Amount: dbFeeData[i].fee_unit==0? dbFeeData[i].fee_amount_percentage : dbFeeData[i].fee_amount,
+        FeeCollectFrom: "Deal",
+        AgentId: agentId[0],
+        CreditToSeller: dbFeeData[i].fee_type === "Credit given by Agent (Seller)" ? true : false,
+        IncludeInGross: dbFeeData[i].fee_method == 0? false : true
+      }
+      tempFeeData.push(eachFeeData)
+    } else {
+      let eachFeeData = {
+        DealSide: dbFeeData[i].deal_side == 0? "Buy" : "List",
+        DealFeeType: dbFeeData[i].fee_from == 0? "Agent" : "Deal",
+        DealFeeCode: tempFeeType[i],
+        FeeBase: dbFeeData[i].fee_method == 0? "Off the agent net" : "Off the Top",
+        PercentorAmount: dbFeeData[i].fee_unit==0 ? 'Percent' : 'Amount',
+        Amount: dbFeeData[i].fee_unit==0? dbFeeData[i].fee_amount_percentage : dbFeeData[i].fee_amount,
+        FeeCollectFrom: "Deal",
+        AgentId: agentId[0],
+        CreditToSeller: dbFeeData[i].fee_type === "Credit given by Agent (Seller)" ? true : false,
+        IncludeInGross: dbFeeData[i].fee_method == 0? false : true
+      }
+      tempFeeData.push(eachFeeData)
     }
-    tempFeeData.push(eachFeeData)
   }
 
   const body = {
