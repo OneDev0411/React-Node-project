@@ -176,6 +176,7 @@ export interface IFeeType {
 export interface IFeeData {
   id: number | null;
   deal: string;
+  deal_side: number;
   fee_type: string;
   fee_amount: string;
   fee_amount_percentage: string;

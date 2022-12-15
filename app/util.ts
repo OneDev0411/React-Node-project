@@ -123,7 +123,7 @@ export const commissionSelectDataList: SelectData[] = [
 ];
 
 export const stylizeNumber = (data: number): string => {
-  return data.toLocaleString(undefined, {minimumFractionDigits: 2});
+  return data.toLocaleString('en-us');
 };
 
 export const paymentTypeData: IPaymentData[] = [
@@ -159,7 +159,7 @@ export const paymentTypeData: IPaymentData[] = [
 
 export const feeTypeData: IFeeType = {
   feeName: [
-    "CORPERATE / ADMIN FEE",
+    "CORPORATE / ADMIN FEE",
     "MLS FEE",
     "TRANSACTION FEE",
     "OTHER FEE",
@@ -167,7 +167,8 @@ export const feeTypeData: IFeeType = {
     "BUSINESS",
     "G1- Tax fee",
     "SkyTC fee",
-    "Credit given by Agent",
+    "Credit given by Agent (Seller)",
+    "Credit given by Agent (Buyer)",
     "Garnishments",
     "Agent incentives"
   ]
@@ -177,6 +178,7 @@ export const defaultFeeData: IFeeData[] = [
   {
     id: null,
     deal: "",
+    deal_side: 0,
     fee_type: "",
     fee_amount: "",
     fee_amount_percentage: "",

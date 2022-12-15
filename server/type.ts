@@ -16,3 +16,15 @@ export interface ICombinedDealData {
   commissionData: any;
   dealData: any;
 }
+export interface IFeeData {
+  DealSide: string,
+  DealFeeType: string,
+  DealFeeCode: string,
+  FeeBase: string,
+  PercentorAmount: string,
+  Amount: number,
+  FeeCollectForm: string,
+  AgentId: string,
+  CreditToSeller: boolean,
+  IncludeInGross: boolean
+}

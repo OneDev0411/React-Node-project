@@ -385,7 +385,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               </Grid>
               <Grid item xs={4} style={{ paddingLeft: 0 }}>
                 <label style={{ fontWeight: 300 }}>
-                  Total: <strong>${stylizeNumber(totalValue)}</strong>
+                  Total: <strong>${totalValue.toLocaleString(undefined, {maximumFractionDigits: 2})}</strong>
                 </label>
               </Grid>
             </Grid>
@@ -437,7 +437,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               </Grid>
               <Grid item xs={4} style={{ paddingLeft: 0 }}>
                 <label style={{ fontWeight: 300 }}>
-                  Total: <strong>${stylizeNumber(totalValue)}</strong>
+                  Total: <strong>${totalValue.toLocaleString(undefined, {maximumFractionDigits: 2})}</strong>
                 </label>
               </Grid>
             </Grid>

@@ -6,6 +6,9 @@ export default (sequelize, Sequelize) => {
 				type: Sequelize.UUID,
 				AllowNull: false
 			},
+			deal_side: {
+				type: Sequelize.NUMERIC
+			},
 			fee_type: {
 				type: Sequelize.TEXT
 			},

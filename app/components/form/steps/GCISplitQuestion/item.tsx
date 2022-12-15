@@ -15,16 +15,16 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   const { useState, useEffect } = React
   const { submitted } = useApp()
   const [_roleData, _setRoleData] = useState<IRoleData>(role)
-  const [calculatedFromSharePercent, setCalculatedFromSharePercent] = useState<String>(stylizeNumber(parseFloat(((Number(_roleData.share_percent) / 100) * Number(price)).toFixed(3))))
+  const [calculatedFromSharePercent, setCalculatedFromSharePercent] = useState<String>(stylizeNumber(parseFloat(((Number(_roleData.share_percent) / 100) * Number(price)).toFixed(2))))
 
   useEffect(() => {
-    setCalculatedFromSharePercent(stylizeNumber(parseFloat(((Number(_roleData.share_percent) / 100) * Number(price)).toFixed(3))))
+    setCalculatedFromSharePercent(stylizeNumber(parseFloat(((Number(_roleData.share_percent) / 100) * Number(price)).toFixed(2))))
   }, [_roleData.share_percent])
   const handleChangeNumber = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IRoleData
   ) => {
-    let value: string = e.target.value.replace(/\,/g,'')
+    let value: string = parseFloat(String(Number(e.target.value.replace(/\,/g,'')))).toFixed(2)
     if (Number(value) + "" === "NaN" || (value + "").length > 16) {
       return
     }
@@ -34,7 +34,6 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     if (submitted !== 1)
       updateFlag(true)
     let updateValue: IRoleData = JSON.parse(JSON.stringify(_roleData))
-    updateValue[key] = Number(value)
 
     if (key == "share_percent") {
       updateValue["share_value"] = parseFloat(
@@ -42,11 +41,13 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
       )
     }
     if (key == "share_value") {
+      updateValue[key] = Number(parseFloat(value.replace(",", "")).toFixed(2))
       updateValue["share_percent"] = parseFloat(
         ((Number(value) / Number(price)) * 100).toFixed(3)
       )
     }
 
+    updateValue[key] = Number(value)
     updateData(updateValue)
     _setRoleData(updateValue)
     totalClc(index, updateValue, true)
@@ -95,7 +96,7 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
           size="small"
           type="string"
           label="Share($)"
-          value={_roleData.share_value ? stylizeNumber(Number(_roleData.share_value)) : calculatedFromSharePercent}
+          value={_roleData.share_value ? stylizeNumber(_roleData.share_value) : calculatedFromSharePercent}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChangeNumber(e, "share_value")
           }
