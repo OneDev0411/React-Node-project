@@ -23,7 +23,7 @@ export interface IFeeData {
   FeeBase: string,
   PercentorAmount: string,
   Amount: number,
-  FeeCollectForm: string,
+  FeeCollectFrom: string,
   AgentId: string,
   CreditToSeller: boolean,
   IncludeInGross: boolean

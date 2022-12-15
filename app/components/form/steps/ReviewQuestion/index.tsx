@@ -593,6 +593,14 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                       {item.fee_type}
                     </Grid>
                   </Grid>
+                  <Grid container xs={8}>
+                    <Grid item xs={2}>
+                      <label>Fee From</label>
+                    </Grid>
+                    <Grid item xs={10} style={{display: 'inherit', alignItems: 'center'}}>
+                      {item.fee_from == 0? "Agent" : "Deal"}
+                    </Grid>
+                  </Grid>
                   <Grid container xs={8} style={{ marginTop: '5px', marginBottom: '10px' }}>
                     <Grid item xs={2}>
                       <label>Fee Amount</label>

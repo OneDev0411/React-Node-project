@@ -182,6 +182,7 @@ export const defaultFeeData: IFeeData[] = [
     fee_type: "",
     fee_amount: "",
     fee_amount_percentage: "",
+    fee_from: 0,
     fee_unit: 0,
     fee_method: 0,
     key_Index: 0

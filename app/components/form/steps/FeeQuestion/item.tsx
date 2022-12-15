@@ -52,6 +52,9 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
     if (key == "feeAmount") {
       updatedValue[id].fee_amount = String(value).replace(/\,/g,'')
     }
+		if (key == "feeFrom") {
+			updatedValue[id].fee_from = e.target.value
+		}
     if (key == "feeUnit") {
       updatedValue[id].fee_unit = Number(e.target.value)
       if(updatedValue[id].fee_unit == 1) {
@@ -76,6 +79,7 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
       fee_type: "",
       fee_amount: "",
       fee_amount_percentage: "",
+			fee_from: 0,
       fee_unit: 0,
       fee_method: 0,
 	  	key_Index: feeData.length
@@ -238,6 +242,48 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 							}}
 							disabled={item.fee_unit == 0}
 						/>
+					</Grid>
+				</Grid>
+				<Grid container spacing={2} style={{marginBottom: 10, justifyContent: "center", alignItems: "center"}}>
+					<Grid item xs={2}>
+						<label>Fee From</label>
+					</Grid>
+					<Grid item xs={1}></Grid>
+					<Grid item xs={9} style={{paddingLeft: 20}}>
+						<RadioGroup
+							row
+							aria-labelledby="demo-row-radio-buttons-group-label"
+							name="row-radio-buttons-group"
+							value={item.fee_from}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+								handleChangeValue(e, "feeFrom", id)
+							}
+						>
+							<FormControlLabel
+								value={0}
+								style={{ marginRight: 20 }}
+								control={
+									<Radio
+										checked={item.fee_from == 0}
+										size="small"
+										style={{ marginBottom: 3 }}
+									/>
+								}
+								label="Agent"
+							/>
+							<FormControlLabel
+								value={1}
+								style={{ marginRight: 0 }}
+								control={
+									<Radio
+										checked={item.fee_from == 1}
+										size="small"
+										style={{ marginBottom: 3 }}
+									/>
+								}
+								label="Deal"
+							/>
+						</RadioGroup>
 					</Grid>
 				</Grid>
 				<Grid container xs={10}>

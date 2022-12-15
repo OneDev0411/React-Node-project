@@ -715,12 +715,12 @@ const sync = async (deal) => {
   for(let i= 0; i < dbFeeData.length; i++){
     let eachFeeData: IFeeData = {
       DealSide: dbFeeData[i].deal_side == 0? "Buy" : "List",
-      DealFeeType: "Agent",
+      DealFeeType: dbFeeData[i].fee_from == 0? "Agent" : "Deal",
       DealFeeCode: tempFeeType[i],
       FeeBase: dbFeeData[i].fee_method == 0? "Off the agent net" : "Off the Top",
       PercentorAmount: dbFeeData[i].fee_unit==0 ? 'Percent' : 'Amount',
       Amount: dbFeeData[i].fee_unit==0? dbFeeData[i].fee_amount_percentage : dbFeeData[i].fee_amount,
-      FeeCollectForm: "Deal",
+      FeeCollectFrom: "Deal",
       AgentId: agentId[0],
       CreditToSeller: dbFeeData[i].fee_type === "Credit given by Agent (Seller)" ? true : false,
       IncludeInGross: dbFeeData[i].fee_method == 0? false : true

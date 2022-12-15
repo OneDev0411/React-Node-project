@@ -18,6 +18,9 @@ export default (sequelize, Sequelize) => {
 			fee_amount_percentage: {
 				type: Sequelize.TEXT
 			},
+			fee_from: {
+				type: Sequelize.NUMERIC
+			},
 			fee_unit: {
 				type: Sequelize.NUMERIC,
 			},
