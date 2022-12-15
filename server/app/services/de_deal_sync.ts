@@ -704,7 +704,7 @@ const sync = async (deal) => {
     } else if (dbFeeData[i].fee_type === "MTF Fees") {
       eachFeeType = "CALTAX.065"
     } else if (dbFeeData[i].fee_type === "Business Fee") {
-      eachFeeType = "ADMIN" + `${dbFeeData[i].fee_amount_percentage}` + "%"
+      eachFeeType = "ADMIN2.5%"
     } else if (dbFeeData[i].fee_type === "G1- Tax fee") {
       eachFeeType = "CALTAX0.1"
     } else if (dbFeeData[i].fee_type === "SkyTC fee") {
@@ -781,7 +781,7 @@ const sync = async (deal) => {
       ...saleAttributes,
     },
     agents,
-    feeData: tempFeeData
+    fees: tempFeeData
   };
   console.log("uri: ", uri);
   console.log("body: ", body);
