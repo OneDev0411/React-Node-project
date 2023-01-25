@@ -17,6 +17,7 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
   const enderType = deal.context.ender_type?.text
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type
   const { dealData, setDealData, submitted, currentStep, setCurrentStep } = useApp()
+  const paymentSide = "Outside"
 
   // state
   const [showButton, setShowButton] = useState<boolean>(true)
@@ -63,6 +64,7 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
           dealId={deal.id}
           saveData={{ updateFlag }}
           components={Components}
+          paymentSide={paymentSide}
         />
         {showButton && (
           <Box

@@ -1,5 +1,4 @@
 import StartQuestion from "../steps/StartQuestion"
-import ComformRoleQuestion from "../steps/ConfirmRoleQuestion"
 import FinanceTransQuestion from "../steps/FinanceTransQuestion"
 import FinanceProgQuestion from "../steps/FinanceProgQuestion"
 import GCISplitQuestion from "../steps/GCISplitQuestion"
@@ -21,10 +20,6 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
     return (
       <Wizard.QuestionWizard onFinish={() => console.log("done")}>
         <StartQuestion {...props} />
-        <ComformRoleQuestion {...props} roleType={deal.property_type.is_lease ? "Landlord" : "Seller"} />
-        <ComformRoleQuestion {...props} roleType={deal.property_type.is_lease ? "Tenant" : "Buyer"} />
-        <ComformRoleQuestion {...props} roleType={deal.property_type.is_lease ? "TenantPowerOfAttorney" : "BuyerLawyer"} />
-        <ComformRoleQuestion {...props} roleType={deal.property_type.is_lease ? "LandlordPowerOfAttorney" : "SellerLawyer"} />
         {!deal.property_type.is_lease && <FinanceTransQuestion {...props} />}
         {!deal.property_type.is_lease && <FinanceProgQuestion {...props} />}
         <GCISplitQuestion {...props} />

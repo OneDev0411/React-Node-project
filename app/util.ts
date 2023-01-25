@@ -123,7 +123,8 @@ export const commissionSelectDataList: SelectData[] = [
 ];
 
 export const stylizeNumber = (data: number): string => {
-  return data.toLocaleString('en-us');
+  const fixedNumber = Number.parseFloat(String(data)).toFixed(2);
+  return String(fixedNumber).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 export const paymentTypeData: IPaymentData[] = [
@@ -231,7 +232,7 @@ export const defaultDealData: IDealData = {
   approval_request_date: "",
   status: "",
   submitted: 0,
-  current_step: 6,
+  current_step: 2,
 };
 
 export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";

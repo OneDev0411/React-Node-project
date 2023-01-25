@@ -12,6 +12,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
   dealType,
   dealId,
   components: { AgentsPicker },
+  paymentSide
 }) => {
   const { useState, useEffect } = React
   const { useDebounce } = ReactUse
@@ -423,6 +424,7 @@ const paymentQuestionComponent: React.FC<IPaymentQuestionData> = ({
                   index={id}
                   Ui={Ui}
                   saveData={{ updateFlag }}
+                  paymentSide={paymentSide}
                 />
               ))}
             </Grid>

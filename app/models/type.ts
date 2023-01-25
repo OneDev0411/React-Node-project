@@ -150,6 +150,7 @@ export interface IPaidByCardProps {
   paymentIndex: number;
   updatePayment: (payment: IPayment, index: number) => void;
   index: number;
+  paymentSide: string;
 }
 
 export interface IPaidByInfoCardProps {
@@ -191,12 +192,21 @@ export interface FeeQuestionProps {
   saveData: IDataToConText;
 }
 
+export interface FeeItemProps {
+  item: IFeeData;
+  id: number;
+  length: number;
+  handleClickRemoveFee: (id: number) => void;
+  updateData: (item: IFeeData, id: number) => void
+}
+
 export interface IPaymentQuestionData {
   range: string;
   dealType: string;
   dealId: string;
   saveData: IDataToConText;
   components: EntryProps["Components"];
+  paymentSide: string
 }
 
 export interface IDataToConText {

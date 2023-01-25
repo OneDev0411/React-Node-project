@@ -15,11 +15,40 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
   const { useState, useEffect } = React
   const { submitted } = useApp()
   const [_roleData, _setRoleData] = useState<IRoleData>(role)
-  const [calculatedFromSharePercent, setCalculatedFromSharePercent] = useState<String>(stylizeNumber(parseFloat(((Number(_roleData.share_percent) / 100) * Number(price)).toFixed(2))))
+  const [sharePercent, setSharePercent] = useState<string>('')
+  const [shareValue, setShareValue] = useState<string>('')
 
   useEffect(() => {
-    setCalculatedFromSharePercent(stylizeNumber(parseFloat(((Number(_roleData.share_percent) / 100) * Number(price)).toFixed(2))))
-  }, [_roleData.share_percent])
+    if(_roleData.share_percent) {
+      let updateSharePercent = stylizeNumber(_roleData.share_percent)
+      setSharePercent(updateSharePercent)
+    } else {
+      let updateSharePercent = stylizeNumber(parseFloat(((Number(_roleData.share_value) / Number(price)) * 100).toFixed(2)))
+      setSharePercent(updateSharePercent)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (_roleData.share_value) {
+      let udpateShareValue = stylizeNumber(_roleData.share_value)
+      setShareValue(udpateShareValue)
+    } else {
+      let udpateShareValue = stylizeNumber(parseFloat(((Number(_roleData.share_percent) / 100) * Number(price)).toFixed(2)))
+      setShareValue(udpateShareValue)
+    }
+  }, [])
+
+  const sharePercentEvent = document.getElementById(`share-percent${role.role_id}`)
+  sharePercentEvent?.addEventListener('focusout', () => {
+    let displayValue = stylizeNumber(parseFloat(sharePercent))
+    setSharePercent(displayValue)
+  })
+  const shareValueEvent = document.getElementById(`share-value${role.role_id}`)
+  shareValueEvent?.addEventListener('focusout', () => {
+    let displayValue = stylizeNumber(parseFloat(parseFloat(String(Number(shareValue.replace(/\,/g,'')))).toFixed(2)))
+    setShareValue(displayValue)
+  })
+
   const handleChangeNumber = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof IRoleData
@@ -36,18 +65,24 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
     let updateValue: IRoleData = JSON.parse(JSON.stringify(_roleData))
 
     if (key == "share_percent") {
-      updateValue["share_value"] = parseFloat(
-        ((Number(price) / 100) * Number(value)).toFixed(3)
+      setSharePercent(e.target.value)
+      updateValue[key] = Number(value)
+      let updateShareValue = parseFloat(
+        ((Number(price) / 100) * Number(value)).toFixed(2)
       )
-    }
-    if (key == "share_value") {
+      updateValue["share_value"] = updateShareValue
+      setShareValue(stylizeNumber(updateShareValue))
+    } else if (key == "share_value") {
+      setShareValue(e.target.value)
       updateValue[key] = Number(parseFloat(value.replace(",", "")).toFixed(2))
-      updateValue["share_percent"] = parseFloat(
-        ((Number(value) / Number(price)) * 100).toFixed(3)
+      let updatePercentValue = parseFloat(
+        ((Number(value) / Number(price)) * 100).toFixed(2)
       )
+      updateValue['share_percent'] = updatePercentValue
+      setSharePercent(stylizeNumber(updatePercentValue))
+    } else {
+      updateValue[key] = e.target.value
     }
-
-    updateValue[key] = Number(value)
     updateData(updateValue)
     _setRoleData(updateValue)
     totalClc(index, updateValue, true)
@@ -81,10 +116,10 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
       <Grid item xs={4}>
         <TextField
           size="small"
-          type="number"
           label="Share(%)"
+          id={`share-percent${role.role_id}`}
           defaultValue={5}
-          value={_roleData.share_percent ? Number(_roleData.share_percent) : parseFloat(((Number(_roleData.share_value) / Number(price)) * 100).toFixed(3))}
+          value={sharePercent}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChangeNumber(e, "share_percent")
           }
@@ -94,9 +129,9 @@ const GCIInfoItem: React.FC<IGCIInfoItemProps> = ({
       <Grid item xs={4}>
         <TextField
           size="small"
-          type="string"
           label="Share($)"
-          value={_roleData.share_value ? stylizeNumber(_roleData.share_value) : calculatedFromSharePercent}
+          id={`share-value${role.role_id}`}
+          value={shareValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChangeNumber(e, "share_value")
           }

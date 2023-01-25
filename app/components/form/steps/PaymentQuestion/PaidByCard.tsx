@@ -18,11 +18,37 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
   paymentIndex,
   updatePayment,
   index,
+  paymentSide
 }) => {
   const { useState, useEffect } = React
   // state
   const [_paidBy, _setPaidBy] = useState<IPaidByData>(payment.de_paid_by[index])
   const [checkedAgent, setCheckedAgent] = useState<boolean>(false)
+  const [paidByInsidePercent, setPaidByInsidePercent] = useState<string>('')
+  const [paidByInsideValue, setPaidByInsideValue] = useState<string>('')
+  const [paidByOutsidePercent, setPaidByOutsidePercent] = useState<string>('')
+  const [paidByOutsideValue, setPaidByOutsideValue] = useState<string>('')
+
+  const paidByInsidePercentEvent = document.getElementById(`paid-by-Inside-percent${index}`)
+  paidByInsidePercentEvent?.addEventListener('focusout', () => {
+    let updatedPaidByPercent = paidByInsidePercent
+    setPaidByInsidePercent(stylizeNumber(parseFloat(updatedPaidByPercent)))
+  })
+  const paidByOutsidePercentEvent = document.getElementById(`paid-by-Outside-percent${index}`)
+  paidByOutsidePercentEvent?.addEventListener('focusout', () => {
+    let updatedPaidByPercent = paidByOutsidePercent
+    setPaidByOutsidePercent(stylizeNumber(parseFloat(updatedPaidByPercent)))
+  })
+  const paidByInsideValueEvent = document.getElementById(`paid-by-Inside-value${index}`)
+  paidByInsideValueEvent?.addEventListener('focusout', () => {
+    let updatedPaidByValue = paidByInsideValue
+    setPaidByInsideValue(stylizeNumber(parseFloat(parseFloat(String(Number(updatedPaidByValue.replace(/\,/g,'')))).toFixed(2))))
+  })
+  const paidByOutsideValueEvent = document.getElementById(`paid-by-Outside-value${index}`)
+  paidByOutsideValueEvent?.addEventListener('focusout', () => {
+    let updatedPaidByValue = paidByOutsideValue
+    setPaidByOutsideValue(stylizeNumber(parseFloat(parseFloat(String(Number(updatedPaidByValue.replace(/\,/g,'')))).toFixed(2))))
+  })
 
   const handleChangeValue = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -39,6 +65,10 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
       Number(value) > 100
     ) {
       return
+    } else if (key == "payment_value" && _paidBy.payment_unit_type == 0) {
+      paymentSide=="Inside" ? setPaidByInsidePercent(e.target.value) : setPaidByOutsidePercent(e.target.value)
+    } else if (key == "payment_value" && _paidBy.payment_unit_type == 1) {
+      paymentSide=="Inside" ? setPaidByInsideValue(e.target.value) : setPaidByOutsideValue(e.target.value)
     }
     let updateValue = JSON.parse(JSON.stringify(_paidBy))
     if (key !== "payment_note") {
@@ -53,6 +83,13 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
     }
     if (key == "payment_unit_type") {
       updateValue["payment_value"] = 0
+      if (paymentSide == "Inside") {
+        setPaidByInsidePercent(stylizeNumber(updateValue["payment_value"]))
+        setPaidByInsideValue(stylizeNumber(updateValue["payment_value"]))
+      } else {
+        setPaidByOutsidePercent(stylizeNumber(updateValue["payment_value"]))
+        setPaidByOutsideValue(stylizeNumber(updateValue["payment_value"]))
+      }
     }
     _setPaidBy(updateValue)
   }
@@ -92,6 +129,14 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
       setCheckedAgent(true)
     else
       setCheckedAgent(false)
+  }, [])
+
+  useEffect(() => {
+    if(_paidBy.payment_unit_type == 0 && _paidBy.payment_value) {
+      paymentSide=="Inside" ? setPaidByInsidePercent(stylizeNumber(_paidBy.payment_value)) : setPaidByOutsidePercent(stylizeNumber(_paidBy.payment_value))
+    } else if (_paidBy.payment_unit_type == 1 && _paidBy.payment_value) {
+      paymentSide=="Inside" ? setPaidByInsideValue(stylizeNumber(_paidBy.payment_value)) : setPaidByOutsideValue(stylizeNumber(_paidBy.payment_value))
+    }
   }, [])
   
   useEffect(() => {
@@ -147,7 +192,8 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           <TextField
             size="small"
             type="number"
-            value={_paidBy.payment_unit_type == 0 ? _paidBy.payment_value : ""}
+            id={paymentSide=="Inside" ? `paid-by-Inside-percent${index}`: `paid-by-Outside-percent${index}`}
+            value={paymentSide == "Inside" ? paidByInsidePercent : paidByOutsidePercent}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeValue(e, "payment_value")
             }
@@ -158,7 +204,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
               ),
             }}
             disabled={
-              checkedAgent && (_paidBy.payment_unit_type == 0 ? false : true)
+              !checkedAgent || (_paidBy.payment_unit_type == 1)
             }
           />
         </Grid>
@@ -180,9 +226,8 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
           <TextField
             size="small"
             type="string"
-            value={
-              (_paidBy.payment_unit_type == 1 ? stylizeNumber(Number(_paidBy.payment_value)) : "")
-            }
+            id={paymentSide=="Inside" ? `paid-by-Inside-value${index}`: `paid-by-Outside-value${index}`}
+            value={paymentSide == "Inside" ? paidByInsideValue : paidByOutsideValue}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeValue(e, "payment_value")
             }
@@ -193,7 +238,7 @@ const PaidByCard: React.FC<IPaidByCardProps> = ({
               ),
             }}
             disabled={
-              checkedAgent && (_paidBy.payment_unit_type == 1 ? false : true)
+              !checkedAgent || (_paidBy.payment_unit_type == 0)
             }
           />
         </Grid>

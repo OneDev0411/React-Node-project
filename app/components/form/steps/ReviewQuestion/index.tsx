@@ -6,7 +6,7 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import useApp from '../../../../hooks/useApp'
 import { IDealData, IPaidByData, IQuestionProps, IRemittanceChecks, IRoleData, IPayment, IFeeData } from '../../../../models/type'
-import { APP_URL, commissionReason } from '../../../../util'
+import { APP_URL, commissionReason, stylizeNumber } from '../../../../util'
 
 const ReviewQuestion: React.FC<IQuestionProps> = ({
   Wizard,
@@ -141,7 +141,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
     .filter(isAgent)
     .filter(doesNeedCommission)
     .filter(isInternal)
-    .map((role) => Number(role.share_percent ? role.share_percent : Number(role.share_value) / Number(price) * 100))
+    .map((role) => role.share_percent ? Number(role.share_percent) : Number(role.share_value) / Number(price) * 100)
     .reduce(sum)
     .value()
   const OfficeGCIValue = Number(price) * OfficeGCIPercent / 100
@@ -282,7 +282,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           <Grid container spacing={2}>
             <Grid item>
               <label>Contract {deal.property_type.is_lease ? 'Leased' : 'Sales'} Price:&nbsp;</label>
-              ${deal.property_type.is_lease ? Number(deal.context.leased_price?.text).toLocaleString(undefined, {minimumFractionDigits: 2}) : Number(deal.context.sales_price?.text).toLocaleString(undefined, {minimumFractionDigits: 2})}
+              ${deal.property_type.is_lease ? stylizeNumber(Number(deal.context.leased_price?.text)) : stylizeNumber(Number(deal.context.sales_price?.text))}
             </Grid>
             <Grid item>
               <label>Closing Date:&nbsp;</label>{deal.context.closing_date?.text}
@@ -376,14 +376,14 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <Grid item xs={3}>GCI To {deOfficeAddress}</Grid>
           </Grid>
           <Grid container spacing={2}>
-            <Grid item xs={2}>%{BuySideCommissionRate + ListSideCommissionRate}</Grid>
-            <Grid item xs={2}>%{gciDePercent}</Grid>
-            <Grid item xs={3}>%{OfficeGCIPercent}</Grid>
+            <Grid item xs={2}>% {stylizeNumber(BuySideCommissionRate + ListSideCommissionRate)}</Grid>
+            <Grid item xs={2}>% {stylizeNumber(gciDePercent)}</Grid>
+            <Grid item xs={3}>% {stylizeNumber(OfficeGCIPercent)}</Grid>
           </Grid>
           <Grid container spacing={2}>
-            <Grid item xs={2}>${Number(BuySideDealValue + ListSideDealValue).toLocaleString(undefined, {minimumFractionDigits: 2})}</Grid>
-            <Grid item xs={2}>${Number(gciDeValue).toLocaleString(undefined, {minimumFractionDigits: 2})}</Grid>
-            <Grid item xs={3}>${Number(OfficeGCIValue).toLocaleString(undefined, {minimumFractionDigits: 2})}</Grid>
+            <Grid item xs={2}>$ {stylizeNumber(BuySideDealValue + ListSideDealValue)}</Grid>
+            <Grid item xs={2}>$ {stylizeNumber(gciDeValue)}</Grid>
+            <Grid item xs={3}>$ {stylizeNumber(OfficeGCIValue)}</Grid>
           </Grid>
           <Grid container>
             <Grid item xs={12}>
@@ -403,8 +403,8 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     <Grid container>
                       <Grid item xs={2}>{role.legal_full_name}</Grid>
                       <Grid item xs={2}><b>Agent NO:</b> {role.agent_id}</Grid>
-                      <Grid item xs={2}><b>Share %:</b> {role.share_percent != null ? ((Number(role.share_percent) * 100 / Number(totalPercentBuyerSide)).toFixed(2)) : ((Number(role.share_value) * 100 / Number(totalValueBuyerSide)).toFixed(2))}</Grid>
-                      <Grid item xs={2}><b>Share $:</b> {role.share_value == null ? parseFloat((Number(price) * Number(role.share_percent) / 100).toFixed(2)).toLocaleString(undefined, {minimumFractionDigits: 2}) : parseFloat(role.share_value.toFixed(2)).toLocaleString(undefined, {minimumFractionDigits: 2})}</Grid>
+                      <Grid item xs={2}><b>Share %:</b> {role.share_percent != null ? stylizeNumber(Number(role.share_percent) * 100 / Number(totalPercentBuyerSide)) : stylizeNumber(Number(role.share_value) * 100 / Number(totalValueBuyerSide))}</Grid>
+                      <Grid item xs={6}><b>Share $:</b> {role.share_value == null ? stylizeNumber(Number(price) * Number(role.share_percent) / 100) : stylizeNumber(parseFloat(role.share_value.toFixed(2)))}</Grid>
                     </Grid>
                     <Grid container>
                       <b>Notes:</b>&nbsp;{role.note}
@@ -417,8 +417,8 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     <Grid container>
                       <Grid item xs={2}>{role.legal_full_name}</Grid>
                       <Grid item xs={2}><b>Agent NO:</b> {role.agent_id}</Grid>
-                      <Grid item xs={2}><b>Share %:</b> {role.share_percent != null ? ((Number(role.share_percent) * 100 / Number(totalPercentSellerSide)).toFixed(2)) : ((Number(role.share_value) * 100 / Number(totalValueSellerSide)).toFixed(2))}</Grid>
-                      <Grid item xs={2}><b>Share $:</b> {role.share_value == null ? parseFloat((Number(price) * Number(role.share_percent) / 100).toFixed(2)).toLocaleString(undefined, {minimumFractionDigits: 2}) : parseFloat(role.share_value.toFixed(2)).toLocaleString(undefined, {minimumFractionDigits: 2})}</Grid>
+                      <Grid item xs={2}><b>Share %:</b> {role.share_percent != null ? stylizeNumber(Number(role.share_percent) * 100 / Number(totalPercentSellerSide)) : stylizeNumber(Number(role.share_value) * 100 / Number(totalValueSellerSide))}</Grid>
+                      <Grid item xs={6}><b>Share $:</b> {role.share_value == null ? stylizeNumber(parseFloat((Number(price) * Number(role.share_percent) / 100).toFixed(2))) : stylizeNumber(parseFloat(role.share_value.toFixed(2)))}</Grid>
                     </Grid>
                     <Grid container>
                       <b>Notes:</b>&nbsp;{role.note}
@@ -446,12 +446,12 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                   <Grid item><label>Check #</label>&nbsp;{item.check_num}</Grid>
                   <Grid item><label>Date on check</label>&nbsp;{(new Date(item.check_date)).toLocaleDateString()}</Grid>
                   <Grid item><label>Date check received</label>&nbsp;{(new Date(item.check_receive_date)).toLocaleDateString()}</Grid>
-                  <Grid item><label>Amount $</label>{Number(item.amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</Grid>
+                  <Grid item><label>Amount $</label>{stylizeNumber(Number(item.amount))}</Grid>
                 </Grid>
               )}
               {Number(dealData.remittance_buy_side_bank_wire_amount) > 0 && (
                 <Grid item xs={12}>
-                  <label>Amount</label>&nbsp;${Number(dealData.remittance_buy_side_bank_wire_amount).toLocaleString(undefined, {minimumFractionDigits: 2})}
+                  <label>Amount</label>&nbsp;${stylizeNumber(Number(dealData.remittance_buy_side_bank_wire_amount))}
                 </Grid>
               )}
             </>
@@ -469,12 +469,12 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                   <Grid item><label>Check #</label>&nbsp;{item.check_num}</Grid>
                   <Grid item><label>Date on check</label>&nbsp;{(new Date(item.check_date)).toLocaleDateString()}</Grid>
                   <Grid item><label>Date check received</label>&nbsp;{(new Date(item.check_receive_date)).toLocaleDateString()}</Grid>
-                  <Grid item><label>Amount $</label>{Number(item.amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</Grid>
+                  <Grid item><label>Amount $</label>{stylizeNumber(Number(item.amount))}</Grid>
                 </Grid>
               )}
               {Number(dealData.remittance_listing_side_bank_wire_amount) > 0 && (
                 <Grid item xs={12}>
-                  <label>Amount</label>&nbsp;${Number(dealData.remittance_listing_side_bank_wire_amount).toLocaleString(undefined, {minimumFractionDigits: 2})}
+                  <label>Amount</label>&nbsp;${stylizeNumber(Number(dealData.remittance_listing_side_bank_wire_amount))}
                 </Grid>
               )}
             </>
@@ -511,7 +511,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                                 <b style={{ marginLeft: 10, fontSize: 13, color: '#ababab' }}>{paidByItem.role}</b>
                               </Grid>
                               <Grid item xs={2}>
-                                {paidByItem.payment_unit_type == 0 ? `${paidByItem.payment_value}%` : `$${Number(paidByItem.payment_value).toLocaleString(undefined, {minimumFractionDigits: 2})}`}
+                                {paidByItem.payment_unit_type == 0 ? `${stylizeNumber(Number(paidByItem.payment_value))}%` : `$${stylizeNumber(Number(paidByItem.payment_value))}`}
                               </Grid>
                               <Grid item xs={3}>
                                 Calculated from: <b>{paidByItem.payment_calculated_from == 0 ? 'My GCI' : 'My NET'}</b>
@@ -552,7 +552,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                             <b style={{ marginLeft: 10, fontSize: 13, color: '#ababab' }}>{paidByItem.role}</b>
                           </Grid>
                           <Grid item xs={2}>
-                            {paidByItem.payment_unit_type == 0 ? `${paidByItem.payment_value}%` : `$${Number(paidByItem.payment_value).toLocaleString(undefined, {minimumFractionDigits: 2})}`}
+                            {paidByItem.payment_unit_type == 0 ? `${stylizeNumber(Number(paidByItem.payment_value))}%` : `$${stylizeNumber(Number(paidByItem.payment_value))}`}
                           </Grid>
                           <Grid item xs={3}>
                             Calculated from: <b>{paidByItem.payment_calculated_from == 0 ? 'My GCI' : 'My NET'}</b>
@@ -607,12 +607,12 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     </Grid>
                     {item.fee_unit == 0 && (
                       <Grid item xs={3} style={{display: 'inherit', alignItems: 'center'}}>
-                        % {item.fee_amount_percentage}
+                        % {stylizeNumber(parseFloat(item.fee_amount_percentage))}
                       </Grid>
                     )}
                     {item.fee_unit == 1 && (
                       <Grid item xs={3} style={{display: 'inherit', alignItems: 'center'}}>
-                        $ {Number(item.fee_amount).toLocaleString(undefined, {minimumFractionDigits: 2})}
+                        $ {stylizeNumber(parseFloat(item.fee_amount))}
                       </Grid>
                     )}
                     <Grid item xs={3} style={{display: 'inherit', alignItems: 'center'}}>

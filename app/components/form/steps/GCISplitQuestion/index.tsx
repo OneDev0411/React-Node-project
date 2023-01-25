@@ -207,7 +207,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
       setTotalPercent(tempValue)
       tempValue = temp.filter((item: IRoleData) => dealType === "Both" ? item.role !== null : item.role.indexOf(dealType === "Buying" ? "Buyer" : "Seller") >= 0).reduce((totalValue: number, data: IRoleData) => {
         return parseFloat(
-          (Number(totalValue) + Number(data.share_value)).toFixed(3)
+          (Number(totalValue) + Number(data.share_value ? data.share_value : (Number(data.share_percent) * price / 100))).toFixed(3)
         )
       }, 0)
       setTotalValue(tempValue)
@@ -380,12 +380,12 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               <Grid item xs={4} />
               <Grid item xs={4}>
                 <label style={{ fontWeight: 300 }}>
-                  Total: <strong>{totalPercent}%</strong>
+                  Total: <strong>{stylizeNumber(totalPercent)}%</strong>
                 </label>
               </Grid>
               <Grid item xs={4} style={{ paddingLeft: 0 }}>
                 <label style={{ fontWeight: 300 }}>
-                  Total: <strong>${totalValue.toLocaleString(undefined, {maximumFractionDigits: 2})}</strong>
+                  Total: <strong>${stylizeNumber(totalValue)}</strong>
                 </label>
               </Grid>
             </Grid>
@@ -432,12 +432,12 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
               <Grid item xs={4} />
               <Grid item xs={4}>
                 <label style={{ fontWeight: 300 }}>
-                  Total: <strong>{totalPercent}%</strong>
+                  Total: <strong>{stylizeNumber(totalPercent)}%</strong>
                 </label>
               </Grid>
               <Grid item xs={4} style={{ paddingLeft: 0 }}>
                 <label style={{ fontWeight: 300 }}>
-                  Total: <strong>${totalValue.toLocaleString(undefined, {maximumFractionDigits: 2})}</strong>
+                  Total: <strong>${stylizeNumber(totalValue)}</strong>
                 </label>
               </Grid>
             </Grid>
