@@ -23,7 +23,7 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
   useEffect(() => {
     let brand = deal.brand
     do {
-      if (brand.name === "New York City") {
+      if (brand.id === "86fa6ed0-e8c3-11eb-bf2e-0271a4acc769") {
         setIsNYC(true)
         break
       }
