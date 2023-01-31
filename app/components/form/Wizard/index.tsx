@@ -9,12 +9,27 @@ import ReviewQuestion from "../steps/ReviewQuestion"
 import LastQuestion from "../steps/LastQuestion"
 import FeeQuestion from "../steps/FeeQuestion"
 import { IQuestionProps } from "../../../models/type"
+import React from "@libs/react"
 
 export const FormWizard: React.FC<IQuestionProps> = (props) => {
+  const { useState, useEffect } = React
   const { Wizard, utils, models } = props
   const { deal } = models
   const isReveiew = utils.isReview
   const isBackOffice = utils.isBackOffice
+
+  const [isNYC, setIsNYC] = useState<boolean>(false)
+
+  useEffect(() => {
+    let brand = deal.brand
+    do {
+      if (brand.name === "New York City") {
+        setIsNYC(true)
+        break
+      }
+      brand = brand.parent
+    } while (brand.parent)
+  }, [])
 
   if (!isReveiew) {
     return (
@@ -26,7 +41,7 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
         <RemittanceQuestion {...props} />
         <PaymentQuestionInside {...props} />
         <PaymentQuestionOutside {...props} />
-        {isBackOffice && (
+        {isBackOffice && !isNYC && (
           <FeeQuestion {...props} />
         )}
         <LastQuestion {...props} />
