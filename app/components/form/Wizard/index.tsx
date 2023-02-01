@@ -9,27 +9,12 @@ import ReviewQuestion from "../steps/ReviewQuestion"
 import LastQuestion from "../steps/LastQuestion"
 import FeeQuestion from "../steps/FeeQuestion"
 import { IQuestionProps } from "../../../models/type"
-import React from "@libs/react"
 
 export const FormWizard: React.FC<IQuestionProps> = (props) => {
-  const { useState, useEffect } = React
-  const { Wizard, utils, models } = props
+  const { Wizard, utils, models, isNYC } = props
   const { deal } = models
   const isReveiew = utils.isReview
   const isBackOffice = utils.isBackOffice
-
-  const [isNYC, setIsNYC] = useState<boolean>(false)
-
-  useEffect(() => {
-    let brand = deal.brand
-    do {
-      if (brand.id === "86fa6ed0-e8c3-11eb-bf2e-0271a4acc769") {
-        setIsNYC(true)
-        break
-      }
-      brand = brand.parent
-    } while (brand.parent)
-  }, [])
 
   if (!isReveiew) {
     return (

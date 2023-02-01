@@ -160,8 +160,7 @@ export const paymentTypeData: IPaymentData[] = [
 
 export const feeTypeData: IFeeType = {
   feeName: [
-    "Listing Fee",
-    "Selling Fee",
+    "Additional Brokerage Commission",
     "MTF Fees",
     "Business Fee",
     "G1- Tax fee",
@@ -183,6 +182,7 @@ export const defaultFeeData: IFeeData[] = [
     fee_amount: "",
     fee_amount_percentage: "",
     fee_from: 0,
+    fee_paid: 1,
     fee_unit: 0,
     fee_method: 0,
     key_Index: 0

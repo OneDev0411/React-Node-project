@@ -13,7 +13,7 @@ const App: React.FC<EntryProps> = ({
   utils,
   hooks,
 }) => {
-  const { useEffect, useRef } = React;
+  const { useEffect, useRef, useState } = React;
   
   const { Wizard } = Components;
   const { deal, roles } = models;
@@ -22,6 +22,7 @@ const App: React.FC<EntryProps> = ({
   const { setDealData, setRoleData, setRemittanceChecks, setInsidePayments, setOutsidePayments, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep, feeData, setFeeData } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
+  const [ isNYC, setIsNYC ] = useState<boolean>(false)
 
   // push data from database to context
   const dataToContextAPI = async () => {
@@ -176,6 +177,17 @@ const App: React.FC<EntryProps> = ({
     dataToContextAPI();
   }, []);
 
+  useEffect(() => {
+    let brand = deal.brand
+    do {
+      if (brand.id === "86fa6ed0-e8c3-11eb-bf2e-0271a4acc769") {
+        setIsNYC(true)
+        break
+      }
+      brand = brand.parent
+    } while (brand.parent)
+  }, [])
+
   // save data from context to database when app is closed
   useEffect(() => {
     if (submitted !== 0)
@@ -217,6 +229,7 @@ const App: React.FC<EntryProps> = ({
         models={models}
         api={api}
         Components={Components}
+        isNYC={isNYC}
       />
     )
   }

@@ -42,22 +42,31 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
     let updatedValue: IFeeData = JSON.parse(JSON.stringify(item))
     if (key == "feeType"){
       updatedValue.fee_type = value
+			if (value === "Additional Brokerage Commission") {
+				updatedValue.fee_unit = 1
+				updatedValue.fee_amount = '295'
+				setFeeAmounts('295')
+			}
     }
-		if (key == "feeDealSide") {
+		if (key === "feeDealSide") {
 			updatedValue.deal_side = Number(e.target.value)
 		}
-    if (key == "feePercentAmount") {
+    if (key === "feePercentAmount") {
       updatedValue.fee_amount_percentage = value
 			setFeePercents(value)
     }
-    if (key == "feeAmount") {
+    if (key === "feeAmount") {
       updatedValue.fee_amount = String(value).replace(/\,/g,'')
 			setFeeAmounts(value)
     }
-		if (key == "feeFrom") {
+		if (key === "feeFrom") {
 			updatedValue.fee_from = Number(e.target.value)
 		}
-    if (key == "feeUnit") {
+		if (key === "feePaid") {
+			console.log('feePaid', Number(e.target.value))
+			updatedValue.fee_paid = Number(e.target.value)
+		}
+    if (key === "feeUnit") {
       updatedValue.fee_unit = Number(e.target.value)
       if(updatedValue.fee_unit == 1) {
         updatedValue.fee_amount_percentage = "0"
@@ -67,7 +76,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
         setFeeAmounts("0")
       }
     }
-    if (key == "feeType-method") {
+    if (key === "feeType-method") {
       updatedValue.fee_method = Number(e.target.value)
     }
 		updateData(updatedValue, id)
@@ -272,6 +281,48 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 									/>
 								}
 								label="Deal"
+							/>
+						</RadioGroup>
+					</Grid>
+				</Grid>
+				<Grid container spacing={2} style={{marginBottom: 10, justifyContent: "center", alignItems: "center"}}>
+					<Grid item xs={2}>
+						<label>Fee Paid</label>
+					</Grid>
+					<Grid item xs={1}></Grid>
+					<Grid item xs={9} style={{paddingLeft: 20}}>
+						<RadioGroup
+							row
+							aria-labelledby="demo-row-radio-buttons-group-label"
+							name="row-radio-buttons-group"
+							value={item.fee_paid}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+								handleChangeValue(e, "feePaid", id)
+							}
+						>
+							<FormControlLabel
+								value={0}
+								style={{ marginRight: 20 }}
+								control={
+									<Radio
+										checked={item.fee_paid == 0}
+										size="small"
+										style={{ marginBottom: 3 }}
+									/>
+								}
+								label="Yes"
+							/>
+							<FormControlLabel
+								value={1}
+								style={{ marginRight: 0 }}
+								control={
+									<Radio
+										checked={item.fee_paid == 1}
+										size="small"
+										style={{ marginBottom: 3 }}
+									/>
+								}
+								label="No"
 							/>
 						</RadioGroup>
 					</Grid>

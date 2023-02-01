@@ -21,6 +21,9 @@ export default (sequelize, Sequelize) => {
 			fee_from: {
 				type: Sequelize.NUMERIC
 			},
+			fee_paid: {
+				type: Sequelize.NUMERIC
+			},
 			fee_unit: {
 				type: Sequelize.NUMERIC,
 			},

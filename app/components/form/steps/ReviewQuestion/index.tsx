@@ -13,6 +13,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   models: { deal, roles },
   api: { getDealContext, updateTaskStatus, close },
   hooks: { useWizardContext },
+  isNYC
 }) => {
   const { QuestionSection, QuestionTitle } = Wizard
   const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid, Select, MenuItem, Radio, InputAdornment, RadioGroup, FormControlLabel } = Ui
@@ -232,10 +233,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
       pdf.addPage('a4', 'p')
       pdf.addImage(img, 'PNG', topLeftMargin, -pdfPageHeight*i + topLeftMargin, pdfWidth - topLeftMargin*2, pdfHeight)
     }
-    const pdfData = pdf.output('blob')
-    const url = URL.createObjectURL(pdfData)
-    window.open(url)
-    URL.revokeObjectURL(url)
+    pdf.save(`SP${deal.number}.pdf`)
     wizard.setLoading(false)
   }
 
@@ -569,7 +567,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             )}
           </Grid>
         )}
-        {fees.length > 0 && (
+        {!isNYC && fees.length > 0 && (
           <Grid container style={styles.group} >
             <Grid item xs={12} style={styles.group_title}>
               <label>Fees</label>
@@ -667,7 +665,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             color: 'white',
           }}
         >
-          View/Print
+          Download
         </Button>
         {(dealData.status === '' || dealData.status === null) &&
           <Box
