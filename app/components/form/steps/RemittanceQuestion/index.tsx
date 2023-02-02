@@ -4,7 +4,7 @@ import Ui from "@libs/material-ui"
 import useApp from "../../../../hooks/useApp"
 import { IDealData, IRoleData, IQuestionProps, IRemittanceChecks } from "../../../../models/type"
 import { defaultRemittanceChecks, stylizeNumber } from "../../../../util"
-import { DatePicker } from "../../../DatePicker"
+import CheckDataItemComponent from './component'
 
 const RemittanceQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -57,16 +57,6 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   remiListingSideEvent?.addEventListener('focusout', () => {
     let updateRemiBankWireAmount = stylizeNumber(parseFloat(parseFloat(String(Number(remiListingSideBankWireAmount.replace(/\,/g,'')))).toFixed(2)))
     setRemiListingSideBankWireAmount(updateRemiBankWireAmount)
-  })
-  const buySideCheckEvent = document.getElementById('buy-side-check-Data')
-  buySideCheckEvent?.addEventListener('focusout', () => {
-    const updatedChecksData = buySideCheckData.map((item) => {return stylizeNumber(parseFloat(parseFloat(String(Number(item.replace(/\,/g,'')))).toFixed(2)))})
-    setBuySideCheckData(updatedChecksData)
-  })
-  const listingSideCheckEvent = document.getElementById('listing-side-check-Data')
-  listingSideCheckEvent?.addEventListener('focusout', () => {
-    const updatedChecksData = listingSideCheckData.map((item) => {return stylizeNumber(parseFloat(parseFloat(String(Number(item.replace(/\,/g,'')))).toFixed(2)))})
-    setListingCheckData(updatedChecksData)
   })
 
   const handleBuySideSelectChange = (event: any) => {
@@ -123,34 +113,24 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     setListingSideChecks(temp)
   }
 
-  const updateCheckDataList = (
+  const updateBuySideCheckDataList = (
     index: number,
     key: keyof IRemittanceChecks,
     value: IRemittanceChecks[typeof key],
-    dealSide: string,
   ) => {
-    if(key==="amount") {
-      value = Number(String(value).replace(/\,/g,''))
-      if (dealSide == "BuySide") {
-        let _buySideCheckData = buySideCheckData
-        _buySideCheckData[index] = stylizeNumber(value)
-        setBuySideCheckData(_buySideCheckData)
-      } else if (dealSide == "ListingSide") {
-        let _listingSideCheckData = listingSideCheckData
-        _listingSideCheckData[index] = stylizeNumber(value)
-        setBuySideCheckData(_listingSideCheckData)
-      }
-    }
-    if (dealSide === "BuySide") {
-      let temp = buySideChecks.slice()
-      temp[index] = { ...temp[index], [key]: value, deal_side: dealSide, deal: deal.id }
-      setBuySideChecks(temp)
-    }
-    if (dealSide === "ListingSide") {
-      let temp = listingSideChecks.slice()
-      temp[index] = { ...temp[index], [key]: value, deal_side: dealSide, deal: deal.id }
-      setListingSideChecks(temp)
-    }
+    let temp = buySideChecks.slice()
+    temp[index] = { ...temp[index], [key]: value, deal_side: "BuySide", deal: deal.id }
+    setBuySideChecks(temp)
+  }
+
+  const updateListingSideCheckDataList = (
+    index: number,
+    key: keyof IRemittanceChecks,
+    value: IRemittanceChecks[typeof key]
+  ) => {
+    let temp = listingSideChecks.slice()
+    temp[index] = { ...temp[index], [key]: value, deal_side: "ListingSide", deal: deal.id }
+    setListingSideChecks(temp)
   }
 
   const handleClickNextButton = () => {
@@ -231,20 +211,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     }
   }, [])
 
-  useEffect(() => {
-    if (buySideChecks.length == 1 && buySideChecks[0].check_num == 0 && buySideChecks[0].amount == 0 && (_dealData.remittance_buy_side_bank_wire_amount == null || _dealData.remittance_buy_side_bank_wire_amount == undefined))
-      setSelectValueBuySide(-1)
-    if ((buySideChecks.length == 1 && (buySideChecks[0].check_num != 0 || buySideChecks[0].amount != 0) && _dealData.remittance_buy_side_bank_wire_amount == null) || buySideChecks.length > 1)
-      setSelectValueBuySide(0)
-    if (buySideChecks.length == 1 && buySideChecks[0].check_num == 0 && buySideChecks[0].amount == 0 && (_dealData.remittance_buy_side_bank_wire_amount != null && _dealData.remittance_buy_side_bank_wire_amount != undefined))
-      setSelectValueBuySide(1)
-    if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && (_dealData.remittance_listing_side_bank_wire_amount == null || _dealData.remittance_listing_side_bank_wire_amount == undefined))
-      setSelectValueListingSide(-1)
-    if ((listingSideChecks.length == 1 && listingSideChecks[0].check_num != 0 && listingSideChecks[0].amount != 0 && _dealData.remittance_listing_side_bank_wire_amount == null) || listingSideChecks.length > 1)
-      setSelectValueListingSide(0)
-    if (listingSideChecks.length == 1 && listingSideChecks[0].check_num == 0 && listingSideChecks[0].amount == 0 && (_dealData.remittance_listing_side_bank_wire_amount != null && _dealData.remittance_listing_side_bank_wire_amount != undefined))
-      setSelectValueListingSide(1)
-    
+  useEffect(() => {    
     const _buySideChecks = buySideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0)
     const _listingSideChecks = listingSideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0)
     _setRemittanceChecks([..._buySideChecks, ..._listingSideChecks])
@@ -370,112 +337,14 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
               <>
                 {buySideChecks.map(
                   (checkData: IRemittanceChecks, index: number) => (
-                    <Box 
-                      style={{
-                        marginBottom: 20,
-                        padding: 15,
-                        paddingTop: 15,
-                        paddingRight: 10,
-                        display: 'inline-block',
-                        position: 'relative', 
-                        border: "1px solid rgba(0, 0, 0, 0.12)",
-                        borderRadius: 4
-                      }}
-                      key={index}
-                    >
-                      {buySideChecks.length > 1 && <IconButton size="small" style={{ position: 'absolute', top: 10, right: 10, width: 7, height: 5 }} onClick={() => removeBuySideCheck(index)}>
-                        x
-                      </IconButton>}
-                      <Grid container spacing={2}>
-                        <Grid item xs={4}>
-                          <label>{`Check - ${index + 1}`}</label>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Grid container spacing={2}>
-                            <Grid item xs={6}>
-                              <TextField
-                                size="small"
-                                value={checkData.check_num}
-                                style={{ width: "100%" }}
-                                onChange={(
-                                  e: React.ChangeEvent<HTMLInputElement>
-                                ) =>
-                                  updateCheckDataList(
-                                    index,
-                                    "check_num",
-                                    e.target.value,
-                                    "BuySide"
-                                  )
-                                }
-                                type="number"
-                                label="Check #"
-                              />
-                            </Grid>
-                            <Grid item xs={6}>
-                              <TextField
-                                size="small"
-                                value={buySideCheckData[index]}
-                                style={{ width: "100%" }}
-                                onChange={(
-                                  e: React.ChangeEvent<HTMLInputElement>
-                                ) =>
-                                  updateCheckDataList(
-                                    index,
-                                    "amount",
-                                    Number(e.target.value.replace(/\,/g,'')),
-                                    "BuySide"
-                                  )
-                                }
-                                type="string"
-                                InputProps={{
-                                  startAdornment: (
-                                    <InputAdornment position="start">
-                                      $
-                                    </InputAdornment>
-                                  ),
-                                }}
-                                label="Amount"
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container spacing={2}>
-                            <Grid item xs={6}>
-                              <DatePicker
-                                Picker={DayPicker}
-                                value={
-                                  typeof checkData.check_date == "string"
-                                    ? new Date(checkData.check_date)
-                                    : checkData.check_date
-                                }
-                                setValue={(value: Date) =>
-                                  updateCheckDataList(index, "check_date", value, "BuySide")
-                                }
-                                label="Date on check"
-                              />
-                            </Grid>
-                            <Grid item xs={6}>
-                              <DatePicker
-                                Picker={DayPicker}
-                                value={
-                                  typeof checkData.check_receive_date == "string"
-                                    ? new Date(checkData.check_receive_date)
-                                    : checkData.check_receive_date
-                                }
-                                setValue={(value: Date) =>
-                                  updateCheckDataList(
-                                    index,
-                                    "check_receive_date",
-                                    value,
-                                    "BuySide"
-                                  )
-                                }
-                                label="Date check received"
-                              />
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Box>
+                    <CheckDataItemComponent
+                      checkData={checkData}
+                      length={buySideChecks.length}
+                      id={index}
+                      dayPicker={DayPicker}
+                      removeCheckData={removeBuySideCheck}
+                      updateCheckData={updateBuySideCheckDataList}
+                    />
                   )
                 )}
                 <Box style={{ marginTop: 20 }}>
@@ -559,101 +428,16 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
             {(selectValueListingSide === 0) && (
               <>
                 {listingSideChecks.map(
-                  (checkData: IRemittanceChecks, index: number) => {
-                    return (
-                      <Box
-                        style={{
-                          marginBottom: 20,
-                          padding: 15,
-                          paddingTop: 15,
-                          paddingRight: 10,
-                          display: 'inline-block',
-                          position: 'relative',
-                          border: "1px solid rgba(0, 0, 0, 0.12)",
-                          borderRadius: 4
-                        }}
-                        key={index}
-                      >
-                        {listingSideChecks.length > 1 && <IconButton size="small" style={{ position: 'absolute', top: 5, right: 5, width: 7, height: 5 }} onClick={() => removeListingSideCheck(index)}>
-                          x
-                        </IconButton>}
-                        <Grid container spacing={2}>
-                          <Grid item xs={3}>
-                            <label>{`Check - ${index + 1}`}</label>
-                          </Grid>
-                          <Grid item xs={9}>
-                            <Grid container spacing={2}>
-                              <Grid item xs={6}>
-                                <TextField
-                                  size="small"
-                                  value={checkData.check_num}
-                                  style={{ width: "100%" }}
-                                  onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                  ) => updateCheckDataList(
-                                    index,
-                                    "check_num",
-                                    e.target.value,
-                                    "ListingSide"
-                                  )}
-                                  type="number"
-                                  label="Check #" />
-                              </Grid>
-                              <Grid item xs={6}>
-                                <TextField
-                                  size="small"
-                                  id="listing-side-check-Data"
-                                  value={listingSideCheckData[index]}
-                                  style={{ width: "100%" }}
-                                  onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                  ) => updateCheckDataList(
-                                    index,
-                                    "amount",
-                                    e.target.value,
-                                    "ListingSide"
-                                  )}
-                                  type="string"
-                                  InputProps={{
-                                    startAdornment: (
-                                      <InputAdornment position="start">
-                                        $
-                                      </InputAdornment>
-                                    ),
-                                  }}
-                                  label="Amount" />
-                              </Grid>
-                            </Grid>
-                            <Grid container spacing={2}>
-                              <Grid item xs={6}>
-                                <DatePicker
-                                  Picker={DayPicker}
-                                  value={typeof checkData.check_date == "string"
-                                    ? new Date(checkData.check_date)
-                                    : checkData.check_date}
-                                  setValue={(value: Date) => updateCheckDataList(index, "check_date", value, "ListingSide")}
-                                  label="Date on check" />
-                              </Grid>
-                              <Grid item xs={6}>
-                                <DatePicker
-                                  Picker={DayPicker}
-                                  value={typeof checkData.check_receive_date == "string"
-                                    ? new Date(checkData.check_receive_date)
-                                    : checkData.check_receive_date}
-                                  setValue={(value: Date) => updateCheckDataList(
-                                    index,
-                                    "check_receive_date",
-                                    value,
-                                    "ListingSide"
-                                  )}
-                                  label="Date check received" />
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Box>
-                    )
-                  }
+                  (checkData: IRemittanceChecks, index: number) => (
+                    <CheckDataItemComponent
+                      checkData={checkData}
+                      length={listingSideChecks.length}
+                      id={index}
+                      dayPicker={DayPicker}
+                      removeCheckData={removeListingSideCheck}
+                      updateCheckData={updateListingSideCheckDataList}
+                    />
+                  )
                 )}
                 <Box style={{ marginTop: 20 }}>
                   <Button

@@ -71,6 +71,15 @@ export interface IRemittanceChecks {
   deal_side: string;
 }
 
+export interface IChecksItemProps {
+  checkData: IRemittanceChecks;
+  id: number;
+  length: number;
+  dayPicker: React.FC<DatePickerProps>;
+  removeCheckData: (item: number) => void;
+  updateCheckData: (id: number, key: keyof IRemittanceChecks, value: IRemittanceChecks[typeof key]) => void
+}
+
 export interface IPaidByData {
   roleId: IDealRole["id"],
   role: string,
