@@ -30,6 +30,9 @@ export default (sequelize, Sequelize) => {
 			fee_method: {
 				type: Sequelize.NUMERIC
 			},
+			agent_name: {
+				type: Sequelize.TEXT
+			},
 			key_Index: {
 				type: Sequelize.NUMERIC
 			}

@@ -7,7 +7,8 @@ import FeeQuestionComponent from "./item"
 const FeeQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
-  models: { deal },
+  models: { deal, roles },
+  Components
 }) => {
   const { useState, useEffect } = React
   const { Box, Button } = Ui
@@ -53,8 +54,11 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
       </QuestionTitle>
       <QuestionForm width="60%">
         <FeeQuestionComponent
-          deal={deal.id}
+          dealId={deal.id}
+          dealType={deal.deal_type}
           saveData={{ updateFlag }}
+          Components={Components}
+          roles={roles}
         />
         {showButton && (
           <Box

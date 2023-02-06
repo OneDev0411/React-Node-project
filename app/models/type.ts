@@ -195,12 +195,16 @@ export interface IFeeData {
   fee_paid: number;
   fee_unit: number;
   fee_method: number;
-  key_Index: number
+  key_Index: number;
+  agentName: string;
 }
 
 export interface FeeQuestionProps {
-  deal: string;
+  dealId: string;
   saveData: IDataToConText;
+  Components: CoreComponents;
+  dealType: IDeal["deal_type"];
+  roles: IDealRole[];
 }
 
 export interface FeeItemProps {
@@ -208,7 +212,9 @@ export interface FeeItemProps {
   id: number;
   length: number;
   handleClickRemoveFee: (id: number) => void;
-  updateData: (item: IFeeData, id: number) => void
+  updateData: (item: IFeeData, id: number) => void;
+  Components: CoreComponents;
+  dealType: IDeal["deal_type"];
 }
 
 export interface IPaymentQuestionData {

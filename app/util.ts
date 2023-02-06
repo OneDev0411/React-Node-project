@@ -185,7 +185,8 @@ export const defaultFeeData: IFeeData[] = [
     fee_paid: 1,
     fee_unit: 0,
     fee_method: 0,
-    key_Index: 0
+    key_Index: 0,
+    agentName: ''
   }
 ];
 

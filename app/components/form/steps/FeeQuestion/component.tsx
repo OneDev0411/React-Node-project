@@ -1,6 +1,7 @@
 import React from "@libs/react"
 import Ui from "@libs/material-ui"
-import { FeeItemProps, IFeeData } from "../../../../models/type"
+import useApp from "../../../../hooks/useApp"
+import { FeeItemProps, GCISplitStatus, IFeeData, IRoleData } from "../../../../models/type"
 import { feeTypeData, stylizeNumber } from '../../../../util'
 
 const FeeItemComponent: React.FC<FeeItemProps> = ({
@@ -8,13 +9,20 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
   id,
   length,
   handleClickRemoveFee,
-  updateData
+  updateData,
+	Components: {AgentsPicker},
+	dealType
 }) => {
-  const { Box, TextField, Grid, Select, IconButton, Radio, RadioGroup, MenuItem, InputAdornment, FormControlLabel } = Ui
+  const { Box, TextField, Grid, Select, IconButton, Radio, RadioGroup, MenuItem, InputAdornment, FormControlLabel, Button } = Ui
+	const { roleData } = useApp()
   const { useEffect, useState } = React
 
   const [feeAmounts, setFeeAmounts] = useState<string>('')
   const [feePercents, setFeePercents] = useState<string>('')
+	const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData)
+	const [selectingStatus, setSelectingStatus] = useState<string>('')
+	const [selectedGCIBuyingAgents, setSelectedGCIBuyingAgents] = useState<string[]>([])
+	const [selectedGCISellingSideAgents, setSelectedGCISellingSideAgents] = useState<string[]>([])
 
   const feeAmountsEvents = document.getElementById(`fee_amounts${id}`)
   feeAmountsEvents?.addEventListener('focusout', () => {
@@ -41,12 +49,14 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
     let value = String(e.target.value)
     let updatedValue: IFeeData = JSON.parse(JSON.stringify(item))
     if (key == "feeType"){
-      updatedValue.fee_type = value
 			if (value === "Additional Brokerage Commission") {
 				updatedValue.fee_unit = 1
 				updatedValue.fee_amount = '295'
-				setFeeAmounts('295')
+				updatedValue.fee_amount_percentage = '0'
+				setFeePercents(stylizeNumber(0))
+				setFeeAmounts(stylizeNumber(295))
 			}
+      updatedValue.fee_type = value
     }
 		if (key === "feeDealSide") {
 			updatedValue.deal_side = Number(e.target.value)
@@ -63,7 +73,6 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 			updatedValue.fee_from = Number(e.target.value)
 		}
 		if (key === "feePaid") {
-			console.log('feePaid', Number(e.target.value))
 			updatedValue.fee_paid = Number(e.target.value)
 		}
     if (key === "feeUnit") {
@@ -82,12 +91,49 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 		updateData(updatedValue, id)
   }
 
+	const handleEditPrimaryAgent = () => {
+		setSelectingStatus('Selecting')
+	}
+
+	const handleCancelPrimaryAgent = () => {
+		setSelectingStatus('Listing')
+	}
+
+	const handleSelectAgent = (agent: BrandedUser, id: number) => {
+		if (dealType === "Buying" || dealType === "Both") {
+			let _selectedGCIBuyingAgents = selectedGCIBuyingAgents
+			_selectedGCIBuyingAgents[id] = agent.display_name
+			setSelectedGCIBuyingAgents(_selectedGCIBuyingAgents)
+		} else if (dealType === "Selling" || dealType === "Both") {
+			let _selectedGCISellingSideAgents = selectedGCISellingSideAgents
+			_selectedGCISellingSideAgents[id] = agent.display_name
+			setSelectedGCIBuyingAgents(_selectedGCISellingSideAgents)
+		}
+		setSelectingStatus("Listing")
+	}
+
   useEffect(() => {
-    if (item.fee_amount !== "" || item.fee_amount_percentage !== "") {
-      setFeeAmounts(stylizeNumber(parseFloat(item.fee_amount)))
-      setFeePercents(stylizeNumber(parseFloat(item.fee_amount_percentage)))
-    }
+		setSelectingStatus('Listing')
+		if (item.fee_amount === "") {
+			setFeeAmounts(stylizeNumber(0))
+			setFeePercents(stylizeNumber(parseFloat(item.fee_amount_percentage)))
+		} else if (item.fee_amount_percentage === "") {
+			setFeeAmounts(stylizeNumber(parseFloat(item.fee_amount)))
+			setFeePercents(stylizeNumber(0))
+		}
   }, [])
+
+	useEffect(() => {
+		_setRoleData(roleData)
+	}, [roleData])
+
+	
+	useEffect(() => {
+		let _selectedGCIBuyingAgents = (dealType === 'Buying' || dealType === "Both") ? _roleData.filter((roleItem: IRoleData) => roleItem.role === "BuyerAgent" || roleItem.role === "CoBuyerAgent" || roleItem.role === "BuyerReferral").map((role) => {return role.legal_full_name}) : []
+		let _selectedGCISellingSideAgents = (dealType === 'Selling' || dealType === "Both") ? _roleData.filter((roleItem: IRoleData) => roleItem.role === "SellerAgent" || roleItem.role === "CoSellerAgent" || roleItem.role=== "SellerReferral").map((role) => {return role.legal_full_name}) : []
+		setSelectedGCISellingSideAgents(_selectedGCISellingSideAgents)
+		setSelectedGCIBuyingAgents(_selectedGCIBuyingAgents)
+	}, [])
 
   return (
 		<>
@@ -121,6 +167,102 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 						x
 					</IconButton>
 				}
+				<Grid container spacing={2} style={{marginBottom: 10, justifyContent: "center", alignItems: "center"}}>
+					<Grid item xs={2}>
+						<label>Agents</label>
+					</Grid>
+					<Grid item xs={1}></Grid>
+					<Grid item xs={9} style={{paddingLeft: 20}}>
+						{(dealType === "Buying" || dealType === "Both") && (
+							<>
+								{selectingStatus === "Listing" && (
+									<Box style={{display: "flex", textAlign: 'center'}}>
+										<label style={{marginTop: 7}}>{selectedGCIBuyingAgents[id]}</label>
+										<Button
+											onClick={handleEditPrimaryAgent}
+											style={{
+												marginLeft: "auto",
+												color: "black !important",
+												border: "solid #dbdbdb 1px",
+												borderRadius: 5
+											}}
+										>
+											Edit
+										</Button>
+									</Box>
+								)}
+								{selectingStatus === "Selecting" && (
+									<Box style={{display: "flex", justifyContent: "space-between", alignItems: 'center'}}>
+										<AgentsPicker
+											flattenTeams={true}
+											isPrimaryAgent={false}
+											useTeamBrandId={false}
+											onSelectAgent={(agent: BrandedUser) =>
+												handleSelectAgent(agent, id)
+											}
+										/>
+										<Box style={{ marginTop: 5, textAlign: "right" }}>
+											<Button
+												onClick={handleCancelPrimaryAgent}
+												style={{
+													color: "black !important",
+													border: "solid #dbdbdb 1px",
+													borderRadius: 5,
+												}}
+											>
+												Cancel
+											</Button>
+										</Box>
+									</Box>
+								)}
+							</>
+						)}
+						{(dealType === "Selling" || dealType === "Both") && (
+							<>
+								{selectingStatus === "Listing" && (
+									<Box style={{display: "flex"}}>
+										<label style={{marginTop: 7}}>{selectedGCISellingSideAgents[id]}</label>
+										<Button
+											onClick={handleEditPrimaryAgent}
+											style={{
+												marginLeft: "auto",
+												color: "black !important",
+												border: "solid #dbdbdb 1px",
+												borderRadius: 5
+											}}
+										>
+											Edit
+										</Button>
+									</Box>
+								)}
+								{selectingStatus === "Selecting" && (
+									<Box style={{display: "flex", justifyContent: "space-between", alignItems: 'center'}}>
+										<AgentsPicker
+											flattenTeams={true}
+											isPrimaryAgent={false}
+											useTeamBrandId={false}
+											onSelectAgent={(agent: BrandedUser) =>
+												handleSelectAgent(agent, id)
+											}
+										/>
+										<Box style={{ marginTop: 5, textAlign: "right" }}>
+											<Button
+												onClick={handleCancelPrimaryAgent}
+												style={{
+													color: "black !important",
+													border: "solid #dbdbdb 1px",
+													borderRadius: 5,
+												}}
+											>
+												Cancel
+											</Button>
+										</Box>
+									</Box>
+								)}
+							</>
+						)}
+					</Grid>
+				</Grid>
 				<Grid container spacing={2} style={{marginBottom: 10, justifyContent: "center", alignItems: "center"}}>
 					<Grid item xs={2}>
 						<label>Deal Side</label>
