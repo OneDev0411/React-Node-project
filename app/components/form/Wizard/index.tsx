@@ -26,7 +26,7 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
         <RemittanceQuestion {...props} />
         <PaymentQuestionInside {...props} />
         <PaymentQuestionOutside {...props} />
-        {isBackOffice && isNYC && (
+        {isBackOffice && !isNYC && (
           <FeeQuestion {...props} />
         )}
         <LastQuestion {...props} />
