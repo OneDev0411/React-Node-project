@@ -7,7 +7,7 @@ import db from "../../../models/commissionAppDB";
 import sync from "../../../services/de_deal_sync";
 import { getAgentIdFromUserId, getAddressFromUserId } from "../../../services/de_deal_sync";
 import Jsonb from "jsonb-builder";
-const { AppDealModel, AppRoleModel, AppRemittanceCheckModel, AppPaymentModel, DealModel, AppFeeModel } = db;
+const { AppDealModel, AppRoleModel, AppRemittanceCheckModel, AppPaymentModel, DealModel, AppFeeModel, AppDealNumberModel } = db;
 
 const saveAppData = async (data: any, model: any) => {
   let findRes = await model.findOne({
@@ -90,16 +90,25 @@ const saveAppData = async (data: any, model: any) => {
 };
 
 const readData = async (deal: string, model: any) => {
-  const res = await model.findAll({
-    where: {
-      deal: deal,
-    },
-    order: [
-      ["created_at", "ASC"]
-    ],
-    attributes: { exclude: ["created_at", "updated_at"] },
-  });
-  return res;
+  if (model == AppDealNumberModel) {
+    const res = await model.findOne({
+      where: {
+        deal: deal
+      }
+    })
+    return res;
+  } else {
+    const res = await model.findAll({
+      where: {
+        deal: deal,
+      },
+      order: [
+        ["created_at", "ASC"]
+      ],
+      attributes: { exclude: ["created_at", "updated_at"] },
+    });
+    return res;
+  }
 };
 
 const deleteData = async (data: any, model: any) => {
@@ -118,6 +127,9 @@ const saveCommissionData = async (req: Request, res: Response) => {
     let remittanceChecks = allData.remittanceChecks;
     let payments = [...allData.insidePayments, ... allData.outsidePayments];
     let feeData = allData.feeData;
+    let dealNumberData = allData.dealNumber;
+    //save appDealNumberData
+    await saveAppData(dealNumberData, AppDealNumberModel);
     // save appDealData
     await saveAppData(dealData, AppDealModel);
     // save appRoleData
@@ -200,6 +212,7 @@ const readCombinedAppData = async (deal: string) => {
   let remittanceChecks = await readData(deal, AppRemittanceCheckModel);
   let payments = await readData(deal, AppPaymentModel);
   let feeData = await readData(deal, AppFeeModel);
+  let dealNumberData = await readData(deal, AppDealNumberModel);
 
   let allData: any = null;
   if (dealData.length > 0) {
@@ -208,7 +221,8 @@ const readCombinedAppData = async (deal: string) => {
       roleData: roleData,
       remittanceChecks: remittanceChecks,
       payments: payments,
-      feeData: feeData
+      feeData: feeData,
+      dealNumber: dealNumberData
     };
   }
   return allData;

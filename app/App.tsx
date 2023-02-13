@@ -2,7 +2,7 @@ import React from "@libs/react"
 import axios from "axios"
 import useApp from "./hooks/useApp"
 import { AppContextApi, IRoleData, IPayment, IFeeData } from "./models/type"
-import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole, defaultFeeData } from "./util"
+import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole, defaultFeeData, defaultDealNumberData } from "./util"
 import { FormWizard } from "./components/form/Wizard"
 import Loading from './components/Loading'
 
@@ -19,7 +19,22 @@ const App: React.FC<EntryProps> = ({
   const { deal, roles } = models;
   const total_data: AppContextApi = useApp();
   const _totalData = useRef(total_data);
-  const { setDealData, setRoleData, setRemittanceChecks, setInsidePayments, setOutsidePayments, submitted, setSubmitted, setFinancing, currentStep, setCurrentStep, feeData, setFeeData } = useApp();
+  const { 
+    setDealData, 
+    setRoleData, 
+    setRemittanceChecks, 
+    setInsidePayments, 
+    setOutsidePayments, 
+    submitted, 
+    setSubmitted, 
+    setFinancing, 
+    currentStep, 
+    setCurrentStep,
+    feeData,
+    setFeeData,
+    dealNumber,
+    setDealNumber
+  } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
   const [ isNYC, setIsNYC ] = useState<boolean>(false)
@@ -142,6 +157,10 @@ const App: React.FC<EntryProps> = ({
         if(setFeeData !== undefined) {
           setFeeData(tempFeeData)
         }
+        let tempDealNumberData = data.dealNumber
+        if (setDealNumber !== undefined) {
+          setDealNumber(tempDealNumberData)
+        }
       } else { // in case of data doesn't exist in database, set default data
         if (setDealData !== undefined) {
           defaultDealData.deal = deal.id;
@@ -156,6 +175,10 @@ const App: React.FC<EntryProps> = ({
         }
         if (setRemittanceChecks !== undefined) {
           setRemittanceChecks(defaultRemittanceChecks);
+        }
+        if (setDealNumber !== undefined) {
+          defaultDealNumberData.deal = deal.id
+          setDealNumber(defaultDealNumberData)
         }
         if (setCurrentStep !== undefined) {
           setCurrentStep(defaultDealData.current_step);

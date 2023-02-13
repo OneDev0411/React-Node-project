@@ -9,9 +9,8 @@ import commissionDB from "../models/commissionAppDB/index";
 import axios from "axios";
 import { QueryTypes } from "sequelize";
 import db from "../models/commissionAppDB";
-import { IFeeData } from "type";
 
-const { AppFeeModel } = db;
+const { AppFeeModel, AppDealNumberModel } = db;
 
 const getState = async (deal: any) => {
   const result = await commissionDB.DealModel.findOne({
@@ -504,11 +503,10 @@ const sync = async (deal) => {
   const DealDate = moment.utc(created_at).format("YYYY-MM-DD");
 
   const isHippocket = !deal.listing;
-  const ListingId = getContextFromDeal(deal, 'deal_number') ?? getContextFromDeal(deal, 'mls_number') ?? `Hippocket-${deal.number}`;
   const Street = getContextFromDeal(deal, "street_address");
   const ZipCode = getContextFromDeal(deal, "postal_code");
   const PropertyType = property_type.label;
-
+  const MlSNum = getContextFromDeal(deal, 'mls_number') ?? `Hippocket-${deal.number}`;
   /*
    * So, in case of Hip Pockets, we don't have Listing Date. Michael asked me to provide the DealDate for those cases.
    * In case of buy-side deals, we don't have listing date. In those cases, James asked me to provide executed date aka contract date.
@@ -682,6 +680,14 @@ const sync = async (deal) => {
   const agentsFromPayments = await getAgentsFromPayments(deal.id, roles); 
   agents = [...agents, ...agentsFromPayments];
 
+  const dbDealNumber = await AppDealNumberModel.findOne({
+    where: {
+      deal: deal.id
+    }
+  })
+
+  const ListingId = getContextFromDeal(deal, 'deal_number') ?? dbDealNumber.deal_number
+
   const dbFeeData = await AppFeeModel.findAll({
     where: {
       deal: deal.id,
@@ -729,7 +735,8 @@ const sync = async (deal) => {
         FeeCollectFrom: "Deal",
         AgentId: agentId[0],
         CreditToSeller: dbFeeData[i].fee_type === "Credit given by Agent (Seller)" ? true : false,
-        IncludeInGross: dbFeeData[i].fee_method == 0? false : true
+        IncludeInGross: dbFeeData[i].fee_method == 0? false : true,
+        AgentName: dbFeeData[i].agent_name
       }
       tempFeeData.push(eachFeeData)
     } else {
@@ -743,7 +750,8 @@ const sync = async (deal) => {
         FeeCollectFrom: "Deal",
         AgentId: agentId[0],
         CreditToSeller: dbFeeData[i].fee_type === "Credit given by Agent (Seller)" ? true : false,
-        IncludeInGross: dbFeeData[i].fee_method == 0? false : true
+        IncludeInGross: dbFeeData[i].fee_method == 0? false : true,
+        AgentName: dbFeeData[i].agent_name
       }
       tempFeeData.push(eachFeeData)
     }
@@ -762,7 +770,8 @@ const sync = async (deal) => {
       City,
       State,
       ListingType: "Other",
-      BusinessLocation: office_details.business_locations[0]
+      BusinessLocation: office_details.business_locations[0],
+      MlSNum
     },
     deal: {
       Source: "StudioPro",

@@ -9,6 +9,8 @@ import ReviewQuestion from "../steps/ReviewQuestion"
 import LastQuestion from "../steps/LastQuestion"
 import FeeQuestion from "../steps/FeeQuestion"
 import { IQuestionProps } from "../../../models/type"
+import DealNumberQuestion from "../steps/DealNumberQuestion"
+import CommissionInstruction from "../steps/CommissionInstruction"
 
 export const FormWizard: React.FC<IQuestionProps> = (props) => {
   const { Wizard, utils, models, isNYC } = props
@@ -20,6 +22,7 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
     return (
       <Wizard.QuestionWizard onFinish={() => console.log("done")}>
         <StartQuestion {...props} />
+        <DealNumberQuestion {...props} />
         {!deal.property_type.is_lease && <FinanceTransQuestion {...props} />}
         {!deal.property_type.is_lease && <FinanceProgQuestion {...props} />}
         <GCISplitQuestion {...props} />
@@ -29,6 +32,7 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
         {isBackOffice && !isNYC && (
           <FeeQuestion {...props} />
         )}
+        {isBackOffice && <CommissionInstruction {...props} />}
         <LastQuestion {...props} />
       </Wizard.QuestionWizard> 
     )

@@ -33,7 +33,7 @@ const StartQuestion: React.FC<IQuestionProps> = ({
       if (submitted === -1) {
         wizard.goto(currentStep)
       } else {
-        wizard.goto(9)
+        wizard.goto(11)
       }
     }
   }, [])

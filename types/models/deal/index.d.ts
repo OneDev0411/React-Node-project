@@ -29,6 +29,7 @@ declare interface IDeal<A extends IDealAssociations = ''>
   context: Record<string, IDealContext>
   new_notifications: IChatMessage[] | null
   number: number
+  deal_number: number
 }
 
 declare interface IDealList {

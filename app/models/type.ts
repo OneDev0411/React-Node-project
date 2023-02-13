@@ -128,6 +128,8 @@ export interface AppContextApi {
   setCurrentStep?: (data: number) => void;
   feeData: IFeeData[];
   setFeeData?: (data: IFeeData[]) => void;
+  dealNumber: IDealNumberData;
+  setDealNumber?: (data: IDealNumberData) => void;
 }
 
 export interface IQuestionProps {
@@ -196,15 +198,22 @@ export interface IFeeData {
   fee_unit: number;
   fee_method: number;
   key_Index: number;
-  agentName: string;
+  agent_name: string;
+}
+
+export interface IDealNumberData {
+  deal: string;
+  deal_number: string;
 }
 
 export interface FeeQuestionProps {
-  dealId: string;
   saveData: IDataToConText;
   Components: CoreComponents;
   dealType: IDeal["deal_type"];
-  roles: IDealRole[];
+  tempFeeData: IFeeData[];
+  handleClickRemoveFee: (id: number) => void;
+  handleClickAddAnotherButton: () => void;
+  updateFeeData: (item: IFeeData, id: number) => void;
 }
 
 export interface FeeItemProps {

@@ -1,26 +1,23 @@
 import React from "@libs/react"
 import Ui from "@libs/material-ui"
-import useApp from "../../../../hooks/useApp"
-import { FeeItemProps, GCISplitStatus, IFeeData, IRoleData } from "../../../../models/type"
+import { FeeItemProps, IFeeData } from "../../../../models/type"
 import { feeTypeData, stylizeNumber } from '../../../../util'
 
 const FeeItemComponent: React.FC<FeeItemProps> = ({
   item,
   id,
   length,
-  handleClickRemoveFee,
   updateData,
 	Components: {AgentsPicker},
-	dealType
+	dealType,
+	handleClickRemoveFee,
 }) => {
   const { Box, TextField, Grid, Select, IconButton, Radio, RadioGroup, MenuItem, InputAdornment, FormControlLabel, Button } = Ui
-	const { roleData } = useApp()
   const { useEffect, useState } = React
 
   const [feeAmounts, setFeeAmounts] = useState<string>('')
   const [feePercents, setFeePercents] = useState<string>('')
-	const [_roleData, _setRoleData] = useState<IRoleData[]>(roleData)
-	const [selectingStatus, setSelectingStatus] = useState<string>('')
+	const [selectingStatus, setSelectingStatus] = useState<string>("Listing")
 	const [selectedGCIBuyingAgents, setSelectedGCIBuyingAgents] = useState<string[]>([])
 	const [selectedGCISellingSideAgents, setSelectedGCISellingSideAgents] = useState<string[]>([])
 
@@ -103,37 +100,30 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 		if (dealType === "Buying" || dealType === "Both") {
 			let _selectedGCIBuyingAgents = selectedGCIBuyingAgents
 			_selectedGCIBuyingAgents[id] = agent.display_name
+			let _updatedFeeData: IFeeData = JSON.parse(JSON.stringify(item))
+			_updatedFeeData.agent_name = agent.display_name
+			updateData(_updatedFeeData, id)
 			setSelectedGCIBuyingAgents(_selectedGCIBuyingAgents)
 		} else if (dealType === "Selling" || dealType === "Both") {
 			let _selectedGCISellingSideAgents = selectedGCISellingSideAgents
 			_selectedGCISellingSideAgents[id] = agent.display_name
-			setSelectedGCIBuyingAgents(_selectedGCISellingSideAgents)
+			let _updatedFeeData: IFeeData = JSON.parse(JSON.stringify(item))
+			_updatedFeeData.agent_name = agent.display_name
+			updateData(_updatedFeeData, id)
+			setSelectedGCISellingSideAgents(_selectedGCISellingSideAgents)
 		}
 		setSelectingStatus("Listing")
 	}
 
   useEffect(() => {
-		setSelectingStatus('Listing')
-		if (item.fee_amount === "") {
+		if (item.fee_unit == 0) {
 			setFeeAmounts(stylizeNumber(0))
 			setFeePercents(stylizeNumber(parseFloat(item.fee_amount_percentage)))
-		} else if (item.fee_amount_percentage === "") {
+		} else if (item.fee_unit == 1) {
 			setFeeAmounts(stylizeNumber(parseFloat(item.fee_amount)))
 			setFeePercents(stylizeNumber(0))
 		}
   }, [])
-
-	useEffect(() => {
-		_setRoleData(roleData)
-	}, [roleData])
-
-	
-	useEffect(() => {
-		let _selectedGCIBuyingAgents = (dealType === 'Buying' || dealType === "Both") ? _roleData.filter((roleItem: IRoleData) => roleItem.role === "BuyerAgent" || roleItem.role === "CoBuyerAgent" || roleItem.role === "BuyerReferral").map((role) => {return role.legal_full_name}) : []
-		let _selectedGCISellingSideAgents = (dealType === 'Selling' || dealType === "Both") ? _roleData.filter((roleItem: IRoleData) => roleItem.role === "SellerAgent" || roleItem.role === "CoSellerAgent" || roleItem.role=== "SellerReferral").map((role) => {return role.legal_full_name}) : []
-		setSelectedGCISellingSideAgents(_selectedGCISellingSideAgents)
-		setSelectedGCIBuyingAgents(_selectedGCIBuyingAgents)
-	}, [])
 
   return (
 		<>
@@ -177,7 +167,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 							<>
 								{selectingStatus === "Listing" && (
 									<Box style={{display: "flex", textAlign: 'center'}}>
-										<label style={{marginTop: 7}}>{selectedGCIBuyingAgents[id]}</label>
+										<label style={{marginTop: 7}}>{item.agent_name}</label>
 										<Button
 											onClick={handleEditPrimaryAgent}
 											style={{
@@ -221,7 +211,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 							<>
 								{selectingStatus === "Listing" && (
 									<Box style={{display: "flex"}}>
-										<label style={{marginTop: 7}}>{selectedGCISellingSideAgents[id]}</label>
+										<label style={{marginTop: 7}}>{item.agent_name}</label>
 										<Button
 											onClick={handleEditPrimaryAgent}
 											style={{

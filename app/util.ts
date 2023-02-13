@@ -6,6 +6,7 @@ import {
   IPayment,
   IFeeData,
   IFeeType,
+  IDealNumberData,
 } from "./models/type";
 
 export const defaultUser: IUser = {
@@ -186,9 +187,14 @@ export const defaultFeeData: IFeeData[] = [
     fee_unit: 0,
     fee_method: 0,
     key_Index: 0,
-    agentName: ''
+    agent_name: ''
   }
 ];
+
+export const defaultDealNumberData: IDealNumberData = {
+  deal: "",
+  deal_number: ""
+}
 
 export const defaultRemittanceChecks: IRemittanceChecks[] = [
   {

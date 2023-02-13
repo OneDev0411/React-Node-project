@@ -40,4 +40,5 @@ declare interface IDealContext extends IModel<'deal_context_item'> {
   searchable: string
   source: string
   text: string
+  deal_number: string
 }

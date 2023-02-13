@@ -11,6 +11,7 @@ export interface ICommissionData {
   outsidePayments: any;
   submitted: number;
   feeData: any;
+  dealNumber: any;
 }
 export interface ICombinedDealData {
   commissionData: any;
@@ -26,5 +27,6 @@ export interface IFeeData {
   FeeCollectFrom: string,
   AgentId: string,
   CreditToSeller: boolean,
-  IncludeInGross: boolean
+  IncludeInGross: boolean,
+  AgentName: string
 }

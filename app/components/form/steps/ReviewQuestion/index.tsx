@@ -15,14 +15,14 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   hooks: { useWizardContext },
   isNYC
 }) => {
+  const { useEffect, useState } = React
   const { QuestionSection, QuestionTitle } = Wizard
-  const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid, Select, MenuItem, Radio, InputAdornment, RadioGroup, FormControlLabel } = Ui
-  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData, setFeeData } = useApp()
+  const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui
+  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData } = useApp()
   const wizard = useWizardContext()
   const enderType = deal.context.ender_type?.text
   const dealType = (enderType === 'AgentDoubleEnder' || enderType === 'OfficeDoubleEnder') ? 'Both' : deal.deal_type
 
-  const fees = feeData.filter((fee: IFeeData) => fee.deal === deal.id)
   const sellers = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'Landlord' : 'Seller'))
   const buyers = roles.filter((role: IDealRole) => role.role === (deal.property_type.is_lease ? 'Tenant' : 'Buyer'))
 
@@ -31,10 +31,11 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
 
   const price = deal.property_type.is_lease ? getDealContext('leased_price')?.number : getDealContext('sales_price')?.number
 
-  const [openDeclineMsg, setOpenDeclineMsg] = React.useState<boolean>(false)
-  const [declineMsg, setDeclineMsg] = React.useState<string>('')
-  const [feedback, setFeedback] = React.useState<string>('')
-  const [openFeedback, setOpenFeedback] = React.useState<boolean>(false)
+  const [openDeclineMsg, setOpenDeclineMsg] = useState<boolean>(false)
+  const [declineMsg, setDeclineMsg] = useState<string>('')
+  const [feedback, setFeedback] = useState<string>('')
+  const [openFeedback, setOpenFeedback] = useState<boolean>(false)
+  const [_feeData, _setFeeData] = useState<IFeeData[]>(feeData)
 
   const gciDeValue = dealData.gci_de_value
   const gciDePercent = parseFloat((gciDeValue / price * 100).toFixed(3))
@@ -251,6 +252,10 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
       fontSize: '17px'
     }
   }
+
+  useEffect(() => {
+    _setFeeData(feeData)
+  },[feeData])
 
   return (
     <QuestionSection>
@@ -567,14 +572,22 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             )}
           </Grid>
         )}
-        {!isNYC && fees.length > 0 && (
+        {!isNYC && _feeData.length > 0 && (
           <Grid container style={styles.group} >
             <Grid item xs={12} style={styles.group_title}>
               <label>Fees</label>
             </Grid>
-            {fees.map((item: IFeeData, id: number) => 
+            {_feeData.map((item: IFeeData, id: number) => 
               (
                 <Grid container xs={12} key={id}>
+                  <Grid container xs={8}>
+                    <Grid item xs={2}>
+                      <label>Agents</label>
+                    </Grid>
+                    <Grid item xs={10} style={{display: 'inherit', alignItems: 'center'}}>
+                      {item.agent_name}
+                    </Grid>
+                  </Grid>
                   <Grid container xs={8}>
                     <Grid item xs={2}>
                       <label>Deal Side</label>
@@ -597,6 +610,14 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                     </Grid>
                     <Grid item xs={10} style={{display: 'inherit', alignItems: 'center'}}>
                       {item.fee_from == 0? "Agent" : "Deal"}
+                    </Grid>
+                  </Grid>
+                  <Grid container xs={8}>
+                    <Grid item xs={2}>
+                      <label>Fee Paid</label>
+                    </Grid>
+                    <Grid item xs={10} style={{display: 'inherit', alignItems: 'center'}}>
+                      {item.fee_paid === 0? "Yes" : "No"}
                     </Grid>
                   </Grid>
                   <Grid container xs={8} style={{ marginTop: '5px', marginBottom: '10px' }}>
