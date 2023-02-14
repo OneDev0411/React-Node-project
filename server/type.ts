@@ -12,6 +12,7 @@ export interface ICommissionData {
   submitted: number;
   feeData: any;
   dealNumber: any;
+  notes: any;
 }
 export interface ICombinedDealData {
   commissionData: any;

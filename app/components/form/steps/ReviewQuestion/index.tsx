@@ -18,7 +18,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const { useEffect, useState } = React
   const { QuestionSection, QuestionTitle } = Wizard
   const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui
-  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData } = useApp()
+  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData, notes } = useApp()
   const wizard = useWizardContext()
   const enderType = deal.context.ender_type?.text
   const dealType = (enderType === 'AgentDoubleEnder' || enderType === 'OfficeDoubleEnder') ? 'Both' : deal.deal_type
@@ -381,12 +381,12 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           <Grid container spacing={2}>
             <Grid item xs={2}>% {stylizeNumber(BuySideCommissionRate + ListSideCommissionRate)}</Grid>
             <Grid item xs={2}>% {stylizeNumber(gciDePercent)}</Grid>
-            <Grid item xs={3}>% {stylizeNumber(OfficeGCIPercent)}</Grid>
+            <Grid item xs={3}>% {OfficeGCIPercent ? stylizeNumber(OfficeGCIPercent) : '0.00'}</Grid>
           </Grid>
           <Grid container spacing={2}>
             <Grid item xs={2}>$ {stylizeNumber(BuySideDealValue + ListSideDealValue)}</Grid>
             <Grid item xs={2}>$ {stylizeNumber(gciDeValue)}</Grid>
-            <Grid item xs={3}>$ {stylizeNumber(OfficeGCIValue)}</Grid>
+            <Grid item xs={3}>$ {OfficeGCIValue ? stylizeNumber(OfficeGCIValue) : '0.00'}</Grid>
           </Grid>
           <Grid container>
             <Grid item xs={12}>
@@ -674,6 +674,14 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
               </Grid>
             </React.Fragment>
           )}
+        </Grid>
+        <Grid container style={styles.group}>
+          <Grid item xs={2}>
+            <label>Notes</label>
+          </Grid>
+          <Grid item xs={3}>
+            {notes.note}
+          </Grid>
         </Grid>
       </Grid>
       

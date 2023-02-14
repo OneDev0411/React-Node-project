@@ -24,8 +24,10 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
 
   useDebounce(
     () => {
-      if (text !== "")
+      if (text !== "") {
+        setShowButton(true)
         updateDealContext("financing_program", text)
+      }
     },
     500,
     [text]

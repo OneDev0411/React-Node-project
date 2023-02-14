@@ -2,7 +2,7 @@ import React from "@libs/react"
 import App from "./App"
 import { createComponents } from "./core/utils/create-components"
 import { AppContextApi } from "./models/type"
-import { defaultDealData, defaultDealNumberData, defaultRemittanceChecks } from "./util"
+import { defaultDealData, defaultDealNumberData, defaultRemittanceChecks, defaultNoteData } from "./util"
 import "./index.css"
 
 const { createContext, useState } = React;
@@ -17,7 +17,8 @@ const defaultValue: AppContextApi = {
   financing: "",
   currentStep: 0,
   feeData: [],
-  dealNumber: defaultDealNumberData
+  dealNumber: defaultDealNumberData,
+  notes: defaultNoteData
 };
 
 export const AppContext = createContext<AppContextApi>(defaultValue);
@@ -36,6 +37,7 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   const [currentStep, setCurrentStep] = useState<AppContextApi["currentStep"]>(0);
   const [feeData, setFeeData] = useState<AppContextApi["feeData"]>([]);
   const [dealNumber, setDealNumber] = useState<AppContextApi["dealNumber"]>(defaultDealNumberData)
+  const [notes, setNotes] = useState<AppContextApi["notes"]>(defaultNoteData)
 
   return (
     <AppContext.Provider
@@ -59,7 +61,9 @@ export const AppProvider: React.FC<any> = ({ children }) => {
         feeData,
         setFeeData,
         dealNumber,
-        setDealNumber
+        setDealNumber,
+        notes,
+        setNotes
       }}
     >
       {children}

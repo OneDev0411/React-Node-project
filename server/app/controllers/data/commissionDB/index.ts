@@ -7,7 +7,7 @@ import db from "../../../models/commissionAppDB";
 import sync from "../../../services/de_deal_sync";
 import { getAgentIdFromUserId, getAddressFromUserId } from "../../../services/de_deal_sync";
 import Jsonb from "jsonb-builder";
-const { AppDealModel, AppRoleModel, AppRemittanceCheckModel, AppPaymentModel, DealModel, AppFeeModel, AppDealNumberModel } = db;
+const { AppDealModel, AppRoleModel, AppRemittanceCheckModel, AppPaymentModel, DealModel, AppFeeModel, AppDealNumberModel, AppNoteModel } = db;
 
 const saveAppData = async (data: any, model: any) => {
   let findRes = await model.findOne({
@@ -90,7 +90,7 @@ const saveAppData = async (data: any, model: any) => {
 };
 
 const readData = async (deal: string, model: any) => {
-  if (model == AppDealNumberModel) {
+  if (model == AppDealNumberModel || model == AppNoteModel) {
     const res = await model.findOne({
       where: {
         deal: deal
@@ -128,6 +128,9 @@ const saveCommissionData = async (req: Request, res: Response) => {
     let payments = [...allData.insidePayments, ... allData.outsidePayments];
     let feeData = allData.feeData;
     let dealNumberData = allData.dealNumber;
+    let notes = allData.notes;
+    //save appNotesData
+    await saveAppData(notes, AppNoteModel);
     //save appDealNumberData
     await saveAppData(dealNumberData, AppDealNumberModel);
     // save appDealData
@@ -213,6 +216,7 @@ const readCombinedAppData = async (deal: string) => {
   let payments = await readData(deal, AppPaymentModel);
   let feeData = await readData(deal, AppFeeModel);
   let dealNumberData = await readData(deal, AppDealNumberModel);
+  let notes = await readData(deal, AppNoteModel);
 
   let allData: any = null;
   if (dealData.length > 0) {
@@ -222,7 +226,8 @@ const readCombinedAppData = async (deal: string) => {
       remittanceChecks: remittanceChecks,
       payments: payments,
       feeData: feeData,
-      dealNumber: dealNumberData
+      dealNumber: dealNumberData,
+      notes: notes
     };
   }
   return allData;

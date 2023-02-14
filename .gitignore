@@ -4,3 +4,4 @@ dist-server
 ./Todo.md
 Todo.md
 server/app/migrations
+.env

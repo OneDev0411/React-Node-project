@@ -130,6 +130,8 @@ export interface AppContextApi {
   setFeeData?: (data: IFeeData[]) => void;
   dealNumber: IDealNumberData;
   setDealNumber?: (data: IDealNumberData) => void;
+  notes: INoteData;
+  setNotes?: (data: INoteData) => void;
 }
 
 export interface IQuestionProps {
@@ -204,6 +206,11 @@ export interface IFeeData {
 export interface IDealNumberData {
   deal: string;
   deal_number: string;
+}
+
+export interface INoteData {
+  deal: string,
+  note: string
 }
 
 export interface FeeQuestionProps {

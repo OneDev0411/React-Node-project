@@ -6,6 +6,7 @@ import AppRemittanceCheckModel from "./app_remittance_check.model";
 import AppPaymentModel from "./app_payment.model";
 import AppFeeModel from './app_fee_model';
 import AppDealNumberModel from './app_deal_number_model';
+import AppNoteModel from './app_note_model';
 import { makeUrl } from "../../../util";
 
 const database_url: string = process.env.DATABASE_URL1 || "";
@@ -35,6 +36,7 @@ interface DB {
   AppPaymentModel?: any;
   AppFeeModel?: any;
   AppDealNumberModel?: any;
+  AppNoteModel?: any;
 }
 
 const db: DB = {};
@@ -49,6 +51,7 @@ db.AppPaymentModel = AppPaymentModel(sequelize, Sequelize);
 db.DealModel = DealModel(sequelize, Sequelize);
 db.AppFeeModel = AppFeeModel(sequelize, Sequelize);
 db.AppDealNumberModel = AppDealNumberModel(sequelize, Sequelize);
+db.AppNoteModel = AppNoteModel(sequelize, Sequelize);
 
 // One-To-One relationships between DealModel and AppDealModel
 // db.DealModel.hasOne(db.AppDealModel, {

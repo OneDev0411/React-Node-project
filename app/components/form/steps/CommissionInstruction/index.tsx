@@ -1,26 +1,36 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import useApp from "../../../../hooks/useApp"
-import { IQuestionProps } from "../../../../models/type"
+import { INoteData, IQuestionProps } from "../../../../models/type"
 
 const CommissionInstruction: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext }}) => {
-  const { useState } = React
+  const { useState, useEffect } = React
   const { Box, TextField, Grid, Button } = Ui
   const wizard = useWizardContext()
+  const {notes, setNotes} = useApp()
 
   const [addNote, setAddNote] = useState<string>('')
   const [showButton, setShowButton] = useState<boolean>(true)
 
   const onChangeValue = (value: string) => {
     setAddNote(value)
+    let temp: INoteData = JSON.parse(JSON.stringify(notes))
+    temp.note = value
+    if (setNotes !== undefined) {
+      setNotes(temp)
+    }
   }
 
   const handleClickNextButton = () => {
     wizard.goto(11)
     setShowButton(false)
   }
+
+  useEffect(() => {
+    setAddNote(notes.note)
+  }, [notes])
 
   return (
     <QuestionSection>

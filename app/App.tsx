@@ -2,7 +2,7 @@ import React from "@libs/react"
 import axios from "axios"
 import useApp from "./hooks/useApp"
 import { AppContextApi, IRoleData, IPayment, IFeeData } from "./models/type"
-import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole, defaultFeeData, defaultDealNumberData } from "./util"
+import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole, defaultFeeData, defaultDealNumberData, defaultNoteData } from "./util"
 import { FormWizard } from "./components/form/Wizard"
 import Loading from './components/Loading'
 
@@ -30,10 +30,9 @@ const App: React.FC<EntryProps> = ({
     setFinancing, 
     currentStep, 
     setCurrentStep,
-    feeData,
     setFeeData,
-    dealNumber,
-    setDealNumber
+    setDealNumber,
+    setNotes
   } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
@@ -161,6 +160,10 @@ const App: React.FC<EntryProps> = ({
         if (setDealNumber !== undefined) {
           setDealNumber(tempDealNumberData)
         }
+        let tempNoteData = data.notes
+        if (setNotes !== undefined) {
+          setNotes(tempNoteData)
+        } 
       } else { // in case of data doesn't exist in database, set default data
         if (setDealData !== undefined) {
           defaultDealData.deal = deal.id;
@@ -179,6 +182,10 @@ const App: React.FC<EntryProps> = ({
         if (setDealNumber !== undefined) {
           defaultDealNumberData.deal = deal.id
           setDealNumber(defaultDealNumberData)
+        }
+        if (setNotes !== undefined) {
+          defaultNoteData.deal = deal.id
+          setNotes(defaultNoteData)
         }
         if (setCurrentStep !== undefined) {
           setCurrentStep(defaultDealData.current_step);

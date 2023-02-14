@@ -7,6 +7,7 @@ import {
   IFeeData,
   IFeeType,
   IDealNumberData,
+  INoteData,
 } from "./models/type";
 
 export const defaultUser: IUser = {
@@ -194,6 +195,11 @@ export const defaultFeeData: IFeeData[] = [
 export const defaultDealNumberData: IDealNumberData = {
   deal: "",
   deal_number: ""
+}
+
+export const defaultNoteData: INoteData = {
+  deal: "",
+  note: ""
 }
 
 export const defaultRemittanceChecks: IRemittanceChecks[] = [
