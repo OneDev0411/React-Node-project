@@ -132,6 +132,10 @@ export interface AppContextApi {
   setDealNumber?: (data: IDealNumberData) => void;
   notes: INoteData;
   setNotes?: (data: INoteData) => void;
+  docStatus: IDocStatus;
+  setDocStatus?: (data: IDocStatus) => void;
+  transCoordinator: ITransData;
+  setTransCoordinator?: (data: ITransData) => void;
 }
 
 export interface IQuestionProps {
@@ -148,6 +152,8 @@ export interface IQuestionProps {
     isReview: boolean;
   };
   isNYC: boolean;
+  isNevada: boolean;
+  isFlorida: boolean;
 }
 
 export interface IDatePickerProps {
@@ -213,6 +219,17 @@ export interface INoteData {
   note: string
 }
 
+export interface IDocStatus {
+  deal: string,
+  referral_doc: number,
+  brokerage_form: number
+}
+
+export interface ITransData {
+  deal: string,
+  trans_coordinator: string,
+  email_address: string
+}
 export interface FeeQuestionProps {
   saveData: IDataToConText;
   Components: CoreComponents;

@@ -11,9 +11,12 @@ import FeeQuestion from "../steps/FeeQuestion"
 import { IQuestionProps } from "../../../models/type"
 import DealNumberQuestion from "../steps/DealNumberQuestion"
 import CommissionInstruction from "../steps/CommissionInstruction"
+import DocumentUpLoadedCheck from "../steps/DocumentUpLoadedCheck"
+import TransCoordinatorQuestion from "../steps/TransactionCoordinatorQuestion"
+import TransCoordinatorEmail from "../steps/TransCoordinatorEmail"
 
 export const FormWizard: React.FC<IQuestionProps> = (props) => {
-  const { Wizard, utils, models, isNYC } = props
+  const { Wizard, utils, models, isNYC, isNevada, isFlorida } = props
   const { deal } = models
   const isReveiew = utils.isReview
   const isBackOffice = utils.isBackOffice
@@ -22,7 +25,10 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
     return (
       <Wizard.QuestionWizard onFinish={() => console.log("done")}>
         <StartQuestion {...props} />
-        <DealNumberQuestion {...props} />
+        {isNevada && <TransCoordinatorQuestion {...props} />}
+        {isNevada && <TransCoordinatorEmail {...props} />}
+        {(deal.property_type.label === "Referral" && isNevada) && <DocumentUpLoadedCheck {...props}/>}
+        {isFlorida && <DealNumberQuestion {...props} />}
         {!deal.property_type.is_lease && <FinanceTransQuestion {...props} />}
         {!deal.property_type.is_lease && <FinanceProgQuestion {...props} />}
         <GCISplitQuestion {...props} />

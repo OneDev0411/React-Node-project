@@ -13,6 +13,8 @@ export interface ICommissionData {
   feeData: any;
   dealNumber: any;
   notes: any;
+  docStatus: any;
+  transCoordinator: any;
 }
 export interface ICombinedDealData {
   commissionData: any;

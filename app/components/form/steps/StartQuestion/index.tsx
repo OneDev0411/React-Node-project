@@ -15,25 +15,29 @@ const StartQuestion: React.FC<IQuestionProps> = ({
   const { useEffect } = React
   const { QuestionSection, QuestionTitle } = Wizard
   const wizard = useWizardContext()
-  const { currentStep, submitted, setSubmitted } = useApp()
+  const { currentStep, submitted, setSubmitted, transCoordinator } = useApp()
   const isBackOffice = utils.isBackOffice
   const { Box, Button } = Ui
   const total_data: AppContextApi = useApp()
 
   const financingContextValue = deal.property_type.is_lease ? '' : getDealContext('financing')?.text
   const financingProgramContextValue = deal.property_type.is_lease ? '' : getDealContext('financing_program')?.text
+  const transCoordinatorValue = transCoordinator.trans_coordinator
 
   // mockup loading, need to remove after the backend is implemented
   useEffect(() => {
-    if (financingContextValue === undefined)
-      wizard.goto(2)
-    else if (financingContextValue === "Mortgage" && financingProgramContextValue === undefined)
+    if (transCoordinatorValue === "Yes") {
       wizard.goto(3)
+    }
+    else if (financingContextValue === undefined)
+      wizard.goto(6)
+    else if (financingContextValue === "Mortgage" && financingProgramContextValue === undefined)
+      wizard.goto(7)
     else {
       if (submitted === -1) {
         wizard.goto(currentStep)
       } else {
-        wizard.goto(11)
+        wizard.goto(14)
       }
     }
   }, [])

@@ -13,12 +13,14 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   models: { deal, roles },
   api: { getDealContext, updateTaskStatus, close },
   hooks: { useWizardContext },
-  isNYC
+  isNYC,
+  isNevada,
+  isFlorida
 }) => {
   const { useEffect, useState } = React
   const { QuestionSection, QuestionTitle } = Wizard
   const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui
-  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData, notes } = useApp()
+  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData, notes, docStatus, transCoordinator } = useApp()
   const wizard = useWizardContext()
   const enderType = deal.context.ender_type?.text
   const dealType = (enderType === 'AgentDoubleEnder' || enderType === 'OfficeDoubleEnder') ? 'Both' : deal.deal_type
@@ -292,6 +294,33 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             </Grid>
           </Grid>
         </Grid>
+        {isNevada && transCoordinator && 
+          <Grid container style={styles.group}>
+            <Grid item xs={12} style={styles.group_title}>
+              <label>DE In-house Transaction Coordinator</label>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={3}>{transCoordinator.trans_coordinator}</Grid>
+              <Grid item xs={3}>{transCoordinator.email_address}</Grid>
+            </Grid>
+          </Grid>
+        }
+
+        {deal.property_type.label == "Referral" && isNevada && 
+          <Grid container style={styles.group}>
+            <Grid item xs={12} style={styles.group_title}>
+              <label>DOCUMENT UPLOAD STATUS</label>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={3}>Referral Agreement</Grid>
+              <Grid item xs={3}>{Number(docStatus.referral_doc) === 1 ? "Yes" : "No"}</Grid>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={3}>Brokerage's W-9 form</Grid>
+              <Grid item xs={3}>{Number(docStatus.brokerage_form) === 1 ? "Yes" : "No"}</Grid>
+            </Grid>
+          </Grid>
+        }
         
         <Grid container style={styles.group}>
           <Grid item xs={12} style={styles.group_title}>

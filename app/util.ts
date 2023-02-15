@@ -8,6 +8,8 @@ import {
   IFeeType,
   IDealNumberData,
   INoteData,
+  IDocStatus,
+  ITransData,
 } from "./models/type";
 
 export const defaultUser: IUser = {
@@ -200,6 +202,18 @@ export const defaultDealNumberData: IDealNumberData = {
 export const defaultNoteData: INoteData = {
   deal: "",
   note: ""
+}
+
+export const defaultDocStatus: IDocStatus = {
+  deal: "",
+  referral_doc: 0,
+  brokerage_form: 0
+}
+
+export const defaultTransData: ITransData = {
+  deal: "",
+  trans_coordinator: "No",
+  email_address: ""
 }
 
 export const defaultRemittanceChecks: IRemittanceChecks[] = [

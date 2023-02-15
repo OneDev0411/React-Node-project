@@ -7,7 +7,18 @@ import db from "../../../models/commissionAppDB";
 import sync from "../../../services/de_deal_sync";
 import { getAgentIdFromUserId, getAddressFromUserId } from "../../../services/de_deal_sync";
 import Jsonb from "jsonb-builder";
-const { AppDealModel, AppRoleModel, AppRemittanceCheckModel, AppPaymentModel, DealModel, AppFeeModel, AppDealNumberModel, AppNoteModel } = db;
+const { 
+  AppDealModel,
+  AppRoleModel,
+  AppRemittanceCheckModel,
+  AppPaymentModel,
+  DealModel,
+  AppFeeModel,
+  AppDealNumberModel,
+  AppNoteModel,
+  AppDocStatusModel,
+  AppTransCoordinatorModel
+} = db;
 
 const saveAppData = async (data: any, model: any) => {
   let findRes = await model.findOne({
@@ -90,7 +101,12 @@ const saveAppData = async (data: any, model: any) => {
 };
 
 const readData = async (deal: string, model: any) => {
-  if (model == AppDealNumberModel || model == AppNoteModel) {
+  if (
+    model == AppDealNumberModel || 
+    model == AppNoteModel || 
+    model == AppDocStatusModel ||
+    model == AppTransCoordinatorModel
+  ) {
     const res = await model.findOne({
       where: {
         deal: deal
@@ -129,6 +145,13 @@ const saveCommissionData = async (req: Request, res: Response) => {
     let feeData = allData.feeData;
     let dealNumberData = allData.dealNumber;
     let notes = allData.notes;
+    let docStatus = allData.docStatus;
+    let transCoordinator = allData.transCoordinator;
+
+    //save transCoordinatorData
+    await saveAppData(transCoordinator, AppTransCoordinatorModel);
+    //save appDocStatsData
+    await saveAppData(docStatus, AppDocStatusModel);
     //save appNotesData
     await saveAppData(notes, AppNoteModel);
     //save appDealNumberData
@@ -217,6 +240,8 @@ const readCombinedAppData = async (deal: string) => {
   let feeData = await readData(deal, AppFeeModel);
   let dealNumberData = await readData(deal, AppDealNumberModel);
   let notes = await readData(deal, AppNoteModel);
+  let docStatuses = await readData(deal, AppDocStatusModel);
+  let transCoordinator = await readData(deal, AppTransCoordinatorModel);
 
   let allData: any = null;
   if (dealData.length > 0) {
@@ -227,7 +252,9 @@ const readCombinedAppData = async (deal: string) => {
       payments: payments,
       feeData: feeData,
       dealNumber: dealNumberData,
-      notes: notes
+      notes: notes,
+      docStatuses: docStatuses,
+      transCoordinator: transCoordinator
     };
   }
   return allData;

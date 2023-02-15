@@ -2,7 +2,7 @@ import React from "@libs/react"
 import axios from "axios"
 import useApp from "./hooks/useApp"
 import { AppContextApi, IRoleData, IPayment, IFeeData } from "./models/type"
-import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole, defaultFeeData, defaultDealNumberData, defaultNoteData } from "./util"
+import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole, defaultFeeData, defaultDealNumberData, defaultNoteData, defaultDocStatus, defaultTransData } from "./util"
 import { FormWizard } from "./components/form/Wizard"
 import Loading from './components/Loading'
 
@@ -32,11 +32,15 @@ const App: React.FC<EntryProps> = ({
     setCurrentStep,
     setFeeData,
     setDealNumber,
-    setNotes
+    setNotes,
+    setDocStatus,
+    setTransCoordinator
   } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
   const [ isNYC, setIsNYC ] = useState<boolean>(false)
+  const [ isNevada, setIsNevada ] = useState<boolean>(false)
+  const [ isFlorida, setIsFlorida ] = useState<boolean>(false)
 
   // push data from database to context
   const dataToContextAPI = async () => {
@@ -163,7 +167,13 @@ const App: React.FC<EntryProps> = ({
         let tempNoteData = data.notes
         if (setNotes !== undefined) {
           setNotes(tempNoteData)
-        } 
+        }
+        if (setDocStatus !== undefined) {
+          setDocStatus(data.docStatuses)
+        }
+        if (setTransCoordinator !== undefined) {
+          setTransCoordinator(data.transCoordinator)
+        }
       } else { // in case of data doesn't exist in database, set default data
         if (setDealData !== undefined) {
           defaultDealData.deal = deal.id;
@@ -192,6 +202,14 @@ const App: React.FC<EntryProps> = ({
         }
         if (setSubmitted !== undefined) 
           setSubmitted(-1);
+        if (setDocStatus !== undefined) {
+          defaultDocStatus.deal = deal.id
+          setDocStatus(defaultDocStatus)
+        }
+        if (setTransCoordinator !== undefined) {
+          defaultTransData.deal = deal.id
+          setTransCoordinator(defaultTransData)
+        }
       }
     } catch (error) {
       console.log(error);
@@ -212,6 +230,12 @@ const App: React.FC<EntryProps> = ({
     do {
       if (brand.id === "86fa6ed0-e8c3-11eb-bf2e-0271a4acc769") {
         setIsNYC(true)
+        break
+      } else if (brand.id === "3d2e2488-b54e-11ec-9d82-0271a4acc769") {
+        setIsNevada(true)
+        break
+      } else if (brand.id === "6cc3250a-9fe1-11eb-baea-027d2d7e1395") {
+        setIsFlorida(true)
         break
       }
       brand = brand.parent
@@ -260,6 +284,8 @@ const App: React.FC<EntryProps> = ({
         api={api}
         Components={Components}
         isNYC={isNYC}
+        isNevada={isNevada}
+        isFlorida={isFlorida}
       />
     )
   }
