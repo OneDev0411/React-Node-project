@@ -8,17 +8,21 @@ import axios from "axios"
 const StartQuestion: React.FC<IQuestionProps> = ({
   Wizard,
   utils,
-  hooks: { useWizardContext },
+  hooks: { useWizardContext, useSectionContext },
   api: { getDealContext, notifyOffice },
   models: { deal },
+  isNevada,
+  isFlorida,
+  isNYC
 }) => {
   const { useEffect } = React
   const { QuestionSection, QuestionTitle } = Wizard
   const wizard = useWizardContext()
-  const { currentStep, submitted, setSubmitted, transCoordinator } = useApp()
+  const { currentStep, setCurrentStep, submitted, setSubmitted, transCoordinator, dealNumber } = useApp()
   const isBackOffice = utils.isBackOffice
   const { Box, Button } = Ui
   const total_data: AppContextApi = useApp()
+  const {step} = useSectionContext()
 
   const financingContextValue = deal.property_type.is_lease ? '' : getDealContext('financing')?.text
   const financingProgramContextValue = deal.property_type.is_lease ? '' : getDealContext('financing_program')?.text
@@ -26,19 +30,10 @@ const StartQuestion: React.FC<IQuestionProps> = ({
 
   // mockup loading, need to remove after the backend is implemented
   useEffect(() => {
-    if (transCoordinatorValue === "Yes") {
-      wizard.goto(3)
-    }
-    else if (financingContextValue === undefined)
-      wizard.goto(6)
-    else if (financingContextValue === "Mortgage" && financingProgramContextValue === undefined)
-      wizard.goto(7)
-    else {
-      if (submitted === -1) {
-        wizard.goto(currentStep)
-      } else {
-        wizard.goto(14)
-      }
+    if (currentStep > step +1) {
+      wizard.goto(currentStep+2)
+    } else {
+      wizard.next()
     }
   }, [])
 

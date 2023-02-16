@@ -20,7 +20,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const { useEffect, useState } = React
   const { QuestionSection, QuestionTitle } = Wizard
   const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui
-  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData, notes, docStatus, transCoordinator } = useApp()
+  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData, notes, docStatus, transCoordinator, dealNumber } = useApp()
   const wizard = useWizardContext()
   const enderType = deal.context.ender_type?.text
   const dealType = (enderType === 'AgentDoubleEnder' || enderType === 'OfficeDoubleEnder') ? 'Both' : deal.deal_type
@@ -274,6 +274,9 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <label>CONTRACT INFORMATION</label>
           </Grid>
           <Grid container spacing={2}>
+            <Grid item>
+              <label>Deal Number:&nbsp;</label>{dealNumber.deal_number}
+            </Grid>
             <Grid item>
               <label>Listing ID:&nbsp;</label>{deal.context.deal_number?.text ?? deal.context.mls_number?.text ?? `Hippocket-${deal.number}`}
             </Grid>

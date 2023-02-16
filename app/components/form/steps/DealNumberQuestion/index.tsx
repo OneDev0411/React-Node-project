@@ -5,13 +5,15 @@ import { IQuestionProps } from "../../../../models/type"
 
 const DealNumberQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-  hooks: { useWizardContext },
+  hooks: { useWizardContext, useSectionContext },
   utils: {isBackOffice}
 }) => {
   const { useState, useEffect } = React
   const { Box, TextField, Grid, Button } = Ui
   const wizard = useWizardContext()
-  const { currentStep, dealNumber, setDealNumber } = useApp()
+  const { currentStep, setCurrentStep, dealNumber, setDealNumber, dealData, setDealData } = useApp()
+
+  const {step} = useSectionContext()
 
   const [_dealNumber, _setDealNumber] = useState<string>('')
   const [errorFlag, setErrorFlag] = useState<boolean>(false)
@@ -19,6 +21,7 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
   const [helperText, setHelperText] = useState<string>('')
 
   const onChangeValue = (value: string) => {
+    setShowButton(true)
     if (value.length > 25) {
       setErrorFlag(true)
       setHelperText('Max Length is 25')
@@ -27,37 +30,50 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
     setErrorFlag(false)
     setHelperText('')
     _setDealNumber(value)
-    let _temp = dealNumber
-    _temp.deal_number = value
-    if (setDealNumber !== undefined) {
-      setDealNumber(_temp)
-    }
   }
 
   const handleClickNextButton = () => {
-    if (isBackOffice) {
-      if (_dealNumber.length == 0) {
-        setErrorFlag(true)
-        setHelperText('Please enter the Deal Number')
-        return
-      } else {
-        wizard.goto(currentStep + 1)
-        setShowButton(false)
-      }
+    if (_dealNumber.length == 0) {
+      setErrorFlag(true)
+      setHelperText('Please enter the Deal Number')
+      return
     } else {
-      wizard.goto(currentStep + 1)
+      let _tempDealNumber = dealNumber
+      _tempDealNumber.deal_number = _dealNumber
+      if (setDealNumber !== undefined) {
+        setDealNumber(_tempDealNumber)
+      } 
       setShowButton(false)
+      let temp = JSON.parse(JSON.stringify(dealData))
+      temp.current_step = step + 1
+      if (setDealData !== undefined)
+        setDealData(temp)
+      setTimeout(() => {
+        if (wizard.currentStep < step + 1) {
+          wizard.next()
+          if (setCurrentStep !== undefined) {
+            setCurrentStep(step+1)
+          }
+        }
+      }, 80)
     }
   }
 
   useEffect(() => {
-    let temp = dealNumber.deal_number
-    if (temp.length == 0) {
+    if (dealNumber.deal_number === "") {
       _setDealNumber('')
     } else {
+      setShowButton(false)
       _setDealNumber(dealNumber.deal_number)
     }
   }, [dealNumber])
+
+  useEffect(() => {
+    if (currentStep > step)
+      setShowButton(false)
+    else
+      setShowButton(true)
+  }, [])
 
   return (
     <QuestionSection>
@@ -93,11 +109,8 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
             <Button
               variant="contained"
               onClick={handleClickNextButton}
-              style={{
-                marginBottom: 20,
-                backgroundColor: "#0fb78d",
-                color: "white"
-              }}
+              style={_dealNumber?.length ? {marginBottom: 20, backgroundColor: "#0fb78d", color: "white"} : {}}
+              disabled={!_dealNumber?.length}
             >
               Looks Good, Next
             </Button>

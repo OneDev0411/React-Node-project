@@ -5,32 +5,54 @@ import { INoteData, IQuestionProps } from "../../../../models/type"
 
 const CommissionInstruction: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-  hooks: { useWizardContext }}) => {
+  hooks: { useWizardContext, useSectionContext }
+}) => {
   const { useState, useEffect } = React
   const { Box, TextField, Grid, Button } = Ui
   const wizard = useWizardContext()
-  const {notes, setNotes} = useApp()
+  const { step } = useSectionContext()
+  const {notes, setNotes, dealData, setDealData, currentStep, setCurrentStep} = useApp()
 
   const [addNote, setAddNote] = useState<string>('')
   const [showButton, setShowButton] = useState<boolean>(true)
 
   const onChangeValue = (value: string) => {
+    setShowButton(true)
     setAddNote(value)
-    let temp: INoteData = JSON.parse(JSON.stringify(notes))
-    temp.note = value
-    if (setNotes !== undefined) {
-      setNotes(temp)
-    }
   }
 
   const handleClickNextButton = () => {
-    wizard.goto(11)
-    setShowButton(false)
+    let tempNoteData: INoteData = JSON.parse(JSON.stringify(notes))
+    tempNoteData.note = addNote
+    if (setNotes !== undefined) {
+      setNotes(tempNoteData)
+    }
+    let temp = JSON.parse(JSON.stringify(dealData))
+    temp.current_step = step + 1
+    if (setDealData !== undefined)
+      setDealData(temp)
+    setTimeout(() => {
+      if (wizard.currentStep < step + 1) {
+        setShowButton(false)
+        wizard.next()
+        if (setCurrentStep !== undefined) {
+          setCurrentStep(wizard.currentStep+1)
+        }
+      }
+    }, 80)
   }
 
   useEffect(() => {
     setAddNote(notes.note)
   }, [notes])
+
+  
+  useEffect(() => {
+    if (currentStep > step)
+      setShowButton(false)
+    else
+      setShowButton(true)
+  }, [])
 
   return (
     <QuestionSection>
@@ -59,11 +81,8 @@ const CommissionInstruction: React.FC<IQuestionProps> = ({
           <Button
             variant="contained"
             onClick={handleClickNextButton}
-            style={{
-              marginBottom: 20,
-              backgroundColor: "#0fb78d",
-              color: "white"
-            }}
+            style={addNote?.length ? { marginBottom: 20, backgroundColor: "#0fb78d", color: "white" } : {}}
+            disabled={!addNote?.length}
           >
             Looks Good, Next
           </Button>

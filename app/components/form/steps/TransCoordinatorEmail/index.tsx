@@ -14,43 +14,52 @@ const TransCoordinatorEmail: React.FC<IQuestionProps> = ({
   const { useDebounce } = ReactUse
   const { TextField, Button, Box } = Ui
   const wizard = useWizardContext()
-  const { dealData, setDealData, financing, setCurrentStep, transCoordinator, setTransCoordinator } = useApp()
+  const { dealData, setDealData, financing, setCurrentStep, currentStep, transCoordinator, setTransCoordinator } = useApp()
   const { step } = useSectionContext()
   // state
   const [text, setText] = useState<string>(transCoordinator.email_address)
   const [showButton, setShowButton] = useState<boolean>(false)
 
-  useDebounce(
-    () => {
-      if (text !== "") {
-        setShowButton(true)
-        updateDealContext("financing_program", text)
-      }
-    },
-    500,
-    [text]
-  )
 
   const handleChange = (event: any) => {
+    setShowButton(true)
     setText(event.target.value)
-    let _defaultTransData = JSON.parse(JSON.stringify(transCoordinator))
-    _defaultTransData.email_address = event.target.value
-    if (setTransCoordinator !== undefined) {
-      setTransCoordinator(_defaultTransData)
-    }
   }
 
   const handleClickNext = () => {
     setShowButton(false)
-    if (wizard.currentStep < step + 1) {
-      setTimeout(() => {
-        wizard.next()
-      }, 80)
+    let _defaultTransData = JSON.parse(JSON.stringify(transCoordinator))
+    _defaultTransData.email_address = text
+    if (setTransCoordinator !== undefined) {
+      setTransCoordinator(_defaultTransData)
     }
+    let temp = JSON.parse(JSON.stringify(dealData))
+    temp.current_step = step + 1
+    if (setDealData !== undefined)
+      setDealData(temp)
+    setTimeout(() => {
+      if (wizard.currentStep < step + 1) {
+        wizard.goto(step + 1)
+        if (setCurrentStep !== undefined) {
+          setCurrentStep(step+1)
+        }
+      }
+    }, 80)
   }
 
   useEffect(() => {
-    setText(transCoordinator.email_address)
+    setShowButton(false)
+    setTimeout(() => {
+      if (transCoordinator.email_address !== "") {
+        if (currentStep > step) {
+          wizard.goto(step + 2)
+        } else if (currentStep < step) {
+          setShowButton(true)
+        }
+      } else {
+        setShowButton(true)
+      }
+    }, 80)    
   }, [transCoordinator])
 
   if (transCoordinator.trans_coordinator == "Yes") {

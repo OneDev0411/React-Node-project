@@ -31,6 +31,7 @@ const App: React.FC<EntryProps> = ({
     currentStep, 
     setCurrentStep,
     setFeeData,
+    dealNumber,
     setDealNumber,
     setNotes,
     setDocStatus,
@@ -93,8 +94,9 @@ const App: React.FC<EntryProps> = ({
         let tempDealData = data.dealData;
         
         if (setSubmitted !== undefined) {
-          if (tempDealData.deal && tempDealData.submitted !== null)
+          if (tempDealData.deal && tempDealData.submitted !== null) {
             setSubmitted(Number(tempDealData.submitted));
+          }
           else
             setSubmitted(-1);
         }
@@ -160,19 +162,45 @@ const App: React.FC<EntryProps> = ({
         if(setFeeData !== undefined) {
           setFeeData(tempFeeData)
         }
-        let tempDealNumberData = data.dealNumber
         if (setDealNumber !== undefined) {
-          setDealNumber(tempDealNumberData)
+          if (data.dealNumber && data.dealNumber.deal_number){
+            setDealNumber(data.dealNumber)
+          } else if (data.dealNumber && data.dealNumber.deal_number == null) {
+            let _defaultDealNumberData = JSON.parse(JSON.stringify(data.dealNumber))
+            _defaultDealNumberData.deal = deal.id
+            setDealNumber(_defaultDealNumberData)
+          } else if (!data.dealNumber) {
+            let _defaultDealNumberData = JSON.parse(JSON.stringify(defaultDealNumberData))
+            _defaultDealNumberData.deal = deal.id
+            setDealNumber(_defaultDealNumberData)
+          }
         }
-        let tempNoteData = data.notes
         if (setNotes !== undefined) {
-          setNotes(tempNoteData)
+          if (data.notes)
+            setNotes(data.notes)
+          else {
+            let _defaultNoteData = JSON.parse(JSON.stringify(defaultNoteData))
+            _defaultNoteData.deal = deal.id
+            setNotes(_defaultNoteData)
+          }
         }
         if (setDocStatus !== undefined) {
-          setDocStatus(data.docStatuses)
+          if (data.docStatus)
+            setDocStatus(data.docStatuses)
+          else {
+            let _defaultDocstatus = JSON.parse(JSON.stringify(defaultDocStatus))
+            _defaultDocstatus.deal = deal.id
+            setDocStatus(_defaultDocstatus)
+          }
         }
         if (setTransCoordinator !== undefined) {
-          setTransCoordinator(data.transCoordinator)
+          if (data.transCoordinator)
+            setTransCoordinator(data.transCoordinator)
+          else {
+            let _defaultTransdata = JSON.parse(JSON.stringify(defaultTransData))
+            _defaultTransdata.deal = deal.id
+            setTransCoordinator(_defaultTransdata)
+          }
         }
       } else { // in case of data doesn't exist in database, set default data
         if (setDealData !== undefined) {
@@ -190,12 +218,14 @@ const App: React.FC<EntryProps> = ({
           setRemittanceChecks(defaultRemittanceChecks);
         }
         if (setDealNumber !== undefined) {
-          defaultDealNumberData.deal = deal.id
-          setDealNumber(defaultDealNumberData)
+          let _defaultDealNumberData = JSON.parse(JSON.stringify(defaultDealNumberData))
+          _defaultDealNumberData.deal = deal.id
+          setDealNumber(_defaultDealNumberData)
         }
         if (setNotes !== undefined) {
-          defaultNoteData.deal = deal.id
-          setNotes(defaultNoteData)
+          let _defaultNoteData = JSON.parse(JSON.stringify(defaultNoteData))
+          _defaultNoteData.deal = deal.id
+          setNotes(_defaultNoteData)
         }
         if (setCurrentStep !== undefined) {
           setCurrentStep(defaultDealData.current_step);
@@ -203,12 +233,14 @@ const App: React.FC<EntryProps> = ({
         if (setSubmitted !== undefined) 
           setSubmitted(-1);
         if (setDocStatus !== undefined) {
-          defaultDocStatus.deal = deal.id
-          setDocStatus(defaultDocStatus)
+          let _defaultDocstatus = JSON.parse(JSON.stringify(defaultDocStatus))
+          _defaultDocstatus.deal = deal.id
+          setDocStatus(_defaultDocstatus)
         }
         if (setTransCoordinator !== undefined) {
-          defaultTransData.deal = deal.id
-          setTransCoordinator(defaultTransData)
+          let _defaultTransdata = JSON.parse(JSON.stringify(defaultTransData))
+          _defaultTransdata.deal = deal.id
+          setTransCoordinator(_defaultTransdata)
         }
       }
     } catch (error) {
@@ -247,6 +279,13 @@ const App: React.FC<EntryProps> = ({
     if (submitted !== 0)
       return () => {
         const saveData = async () => {
+          if (dealNumber.deal === "") {
+            let _tmpDealNumber = dealNumber
+            _tmpDealNumber.deal = deal.id
+            if (setDealNumber) {
+              setDealNumber(_tmpDealNumber)
+            }
+          }
           await axios.post(
             `${APP_URL}/rechat-commission-app-data-save`,
             {

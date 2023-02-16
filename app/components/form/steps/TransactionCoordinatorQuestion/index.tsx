@@ -52,6 +52,11 @@ const TransCoordinatorQuestion: React.FC<IQuestionProps> = ({
 
   useEffect(() => {
     setCurSelect(transCoordinator.trans_coordinator)
+    if (transCoordinator.trans_coordinator === "Yes") {
+      wizard.next()
+    } else if (transCoordinator.trans_coordinator === "No") {
+      wizard.next(step + 2)
+    }
   }, [transCoordinator])
 
   return (

@@ -41,8 +41,19 @@ const DocumentUpLoadedCheck: React.FC<IQuestionProps> = ({
     if (setDocStatus !== undefined) {
       setDocStatus(_tempStatus)
     }
-    wizard.next()
     setShowButton(false)
+    let temp = JSON.parse(JSON.stringify(dealData))
+    temp.current_step = step + 1
+    if (setDealData !== undefined)
+      setDealData(temp)
+    setTimeout(() => {
+      if (wizard.currentStep < step + 1) {
+        wizard.next()
+        if (setCurrentStep !== undefined) {
+          setCurrentStep(step+1)
+        }
+      }
+    }, 80)
   }
 
   useEffect(() => {

@@ -143,7 +143,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
       if (wizard.currentStep < step + 1) {
         wizard.next()
         if (setCurrentStep !== undefined) {
-          setCurrentStep(step+1)
+          setCurrentStep(wizard.currentStep + 1)
         }
       }
     }, 80)

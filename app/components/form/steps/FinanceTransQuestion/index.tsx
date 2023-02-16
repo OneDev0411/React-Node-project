@@ -9,11 +9,11 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
   hooks: { useWizardContext, useSectionContext },
   api: { updateDealContext, getDealContext },
 }) => {
-  const { useState } = React
+  const { useState, useEffect } = React
   const { RadioGroup, FormControlLabel, Radio, Box } = Ui
   const wizard = useWizardContext()
   const { step } = useSectionContext()
-  const { dealData, setDealData, setFinancing, setCurrentStep } = useApp()
+  const { dealData, setDealData, setFinancing, currentStep, setCurrentStep } = useApp()
 
   const financingContextValue = getDealContext('financing')?.text
 
@@ -44,6 +44,16 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
       }, 10)
     }
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (financingContextValue === "Mortgage") {
+        wizard.next()
+      } else if (financingContextValue === "Cash Deal") {
+        wizard.goto(step+2)
+      }
+    }, 10)
+  }, [financingContextValue])
 
   return (
     <QuestionSection>

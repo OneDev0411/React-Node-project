@@ -17,7 +17,7 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
   const { step } = useSectionContext()
   const { dealData, setDealData, submitted, currentStep, setCurrentStep, feeData, setFeeData, roleData } = useApp()
 
-  const [showButton, setShowButton] = useState<boolean>(true)
+  const [showButton, setShowButton] = useState<boolean>(false)
 	const [_tempFeeData, _setTempFeeData] = useState<IFeeData[]>([])
 
 	const _feeAgents = roleData.filter((item: IRoleData) => item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral" || item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral")
@@ -45,23 +45,19 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
 			setFeeData(tempFeeData)
 		}
 		_setTempFeeData(tempFeeData)
-    if (submitted === 1 || currentStep > step)
-      setShowButton(false)
-    else
-      setShowButton(true)
   }, [])
 
   const handleClickNextButton = () => {
     if (setFeeData !== undefined) {
       setFeeData(_tempFeeData)
     }
-    setShowButton(false)
     let temp = JSON.parse(JSON.stringify(dealData))
     temp.current_step = step + 1
     if (setDealData !== undefined)
       setDealData(temp)
     setTimeout(() => {
       if (wizard.currentStep < step + 1) {
+        setShowButton(false)
         wizard.next()
         if (setCurrentStep !== undefined) {
           setCurrentStep(step+1)
@@ -71,6 +67,7 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
   }
 
   const handleClickRemoveFee = (index: number) => {
+    setShowButton(true)
     let temp: IFeeData[] = JSON.parse(JSON.stringify(_tempFeeData))
     temp.splice(index , 1)
 		for (let i= 0; i < temp.length; i++) {
@@ -82,6 +79,7 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
   }
 
   const handleClickAddAnotherButton = () => {
+    setShowButton(true)
     let emptyValue: IFeeData = {
       id: null,
       deal: deal.id,
@@ -105,6 +103,7 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
   }
 
   const updateFeeData = (item: IFeeData, id: number) => {
+    setShowButton(true)
 		let updatedValue = JSON.parse(JSON.stringify(_tempFeeData))
 		updatedValue[id] = item
 		_setTempFeeData(updatedValue)
@@ -115,6 +114,13 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
       setShowButton(flag)
     }
   }
+
+  useEffect(() => {
+    if (currentStep > step)
+      setShowButton(false)
+    else
+      setShowButton(true)
+  }, [])
 
   return (
     <QuestionSection>

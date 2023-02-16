@@ -9,11 +9,11 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
   hooks: { useWizardContext, useSectionContext },
   api: { updateDealContext, getDealContext },
 }) => {
-  const { useState } = React
+  const { useState, useEffect } = React
   const { useDebounce } = ReactUse
   const { TextField, Button, Box } = Ui
   const wizard = useWizardContext()
-  const { dealData, setDealData, financing, setCurrentStep } = useApp()
+  const { dealData, setDealData, financing, currentStep, setCurrentStep } = useApp()
   const { step } = useSectionContext()
 
   const financingProgramContextValue = getDealContext('financing_program')?.text
@@ -22,22 +22,13 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
   const [text, setText] = useState<string>(financingProgramContextValue)
   const [showButton, setShowButton] = useState<boolean>(financingProgramContextValue === undefined ? true : false)
 
-  useDebounce(
-    () => {
-      if (text !== "") {
-        setShowButton(true)
-        updateDealContext("financing_program", text)
-      }
-    },
-    500,
-    [text]
-  )
-
   const handleChange = (event: any) => {
+    setShowButton(true)
     setText(event.target.value)
   }
 
   const handleClickNext = () => {
+    updateDealContext("financing_program", text)
     setShowButton(false)
     if (wizard.currentStep < step + 1) {
       setTimeout(() => {
@@ -52,6 +43,13 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
       }, 80)
     }
   }
+
+  useEffect(() => {
+    if (currentStep > step)
+      setShowButton(false)
+    else
+      setShowButton(true)
+  }, [])
 
   if (financing == "Mortgage") {
     return (
