@@ -1,20 +1,17 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import useApp from "../../../../hooks/useApp"
-import { IDocStatus, IQuestionProps, SelectData } from "../../../../models/type"
-import { financeSelectDataList } from '../../../../util'
+import { IDealData, IQuestionProps } from "../../../../models/type"
 
 const DocumentUpLoadedCheck: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-  hooks: { useWizardContext, useSectionContext },
-  api: { updateDealContext, getDealContext },
-  models: {deal}
+  hooks: { useWizardContext, useSectionContext }
 }) => {
   const { useState, useEffect } = React
   const { Radio, Grid, Button, Box } = Ui
   const wizard = useWizardContext()
   const { step } = useSectionContext()
-  const { dealData, setDealData, setFinancing, setCurrentStep, docStatus, setDocStatus } = useApp()
+  const { dealData, setDealData, currentStep, setCurrentStep, docStatus, setDocStatus } = useApp()
 
   const [ referralCheck, setReferralCheck ] = useState<number>(0)
   const [ brokerageForm, setBrokerageForm ] = useState<number>(0)
@@ -34,26 +31,20 @@ const DocumentUpLoadedCheck: React.FC<IQuestionProps> = ({
   }
 
   const handleClickNextButton = () => {
-    let _tempStatus: IDocStatus = JSON.parse(JSON.stringify(docStatus))
-    _tempStatus.deal = deal.id
+    let _tempStatus = docStatus
     _tempStatus.referral_doc = referralCheck
     _tempStatus.brokerage_form = brokerageForm
-    if (setDocStatus !== undefined) {
-      setDocStatus(_tempStatus)
-    }
+    if (setDocStatus !== undefined) setDocStatus(_tempStatus)
     setShowButton(false)
-    let temp = JSON.parse(JSON.stringify(dealData))
-    temp.current_step = step + 1
-    if (setDealData !== undefined)
-      setDealData(temp)
     setTimeout(() => {
-      if (wizard.currentStep < step + 1) {
-        wizard.next()
-        if (setCurrentStep !== undefined) {
-          setCurrentStep(step+1)
-        }
+      if (currentStep < step + 1) {
+        wizard.goto(step + 1)
+        let updatedDealData: IDealData = JSON.parse(JSON.stringify(dealData))
+        updatedDealData.current_step = step + 1
+        if (setDealData) setDealData(updatedDealData)
+        if (setCurrentStep) setCurrentStep(step + 1)
       }
-    }, 80)
+    }, 80);
   }
 
   useEffect(() => {

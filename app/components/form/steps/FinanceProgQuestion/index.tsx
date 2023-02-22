@@ -1,5 +1,4 @@
 import React from '@libs/react'
-import ReactUse from '@libs/react-use'
 import Ui from '@libs/material-ui'
 import useApp from "../../../../hooks/useApp"
 import { IQuestionProps } from "../../../../models/type"
@@ -7,16 +6,15 @@ import { IQuestionProps } from "../../../../models/type"
 const FinanceProgQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
-  api: { updateDealContext, getDealContext },
+  api: { updateDealContext, getDealContext }
 }) => {
   const { useState, useEffect } = React
-  const { useDebounce } = ReactUse
   const { TextField, Button, Box } = Ui
   const wizard = useWizardContext()
   const { dealData, setDealData, financing, currentStep, setCurrentStep } = useApp()
   const { step } = useSectionContext()
 
-  const financingProgramContextValue = getDealContext('financing_program')?.text
+  let financingProgramContextValue = getDealContext('financing_program')?.text
 
   // state
   const [text, setText] = useState<string>(financingProgramContextValue)
@@ -30,9 +28,9 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
   const handleClickNext = () => {
     updateDealContext("financing_program", text)
     setShowButton(false)
-    if (wizard.currentStep < step + 1) {
-      setTimeout(() => {
-        wizard.next()
+    setTimeout(() => {
+      if (currentStep < step + 1) {
+        wizard.goto(step + 1)
         let temp = JSON.parse(JSON.stringify(dealData))
         temp.current_step = step + 1
         if (setDealData !== undefined)
@@ -40,8 +38,8 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
         if (setCurrentStep !== undefined) {
           setCurrentStep(step+1)
         }
-      }, 80)
-    }
+      }
+    }, 80)
   }
 
   useEffect(() => {
@@ -50,6 +48,12 @@ const FinanceProgQuestion: React.FC<IQuestionProps> = ({
     else
       setShowButton(true)
   }, [])
+
+  useEffect(() => {
+    if (financing === "Cash Deal") {
+      setText("")
+    }
+  }, [financing])
 
   if (financing == "Mortgage") {
     return (

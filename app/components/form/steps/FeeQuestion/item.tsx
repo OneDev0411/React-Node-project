@@ -1,13 +1,9 @@
-import React from "@libs/react"
 import Ui from "@libs/material-ui"
-import useApp from "../../../../hooks/useApp"
-import { FeeQuestionProps, IFeeData, IRoleData } from "../../../../models/type"
+import { FeeQuestionProps, IFeeData } from "../../../../models/type"
 import FeeItemComponent from "./component"
-import { stylizeNumber } from "../../../../util"
 
 const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 	dealType,
-  saveData: { updateFlag },
 	Components,
 	tempFeeData,
 	handleClickRemoveFee,
@@ -15,12 +11,6 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 	updateFeeData
 }) => {
 	const { Box, Button } = Ui
-  const { useEffect } = React
-  const { feeData } = useApp()
-
-	useEffect(() => {
-		updateFlag(true)
-	}, [feeData])
 
   return (
 		<>

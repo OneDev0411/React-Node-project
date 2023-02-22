@@ -8,33 +8,29 @@ import axios from "axios"
 const StartQuestion: React.FC<IQuestionProps> = ({
   Wizard,
   utils,
-  hooks: { useWizardContext, useSectionContext },
-  api: { getDealContext, notifyOffice },
-  models: { deal },
-  isNevada,
-  isFlorida,
-  isNYC
+  hooks: { useWizardContext },
+  models: { deal }
 }) => {
   const { useEffect } = React
   const { QuestionSection, QuestionTitle } = Wizard
   const wizard = useWizardContext()
-  const { currentStep, setCurrentStep, submitted, setSubmitted, transCoordinator, dealNumber } = useApp()
+  const { currentStep, setSubmitted, dealNumber, setDealNumber } = useApp()
   const isBackOffice = utils.isBackOffice
   const { Box, Button } = Ui
   const total_data: AppContextApi = useApp()
-  const {step} = useSectionContext()
-
-  const financingContextValue = deal.property_type.is_lease ? '' : getDealContext('financing')?.text
-  const financingProgramContextValue = deal.property_type.is_lease ? '' : getDealContext('financing_program')?.text
-  const transCoordinatorValue = transCoordinator.trans_coordinator
 
   // mockup loading, need to remove after the backend is implemented
   useEffect(() => {
-    if (currentStep > step +1) {
-      wizard.goto(currentStep+2)
-    } else {
-      wizard.next()
+    if (dealNumber.deal === "") {
+      let temp = JSON.parse(JSON.stringify(dealNumber))
+      temp.deal = deal.id
+      if (setDealNumber !== undefined) {
+        setDealNumber(temp)
+      }
     }
+    setTimeout(() => {
+      wizard.goto(currentStep)
+    }, 80)
   }, [])
 
   const handleSubmit = async () => {
@@ -55,7 +51,7 @@ const StartQuestion: React.FC<IQuestionProps> = ({
   return (
     <QuestionSection>
       <QuestionTitle>
-          Awesome🎉 let's get a few questions answered and get you paid.
+        Awesome🎉 let's get a few questions answered and get you paid.
       </QuestionTitle>
       {isBackOffice && (
         <Box style={{ textAlign: "right" }}>

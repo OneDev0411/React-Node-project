@@ -6,7 +6,8 @@ import { IQuestionProps } from "../../../../models/type"
 const DealNumberQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
-  utils: {isBackOffice}
+  utils: {isBackOffice},
+  models: { deal }
 }) => {
   const { useState, useEffect } = React
   const { Box, TextField, Grid, Button } = Ui
@@ -38,19 +39,20 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
       setHelperText('Please enter the Deal Number')
       return
     } else {
+      setShowButton(false)
       let _tempDealNumber = dealNumber
       _tempDealNumber.deal_number = _dealNumber
+      _tempDealNumber.deal = deal.id
       if (setDealNumber !== undefined) {
         setDealNumber(_tempDealNumber)
       } 
-      setShowButton(false)
-      let temp = JSON.parse(JSON.stringify(dealData))
-      temp.current_step = step + 1
-      if (setDealData !== undefined)
-        setDealData(temp)
       setTimeout(() => {
-        if (wizard.currentStep < step + 1) {
-          wizard.next()
+        if (currentStep < step + 1) {
+          wizard.goto(step + 1)
+          let temp = JSON.parse(JSON.stringify(dealData))
+          temp.current_step = step + 1
+          if (setDealData !== undefined)
+            setDealData(temp)
           if (setCurrentStep !== undefined) {
             setCurrentStep(step+1)
           }
@@ -60,7 +62,7 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
   }
 
   useEffect(() => {
-    if (dealNumber.deal_number === "") {
+    if (dealNumber.deal_number.length == 0) {
       _setDealNumber('')
     } else {
       setShowButton(false)
@@ -70,7 +72,7 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
 
   useEffect(() => {
     if (currentStep > step)
-      setShowButton(false)
+      wizard.goto(step + 1)
     else
       setShowButton(true)
   }, [])

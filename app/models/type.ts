@@ -231,7 +231,6 @@ export interface ITransData {
   email_address: string
 }
 export interface FeeQuestionProps {
-  saveData: IDataToConText;
   Components: CoreComponents;
   dealType: IDeal["deal_type"];
   tempFeeData: IFeeData[];

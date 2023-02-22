@@ -1,7 +1,7 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
 import useApp from "../../../../hooks/useApp"
-import { IQuestionProps, SelectData } from "../../../../models/type"
+import { IDealData, IQuestionProps, SelectData } from "../../../../models/type"
 import { financeSelectDataList } from '../../../../util'
 
 const FinanceTransQuestion: React.FC<IQuestionProps> = ({
@@ -9,11 +9,11 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
   hooks: { useWizardContext, useSectionContext },
   api: { updateDealContext, getDealContext },
 }) => {
-  const { useState, useEffect } = React
+  const { useState } = React
   const { RadioGroup, FormControlLabel, Radio, Box } = Ui
   const wizard = useWizardContext()
   const { step } = useSectionContext()
-  const { dealData, setDealData, setFinancing, currentStep, setCurrentStep } = useApp()
+  const { dealData, setDealData, setFinancing, setCurrentStep } = useApp()
 
   const financingContextValue = getDealContext('financing')?.text
 
@@ -25,35 +25,23 @@ const FinanceTransQuestion: React.FC<IQuestionProps> = ({
     setShowBox(false)
     updateDealContext("financing", event.target.value)
     setCurSelect(event.target.value)
-    if (setFinancing !== undefined)
-      setFinancing(event.target.value)
-    if (wizard.currentStep < step + 1) {
-      setTimeout(() => {
-        if (event.target.value == "Cash Deal") {
-          wizard.goto(step + 2)
-          let temp = JSON.parse(JSON.stringify(dealData))
-          temp.current_step = step + 2
-          if (setDealData !== undefined)
-            setDealData(temp)
-          if (setCurrentStep !== undefined) {
-            setCurrentStep(step + 2)
-          }
-        }
-        else
-          wizard.next()
-      }, 10)
-    }
-  }
-
-  useEffect(() => {
+    if (setFinancing) setFinancing(event.target.value)
+    let updatedDealData: IDealData = dealData
     setTimeout(() => {
-      if (financingContextValue === "Mortgage") {
-        wizard.next()
-      } else if (financingContextValue === "Cash Deal") {
-        wizard.goto(step+2)
+      if (event.target.value === "Cash Deal") {
+        wizard.goto(step + 2)
+        updatedDealData.current_step = step + 2
+        if (setDealData) setDealData(updatedDealData)
+        updateDealContext("financing_program", "")
+        if (setCurrentStep) setCurrentStep(step + 2)
+      } else if (event.target.value === "Mortgage") {
+        wizard.goto(step + 1)
+        updatedDealData.current_step = step + 1
+        if (setDealData) setDealData(updatedDealData)
+        if (setCurrentStep) setCurrentStep(step + 1)
       }
-    }, 10)
-  }, [financingContextValue])
+    }, 80);
+  }
 
   return (
     <QuestionSection>

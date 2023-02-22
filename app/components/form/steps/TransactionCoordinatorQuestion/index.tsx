@@ -1,6 +1,6 @@
 import React from '@libs/react'
 import Ui from '@libs/material-ui'
-import { IFeeData, IQuestionProps, IRoleData, SelectData } from "../../../../models/type";
+import { IDealData, IFeeData, IQuestionProps, IRoleData, ITransData, SelectData } from "../../../../models/type";
 import useApp from "../../../../hooks/useApp"
 import { TextField } from '@material-ui/core';
 
@@ -14,7 +14,7 @@ const TransCoordinatorQuestion: React.FC<IQuestionProps> = ({
   const { RadioGroup, FormControlLabel, Radio, Box, Button } = Ui
   const wizard = useWizardContext()
   const { step } = useSectionContext()
-  const {currentStep, transCoordinator, setTransCoordinator, feeData, roleData} = useApp()
+  const {dealData, setDealData, currentStep, setCurrentStep, transCoordinator, setTransCoordinator, feeData, roleData} = useApp()
 
   const [curSelect, setCurSelect] = useState<string>(transCoordinator.trans_coordinator)
 
@@ -29,34 +29,33 @@ const TransCoordinatorQuestion: React.FC<IQuestionProps> = ({
     }
   ];
 
-
   const handleClickRadioButton = async (event:any) => {
     setCurSelect(event.target.value)
-    let _defaultTransData = JSON.parse(JSON.stringify(transCoordinator))
-    _defaultTransData.trans_coordinator = event.target.value
-    // if (setFinancing !== undefined)
-    //   setFinancing(event.target.value)
-    if (event.target.value === "Yes") {
-      if (setTransCoordinator !== undefined) {
-        setTransCoordinator(_defaultTransData)
+    let updatedDealData: IDealData = JSON.parse(JSON.stringify(dealData))
+    let updatedTransData: ITransData = JSON.parse(JSON.stringify(transCoordinator))
+    updatedTransData.trans_coordinator = event.target.value
+    setTimeout(() => {
+      if (currentStep < step + 1) {
+        if (event.target.value === "Yes") {
+          updatedDealData.current_step = step + 1
+          if (setDealData) setDealData(updatedDealData)
+          if (setCurrentStep) setCurrentStep(step + 1)
+          wizard.goto(step + 1)
+          if (setTransCoordinator !== undefined) setTransCoordinator(updatedTransData)
+        } else if (event.target.value === "No") {
+          updatedDealData.current_step = step + 2
+          if (setDealData) setDealData(updatedDealData)
+          if (setCurrentStep) setCurrentStep(step + 2)
+          updatedTransData.email_address = ""
+          if (setTransCoordinator !== undefined) setTransCoordinator(updatedTransData)
+          wizard.goto(step + 2)
+        }
       }
-      wizard.goto(step + 2)
-    } else {
-      _defaultTransData.email_address = ""
-      if (setTransCoordinator !== undefined) {
-        setTransCoordinator(_defaultTransData)
-      }
-      wizard.next()
-    }
+    }, 80);
   }
 
   useEffect(() => {
     setCurSelect(transCoordinator.trans_coordinator)
-    if (transCoordinator.trans_coordinator === "Yes") {
-      wizard.next()
-    } else if (transCoordinator.trans_coordinator === "No") {
-      wizard.next(step + 2)
-    }
   }, [transCoordinator])
 
   return (

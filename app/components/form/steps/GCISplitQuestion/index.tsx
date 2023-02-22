@@ -128,13 +128,13 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
 
   const handleClickNextButton = async () => {
     setShowButton(false)
-    let temp = JSON.parse(JSON.stringify(dealData))
-    temp.current_step = step + 1
-    if (setDealData !== undefined)
-      setDealData(temp)
     setTimeout(() => {
-      if (wizard.currentStep < step + 1) {
-        wizard.next()
+      if (currentStep < step + 1) {
+        wizard.goto(step + 1)
+        let temp = JSON.parse(JSON.stringify(dealData))
+        temp.current_step = step + 1
+        if (setDealData !== undefined)
+          setDealData(temp)
         if (setCurrentStep !== undefined) {
           setCurrentStep(step+1)
         }

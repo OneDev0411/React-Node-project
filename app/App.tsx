@@ -31,7 +31,6 @@ const App: React.FC<EntryProps> = ({
     currentStep, 
     setCurrentStep,
     setFeeData,
-    dealNumber,
     setDealNumber,
     setNotes,
     setDocStatus,
@@ -163,11 +162,9 @@ const App: React.FC<EntryProps> = ({
           setFeeData(tempFeeData)
         }
         if (setDealNumber !== undefined) {
-          if (data.dealNumber && data.dealNumber.deal_number){
-            setDealNumber(data.dealNumber)
-          } else if (data.dealNumber && data.dealNumber.deal_number == null) {
+          if (data.dealNumber) {
             let _defaultDealNumberData = JSON.parse(JSON.stringify(data.dealNumber))
-            _defaultDealNumberData.deal = deal.id
+            if (_defaultDealNumberData.deal === "") _defaultDealNumberData.deal = deal.id
             setDealNumber(_defaultDealNumberData)
           } else if (!data.dealNumber) {
             let _defaultDealNumberData = JSON.parse(JSON.stringify(defaultDealNumberData))
@@ -185,8 +182,9 @@ const App: React.FC<EntryProps> = ({
           }
         }
         if (setDocStatus !== undefined) {
-          if (data.docStatus)
+          if (data.docStatus) {
             setDocStatus(data.docStatuses)
+          }
           else {
             let _defaultDocstatus = JSON.parse(JSON.stringify(defaultDocStatus))
             _defaultDocstatus.deal = deal.id
@@ -194,8 +192,9 @@ const App: React.FC<EntryProps> = ({
           }
         }
         if (setTransCoordinator !== undefined) {
-          if (data.transCoordinator)
+          if (data.transCoordinator){
             setTransCoordinator(data.transCoordinator)
+          }
           else {
             let _defaultTransdata = JSON.parse(JSON.stringify(defaultTransData))
             _defaultTransdata.deal = deal.id
@@ -264,6 +263,7 @@ const App: React.FC<EntryProps> = ({
         setIsNYC(true)
         break
       } else if (brand.id === "3d2e2488-b54e-11ec-9d82-0271a4acc769") {
+        if (setSubmitted) setSubmitted(1)
         setIsNevada(true)
         break
       } else if (brand.id === "6cc3250a-9fe1-11eb-baea-027d2d7e1395") {
@@ -279,13 +279,6 @@ const App: React.FC<EntryProps> = ({
     if (submitted !== 0)
       return () => {
         const saveData = async () => {
-          if (dealNumber.deal === "") {
-            let _tmpDealNumber = dealNumber
-            _tmpDealNumber.deal = deal.id
-            if (setDealNumber) {
-              setDealNumber(_tmpDealNumber)
-            }
-          }
           await axios.post(
             `${APP_URL}/rechat-commission-app-data-save`,
             {

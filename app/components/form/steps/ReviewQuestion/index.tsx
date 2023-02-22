@@ -163,6 +163,8 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   }
   const deOfficeAddress = getDEOfficeAddress(deal.brand)
 
+  const escrowTitleEmailAddress = roles.filter((item: IDealRole) => item.role === "Title")
+
   const handleClickApprove = async () => {
     wizard.setLoading(true)
     updateTaskStatus('Approved', false, '')
@@ -274,9 +276,17 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             <label>CONTRACT INFORMATION</label>
           </Grid>
           <Grid container spacing={2}>
-            <Grid item>
-              <label>Deal Number:&nbsp;</label>{dealNumber.deal_number}
-            </Grid>
+            {isFlorida && 
+              <Grid item>
+                <label>Deal Number:&nbsp;</label>{dealNumber.deal_number}
+              </Grid>}
+            {isNevada &&
+              escrowTitleEmailAddress.map((item: IDealRole) => 
+                <Grid item>
+                  <label>Escrow/Title Office email address:&nbsp;</label>{item.email}
+                </Grid>
+              )
+            }
             <Grid item>
               <label>Listing ID:&nbsp;</label>{deal.context.deal_number?.text ?? deal.context.mls_number?.text ?? `Hippocket-${deal.number}`}
             </Grid>

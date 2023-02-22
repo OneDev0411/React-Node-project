@@ -5,7 +5,8 @@ import { INoteData, IQuestionProps } from "../../../../models/type"
 
 const CommissionInstruction: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-  hooks: { useWizardContext, useSectionContext }
+  hooks: { useWizardContext, useSectionContext },
+  models: {deal}
 }) => {
   const { useState, useEffect } = React
   const { Box, TextField, Grid, Button } = Ui
@@ -14,7 +15,7 @@ const CommissionInstruction: React.FC<IQuestionProps> = ({
   const {notes, setNotes, dealData, setDealData, currentStep, setCurrentStep} = useApp()
 
   const [addNote, setAddNote] = useState<string>('')
-  const [showButton, setShowButton] = useState<boolean>(true)
+  const [showButton, setShowButton] = useState<boolean>(false)
 
   const onChangeValue = (value: string) => {
     setShowButton(true)
@@ -22,21 +23,22 @@ const CommissionInstruction: React.FC<IQuestionProps> = ({
   }
 
   const handleClickNextButton = () => {
+    setShowButton(false)
     let tempNoteData: INoteData = JSON.parse(JSON.stringify(notes))
+    tempNoteData.deal = deal.id
     tempNoteData.note = addNote
     if (setNotes !== undefined) {
       setNotes(tempNoteData)
     }
-    let temp = JSON.parse(JSON.stringify(dealData))
-    temp.current_step = step + 1
-    if (setDealData !== undefined)
-      setDealData(temp)
     setTimeout(() => {
-      if (wizard.currentStep < step + 1) {
-        setShowButton(false)
-        wizard.next()
+      if (currentStep < step + 1) {
+        wizard.goto(step + 1)
+        let temp = JSON.parse(JSON.stringify(dealData))
+        temp.current_step = step + 1
+        if (setDealData !== undefined)
+          setDealData(temp)
         if (setCurrentStep !== undefined) {
-          setCurrentStep(wizard.currentStep+1)
+          setCurrentStep(step+1)
         }
       }
     }, 80)
@@ -46,13 +48,6 @@ const CommissionInstruction: React.FC<IQuestionProps> = ({
     setAddNote(notes.note)
   }, [notes])
 
-  
-  useEffect(() => {
-    if (currentStep > step)
-      setShowButton(false)
-    else
-      setShowButton(true)
-  }, [])
 
   return (
     <QuestionSection>

@@ -1,20 +1,16 @@
 import React from '@libs/react'
-import ReactUse from '@libs/react-use'
 import Ui from '@libs/material-ui'
 import useApp from "../../../../hooks/useApp"
-import { IQuestionProps } from "../../../../models/type"
-import { defaultTransData } from '../../../../util'
+import { IDealData, IQuestionProps, ITransData } from "../../../../models/type"
 
 const TransCoordinatorEmail: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
-  hooks: { useWizardContext, useSectionContext },
-  api: { updateDealContext, getDealContext },
+  hooks: { useWizardContext, useSectionContext }
 }) => {
   const { useState, useEffect } = React
-  const { useDebounce } = ReactUse
   const { TextField, Button, Box } = Ui
   const wizard = useWizardContext()
-  const { dealData, setDealData, financing, setCurrentStep, currentStep, transCoordinator, setTransCoordinator } = useApp()
+  const { dealData, setDealData, setCurrentStep, currentStep, transCoordinator, setTransCoordinator } = useApp()
   const { step } = useSectionContext()
   // state
   const [text, setText] = useState<string>(transCoordinator.email_address)
@@ -28,38 +24,28 @@ const TransCoordinatorEmail: React.FC<IQuestionProps> = ({
 
   const handleClickNext = () => {
     setShowButton(false)
-    let _defaultTransData = JSON.parse(JSON.stringify(transCoordinator))
-    _defaultTransData.email_address = text
-    if (setTransCoordinator !== undefined) {
-      setTransCoordinator(_defaultTransData)
-    }
-    let temp = JSON.parse(JSON.stringify(dealData))
-    temp.current_step = step + 1
-    if (setDealData !== undefined)
-      setDealData(temp)
+    let updatedTransData: ITransData = transCoordinator
+    updatedTransData.email_address = text
+    if (setTransCoordinator !== undefined) setTransCoordinator(updatedTransData)
+    let updatedDealData: IDealData = dealData
+    if (currentStep < step + 1) {}
     setTimeout(() => {
-      if (wizard.currentStep < step + 1) {
+      if (currentStep < step + 1) {
+        updatedDealData.current_step = step + 1
+        if (setDealData !== undefined) setDealData(updatedDealData)
+        if (setCurrentStep !== undefined) setCurrentStep(step + 1)
         wizard.goto(step + 1)
-        if (setCurrentStep !== undefined) {
-          setCurrentStep(step+1)
-        }
       }
-    }, 80)
+    }, 80);
   }
 
   useEffect(() => {
-    setShowButton(false)
-    setTimeout(() => {
-      if (transCoordinator.email_address !== "") {
-        if (currentStep > step) {
-          wizard.goto(step + 2)
-        } else if (currentStep < step) {
-          setShowButton(true)
-        }
-      } else {
-        setShowButton(true)
-      }
-    }, 80)    
+    if (transCoordinator.email_address === "") {
+      setShowButton(true)
+    } else if (transCoordinator.email_address !== "") {
+      setShowButton(false)
+    }
+    setText(transCoordinator.email_address)
   }, [transCoordinator])
 
   if (transCoordinator.trans_coordinator == "Yes") {

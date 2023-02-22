@@ -1,7 +1,7 @@
 import React from "@libs/react"
 import Ui from "@libs/material-ui"
 import useApp from "../../../../hooks/useApp"
-import { AppContextApi, IQuestionProps, IDealData } from "../../../../models/type"
+import { AppContextApi, IQuestionProps, IDealData, INoteData } from "../../../../models/type"
 import { APP_URL } from "../../../../util"
 import axios from "axios"
 
@@ -10,20 +10,36 @@ const LastQuestion: React.FC<IQuestionProps> = ({
   utils,
   api: { notifyOffice, close },
   hooks: { useWizardContext },
+  models: { deal }
 }) => {
+  const { useState } = React
   const { QuestionSection, QuestionTitle, QuestionForm } = Wizard
   const isBackOffice = utils.isBackOffice
   const { Box, Button, Dialog, DialogTitle, DialogActions } = Ui
   const total_data: AppContextApi = useApp()
-  const { dealData, submitted, setSubmitted } = useApp()
+  const { dealData, submitted, setSubmitted, notes, setNotes, transCoordinator, setTransCoordinator } = useApp()
   const wizard = useWizardContext()
-  const [feedback, setFeedback] = React.useState<string>("")
-  const [openFeedback, setOpenFeedback] = React.useState<boolean>(false)
+  const [feedback, setFeedback] = useState<string>("")
+  const [openFeedback, setOpenFeedback] = useState<boolean>(false)
   
   const handleSubmit = async () => {
     wizard.setLoading(true)
     if (!isBackOffice)
       notifyOffice(true, "Please review the Commission Slip")
+    if (notes.deal === "") {
+      let tempNotesData: INoteData = JSON.parse(JSON.stringify(notes))
+      tempNotesData.deal = deal.id
+      if (setNotes !== undefined) {
+        setNotes(tempNotesData)
+      }
+    }
+    if (transCoordinator.deal === "") {
+      let tmpTransCoordinator = transCoordinator
+      tmpTransCoordinator.deal = deal.id
+      if (setTransCoordinator) {
+        setTransCoordinator(tmpTransCoordinator)
+      }
+    }
     const res = await axios.post(
       `${APP_URL}/rechat-commission-app-data-save`,
       {

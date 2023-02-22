@@ -15,7 +15,7 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
   const { Box, Button } = Ui
   const wizard = useWizardContext()
   const { step } = useSectionContext()
-  const { dealData, setDealData, submitted, currentStep, setCurrentStep, feeData, setFeeData, roleData } = useApp()
+  const { dealData, setDealData, currentStep, setCurrentStep, setFeeData, roleData } = useApp()
 
   const [showButton, setShowButton] = useState<boolean>(false)
 	const [_tempFeeData, _setTempFeeData] = useState<IFeeData[]>([])
@@ -48,17 +48,17 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
   }, [])
 
   const handleClickNextButton = () => {
+    setShowButton(false)
     if (setFeeData !== undefined) {
       setFeeData(_tempFeeData)
     }
-    let temp = JSON.parse(JSON.stringify(dealData))
-    temp.current_step = step + 1
-    if (setDealData !== undefined)
-      setDealData(temp)
     setTimeout(() => {
-      if (wizard.currentStep < step + 1) {
-        setShowButton(false)
-        wizard.next()
+      if (currentStep < step + 1) {
+        wizard.goto(step + 1)
+        let temp = JSON.parse(JSON.stringify(dealData))
+        temp.current_step = step + 1
+        if (setDealData !== undefined)
+          setDealData(temp)
         if (setCurrentStep !== undefined) {
           setCurrentStep(step+1)
         }
@@ -109,17 +109,13 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
 		_setTempFeeData(updatedValue)
 	}
 
-  const updateFlag = (flag: boolean) => {
-    if (wizard.currentStep < step + 1) {
-      setShowButton(flag)
-    }
-  }
-
   useEffect(() => {
-    if (currentStep > step)
-      setShowButton(false)
-    else
-      setShowButton(true)
+    setTimeout(() => {
+      if (currentStep < step + 1)
+        setShowButton(true)
+      else
+        setShowButton(false)
+    }, 80);
   }, [])
 
   return (
@@ -130,7 +126,6 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
       <QuestionForm width="60%">
         <FeeQuestionComponent
           dealType={deal.deal_type}
-          saveData={{ updateFlag }}
           Components={Components}
           tempFeeData={_tempFeeData}
           handleClickRemoveFee={handleClickRemoveFee}
