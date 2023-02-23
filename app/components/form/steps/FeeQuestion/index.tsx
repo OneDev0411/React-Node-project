@@ -1,7 +1,7 @@
 import React from "@libs/react"
 import Ui from "@libs/material-ui"
 import useApp from "../../../../hooks/useApp"
-import { IQuestionProps, IFeeData, IRoleData } from "../../../../models/type"
+import { IQuestionProps, IFeeData, IRoleData, ICreditData } from "../../../../models/type"
 import FeeQuestionComponent from "./item"
 import { stylizeNumber } from "../../../../util"
 
@@ -9,16 +9,18 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
   models: { deal },
-  Components
+  Components,
+  isNevada
 }) => {
   const { useState, useEffect } = React
   const { Box, Button } = Ui
   const wizard = useWizardContext()
   const { step } = useSectionContext()
-  const { dealData, setDealData, currentStep, setCurrentStep, setFeeData, roleData } = useApp()
+  const { dealData, setDealData, currentStep, setCurrentStep, setFeeData, roleData, creditData } = useApp()
 
   const [showButton, setShowButton] = useState<boolean>(false)
 	const [_tempFeeData, _setTempFeeData] = useState<IFeeData[]>([])
+  const [_creditFee, _setCreditFee] = useState<IFeeData[]>([])
 
 	const _feeAgents = roleData.filter((item: IRoleData) => item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral" || item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral")
 
@@ -49,8 +51,9 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
 
   const handleClickNextButton = () => {
     setShowButton(false)
+    let updateValue: IFeeData[] = _tempFeeData.concat(_creditFee)
     if (setFeeData !== undefined) {
-      setFeeData(_tempFeeData)
+      setFeeData(updateValue)
     }
     setTimeout(() => {
       if (currentStep < step + 1) {
@@ -78,6 +81,18 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
       setFeeData(temp)
   }
 
+  const handleClickRemoveCreditFee = (index: number) => {
+    setShowButton(true)
+    let temp: IFeeData[] = JSON.parse(JSON.stringify(_creditFee))
+    temp.splice(index , 1)
+		for (let i= 0; i < temp.length; i++) {
+			temp[i].key_Index = i;
+		}
+		_setCreditFee(temp)
+    if (setFeeData !== undefined)
+      setFeeData(temp)
+  }
+
   const handleClickAddAnotherButton = () => {
     setShowButton(true)
     let emptyValue: IFeeData = {
@@ -94,19 +109,27 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
 	  	key_Index: _tempFeeData.length,
 			agent_name: ''
     }
-    let updatedValue = JSON.parse(JSON.stringify(_tempFeeData))
-    updatedValue.push(emptyValue)
-		_setTempFeeData(updatedValue)
+    let updatedBaseFee = JSON.parse(JSON.stringify(_tempFeeData))
+    updatedBaseFee.push(emptyValue)
+		_setTempFeeData(updatedBaseFee)
+    let updatedValue = updatedBaseFee.concat(_creditFee)
     if (setFeeData !== undefined) {
       setFeeData(updatedValue)
     }
   }
 
-  const updateFeeData = (item: IFeeData, id: number) => {
+  const updateBaseFeeData = (item: IFeeData, id: number) => {
     setShowButton(true)
 		let updatedValue = JSON.parse(JSON.stringify(_tempFeeData))
 		updatedValue[id] = item
 		_setTempFeeData(updatedValue)
+	}
+
+  const updateCreditFeeData = (item: IFeeData, id: number) => {
+    setShowButton(true)
+		let updatedValue = JSON.parse(JSON.stringify(_creditFee))
+		updatedValue[id] = item
+		_setCreditFee(updatedValue)
 	}
 
   useEffect(() => {
@@ -117,6 +140,48 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
         setShowButton(false)
     }, 80);
   }, [])
+
+  useEffect(() => {
+    if (isNevada && creditData) {
+      let _emptyCreditFee: IFeeData[] = JSON.parse(JSON.stringify(_creditFee))
+      creditData.forEach((item: ICreditData) => {
+        if (item.credit_side === "Seller") {
+          let _feeItem: IFeeData = {
+            id: null,
+            deal: deal.id,
+            deal_side: 1,
+            fee_type: "Credit given by Agent (Seller)",
+            fee_amount: stylizeNumber(5000),
+            fee_amount_percentage: "",
+            fee_from: 0,
+            fee_paid: 1,
+            fee_unit: 1,
+            fee_method: 0,
+            agent_name: '',
+            key_Index: _creditFee.length
+          }
+          _emptyCreditFee.push(_feeItem)
+        } else if (item.credit_side === "Buyer") {
+          let _feeItem: IFeeData = {
+            id: null,
+            deal: deal.id,
+            deal_side: 1,
+            fee_type: "Credit given by Agent (Buyer)",
+            fee_amount: stylizeNumber(5000),
+            fee_amount_percentage: "",
+            fee_from: 0,
+            fee_paid: 1,
+            fee_unit: 1,
+            fee_method: 0,
+            agent_name: '',
+            key_Index: _creditFee.length
+          }
+          _emptyCreditFee.push(_feeItem)
+        }
+      })
+      _setCreditFee(_emptyCreditFee)
+    }
+  }, [creditData])
 
   return (
     <QuestionSection>
@@ -129,9 +194,32 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
           Components={Components}
           tempFeeData={_tempFeeData}
           handleClickRemoveFee={handleClickRemoveFee}
-          handleClickAddAnotherButton={handleClickAddAnotherButton}
-          updateFeeData={updateFeeData}
+          updateFeeData={updateBaseFeeData}
         />
+        {isNevada && 
+          <FeeQuestionComponent
+            dealType={deal.deal_type}
+            Components={Components}
+            tempFeeData={_creditFee}
+            handleClickRemoveFee={handleClickRemoveCreditFee}
+            updateFeeData={updateCreditFeeData}
+          />
+        }
+        <Box>
+          <Button
+            variant="outlined"
+            onClick={handleClickAddAnotherButton}
+            style={{
+              color: "black !important",
+              borderColor: "#dbdbdb !important",
+              paddingBottom: 2,
+              paddingTop: 2,
+              marginLeft: 10,
+            }}
+          >
+            + Add More Fee
+          </Button>
+        </Box>
         {showButton && (
           <Box
             style={{

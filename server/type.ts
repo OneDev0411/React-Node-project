@@ -15,6 +15,7 @@ export interface ICommissionData {
   notes: any;
   docStatus: any;
   transCoordinator: any;
+  creditData: any;
 }
 export interface ICombinedDealData {
   commissionData: any;

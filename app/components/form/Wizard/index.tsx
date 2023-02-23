@@ -14,6 +14,7 @@ import CommissionInstruction from "../steps/CommissionInstruction"
 import DocumentUpLoadedCheck from "../steps/DocumentUpLoadedCheck"
 import TransCoordinatorQuestion from "../steps/TransactionCoordinatorQuestion"
 import TransCoordinatorEmail from "../steps/TransCoordinatorEmail"
+import CreditQuestion from "../steps/CreditDataSection"
 
 export const FormWizard: React.FC<IQuestionProps> = (props) => {
   const { Wizard, utils, models, isNYC, isNevada, isFlorida } = props
@@ -35,6 +36,7 @@ export const FormWizard: React.FC<IQuestionProps> = (props) => {
         <RemittanceQuestion {...props} />
         <PaymentQuestionInside {...props} />
         <PaymentQuestionOutside {...props} />
+        {isNevada && <CreditQuestion {...props} />}
         {isBackOffice && !isNYC && (
           <FeeQuestion {...props} />
         )}

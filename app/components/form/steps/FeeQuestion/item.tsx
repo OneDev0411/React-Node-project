@@ -7,7 +7,6 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 	Components,
 	tempFeeData,
 	handleClickRemoveFee,
-	handleClickAddAnotherButton,
 	updateFeeData
 }) => {
 	const { Box, Button } = Ui
@@ -25,21 +24,6 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 				dealType={dealType}
 			/>
 		)}
-		<Box>
-			<Button
-				variant="outlined"
-				onClick={handleClickAddAnotherButton}
-				style={{
-					color: "black !important",
-					borderColor: "#dbdbdb !important",
-					paddingBottom: 2,
-					paddingTop: 2,
-					marginLeft: 10,
-				}}
-			>
-				+ Add More Fee
-			</Button>
-		</Box>
 		</>
   )
 }

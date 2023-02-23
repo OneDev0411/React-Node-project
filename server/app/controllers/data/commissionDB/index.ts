@@ -17,7 +17,8 @@ const {
   AppDealNumberModel,
   AppNoteModel,
   AppDocStatusModel,
-  AppTransCoordinatorModel
+  AppTransCoordinatorModel,
+  AppCreditModel
 } = db;
 
 const saveAppData = async (data: any, model: any) => {
@@ -40,6 +41,11 @@ const saveAppData = async (data: any, model: any) => {
     });
   }
   if (model == AppFeeModel) {
+    findRes = await model.findOne({
+      where: { deal: data.deal, id: data.id }
+    });
+  }
+  if (model == AppCreditModel) {
     findRes = await model.findOne({
       where: { deal: data.deal, id: data.id }
     });
@@ -92,6 +98,12 @@ const saveAppData = async (data: any, model: any) => {
       await model.update(data, {
         where: { id: id }
       });
+    } else if (model == AppCreditModel) {
+      const id = data.id;
+      delete data.id;
+      await model.update(data, {
+        where: {deal: data.deal, id: id}
+      })
     } else {
       await model.update(data, {
         where: { deal: data.deal },
@@ -147,6 +159,7 @@ const saveCommissionData = async (req: Request, res: Response) => {
     let notes = allData.notes;
     let docStatus = allData.docStatus;
     let transCoordinator = allData.transCoordinator;
+    let creditData = allData.creditData;
 
     //save transCoordinatorData
     await saveAppData(transCoordinator, AppTransCoordinatorModel);
@@ -179,6 +192,17 @@ const saveCommissionData = async (req: Request, res: Response) => {
     }
     for (let i = 0; i < feeData.length; i++) {
       await saveAppData(feeData[i], AppFeeModel);
+    }
+    // save creditData
+    const dbCreditData = await readData(dealData.deal, AppCreditModel);
+    for (let k = 0; k < dbCreditData.length; k ++) {
+      const isExist = creditData.filter(item => item.id && item.id === dbCreditData[k].id);
+      if (!isExist.length) {
+        await deleteData(dbCreditData[k], AppCreditModel);
+      }
+    }
+    for (let i = 0; i < creditData.length; i++) {
+      await saveAppData(creditData[i], AppCreditModel)
     }
     // save appRemittanceCheckData
     const dbRemittanceChecks = await readData(dealData.deal, AppRemittanceCheckModel);
@@ -242,6 +266,7 @@ const readCombinedAppData = async (deal: string) => {
   let notes = await readData(deal, AppNoteModel);
   let docStatuses = await readData(deal, AppDocStatusModel);
   let transCoordinator = await readData(deal, AppTransCoordinatorModel);
+  let creditData = await readData(deal, AppCreditModel);
 
   let allData: any = null;
   if (dealData.length > 0) {
@@ -254,7 +279,8 @@ const readCombinedAppData = async (deal: string) => {
       dealNumber: dealNumberData,
       notes: notes,
       docStatuses: docStatuses,
-      transCoordinator: transCoordinator
+      transCoordinator: transCoordinator,
+      creditData: creditData
     };
   }
   return allData;

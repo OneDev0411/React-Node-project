@@ -2,7 +2,18 @@ import React from "@libs/react"
 import axios from "axios"
 import useApp from "./hooks/useApp"
 import { AppContextApi, IRoleData, IPayment, IFeeData } from "./models/type"
-import { defaultDealData, defaultRemittanceChecks, APP_URL, sortRole, defaultFeeData, defaultDealNumberData, defaultNoteData, defaultDocStatus, defaultTransData } from "./util"
+import {
+  defaultDealData,
+  defaultRemittanceChecks,
+  APP_URL,
+  sortRole,
+  defaultFeeData,
+  defaultDealNumberData,
+  defaultNoteData,
+  defaultDocStatus,
+  defaultTransData,
+  defaultCreditData
+} from "./util"
 import { FormWizard } from "./components/form/Wizard"
 import Loading from './components/Loading'
 
@@ -34,7 +45,8 @@ const App: React.FC<EntryProps> = ({
     setDealNumber,
     setNotes,
     setDocStatus,
-    setTransCoordinator
+    setTransCoordinator,
+    setCreditData
   } = useApp();
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
@@ -201,6 +213,15 @@ const App: React.FC<EntryProps> = ({
             setTransCoordinator(_defaultTransdata)
           }
         }
+        if (setCreditData !== undefined) {
+          if (data.creditData) {
+            setCreditData(data.creditData)
+          } else {
+            let _defaultCreditData = JSON.parse(JSON.stringify(defaultCreditData))
+            _defaultCreditData.deal = deal.id
+            setCreditData(_defaultCreditData)
+          }
+        }
       } else { // in case of data doesn't exist in database, set default data
         if (setDealData !== undefined) {
           defaultDealData.deal = deal.id;
@@ -240,6 +261,11 @@ const App: React.FC<EntryProps> = ({
           let _defaultTransdata = JSON.parse(JSON.stringify(defaultTransData))
           _defaultTransdata.deal = deal.id
           setTransCoordinator(_defaultTransdata)
+        }
+        if (setCreditData !== undefined) {
+          let _defaultCreditData = JSON.parse(JSON.stringify(defaultCreditData))
+          _defaultCreditData.deal = deal.id
+          setCreditData(_defaultCreditData)
         }
       }
     } catch (error) {

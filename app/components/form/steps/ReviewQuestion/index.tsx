@@ -5,7 +5,16 @@ import axios from 'axios'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import useApp from '../../../../hooks/useApp'
-import { IDealData, IPaidByData, IQuestionProps, IRemittanceChecks, IRoleData, IPayment, IFeeData } from '../../../../models/type'
+import { 
+  IDealData,
+  IPaidByData,
+  IQuestionProps,
+  IRemittanceChecks,
+  IRoleData,
+  IPayment,
+  IFeeData,
+  ICreditData 
+} from '../../../../models/type'
 import { APP_URL, commissionReason, stylizeNumber } from '../../../../util'
 
 const ReviewQuestion: React.FC<IQuestionProps> = ({
@@ -20,7 +29,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const { useEffect, useState } = React
   const { QuestionSection, QuestionTitle } = Wizard
   const { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Grid } = Ui
-  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData, notes, docStatus, transCoordinator, dealNumber } = useApp()
+  const { dealData, roleData, remittanceChecks, insidePayments, outsidePayments, feeData, notes, docStatus, transCoordinator, dealNumber, creditData } = useApp()
   const wizard = useWizardContext()
   const enderType = deal.context.ender_type?.text
   const dealType = (enderType === 'AgentDoubleEnder' || enderType === 'OfficeDoubleEnder') ? 'Both' : deal.deal_type
@@ -614,6 +623,29 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             )}
           </Grid>
         )}
+        {isNevada && 
+          <Grid container style={styles.group}>
+            <Grid item xs={12} style={styles.group_title}>
+              <label>Credit Info</label>
+            </Grid>
+            {(dealType === 'Buying' || dealType === 'Both') && 
+              creditData.filter((creditItem: ICreditData) => creditItem.credit_side == "Buyer").map(credit => 
+                <Grid container spacing={2} key={`${credit.credit_side}${credit.id}`}>
+                  <Grid item xs={3}>{credit.credit_side}</Grid>
+                  <Grid item xs={3}>{credit.credit_to}</Grid>
+                  <Grid item xs={3}>{stylizeNumber(Number(credit.credit_amount))}</Grid>
+                </Grid>
+            )}
+            {(dealType === 'Selling' || dealType === 'Both') && 
+              creditData.filter((creditItem: ICreditData) => creditItem.credit_side == "Seller").map(credit => 
+                <Grid container spacing={2} key={`${credit.credit_side}${credit.id}`}>
+                  <Grid item xs={3}>{credit.credit_side}</Grid>
+                  <Grid item xs={3}>{credit.credit_to}</Grid>
+                  <Grid item xs={3}>{stylizeNumber(Number(credit.credit_amount))}</Grid>
+                </Grid>
+            )}
+          </Grid>
+        }
         {!isNYC && _feeData.length > 0 && (
           <Grid container style={styles.group} >
             <Grid item xs={12} style={styles.group_title}>

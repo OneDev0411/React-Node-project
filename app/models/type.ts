@@ -136,6 +136,8 @@ export interface AppContextApi {
   setDocStatus?: (data: IDocStatus) => void;
   transCoordinator: ITransData;
   setTransCoordinator?: (data: ITransData) => void;
+  creditData: ICreditData[];
+  setCreditData?: (data: ICreditData[]) => void;
 }
 
 export interface IQuestionProps {
@@ -190,6 +192,14 @@ export interface IPaymentData {
   member: string[];
 }
 
+export interface ICreditData {
+  id: number | null;
+  deal: string;
+  credit_side: string;
+  credit_amount: string;
+  credit_to: string;
+}
+
 export interface IFeeType {
   feeName: string[];
 }
@@ -230,12 +240,16 @@ export interface ITransData {
   trans_coordinator: string,
   email_address: string
 }
+export interface CreditItemProps {
+  credits: ICreditData;
+  index: number;
+  updateCredit: (item: ICreditData, index: number) => void
+}
 export interface FeeQuestionProps {
   Components: CoreComponents;
   dealType: IDeal["deal_type"];
   tempFeeData: IFeeData[];
   handleClickRemoveFee: (id: number) => void;
-  handleClickAddAnotherButton: () => void;
   updateFeeData: (item: IFeeData, id: number) => void;
 }
 

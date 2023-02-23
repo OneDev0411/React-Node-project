@@ -8,7 +8,8 @@ import {
   defaultRemittanceChecks, 
   defaultNoteData, 
   defaultDocStatus, 
-  defaultTransData 
+  defaultTransData,
+  defaultCreditData
 } from "./util"
 import "./index.css"
 
@@ -27,7 +28,8 @@ const defaultValue: AppContextApi = {
   dealNumber: defaultDealNumberData,
   notes: defaultNoteData,
   docStatus: defaultDocStatus,
-  transCoordinator: defaultTransData
+  transCoordinator: defaultTransData,
+  creditData: defaultCreditData
 };
 
 export const AppContext = createContext<AppContextApi>(defaultValue);
@@ -49,6 +51,7 @@ export const AppProvider: React.FC<any> = ({ children }) => {
   const [notes, setNotes] = useState<AppContextApi["notes"]>(defaultNoteData)
   const [docStatus, setDocStatus] = useState<AppContextApi["docStatus"]>(defaultDocStatus)
   const [transCoordinator, setTransCoordinator] = useState<AppContextApi["transCoordinator"]>(defaultTransData)
+  const [creditData, setCreditData] = useState<AppContextApi["creditData"]>(defaultCreditData)
 
   return (
     <AppContext.Provider
@@ -78,7 +81,9 @@ export const AppProvider: React.FC<any> = ({ children }) => {
         docStatus,
         setDocStatus,
         transCoordinator,
-        setTransCoordinator
+        setTransCoordinator,
+        creditData,
+        setCreditData
       }}
     >
       {children}

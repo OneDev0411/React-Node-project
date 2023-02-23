@@ -10,6 +10,7 @@ import {
   INoteData,
   IDocStatus,
   ITransData,
+  ICreditData,
 } from "./models/type";
 
 export const defaultUser: IUser = {
@@ -215,6 +216,14 @@ export const defaultTransData: ITransData = {
   trans_coordinator: "No",
   email_address: ""
 }
+
+export const defaultCreditData: ICreditData[] = [{
+  id: null,
+  deal: "",
+  credit_amount: "",
+  credit_side: "",
+  credit_to: ""
+}]
 
 export const defaultRemittanceChecks: IRemittanceChecks[] = [
   {
