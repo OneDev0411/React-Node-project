@@ -7,6 +7,9 @@ export default (sequelize, Sequelize) => {
         allowNull: false,
         unique: true,
       },
+      credit_id: {
+        type: Sequelize.TEXT
+      },
       credit_side: {
         type: Sequelize.TEXT,
       },

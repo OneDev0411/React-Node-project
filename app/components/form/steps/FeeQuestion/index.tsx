@@ -8,7 +8,7 @@ import { stylizeNumber } from "../../../../util"
 const FeeQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
-  models: { deal },
+  models: { deal, roles },
   Components,
   isNevada
 }) => {
@@ -151,7 +151,7 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
             deal: deal.id,
             deal_side: 1,
             fee_type: "Credit given by Agent (Seller)",
-            fee_amount: stylizeNumber(5000),
+            fee_amount: item.credit_amount ? item.credit_amount : "0.00",
             fee_amount_percentage: "",
             fee_from: 0,
             fee_paid: 1,
@@ -167,7 +167,7 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
             deal: deal.id,
             deal_side: 1,
             fee_type: "Credit given by Agent (Buyer)",
-            fee_amount: stylizeNumber(5000),
+            fee_amount: item.credit_amount ? item.credit_amount : "0.00",
             fee_amount_percentage: "",
             fee_from: 0,
             fee_paid: 1,

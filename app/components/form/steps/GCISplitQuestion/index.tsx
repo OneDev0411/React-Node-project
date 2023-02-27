@@ -216,7 +216,7 @@ const GCISplitQuestion: React.FC<IQuestionProps> = ({
   }
 
   useEffect(() => {
-    if (submitted === 1 || currentStep > step)
+    if (currentStep > step)
       setShowButton(false)
     else
       setShowButton(true)

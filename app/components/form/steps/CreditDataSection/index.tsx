@@ -23,15 +23,12 @@ const CreditQuestion: React.FC<IQuestionProps> = ({
   const { step } = useSectionContext()
 
   const [showButton, setShowButton] = useState<boolean>(false)
-  // const [sellerSideCredit, setSellerSideCredit] = useState<ICreditData[]>([])
-  // const [buyerSideCredit, setBuyerSideCredit] = useState<ICreditData[]>([])
-  const [crediters, setCrediters] = useState<ICreditData[]>([])
+  const [sellerCredits, setSellerCredits] = useState<ICreditData[]>([])
+  const [buyerCredits, setBuyerCredits] = useState<ICreditData[]>([])
 
 
   const enderType = deal.context.ender_type?.text
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type
-  const sellerCredits = crediters.filter((item: ICreditData) => item.credit_side === "Seller")
-  const buyerCredits = crediters.filter((item: ICreditData) => item.credit_side === "Buyer")
 
   const handleClickNextButton = async () => {
     setShowButton(false)
@@ -62,24 +59,20 @@ const CreditQuestion: React.FC<IQuestionProps> = ({
   }, [])
 
   useEffect(() => {
-    let creditRoles = roles.filter((item: IDealRole) => item.role === "Seller" || item.role === "Buyer")
-    let _creditData: ICreditData[] = []
-    creditRoles.forEach((item: IDealRole, id: number) => {
-      let _eachTempCredit: ICreditData = {
-        id: id,
-        deal: deal.id,
-        credit_to: item.legal_full_name,
-        credit_side: item.role,
-        credit_amount: creditData[id].credit_amount
-      }
-      _creditData.push(_eachTempCredit)
-    })
-    setCrediters(_creditData)
-  }, [])
+    let _sellerCredits = creditData.filter((credit) => credit.credit_side === "Seller")
+    let _buyerCredits = creditData.filter((credit) => credit.credit_side === "Buyer")
+    setSellerCredits(_sellerCredits)
+    setBuyerCredits(_buyerCredits)
+  }, [creditData])
 
   useEffect(() => {
-    setCrediters(creditData)
-  }, [creditData])
+    setTimeout(() => {
+      if (currentStep > step)
+        setShowButton(false)
+      else
+        setShowButton(true)
+    }, 80);
+  }, [])
 
   return (
     <QuestionSection>
@@ -87,7 +80,7 @@ const CreditQuestion: React.FC<IQuestionProps> = ({
         Please Input the Credit
       </QuestionTitle>
       <QuestionForm width="60%">
-        {(dealType === "Selling" || dealType === "Both") && 
+        {(dealType === "Selling" || dealType === "Both") && sellerCredits.length > 0 &&
           <Box
             style={{
               marginBottom: 20,
@@ -110,7 +103,7 @@ const CreditQuestion: React.FC<IQuestionProps> = ({
             )}
           </Box>
         }
-        {(dealType === "Buying" || dealType ==="Both") && 
+        {(dealType === "Buying" || dealType ==="Both") && buyerCredits.length > 0 &&
           <Box
             style={{
               marginBottom: 20,

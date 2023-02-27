@@ -1,7 +1,7 @@
 import React from "@libs/react"
 import axios from "axios"
 import useApp from "./hooks/useApp"
-import { AppContextApi, IRoleData, IPayment, IFeeData } from "./models/type"
+import { AppContextApi, IRoleData, IPayment, IFeeData, ICreditData, ITransData } from "./models/type"
 import {
   defaultDealData,
   defaultRemittanceChecks,
@@ -28,6 +28,7 @@ const App: React.FC<EntryProps> = ({
   
   const { Wizard } = Components;
   const { deal, roles } = models;
+  const { getDealContext } = api
   const total_data: AppContextApi = useApp();
   const _totalData = useRef(total_data);
   const { 
@@ -54,6 +55,8 @@ const App: React.FC<EntryProps> = ({
   const [ isNevada, setIsNevada ] = useState<boolean>(false)
   const [ isFlorida, setIsFlorida ] = useState<boolean>(false)
 
+  const dealStatus = getDealContext("listing_status")?.text
+
   // push data from database to context
   const dataToContextAPI = async () => {
     let res = await axios.post(
@@ -62,6 +65,7 @@ const App: React.FC<EntryProps> = ({
         deal: deal.id,
       }
     );
+    console.log('dealStatus', dealStatus)
     let data = res.data.data;
     // context initial agent data
     let agentRoles: IDealRole[] = roles.filter(
@@ -111,6 +115,7 @@ const App: React.FC<EntryProps> = ({
           else
             setSubmitted(-1);
         }
+        tempDealData.deal_status = dealStatus
         if (setDealData !== undefined) {
           setDealData(tempDealData);
         }
@@ -208,7 +213,7 @@ const App: React.FC<EntryProps> = ({
             setTransCoordinator(data.transCoordinator)
           }
           else {
-            let _defaultTransdata = JSON.parse(JSON.stringify(defaultTransData))
+            let _defaultTransdata: ITransData = JSON.parse(JSON.stringify(defaultTransData))
             _defaultTransdata.deal = deal.id
             setTransCoordinator(_defaultTransdata)
           }
@@ -216,15 +221,26 @@ const App: React.FC<EntryProps> = ({
         if (setCreditData !== undefined) {
           if (data.creditData) {
             setCreditData(data.creditData)
-          } else {
-            let _defaultCreditData = JSON.parse(JSON.stringify(defaultCreditData))
-            _defaultCreditData.deal = deal.id
-            setCreditData(_defaultCreditData)
+          } else if (data.creditData == null) {
+            let creditRoles = roles.filter((role: IDealRole) => role.role === "Seller" || role.role==="Buyer")
+            let tmpCredit: ICreditData[] = creditRoles.map((creditRole: IDealRole) => {
+              let {id, legal_full_name, role} = creditRole
+              return {
+                id: null,
+                deal: deal.id,
+                credit_id: id,
+                credit_side: role,
+                credit_to: legal_full_name,
+                credit_amount: ""
+              }
+            })
+            setCreditData(tmpCredit)
           }
         }
       } else { // in case of data doesn't exist in database, set default data
         if (setDealData !== undefined) {
           defaultDealData.deal = deal.id;
+          defaultDealData.deal_status = dealStatus
           setDealData(defaultDealData);
         }
         if (setRoleData !== undefined) {
@@ -263,9 +279,19 @@ const App: React.FC<EntryProps> = ({
           setTransCoordinator(_defaultTransdata)
         }
         if (setCreditData !== undefined) {
-          let _defaultCreditData = JSON.parse(JSON.stringify(defaultCreditData))
-          _defaultCreditData.deal = deal.id
-          setCreditData(_defaultCreditData)
+          let creditRoles = roles.filter((role: IDealRole) => role.role === "Seller" || role.role==="Buyer")
+          let tmpCredit: ICreditData[] = creditRoles.map((creditRole: IDealRole) => {
+            let {id, legal_full_name, role} = creditRole
+            return {
+              id: null,
+              deal: deal.id,
+              credit_id: id,
+              credit_side: role,
+              credit_to: legal_full_name,
+              credit_amount: ""
+            }
+          })
+          setCreditData(tmpCredit)
         }
       }
     } catch (error) {

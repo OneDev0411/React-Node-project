@@ -61,6 +61,11 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
 
   const handleBuySideSelectChange = (event: any) => {
     const value: number = event.target.value
+    if (value == 0) {
+      setRemiBuySideBankWireAmount('0')
+    } else if (value == 1) {
+      setBuySideChecks(defaultChecksData)
+    }
     setSelectValueBuySide(value)
     if (wizard.currentStep < step + 1 && value !== -1) {
       if (showBoth && selectValueListingSide === -1)
@@ -74,6 +79,11 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
 
   const handleListingSideSelectChange = (event: any) => {
     const value: number = event.target.value
+    if (value == 0) {
+      setRemiListingSideBankWireAmount('0')
+    } else if (value == 1) {
+      setListingSideChecks(defaultChecksData)
+    }
     setSelectValueListingSide(value)
     if (wizard.currentStep < step + 1 && value !== -1) {
       if (showBoth && selectValueBuySide === -1)
@@ -214,6 +224,21 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   useEffect(() => {    
     const _buySideChecks = buySideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0)
     const _listingSideChecks = listingSideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0)
+    if (_dealData.remittance_listing_side_bank_wire_amount && _listingSideChecks.length == 0) {
+      setSelectValueListingSide(1)
+    } else if (!_dealData.remittance_listing_side_bank_wire_amount && _listingSideChecks.length > 0) {
+      setSelectValueListingSide(0)
+    } else {
+      setSelectValueListingSide(-1)
+    }
+
+    if (_dealData.remittance_buy_side_bank_wire_amount && _buySideChecks.length == 0) {
+      setSelectValueBuySide(1)
+    } else if (!_dealData.remittance_buy_side_bank_wire_amount && _buySideChecks.length > 0 ) {
+      setSelectValueBuySide(0)
+    } else {
+      setSelectValueBuySide(-1)
+    }
     _setRemittanceChecks([..._buySideChecks, ..._listingSideChecks])
   }, [_dealData, buySideChecks, listingSideChecks])
 

@@ -46,6 +46,7 @@ export interface IDealData {
   status: string;
   submitted: number; // -1: unsubmitted or submit failed, 1: submitted, 2: should be submitted again
   current_step: number;
+  deal_status: string;
 }
 
 export interface IRoleData {
@@ -195,6 +196,7 @@ export interface IPaymentData {
 export interface ICreditData {
   id: number | null;
   deal: string;
+  credit_id: string;
   credit_side: string;
   credit_amount: string;
   credit_to: string;

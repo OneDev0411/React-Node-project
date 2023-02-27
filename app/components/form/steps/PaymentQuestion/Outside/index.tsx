@@ -23,7 +23,7 @@ const PaymentQuestionOutside: React.FC<IQuestionProps> = ({
   const [showButton, setShowButton] = useState<boolean>(true)
 
   useEffect(() => {
-    if (submitted === 1 || currentStep > step)
+    if (currentStep > step)
       setShowButton(false)
     else
       setShowButton(true)

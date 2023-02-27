@@ -220,6 +220,7 @@ export const defaultTransData: ITransData = {
 export const defaultCreditData: ICreditData[] = [{
   id: null,
   deal: "",
+  credit_id: "",
   credit_amount: "",
   credit_side: "",
   credit_to: ""
@@ -269,6 +270,7 @@ export const defaultDealData: IDealData = {
   status: "",
   submitted: 0,
   current_step: 2,
+  deal_status: ""
 };
 
 export const APP_URL = "https://apps-de-commission-slip-wahuot5mja-uc.a.run.app";

@@ -17,13 +17,13 @@ const CreditItemComponent: React.FC<CreditItemProps> = ({
   const amountEvent = document.getElementById(`credit${index}`)
   amountEvent?.addEventListener('focusout', () => {
     let displayValue = stylizeNumber(Number(amount))
+    let temp: ICreditData = credits
+    temp.credit_amount = amount
     setAmount(displayValue)
+    updateCredit(temp, index)
   })
   const handleChangeAmount = (value: string) => {
     setAmount(value)
-    let temp: ICreditData = credits
-    temp.credit_amount = value
-    updateCredit(temp, index)
   }
 
   useEffect(() => {

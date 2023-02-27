@@ -9,7 +9,8 @@ const StartQuestion: React.FC<IQuestionProps> = ({
   Wizard,
   utils,
   hooks: { useWizardContext },
-  models: { deal }
+  models: { deal },
+  isFlorida
 }) => {
   const { useEffect } = React
   const { QuestionSection, QuestionTitle } = Wizard

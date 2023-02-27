@@ -10,7 +10,8 @@ const LastQuestion: React.FC<IQuestionProps> = ({
   utils,
   api: { notifyOffice, close },
   hooks: { useWizardContext },
-  models: { deal }
+  models: { deal },
+  isFlorida
 }) => {
   const { useState } = React
   const { QuestionSection, QuestionTitle, QuestionForm } = Wizard
@@ -46,18 +47,22 @@ const LastQuestion: React.FC<IQuestionProps> = ({
         data: total_data,
       }
     )
-    if (submitted === 2 && !isBackOffice) {
-      let postData: IDealData = { ...dealData }
-      postData.approval_request_date = ""
-      postData.status = ""
-      await axios.post(
-        `${APP_URL}/rechat-commission-app-approve`,
-        {
-          data: postData,
-        }
-      )
-    } else if (submitted === 2 && isBackOffice) {
+    if (isFlorida) {
       utils.isReview = true
+    } else {
+      if (submitted === 2 && !isBackOffice) {
+        let postData: IDealData = { ...dealData }
+        postData.approval_request_date = ""
+        postData.status = ""
+        await axios.post(
+          `${APP_URL}/rechat-commission-app-approve`,
+          {
+            data: postData,
+          }
+        )
+      } else if (submitted === 2 && isBackOffice) {
+        utils.isReview = true
+      }
     }
     if (setSubmitted !== undefined)
       setSubmitted(1)

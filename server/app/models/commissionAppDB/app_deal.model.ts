@@ -41,6 +41,9 @@ export default (sequelize, Sequelize) => {
       current_step: {
         type: Sequelize.NUMERIC,
       },
+      deal_status: {
+        type: Sequelize.TEXT
+      },
       object: {
         type: Sequelize.JSONB,
       },

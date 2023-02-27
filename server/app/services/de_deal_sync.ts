@@ -10,7 +10,7 @@ import axios from "axios";
 import { QueryTypes } from "sequelize";
 import db from "../models/commissionAppDB";
 
-const { AppFeeModel, AppDealNumberModel } = db;
+const { AppFeeModel, AppDealNumberModel, AppTransCoordinatorModel, AppDealModel } = db;
 
 const getState = async (deal: any) => {
   const result = await commissionDB.DealModel.findOne({
@@ -478,7 +478,7 @@ const getBrandsFromDeal = (brand, brands) => {
 const sync = async (deal) => {
   if (!deal.faired_at)
     return; 
-
+  const dealStatus = deal.context.listing_status.text
   const token = await getToken();
 
   const state = await getState(deal.id);
@@ -698,6 +698,12 @@ const sync = async (deal) => {
     attributes: { exclude: ["created_at", "updated_at"] },
   })
 
+  const TCEmail = await AppTransCoordinatorModel.findOne({
+    where: {
+      deal: deal.id
+    }
+  })
+
   const tempFeeData = new Array();
   const tempFeeType = new Array();
   
@@ -785,6 +791,8 @@ const sync = async (deal) => {
       Status: approvalInfo.status !== "Approved" ? "Draft" : region_details.status,
       DealCreatedBy: "N/A",
       ProjectedClosingDate: DealDate,
+      TCEmail: TCEmail.trans_coordinator === "Yes" ? TCEmail.email_address : "",
+      TransactionStatus: dealStatus,
 
       ...leaseAttributes,
       ...saleAttributes,
