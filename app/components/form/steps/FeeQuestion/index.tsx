@@ -30,7 +30,7 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
 			let feeItem: IFeeData = {
 				id: null,
 				deal: deal.id,
-				deal_side: 0,
+				deal_side: item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral" ? 1 : 0,
 				fee_type: '',
 				fee_amount: item.share_value ? stylizeNumber(item.share_value) : '',
 				fee_amount_percentage: item.share_percent? stylizeNumber(item.share_percent): '',
