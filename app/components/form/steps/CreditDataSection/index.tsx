@@ -99,6 +99,7 @@ const CreditQuestion: React.FC<IQuestionProps> = ({
                 credits={item}
                 index={index}
                 updateCredit={updateCredit}
+                setShowButton={setShowButton}
               />
             )}
           </Box>
@@ -122,6 +123,7 @@ const CreditQuestion: React.FC<IQuestionProps> = ({
                 credits={item}
                 index={index}
                 updateCredit={updateCredit}
+                setShowButton={setShowButton}
               />
             )}
           </Box>

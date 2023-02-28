@@ -46,7 +46,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   const [declineMsg, setDeclineMsg] = useState<string>('')
   const [feedback, setFeedback] = useState<string>('')
   const [openFeedback, setOpenFeedback] = useState<boolean>(false)
-  const [_feeData, _setFeeData] = useState<IFeeData[]>(feeData)
+  const [_feeData, _setFeeData] = useState<IFeeData[]>([])
 
   const gciDeValue = dealData.gci_de_value
   const gciDePercent = parseFloat((gciDeValue / price * 100).toFixed(3))
@@ -267,7 +267,8 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   }
 
   useEffect(() => {
-    _setFeeData(feeData)
+    let _tempFeeData = feeData.filter((item) => item.fee_amount !== '0' && item.fee_amount_percentage !== "0")
+    _setFeeData(_tempFeeData)
   },[feeData])
 
   return (

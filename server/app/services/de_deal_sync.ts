@@ -435,6 +435,14 @@ const getSaleAttributes = ({ deal, roles }) => {
     .first()
     .value();
 
+  const EscrowCompany = _.chain(roles)
+    .filter({
+      role: "Title",
+    })
+    .map("company_title")
+    .first()
+    .value();
+
   const BuySideAgency = _.find(roles, isBuyside).company_title;
   const ListSideAgency = _.find(roles, isSellside).company_title;
   const BuyerAgent = _.find(roles, isBuyside).legal_full_name;
@@ -454,6 +462,7 @@ const getSaleAttributes = ({ deal, roles }) => {
     SellerName,
     EscrowOfficer,
     EscrowOfficerEmail,
+    EscrowCompany,
 
     DealType: "Sales",
 

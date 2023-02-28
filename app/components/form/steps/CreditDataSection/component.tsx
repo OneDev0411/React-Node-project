@@ -7,7 +7,8 @@ import { stylizeNumber } from '../../../../util'
 const CreditItemComponent: React.FC<CreditItemProps> = ({
   credits,
   index,
-  updateCredit
+  updateCredit,
+  setShowButton
 }) => {
   const { useState, useEffect } = React
   const { Grid, Box, TextField } = Ui
@@ -17,12 +18,13 @@ const CreditItemComponent: React.FC<CreditItemProps> = ({
   const amountEvent = document.getElementById(`credit${index}`)
   amountEvent?.addEventListener('focusout', () => {
     let displayValue = stylizeNumber(Number(amount))
+    setAmount(displayValue)
     let temp: ICreditData = credits
     temp.credit_amount = amount
-    setAmount(displayValue)
     updateCredit(temp, index)
   })
   const handleChangeAmount = (value: string) => {
+    setShowButton(true)
     setAmount(value)
   }
 

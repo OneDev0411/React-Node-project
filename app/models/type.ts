@@ -245,7 +245,8 @@ export interface ITransData {
 export interface CreditItemProps {
   credits: ICreditData;
   index: number;
-  updateCredit: (item: ICreditData, index: number) => void
+  updateCredit: (item: ICreditData, index: number) => void;
+  setShowButton: (value: boolean) => void;
 }
 export interface FeeQuestionProps {
   Components: CoreComponents;

@@ -76,8 +76,7 @@ const CommissionInstruction: React.FC<IQuestionProps> = ({
           <Button
             variant="contained"
             onClick={handleClickNextButton}
-            style={addNote?.length ? { marginBottom: 20, backgroundColor: "#0fb78d", color: "white" } : {}}
-            disabled={!addNote?.length}
+            style={{ marginBottom: 20, backgroundColor: "#0fb78d", color: "white" }}
           >
             Looks Good, Next
           </Button>

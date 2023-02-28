@@ -32,8 +32,8 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
 				deal: deal.id,
 				deal_side: item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral" ? 1 : 0,
 				fee_type: '',
-				fee_amount: item.share_value ? stylizeNumber(item.share_value) : '',
-				fee_amount_percentage: item.share_percent? stylizeNumber(item.share_percent): '',
+        fee_amount: '0',
+        fee_amount_percentage: '0',
 				fee_from: 0,
 				fee_paid: 1,
 				fee_unit: item.share_percent ? 0 : 1,
@@ -100,8 +100,8 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
       deal: deal.id,
 			deal_side: 0,
       fee_type: "",
-      fee_amount: "",
-      fee_amount_percentage: "",
+      fee_amount: "0",
+      fee_amount_percentage: "0",
 			fee_from: 0,
 			fee_paid: 1,
       fee_unit: 0,
@@ -145,38 +145,40 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
     if (isNevada && creditData) {
       let _emptyCreditFee: IFeeData[] = JSON.parse(JSON.stringify(_creditFee))
       creditData.forEach((item: ICreditData) => {
-        if (item.credit_side === "Seller") {
-          let _feeItem: IFeeData = {
-            id: null,
-            deal: deal.id,
-            deal_side: 1,
-            fee_type: "Credit given by Agent (Seller)",
-            fee_amount: item.credit_amount ? item.credit_amount : "0.00",
-            fee_amount_percentage: "",
-            fee_from: 0,
-            fee_paid: 1,
-            fee_unit: 1,
-            fee_method: 0,
-            agent_name: '',
-            key_Index: _creditFee.length
+        if (item.credit_amount === '0') {
+          if (item.credit_side === "Seller") {
+            let _feeItem: IFeeData = {
+              id: null,
+              deal: deal.id,
+              deal_side: 1,
+              fee_type: "Credit given by Agent (Seller)",
+              fee_amount: item.credit_amount ? item.credit_amount : "0.00",
+              fee_amount_percentage: "",
+              fee_from: 0,
+              fee_paid: 1,
+              fee_unit: 1,
+              fee_method: 0,
+              agent_name: _feeAgents[0].legal_full_name,
+              key_Index: _creditFee.length
+            }
+            _emptyCreditFee.push(_feeItem)
+          } else if (item.credit_side === "Buyer") {
+            let _feeItem: IFeeData = {
+              id: null,
+              deal: deal.id,
+              deal_side: 0,
+              fee_type: "Credit given by Agent (Buyer)",
+              fee_amount: item.credit_amount ? item.credit_amount : "0.00",
+              fee_amount_percentage: "",
+              fee_from: 0,
+              fee_paid: 1,
+              fee_unit: 1,
+              fee_method: 0,
+              agent_name: _feeAgents[0].legal_full_name,
+              key_Index: _creditFee.length
+            }
+            _emptyCreditFee.push(_feeItem)
           }
-          _emptyCreditFee.push(_feeItem)
-        } else if (item.credit_side === "Buyer") {
-          let _feeItem: IFeeData = {
-            id: null,
-            deal: deal.id,
-            deal_side: 1,
-            fee_type: "Credit given by Agent (Buyer)",
-            fee_amount: item.credit_amount ? item.credit_amount : "0.00",
-            fee_amount_percentage: "",
-            fee_from: 0,
-            fee_paid: 1,
-            fee_unit: 1,
-            fee_method: 0,
-            agent_name: '',
-            key_Index: _creditFee.length
-          }
-          _emptyCreditFee.push(_feeItem)
         }
       })
       _setCreditFee(_emptyCreditFee)
