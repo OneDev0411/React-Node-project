@@ -65,7 +65,6 @@ const App: React.FC<EntryProps> = ({
         deal: deal.id,
       }
     );
-    console.log('dealStatus', dealStatus)
     let data = res.data.data;
     // context initial agent data
     let agentRoles: IDealRole[] = roles.filter(

@@ -48,6 +48,13 @@ const CommissionInstruction: React.FC<IQuestionProps> = ({
     setAddNote(notes.note)
   }, [notes])
 
+  useEffect(() => {
+    if (currentStep > step)
+      wizard.goto(currentStep)
+    else
+      setShowButton(true)
+  }, [])
+
 
   return (
     <QuestionSection>

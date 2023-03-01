@@ -719,7 +719,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
           </Grid>
         )}
         
-        <Grid container style={styles.group}>
+        {sellers.length > 0 && <Grid container style={styles.group}>
           <Grid item xs={12} style={styles.group_title}>
             <label>{deal.property_type.is_lease ? "LANDLORD(S)" : "SELLER(S)"}</label>
           </Grid>
@@ -733,9 +733,9 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
               </Grid>
             </React.Fragment>
           )}
-        </Grid>
+        </Grid>}
         
-        <Grid container style={styles.group}>
+        {buyers.length > 0 && <Grid container style={styles.group}>
           <Grid item xs={12} style={styles.group_title}>
             <label>{deal.property_type.is_lease ? "TENANT(S)" : "BUYER(S)"}</label>
           </Grid>
@@ -749,15 +749,17 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
               </Grid>
             </React.Fragment>
           )}
-        </Grid>
-        <Grid container style={styles.group}>
-          <Grid item xs={2}>
-            <label>Notes</label>
+        </Grid>}
+        {notes.note.length > 0 && 
+          <Grid container style={styles.group}>
+            <Grid item xs={2}>
+              <label>Notes</label>
+            </Grid>
+            <Grid item xs={3}>
+              {notes.note}
+            </Grid>
           </Grid>
-          <Grid item xs={3}>
-            {notes.note}
-          </Grid>
-        </Grid>
+        }
       </Grid>
       
       <Box style={{ marginTop: '20px' }}>

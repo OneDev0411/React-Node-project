@@ -22,26 +22,44 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
 	const [_tempFeeData, _setTempFeeData] = useState<IFeeData[]>([])
   const [_creditFee, _setCreditFee] = useState<IFeeData[]>([])
 
-	const _feeAgents = roleData.filter((item: IRoleData) => item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral" || item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral")
+	const _feeAgents = roles.filter((item: IDealRole) => (item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral" || item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral") && item.company_title === "de")
 
   useEffect(() => {
     let tempFeeData: IFeeData[] = JSON.parse(JSON.stringify(_tempFeeData))
 		_feeAgents.map((item, id) => {
-			let feeItem: IFeeData = {
-				id: null,
-				deal: deal.id,
-				deal_side: item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral" ? 1 : 0,
-				fee_type: '',
-        fee_amount: '0',
-        fee_amount_percentage: '0',
-				fee_from: 0,
-				fee_paid: 1,
-				fee_unit: item.share_percent ? 0 : 1,
-				fee_method: 0,
-				key_Index: id,
-				agent_name: item.legal_full_name
-			}
-			tempFeeData.push(feeItem)
+      if (deal.deal_type === "Selling" && (item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral")) {
+        let feeItem: IFeeData = {
+          id: null,
+          deal: deal.id,
+          deal_side: 1,
+          fee_type: '',
+          fee_amount: '0',
+          fee_amount_percentage: '0',
+          fee_from: 0,
+          fee_paid: 1,
+          fee_unit: item.commission_percentage ? 0 : 1,
+          fee_method: 0,
+          key_Index: id,
+          agent_name: item.legal_full_name
+        }
+  			tempFeeData.push(feeItem)
+      } else if (deal.deal_type === "Buying" && (item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral")) {
+        let feeItem: IFeeData = {
+          id: null,
+          deal: deal.id,
+          deal_side: 0,
+          fee_type: '',
+          fee_amount: '0',
+          fee_amount_percentage: '0',
+          fee_from: 0,
+          fee_paid: 1,
+          fee_unit: item.commission_percentage ? 0 : 1,
+          fee_method: 0,
+          key_Index: id,
+          agent_name: item.legal_full_name
+        }
+        tempFeeData.push(feeItem)
+      }
 		})
 		if (setFeeData != undefined) {
 			setFeeData(tempFeeData)
