@@ -267,7 +267,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   }
 
   useEffect(() => {
-    let _tempFeeData = feeData.filter((item) => item.fee_amount !== '0' && item.fee_amount_percentage !== "0")
+    let _tempFeeData = feeData.filter((item) => !(item.fee_amount === '0' && item.fee_amount_percentage === "0"))
     _setFeeData(_tempFeeData)
   },[feeData])
 

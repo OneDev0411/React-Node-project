@@ -3,7 +3,6 @@ import Ui from "@libs/material-ui"
 import useApp from "../../../../hooks/useApp"
 import { IQuestionProps, IFeeData, IRoleData, ICreditData } from "../../../../models/type"
 import FeeQuestionComponent from "./item"
-import { stylizeNumber } from "../../../../util"
 
 const FeeQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
@@ -16,55 +15,58 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
   const { Box, Button } = Ui
   const wizard = useWizardContext()
   const { step } = useSectionContext()
-  const { dealData, setDealData, currentStep, setCurrentStep, setFeeData, roleData, creditData } = useApp()
+  const { dealData, setDealData, currentStep, setCurrentStep, feeData, setFeeData, roleData, creditData } = useApp()
 
   const [showButton, setShowButton] = useState<boolean>(false)
 	const [_tempFeeData, _setTempFeeData] = useState<IFeeData[]>([])
   const [_creditFee, _setCreditFee] = useState<IFeeData[]>([])
 
-	const _feeAgents = roles.filter((item: IDealRole) => (item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral" || item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral") && item.company_title === "de")
+	const _feeAgents = roles.filter((item: IDealRole) => item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral" || item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral")
 
   useEffect(() => {
     let tempFeeData: IFeeData[] = JSON.parse(JSON.stringify(_tempFeeData))
-		_feeAgents.map((item, id) => {
-      if (deal.deal_type === "Selling" && (item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral")) {
-        let feeItem: IFeeData = {
-          id: null,
-          deal: deal.id,
-          deal_side: 1,
-          fee_type: '',
-          fee_amount: '0',
-          fee_amount_percentage: '0',
-          fee_from: 0,
-          fee_paid: 1,
-          fee_unit: item.commission_percentage ? 0 : 1,
-          fee_method: 0,
-          key_Index: id,
-          agent_name: item.legal_full_name
+    if (feeData[0].fee_amount_percentage === "" && feeData[0].fee_amount === "") {
+      _feeAgents.map((item, id) => {
+        if (deal.deal_type === "Selling" && (item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral")) {
+          let feeItem: IFeeData = {
+            id: null,
+            deal: deal.id,
+            deal_side: 1,
+            fee_type: '',
+            fee_amount: '0',
+            fee_amount_percentage: '0',
+            fee_from: 0,
+            fee_paid: 1,
+            fee_unit: item.commission_percentage ? 0 : 1,
+            fee_method: 0,
+            key_Index: id,
+            agent_name: item.legal_full_name
+          }
+          tempFeeData.push(feeItem)
+        } else if (deal.deal_type === "Buying" && (item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral")) {
+          let feeItem: IFeeData = {
+            id: null,
+            deal: deal.id,
+            deal_side: 0,
+            fee_type: '',
+            fee_amount: '0',
+            fee_amount_percentage: '0',
+            fee_from: 0,
+            fee_paid: 1,
+            fee_unit: item.commission_percentage ? 0 : 1,
+            fee_method: 0,
+            key_Index: id,
+            agent_name: item.legal_full_name
+          }
+          tempFeeData.push(feeItem)
         }
-  			tempFeeData.push(feeItem)
-      } else if (deal.deal_type === "Buying" && (item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral")) {
-        let feeItem: IFeeData = {
-          id: null,
-          deal: deal.id,
-          deal_side: 0,
-          fee_type: '',
-          fee_amount: '0',
-          fee_amount_percentage: '0',
-          fee_from: 0,
-          fee_paid: 1,
-          fee_unit: item.commission_percentage ? 0 : 1,
-          fee_method: 0,
-          key_Index: id,
-          agent_name: item.legal_full_name
-        }
-        tempFeeData.push(feeItem)
-      }
-		})
-		if (setFeeData != undefined) {
-			setFeeData(tempFeeData)
-		}
-		_setTempFeeData(tempFeeData)
+      })
+      if (setFeeData !== undefined)
+        setFeeData(tempFeeData)
+      _setTempFeeData(tempFeeData)
+    } else {
+      _setTempFeeData(feeData)
+    }
   }, [])
 
   const handleClickNextButton = () => {

@@ -157,10 +157,9 @@ const App: React.FC<EntryProps> = ({
           });
           setRoleData(_roleData);
         }
-
-        let tempRemittanceChecks = data.remittanceChecks;
-        if (setRemittanceChecks !== undefined) {
-          setRemittanceChecks(tempRemittanceChecks);
+        let tempFeeData = data.feeData
+        if(setFeeData !== undefined) {
+          setFeeData(tempFeeData)
         }
         let tempInsidePayments = data.payments.filter((item: IPayment) => item.payment_side === "inside");
         let tempOutsidePayments = data.payments.filter((item: IPayment) => item.payment_side === "outside");
@@ -170,12 +169,12 @@ const App: React.FC<EntryProps> = ({
         if (setOutsidePayments !== undefined) {
           setOutsidePayments(tempOutsidePayments);
         }
+        let tempRemittanceChecks = data.remittanceChecks;
+        if (setRemittanceChecks !== undefined) {
+          setRemittanceChecks(tempRemittanceChecks);
+        }
         if (setCurrentStep !== undefined) {
           setCurrentStep(Number(tempDealData.current_step));
-        }
-        let tempFeeData = data.feeData
-        if(setFeeData !== undefined) {
-          setFeeData(tempFeeData)
         }
         if (setDealNumber !== undefined) {
           if (data.dealNumber) {
