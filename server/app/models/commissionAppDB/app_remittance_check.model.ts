@@ -19,7 +19,7 @@ export default (sequelize, Sequelize) => {
         allowNull: false,
       },
       amount: {
-        type: Sequelize.NUMERIC,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       deal_side: {

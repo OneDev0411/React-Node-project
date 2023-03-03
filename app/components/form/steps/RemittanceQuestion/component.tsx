@@ -39,7 +39,7 @@ const CheckDataItemComponent: React.FC<IChecksItemProps> = ({
 
   useEffect(() => {
     if (checkData) {
-      let _checkDataAmount = stylizeNumber(checkData.amount)
+      let _checkDataAmount = stylizeNumber(Number(String(checkData.amount).replace(/\,/g,'')))
       setCheckDataAmount(_checkDataAmount)
     } else {
       setCheckDataAmount('0')

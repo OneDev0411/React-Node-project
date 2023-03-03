@@ -233,7 +233,7 @@ export const defaultRemittanceChecks: IRemittanceChecks[] = [
     check_num: 0,
     check_date: new Date(),
     check_receive_date: new Date(),
-    amount: 0,
+    amount: '0',
     deal_side: "",
   },
 ];

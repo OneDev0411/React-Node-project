@@ -172,7 +172,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
   }
   const deOfficeAddress = getDEOfficeAddress(deal.brand)
 
-  const escrowTitleEmailAddress = roles.filter((item: IDealRole) => item.role === "Title")
+  const escrowTitleCompanyInfo = roles.filter((item: IDealRole) => item.role === "Title")
 
   const handleClickApprove = async () => {
     wizard.setLoading(true)
@@ -291,7 +291,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
                 <label>Deal Number:&nbsp;</label>{dealNumber.deal_number}
               </Grid>}
             {isNevada &&
-              escrowTitleEmailAddress.map((item: IDealRole) => 
+              escrowTitleCompanyInfo.map((item: IDealRole) => 
                 <Grid item>
                   <label>Escrow/Title Office email address:&nbsp;</label>{item.email}
                 </Grid>
@@ -317,6 +317,25 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             </Grid>
           </Grid>
         </Grid>
+        {(escrowTitleCompanyInfo.length > 0 && isFlorida ) && <Grid container style={styles.group}>
+          <Grid item xs={12} style={styles.group_title}>
+            <label>{isFlorida ? 'Title/Closing Company' : 'Escrow Company'}</label>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={3}>
+              <label>First Name:&nbsp;</label>{escrowTitleCompanyInfo[0].legal_first_name}
+            </Grid>
+            <Grid item xs={3}>
+              <label>Last Name:&nbsp;</label>{escrowTitleCompanyInfo[0].legal_last_name}
+            </Grid>
+            <Grid item xs={3}>
+              <label>Email Address:&nbsp;</label>{escrowTitleCompanyInfo[0].email}
+            </Grid>
+            <Grid item xs={3}>
+              <label>Company Title:&nbsp;</label>{escrowTitleCompanyInfo[0].company_title}
+            </Grid>
+          </Grid>
+        </Grid>}
         {isNevada && transCoordinator && 
           <Grid container style={styles.group}>
             <Grid item xs={12} style={styles.group_title}>

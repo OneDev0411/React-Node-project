@@ -29,7 +29,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     check_num: 0,
     check_date: new Date(),
     check_receive_date: new Date(),
-    amount: 0,
+    amount: '0',
     deal_side: "",
   }
   let defaultChecksData: IRemittanceChecks[] = defaultRemittanceChecks
@@ -99,7 +99,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     let temp = buySideChecks.slice()
     let addedCheckData = buySideCheckData
     temp.push(defaultCheckData)
-    addedCheckData.push(stylizeNumber(defaultCheckData.amount))
+    addedCheckData.push(stylizeNumber(Number(String(defaultCheckData.amount).replace(/\,/g,''))))
     setBuySideChecks(temp)
   }
 
@@ -113,7 +113,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     let temp = listingSideChecks.slice()
     let addedCheckData = listingSideCheckData
     temp.push(defaultCheckData)
-    addedCheckData.push(stylizeNumber(defaultCheckData.amount))
+    addedCheckData.push(stylizeNumber(Number(String(defaultCheckData.amount).replace(/\,/g,''))))
     setListingSideChecks(temp)
   }
 
@@ -180,7 +180,7 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
   }
 
   const updateChecksData = (checksData: IRemittanceChecks[]) => {
-    let updatedResult = checksData.map((item) => {return stylizeNumber(item.amount)})
+    let updatedResult = checksData.map((item) => {return stylizeNumber(Number(String(item.amount).replace(/\,/g,'')))})
     return updatedResult
   }
 
@@ -194,8 +194,8 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
 
     if (submitted === 1 || 
         dealData.current_step > step || 
-        (showBuy && (!_buySideChecks.length || (_buySideChecks.length && _buySideChecks[0].check_num == 0 && _buySideChecks[0].amount == 0)) && _dealData.remittance_buy_side_bank_wire_amount == null) ||
-        (showSell && (!_listingSideChecks.length || (_listingSideChecks.length && _listingSideChecks[0].check_num == 0 && _listingSideChecks[0].amount == 0)) && _dealData.remittance_listing_side_bank_wire_amount == null)
+        (showBuy && (!_buySideChecks.length || (_buySideChecks.length && _buySideChecks[0].check_num == 0 && _buySideChecks[0].amount === '')) && _dealData.remittance_buy_side_bank_wire_amount == null) ||
+        (showSell && (!_listingSideChecks.length || (_listingSideChecks.length && _listingSideChecks[0].check_num == 0 && _listingSideChecks[0].amount === '')) && _dealData.remittance_listing_side_bank_wire_amount == null)
     ) {
       setShowButton(false)
     }
@@ -221,9 +221,9 @@ const RemittanceQuestion: React.FC<IQuestionProps> = ({
     }
   }, [])
 
-  useEffect(() => {    
-    const _buySideChecks = buySideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0)
-    const _listingSideChecks = listingSideChecks.filter((item) => item.check_num !== 0 && item.amount !== 0)
+  useEffect(() => {
+    const _buySideChecks = buySideChecks.filter((item) => !(item.check_num === 0 && item.amount === "0"))
+    const _listingSideChecks = listingSideChecks.filter((item) => !(item.check_num === 0 && item.amount === "0"))
     if (_dealData.remittance_listing_side_bank_wire_amount && _listingSideChecks.length == 0) {
       setSelectValueListingSide(1)
     } else if (!_dealData.remittance_listing_side_bank_wire_amount && _listingSideChecks.length > 0) {

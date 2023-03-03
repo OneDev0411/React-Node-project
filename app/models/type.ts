@@ -68,7 +68,7 @@ export interface IRemittanceChecks {
   check_num: number;
   check_date: Date;
   check_receive_date: Date;
-  amount: number;
+  amount: string;
   deal_side: string;
 }
 
