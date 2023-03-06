@@ -67,6 +67,7 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
 
   useEffect(() => {
     if (_dealNumberFromContext) {
+      setShowButton(false)
       _setDealNumber(_dealNumberFromContext)
     } else if (dealNumber.deal_number.length == 0) {
       _setDealNumber('')
