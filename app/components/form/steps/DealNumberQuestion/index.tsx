@@ -7,7 +7,8 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
   Wizard: { QuestionSection, QuestionTitle, QuestionForm },
   hooks: { useWizardContext, useSectionContext },
   utils: {isBackOffice},
-  models: { deal }
+  models: { deal },
+  api: {getDealContext, updateDealContext}
 }) => {
   const { useState, useEffect } = React
   const { Box, TextField, Grid, Button } = Ui
@@ -20,6 +21,8 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
   const [errorFlag, setErrorFlag] = useState<boolean>(false)
   const [showButton, setShowButton] = useState<boolean>(true)
   const [helperText, setHelperText] = useState<string>('')
+
+  const _dealNumberFromContext = getDealContext("deal_number")?.text
 
   const onChangeValue = (value: string) => {
     setShowButton(true)
@@ -39,6 +42,7 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
       setHelperText('Please enter the Deal Number')
       return
     } else {
+      updateDealContext("deal_number", _dealNumber)
       setShowButton(false)
       let _tempDealNumber = dealNumber
       _tempDealNumber.deal_number = _dealNumber
@@ -62,7 +66,9 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
   }
 
   useEffect(() => {
-    if (dealNumber.deal_number.length == 0) {
+    if (_dealNumberFromContext) {
+      _setDealNumber(_dealNumberFromContext)
+    } else if (dealNumber.deal_number.length == 0) {
       _setDealNumber('')
     } else {
       setShowButton(false)

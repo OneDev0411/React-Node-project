@@ -21,13 +21,16 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
 	const [_tempFeeData, _setTempFeeData] = useState<IFeeData[]>([])
   const [_creditFee, _setCreditFee] = useState<IFeeData[]>([])
 
+  const enderType = deal.context.ender_type?.text;
+  const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
+
 	const _feeAgents = roles.filter((item: IDealRole) => item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral" || item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral")
 
   useEffect(() => {
     let tempFeeData: IFeeData[] = JSON.parse(JSON.stringify(_tempFeeData))
     if (feeData[0].fee_amount_percentage === "" && feeData[0].fee_amount === "") {
       _feeAgents.map((item, id) => {
-        if (deal.deal_type === "Selling" && (item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral")) {
+        if ((dealType === "Selling" || dealType === "Both") && (item.role === "SellerAgent" || item.role === "CoSellerAgent" || item.role === "SellerReferral")) {
           let feeItem: IFeeData = {
             id: null,
             deal: deal.id,
@@ -43,7 +46,7 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
             agent_name: item.legal_full_name
           }
           tempFeeData.push(feeItem)
-        } else if (deal.deal_type === "Buying" && (item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral")) {
+        } if ((dealType === "Buying" || dealType === "Both") && (item.role === "BuyerAgent" || item.role === "CoBuyerAgent" || item.role === "BuyerReferral")) {
           let feeItem: IFeeData = {
             id: null,
             deal: deal.id,
