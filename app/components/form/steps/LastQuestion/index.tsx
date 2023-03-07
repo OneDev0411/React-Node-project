@@ -11,7 +11,8 @@ const LastQuestion: React.FC<IQuestionProps> = ({
   api: { notifyOffice, close },
   hooks: { useWizardContext },
   models: { deal },
-  isFlorida
+  isFlorida,
+  isNevada
 }) => {
   const { useState } = React
   const { QuestionSection, QuestionTitle, QuestionForm } = Wizard
@@ -47,7 +48,7 @@ const LastQuestion: React.FC<IQuestionProps> = ({
         data: total_data,
       }
     )
-    if (isFlorida) {
+    if (isFlorida || (isNevada && isBackOffice)) {
       utils.isReview = true
     } else {
       if (submitted === 2 && !isBackOffice) {

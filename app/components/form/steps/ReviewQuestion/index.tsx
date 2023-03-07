@@ -317,7 +317,7 @@ const ReviewQuestion: React.FC<IQuestionProps> = ({
             </Grid>
           </Grid>
         </Grid>
-        {(escrowTitleCompanyInfo.length > 0 && isFlorida ) && <Grid container style={styles.group}>
+        {(escrowTitleCompanyInfo.length > 0) && <Grid container style={styles.group}>
           <Grid item xs={12} style={styles.group_title}>
             <label>{isFlorida ? 'Title/Closing Company' : 'Escrow Company'}</label>
           </Grid>

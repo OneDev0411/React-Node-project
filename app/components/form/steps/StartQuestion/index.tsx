@@ -16,8 +16,6 @@ const StartQuestion: React.FC<IQuestionProps> = ({
   const { QuestionSection, QuestionTitle } = Wizard
   const wizard = useWizardContext()
   const { currentStep, setSubmitted, dealNumber, setDealNumber } = useApp()
-  const isBackOffice = utils.isBackOffice
-  const { Box, Button } = Ui
   const total_data: AppContextApi = useApp()
 
   // mockup loading, need to remove after the backend is implemented
@@ -34,40 +32,11 @@ const StartQuestion: React.FC<IQuestionProps> = ({
     }, 80)
   }, [])
 
-  const handleSubmit = async () => {
-    wizard.setLoading(true)
-    const res = await axios.post(
-      `${APP_URL}/rechat-commission-app-data-save`,
-      {
-        data: total_data,
-      }
-    )
-    utils.isReview = true
-    if (setSubmitted !== undefined)
-      setSubmitted(1)
-    if (res.data.message === "successful")
-    wizard.setLoading(false)
-  }
-
   return (
     <QuestionSection>
       <QuestionTitle>
         Awesome🎉 let's get a few questions answered and get you paid.
       </QuestionTitle>
-      {isBackOffice && (
-        <Box style={{ textAlign: "right" }}>
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            style={{
-              backgroundColor: "#0fb78d",
-              color: "white",
-            }}
-          >
-            Review
-          </Button>
-        </Box>
-      )}
     </QuestionSection>
   )
 }

@@ -78,7 +78,7 @@ const DealNumberQuestion: React.FC<IQuestionProps> = ({
   }, [dealNumber])
 
   useEffect(() => {
-    if (currentStep > step)
+    if (currentStep > step && _dealNumberFromContext)
       wizard.goto(step + 1)
     else
       setShowButton(true)

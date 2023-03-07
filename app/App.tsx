@@ -217,23 +217,19 @@ const App: React.FC<EntryProps> = ({
           }
         }
         if (setCreditData !== undefined) {
-          if (data.creditData) {
-            setCreditData(data.creditData)
-          } else if (data.creditData == null) {
-            let creditRoles = roles.filter((role: IDealRole) => role.role === "Seller" || role.role==="Buyer")
-            let tmpCredit: ICreditData[] = creditRoles.map((creditRole: IDealRole) => {
-              let {id, legal_full_name, role} = creditRole
-              return {
-                id: null,
-                deal: deal.id,
-                credit_id: id,
-                credit_side: role,
-                credit_to: legal_full_name,
-                credit_amount: ""
-              }
-            })
-            setCreditData(tmpCredit)
-          }
+          let creditRoles = roles.filter((role: IDealRole) => role.role === "Seller" || role.role==="Buyer")
+          let tmpCredit: ICreditData[] = creditRoles.map((creditRole: IDealRole) => {
+            let {id, legal_full_name, role} = creditRole
+            return {
+              id: null,
+              deal: deal.id,
+              credit_id: id,
+              credit_side: role,
+              credit_to: legal_full_name,
+              credit_amount: ""
+            }
+          })
+          setCreditData(tmpCredit)
         }
       } else { // in case of data doesn't exist in database, set default data
         if (setDealData !== undefined) {

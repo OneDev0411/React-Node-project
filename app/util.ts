@@ -213,7 +213,7 @@ export const defaultDocStatus: IDocStatus = {
 
 export const defaultTransData: ITransData = {
   deal: "",
-  trans_coordinator: "No",
+  trans_coordinator: "",
   email_address: ""
 }
 
