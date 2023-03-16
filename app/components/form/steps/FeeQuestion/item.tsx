@@ -1,4 +1,5 @@
 import Ui from "@libs/material-ui"
+import React from "@libs/react"
 import { FeeQuestionProps, IFeeData } from "../../../../models/type"
 import FeeItemComponent from "./component"
 
@@ -9,7 +10,14 @@ const FeeQuestionComponent: React.FC<FeeQuestionProps> = ({
 	handleClickRemoveFee,
 	updateFeeData
 }) => {
+	const { useState, useEffect } = React
 	const { Box, Button } = Ui
+
+	const [_tempFeeData, _setTempFeeData] = useState<IFeeData[]>(tempFeeData)
+
+	useEffect(() => {
+		_setTempFeeData(tempFeeData)
+	}, [tempFeeData])
 
   return (
 		<>

@@ -15,13 +15,13 @@ const CreditItemComponent: React.FC<CreditItemProps> = ({
 
   const [amount, setAmount] = useState<string>("")
 
-  const amountEvent = document.getElementById(`credit${index}`)
+  const amountEvent = credits.credit_side === "Seller" ? document.getElementById(`seller${index}`) : document.getElementById(`buyer${index}`)
   amountEvent?.addEventListener('focusout', () => {
     let displayValue = stylizeNumber(Number(amount))
     setAmount(displayValue)
     let temp: ICreditData = credits
     temp.credit_amount = amount
-    updateCredit(temp, index)
+    updateCredit(temp, index, temp.credit_side)
   })
   const handleChangeAmount = (value: string) => {
     setShowButton(true)
@@ -57,7 +57,7 @@ const CreditItemComponent: React.FC<CreditItemProps> = ({
         </Grid>
         <Grid item xs={9}>
           <TextField
-            id={`credit${index}`}
+            id={credits.credit_side === "Seller" ? `seller${index}` : `buyer${index}`}
             style={{width: "100%"}}
             value={amount}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => 

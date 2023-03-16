@@ -68,7 +68,8 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
         setFeeData(tempFeeData)
       _setTempFeeData(tempFeeData)
     } else {
-      _setTempFeeData(feeData)
+      let _tempFees = feeData.filter((item) => !(item.fee_type === "Credit given by Agent (Seller)" || item.fee_type === "Credit given by Agent (Buyer)"))
+      _setTempFeeData(_tempFees)
     }
   }, [])
 
@@ -167,16 +168,17 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
   useEffect(() => {
     if (isNevada && creditData) {
       let _emptyCreditFee: IFeeData[] = JSON.parse(JSON.stringify(_creditFee))
-      creditData.forEach((item: ICreditData) => {
-        if (item.credit_amount === '0') {
+      let _creditFees = feeData.filter((item) => item.fee_type === "Credit given by Agent (Buyer)" || item.fee_type === "Credit given by Agent (Seller)")
+      if (_creditFees.length == 0) {
+        creditData.forEach((item: ICreditData) => {
           if (item.credit_side === "Seller") {
             let _feeItem: IFeeData = {
               id: null,
               deal: deal.id,
               deal_side: 1,
               fee_type: "Credit given by Agent (Seller)",
-              fee_amount: item.credit_amount ? item.credit_amount : "0.00",
-              fee_amount_percentage: "",
+              fee_amount: item.credit_amount ? item.credit_amount : "0",
+              fee_amount_percentage: "0",
               fee_from: 0,
               fee_paid: 1,
               fee_unit: 1,
@@ -191,8 +193,8 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
               deal: deal.id,
               deal_side: 0,
               fee_type: "Credit given by Agent (Buyer)",
-              fee_amount: item.credit_amount ? item.credit_amount : "0.00",
-              fee_amount_percentage: "",
+              fee_amount: item.credit_amount ? item.credit_amount : "0",
+              fee_amount_percentage: "0",
               fee_from: 0,
               fee_paid: 1,
               fee_unit: 1,
@@ -202,9 +204,16 @@ const FeeQuestion: React.FC<IQuestionProps> = ({
             }
             _emptyCreditFee.push(_feeItem)
           }
-        }
-      })
-      _setCreditFee(_emptyCreditFee)
+        })
+        _setCreditFee(_emptyCreditFee)
+      } else {
+        _creditFees.forEach((item: IFeeData, index: number) => {
+          if (creditData[index] && creditData[index].deal !== "") {
+            item.fee_amount = creditData[index].credit_amount === "" ? "0" : creditData[index].credit_amount
+          }
+        })
+        _setCreditFee(_creditFees)
+      }
     }
   }, [creditData])
 

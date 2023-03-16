@@ -20,6 +20,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 	const [selectingStatus, setSelectingStatus] = useState<string>("Listing")
 	const [selectedGCIBuyingAgents, setSelectedGCIBuyingAgents] = useState<string[]>([])
 	const [selectedGCISellingSideAgents, setSelectedGCISellingSideAgents] = useState<string[]>([])
+	const [_item, _setItem] = useState<IFeeData>(item)
 
   const feeAmountsEvents = document.getElementById(`fee_amounts${id}`)
   feeAmountsEvents?.addEventListener('focusout', () => {
@@ -116,14 +117,17 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 	}
 
   useEffect(() => {
-		if (item.fee_unit == 0) {
-			setFeeAmounts(stylizeNumber(0))
-			setFeePercents(stylizeNumber(parseFloat(item.fee_amount_percentage)))
-		} else if (item.fee_unit == 1) {
-			setFeeAmounts(stylizeNumber(parseFloat(item.fee_amount)))
-			setFeePercents(stylizeNumber(0))
-		}
-  }, [])
+		_setItem(item)
+		setTimeout(() => {
+			if (item.fee_unit == 0) {
+				setFeeAmounts(stylizeNumber(0))
+				setFeePercents(stylizeNumber(parseFloat(item.fee_amount_percentage)))
+			} else if (item.fee_unit == 1) {
+				setFeeAmounts(stylizeNumber(parseFloat(item.fee_amount)))
+				setFeePercents(stylizeNumber(0))
+			}
+		}, 50);
+  }, [item])
 
   return (
 		<>
@@ -167,7 +171,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 							<>
 								{selectingStatus === "Listing" && (
 									<Box style={{display: "flex", textAlign: 'center'}}>
-										<label style={{marginTop: 7}}>{item.agent_name}</label>
+										<label style={{marginTop: 7}}>{_item.agent_name}</label>
 										<Button
 											onClick={handleEditPrimaryAgent}
 											style={{
@@ -211,7 +215,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 							<>
 								{selectingStatus === "Listing" && (
 									<Box style={{display: "flex"}}>
-										<label style={{marginTop: 7}}>{item.agent_name}</label>
+										<label style={{marginTop: 7}}>{_item.agent_name}</label>
 										<Button
 											onClick={handleEditPrimaryAgent}
 											style={{
@@ -263,7 +267,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 							row
 							aria-labelledby="demo-row-radio-buttons-group-label"
 							name="row-radio-buttons-group"
-							value={item.deal_side}
+							value={_item.deal_side}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 								handleChangeValue(e, "feeDealSide", id)
 							}
@@ -273,7 +277,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 								style={{ marginRight: 20 }}
 								control={
 									<Radio
-										checked={item.deal_side == 0}
+										checked={_item.deal_side == 0}
 										size="small"
 										style={{ marginBottom: 3 }}
 									/>
@@ -285,7 +289,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 								style={{ marginRight: 0 }}
 								control={
 									<Radio
-										checked={item.deal_side == 1}
+										checked={_item.deal_side == 1}
 										size="small"
 										style={{ marginBottom: 3 }}
 									/>
@@ -305,7 +309,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 							id="grouped-select"
 							label="Grouping"
 							style={{ width: "100%" }}
-							value={item.fee_type}
+							value={_item.fee_type}
 							onChange={(e: React.ChangeEvent<{ value: unknown }>) =>
 								handleChangeValue(e, "feeType", id)
 							}
@@ -320,7 +324,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 					</Grid>
 					<Grid item xs={4} style={{display: 'inherit'}}>
 						<Radio
-							checked={item.fee_unit == 0}
+							checked={_item.fee_unit == 0}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
 								handleChangeValue(e, "feeUnit", id)
 							}
@@ -341,7 +345,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 									<InputAdornment position="start">%</InputAdornment>
 								),
 							}}
-							disabled={item.fee_unit == 1}
+							disabled={_item.fee_unit == 1}
 						/>
 					</Grid>
 					<Grid item xs={1}>
@@ -349,7 +353,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 					</Grid>
 					<Grid item xs={4} style={{display: 'inherit'}}>
 						<Radio
-							checked={item.fee_unit == 1}
+							checked={_item.fee_unit == 1}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
 								handleChangeValue(e, "feeUnit", id)
 							}
@@ -371,7 +375,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 									<InputAdornment position="start">$</InputAdornment>
 								),
 							}}
-							disabled={item.fee_unit == 0}
+							disabled={_item.fee_unit == 0}
 						/>
 					</Grid>
 				</Grid>
@@ -385,7 +389,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 							row
 							aria-labelledby="demo-row-radio-buttons-group-label"
 							name="row-radio-buttons-group"
-							value={item.fee_from}
+							value={_item.fee_from}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 								handleChangeValue(e, "feeFrom", id)
 							}
@@ -395,7 +399,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 								style={{ marginRight: 20 }}
 								control={
 									<Radio
-										checked={item.fee_from == 0}
+										checked={_item.fee_from == 0}
 										size="small"
 										style={{ marginBottom: 3 }}
 									/>
@@ -407,7 +411,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 								style={{ marginRight: 0 }}
 								control={
 									<Radio
-										checked={item.fee_from == 1}
+										checked={_item.fee_from == 1}
 										size="small"
 										style={{ marginBottom: 3 }}
 									/>
@@ -427,7 +431,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 							row
 							aria-labelledby="demo-row-radio-buttons-group-label"
 							name="row-radio-buttons-group"
-							value={item.fee_paid}
+							value={_item.fee_paid}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 								handleChangeValue(e, "feePaid", id)
 							}
@@ -437,7 +441,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 								style={{ marginRight: 20 }}
 								control={
 									<Radio
-										checked={item.fee_paid == 0}
+										checked={_item.fee_paid == 0}
 										size="small"
 										style={{ marginBottom: 3 }}
 									/>
@@ -449,7 +453,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 								style={{ marginRight: 0 }}
 								control={
 									<Radio
-										checked={item.fee_paid == 1}
+										checked={_item.fee_paid == 1}
 										size="small"
 										style={{ marginBottom: 3 }}
 									/>
@@ -466,7 +470,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 							row
 							aria-labelledby="demo-row-radio-buttons-group-label"
 							name="row-radio-buttons-group"
-							value={item.fee_method}
+							value={_item.fee_method}
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 								handleChangeValue(e, "feeType-method", id)
 							}
@@ -476,7 +480,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 								style={{ marginRight: 20 }}
 								control={
 									<Radio
-										checked={item.fee_method == 0}
+										checked={_item.fee_method == 0}
 										size="small"
 										style={{ marginBottom: 3 }}
 									/>
@@ -488,7 +492,7 @@ const FeeItemComponent: React.FC<FeeItemProps> = ({
 								style={{ marginRight: 0 }}
 								control={
 									<Radio
-										checked={item.fee_method == 1}
+										checked={_item.fee_method == 1}
 										size="small"
 										style={{ marginBottom: 3 }}
 									/>

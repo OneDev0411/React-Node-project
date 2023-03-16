@@ -49,6 +49,7 @@ const App: React.FC<EntryProps> = ({
     setTransCoordinator,
     setCreditData
   } = useApp();
+  const isBackOffice = utils.isBackOffice
   const enderType = deal.context.ender_type?.text;
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type;
   const [ isNYC, setIsNYC ] = useState<boolean>(false)
@@ -217,19 +218,23 @@ const App: React.FC<EntryProps> = ({
           }
         }
         if (setCreditData !== undefined) {
-          let creditRoles = roles.filter((role: IDealRole) => role.role === "Seller" || role.role==="Buyer")
-          let tmpCredit: ICreditData[] = creditRoles.map((creditRole: IDealRole) => {
-            let {id, legal_full_name, role} = creditRole
-            return {
-              id: null,
-              deal: deal.id,
-              credit_id: id,
-              credit_side: role,
-              credit_to: legal_full_name,
-              credit_amount: ""
-            }
-          })
-          setCreditData(tmpCredit)
+          if (data.creditData && isBackOffice) {
+            setCreditData(data.creditData)
+          } else {
+            let creditRoles = roles.filter((role: IDealRole) => role.role === "Seller" || role.role==="Buyer")
+            let tmpCredit: ICreditData[] = creditRoles.map((creditRole: IDealRole) => {
+              let {id, legal_full_name, role} = creditRole
+              return {
+                id: null,
+                deal: deal.id,
+                credit_id: id,
+                credit_side: role,
+                credit_to: legal_full_name,
+                credit_amount: ""
+              }
+            })
+            setCreditData(tmpCredit)
+          }
         }
       } else { // in case of data doesn't exist in database, set default data
         if (setDealData !== undefined) {
@@ -343,6 +348,10 @@ const App: React.FC<EntryProps> = ({
       _totalData.current = total_data;
     }
   }, [total_data, submitted, currentStep]);
+
+  useEffect(() => {
+    console.log('deal', deal)
+  }, [])
 
   if (submitted === 0 || currentStep === 0) {
     return (

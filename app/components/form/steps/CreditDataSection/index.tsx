@@ -31,6 +31,9 @@ const CreditQuestion: React.FC<IQuestionProps> = ({
   const dealType = (enderType === "AgentDoubleEnder" || enderType === "OfficeDoubleEnder") ? "Both" : deal.deal_type
 
   const handleClickNextButton = async () => {
+    let updatedCredit = [...sellerCredits, ...buyerCredits]
+    console.log('updatedCredit', updatedCredit)
+    if (setCreditData) setCreditData(updatedCredit)
     setShowButton(false)
     setTimeout(() => {
       if (currentStep < step + 1) {
@@ -43,13 +46,16 @@ const CreditQuestion: React.FC<IQuestionProps> = ({
     }, 80);
   }
 
-  const updateCredit = (item: ICreditData, index: number) => {
-    let temp: ICreditData[] = JSON.parse(JSON.stringify(creditData))
-    temp[index].credit_amount = item.credit_amount
-    temp[index].credit_side = item.credit_side
-    temp[index].credit_to = item.credit_to
-    temp[index].deal = deal.id
-    if (setCreditData) setCreditData(temp)
+  const updateCredit = (item: ICreditData, index: number, side: string) => {
+    if (side === "Seller") {
+      let _updateCredit = JSON.parse(JSON.stringify(sellerCredits))
+      _updateCredit[index] = item
+      setSellerCredits(_updateCredit)
+    } else if (side === "Buyer") {
+      let _updateCredit = JSON.parse(JSON.stringify(buyerCredits))
+      _updateCredit[index] = item
+      setBuyerCredits(_updateCredit)
+    }
   }
 
   useEffect(() => {
